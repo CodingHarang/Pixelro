@@ -1,15 +1,15 @@
 [
     {
-        "merged": "C:\\Users\\txepa\\.gradle\\daemon\\7.5\\com.pixelro.nenoonkiosk.app-merged_res-63:\\mipmap-mdpi_ic_launcher.webp.flat",
-        "source": "C:\\Users\\txepa\\.gradle\\daemon\\7.5\\com.pixelro.nenoonkiosk.app-main-65:\\mipmap-mdpi\\ic_launcher.webp"
+        "merged": "C:\\Users\\txepa\\.gradle\\daemon\\7.5\\com.pixelro.nenoonkiosk.app-merged_res-63:\\mipmap-mdpi_ic_launcher_round.webp.flat",
+        "source": "C:\\Users\\txepa\\.gradle\\daemon\\7.5\\com.pixelro.nenoonkiosk.app-main-65:\\mipmap-mdpi\\ic_launcher_round.webp"
     },
     {
         "merged": "C:\\Users\\txepa\\.gradle\\daemon\\7.5\\com.pixelro.nenoonkiosk.app-merged_res-63:\\mipmap-anydpi-v26_ic_launcher.xml.flat",
         "source": "C:\\Users\\txepa\\.gradle\\daemon\\7.5\\com.pixelro.nenoonkiosk.app-main-65:\\mipmap-anydpi-v26\\ic_launcher.xml"
     },
     {
-        "merged": "C:\\Users\\txepa\\.gradle\\daemon\\7.5\\com.pixelro.nenoonkiosk.app-merged_res-63:\\mipmap-mdpi_ic_launcher_round.webp.flat",
-        "source": "C:\\Users\\txepa\\.gradle\\daemon\\7.5\\com.pixelro.nenoonkiosk.app-main-65:\\mipmap-mdpi\\ic_launcher_round.webp"
+        "merged": "C:\\Users\\txepa\\.gradle\\daemon\\7.5\\com.pixelro.nenoonkiosk.app-merged_res-63:\\mipmap-mdpi_ic_launcher.webp.flat",
+        "source": "C:\\Users\\txepa\\.gradle\\daemon\\7.5\\com.pixelro.nenoonkiosk.app-main-65:\\mipmap-mdpi\\ic_launcher.webp"
     },
     {
         "merged": "C:\\Users\\txepa\\.gradle\\daemon\\7.5\\com.pixelro.nenoonkiosk.app-merged_res-63:\\drawable_bg_eyetest_info.png.flat",
@@ -26,6 +26,10 @@
     {
         "merged": "C:\\Users\\txepa\\.gradle\\daemon\\7.5\\com.pixelro.nenoonkiosk.app-merged_res-63:\\drawable_home_banner_shinhan_ko_04.png.flat",
         "source": "C:\\Users\\txepa\\.gradle\\daemon\\7.5\\com.pixelro.nenoonkiosk.app-main-65:\\drawable\\home_banner_shinhan_ko_04.png"
+    },
+    {
+        "merged": "com.pixelro.nenoonkiosk.app-merged_res-63:/mipmap-anydpi-v26_ic_launcher.xml.flat",
+        "source": "com.pixelro.nenoonkiosk.app-main-65:/mipmap-anydpi-v26/ic_launcher.xml"
     },
     {
         "merged": "C:\\Users\\txepa\\.gradle\\daemon\\7.5\\com.pixelro.nenoonkiosk.app-merged_res-63:\\mipmap-hdpi_ic_launcher_round.webp.flat",
@@ -72,6 +76,14 @@
         "source": "C:\\Users\\txepa\\.gradle\\daemon\\7.5\\com.pixelro.nenoonkiosk.app-main-65:\\drawable\\img_test_presbyopia_1.png"
     },
     {
+        "merged": "com.pixelro.nenoonkiosk.app-merged_res-63:/xml_backup_rules.xml.flat",
+        "source": "com.pixelro.nenoonkiosk.app-main-65:/xml/backup_rules.xml"
+    },
+    {
+        "merged": "com.pixelro.nenoonkiosk.app-merged_res-63:/xml_data_extraction_rules.xml.flat",
+        "source": "com.pixelro.nenoonkiosk.app-main-65:/xml/data_extraction_rules.xml"
+    },
+    {
         "merged": "C:\\Users\\txepa\\.gradle\\daemon\\7.5\\com.pixelro.nenoonkiosk.app-merged_res-63:\\drawable_ic_launcher_background.xml.flat",
         "source": "C:\\Users\\txepa\\.gradle\\daemon\\7.5\\com.pixelro.nenoonkiosk.app-main-65:\\drawable\\ic_launcher_background.xml"
     },
@@ -82,6 +94,10 @@
     {
         "merged": "C:\\Users\\txepa\\.gradle\\daemon\\7.5\\com.pixelro.nenoonkiosk.app-merged_res-63:\\mipmap-xhdpi_ic_launcher.webp.flat",
         "source": "C:\\Users\\txepa\\.gradle\\daemon\\7.5\\com.pixelro.nenoonkiosk.app-main-65:\\mipmap-xhdpi\\ic_launcher.webp"
+    },
+    {
+        "merged": "com.pixelro.nenoonkiosk.app-merged_res-63:/mipmap-anydpi-v26_ic_launcher_round.xml.flat",
+        "source": "com.pixelro.nenoonkiosk.app-main-65:/mipmap-anydpi-v26/ic_launcher_round.xml"
     },
     {
         "merged": "C:\\Users\\txepa\\.gradle\\daemon\\7.5\\com.pixelro.nenoonkiosk.app-merged_res-63:\\drawable_baseline_check_circle_48.xml.flat",
@@ -100,6 +116,10 @@
         "source": "C:\\Users\\txepa\\.gradle\\daemon\\7.5\\com.pixelro.nenoonkiosk.app-main-65:\\drawable\\home_banner_shinhan_ko_02.png"
     },
     {
+        "merged": "com.pixelro.nenoonkiosk.app-merged_res-63:/mipmap-anydpi-v33_ic_launcher.xml.flat",
+        "source": "com.pixelro.nenoonkiosk.app-main-65:/mipmap-anydpi-v33/ic_launcher.xml"
+    },
+    {
         "merged": "C:\\Users\\txepa\\.gradle\\daemon\\7.5\\com.pixelro.nenoonkiosk.app-merged_res-63:\\drawable_img_test.png.flat",
         "source": "C:\\Users\\txepa\\.gradle\\daemon\\7.5\\com.pixelro.nenoonkiosk.app-main-65:\\drawable\\img_test.png"
     },
@@ -112,8 +132,16 @@
         "source": "C:\\Users\\txepa\\.gradle\\daemon\\7.5\\com.pixelro.nenoonkiosk.app-main-65:\\drawable\\text_popup_ko_presbyopia.png"
     },
     {
+        "merged": "com.pixelro.nenoonkiosk.app-merged_res-63:/drawable_ic_launcher_background.xml.flat",
+        "source": "com.pixelro.nenoonkiosk.app-main-65:/drawable/ic_launcher_background.xml"
+    },
+    {
         "merged": "C:\\Users\\txepa\\.gradle\\daemon\\7.5\\com.pixelro.nenoonkiosk.app-merged_res-63:\\drawable_img_test_presbyopia_3.png.flat",
         "source": "C:\\Users\\txepa\\.gradle\\daemon\\7.5\\com.pixelro.nenoonkiosk.app-main-65:\\drawable\\img_test_presbyopia_3.png"
+    },
+    {
+        "merged": "com.pixelro.nenoonkiosk.app-merged_res-63:/drawable-v24_ic_launcher_foreground.xml.flat",
+        "source": "com.pixelro.nenoonkiosk.app-main-65:/drawable-v24/ic_launcher_foreground.xml"
     },
     {
         "merged": "C:\\Users\\txepa\\.gradle\\daemon\\7.5\\com.pixelro.nenoonkiosk.app-merged_res-63:\\drawable_btn_start_ko.png.flat",
