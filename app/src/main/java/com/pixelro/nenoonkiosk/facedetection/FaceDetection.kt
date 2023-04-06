@@ -1,0 +1,91 @@
+package com.pixelro.nenoonkiosk.facedetection
+
+import android.Manifest
+import android.annotation.SuppressLint
+import android.util.Size
+import androidx.camera.core.CameraSelector
+import androidx.camera.core.ImageAnalysis
+import androidx.camera.lifecycle.ProcessCameraProvider
+import androidx.compose.foundation.layout.Box
+import androidx.compose.runtime.*
+import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.platform.LocalLifecycleOwner
+import androidx.core.content.ContextCompat
+import androidx.lifecycle.viewmodel.compose.viewModel
+import com.google.accompanist.permissions.ExperimentalPermissionsApi
+import com.google.accompanist.permissions.rememberMultiplePermissionsState
+import com.google.accompanist.permissions.rememberPermissionState
+import com.pixelro.nenoonkiosk.NenoonViewModel
+
+@OptIn(ExperimentalPermissionsApi::class)
+@Composable
+fun FaceDetection(
+    viewModel: NenoonViewModel
+) {
+    val cameraPermissionState = rememberPermissionState(Manifest.permission.CAMERA)
+
+    val permissionState = rememberMultiplePermissionsState(
+        permissions = listOf(
+            Manifest.permission.CAMERA, Manifest.permission.RECORD_AUDIO
+        )
+    )
+
+    LaunchedEffect(Unit) {
+        permissionState.launchMultiplePermissionRequest()
+    }
+    FaceDetectionScreenContent(
+        viewModel = viewModel
+    )
+}
+
+@SuppressLint("UnusedMaterialScaffoldPaddingParameter")
+@Composable
+fun FaceDetectionScreenContent(
+    viewModel: NenoonViewModel
+) {
+    val lifecycleOwner = LocalLifecycleOwner.current
+    val context = LocalContext.current
+    val cameraProviderFuture = remember { ProcessCameraProvider.getInstance(context) }
+    Box() {
+
+        val executor = ContextCompat.getMainExecutor(context)
+        cameraProviderFuture.addListener({
+            val cameraProvider = cameraProviderFuture.get()
+
+            val cameraSelector = CameraSelector.Builder()
+                .requireLensFacing(CameraSelector.LENS_FACING_FRONT).build()
+            val imageAnalysis = ImageAnalysis.Builder()
+                .setTargetResolution(Size(640, 480))
+                .setBackpressureStrategy(ImageAnalysis.STRATEGY_KEEP_ONLY_LATEST)
+                .setImageQueueDepth(5).build().apply {
+                    setAnalyzer(
+                        executor, MyFaceAnalyzer(
+                            viewModel::updateFaceDetectionData,
+                            viewModel::updateFaceContourData,
+                            viewModel::updateInputImageSize
+                        )
+                    )
+                }
+
+            cameraProvider.unbindAll()
+            cameraProvider.bindToLifecycle(
+                lifecycleOwner, cameraSelector, imageAnalysis
+            )
+
+        }, executor)
+    }
+//    Scaffold {
+//        Box(modifier = Modifier
+//            .fillMaxSize()
+//            .onGloballyPositioned {
+//                size = it.size
+//            }) {
+//            AndroidView(modifier = Modifier.matchParentSize(), factory = { ctx ->
+//                val previewView = PreviewView(ctx)
+//
+//
+//                previewView
+//            })
+//        }
+//    }
+}
