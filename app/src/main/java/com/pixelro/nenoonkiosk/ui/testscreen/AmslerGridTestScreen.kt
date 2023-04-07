@@ -11,7 +11,7 @@ import com.pixelro.nenoonkiosk.NenoonViewModel
 @Composable
 fun AmslerGridTestScreen(
     navController: NavHostController,
-    viewModel: NenoonViewModel = viewModel()
+    viewModel: NenoonViewModel
 ) {
     Text("AmslerGridTestScreen")
 }

@@ -112,7 +112,10 @@ fun NenoonApp(
                 )
             }
         ) {
-            ShortDistanceVisualAcuityTestScreen(testNavController)
+            ShortDistanceVisualAcuityTestScreen(
+                navController = testNavController,
+                viewModel = viewModel
+            )
         }
 
         // 원거리 시력 검사
@@ -131,7 +134,9 @@ fun NenoonApp(
                 )
             }
         ) {
-            LongDistanceVisualAcuityTestScreen(testNavController)
+            LongDistanceVisualAcuityTestScreen(
+                navController = testNavController,
+                viewModel = viewModel)
         }
 
         // 어린이 시력 검사
@@ -150,7 +155,9 @@ fun NenoonApp(
                 )
             }
         ) {
-            ChildrenVisualAcuityTestScreen(testNavController)
+            ChildrenVisualAcuityTestScreen(
+                navController = testNavController,
+                viewModel = viewModel)
         }
 
         // 암슬러 차트 검사
@@ -169,7 +176,30 @@ fun NenoonApp(
                 )
             }
         ) {
-            AmslerGridTestScreen(testNavController)
+            AmslerGridTestScreen(
+                navController = testNavController,
+                viewModel = viewModel)
+        }
+
+        // 엠식 변형시 검사
+        composable(
+            GlobalConstants.ROUTE_M_CHART_TEST,
+            enterTransition = {
+                slideIntoContainer(
+                    towards = AnimatedContentScope.SlideDirection.Left,
+                    animationSpec = TweenSpec(durationMillis = 500)
+                )
+            },
+            exitTransition = {
+                slideOutOfContainer(
+                    towards = AnimatedContentScope.SlideDirection.Left,
+                    animationSpec = TweenSpec(durationMillis = 500)
+                )
+            }
+        ) {
+            MChartTestScreen(
+                navController = testNavController,
+                viewModel = viewModel)
         }
 
         // 검사 사전 설명 페이지

@@ -108,6 +108,9 @@ fun  TestListContent(
                 toAmslerGridTest = {
                     viewModel.updateSelectedTestType(TestType.AmslerGrid)
                 },
+                toMChartTest = {
+                    viewModel.updateSelectedTestType(TestType.MChart)
+                },
                 toPreDescriptionScreen = toPreDescriptionScreen
             )
         }

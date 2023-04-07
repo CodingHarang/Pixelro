@@ -8,14 +8,23 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.pager.HorizontalPager
 import androidx.compose.foundation.pager.rememberPagerState
-import androidx.compose.material.Card
+import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material3.Card
 import androidx.compose.material.Text
+import androidx.compose.material3.CardDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.semantics.Role.Companion.Image
+import androidx.compose.ui.text.SpanStyle
+import androidx.compose.ui.text.buildAnnotatedString
+import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.text.withStyle
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import androidx.navigation.NavHostController
 import com.pixelro.nenoonkiosk.NenoonViewModel
 import com.pixelro.nenoonkiosk.R
@@ -28,14 +37,12 @@ fun TestListScreen(
     navController: NavHostController,
     viewModel: NenoonViewModel
 ) {
-    Column(
-        horizontalAlignment = Alignment.CenterHorizontally
-    ) {
+    Column() {
         HorizontalPager(
             state = rememberPagerState(
                 initialPage = 500000
             ),
-            pageCount = 1000000
+            pageCount = 1000000,
         ) {
             Advertisement()
         }
@@ -47,15 +54,49 @@ fun TestListScreen(
             navController = navController,
             viewModel = viewModel
         )
+        Text(
+            text = buildAnnotatedString {
+                withStyle(
+                    style = SpanStyle(
+                        color = Color(0xff999999),
+                        fontSize = 20.sp
+                    )
+                ) {
+                    append("내눈 앱의 모든 눈 검사는 자가 검사로 ")
+                }
+                withStyle(
+                    style = SpanStyle(
+                        color = Color(0xffff0000),
+                        fontSize = 20.sp
+                    )
+                ) {
+                    append("의학적 소견이 아니기에\n")
+                }
+                withStyle(
+                        style = SpanStyle(
+                            color = Color(0xff999999),
+                            fontSize = 20.sp
+                        )
+                ) {
+                    append("정확한 진단은 병원을 방문하여 의사와 상담하시길 바랍니다.\n내 눈의 상태와 주변 환경 또는 기기에 따라 검사 결과가 달라질 수 있습니다.")
+                }
+            },
+            modifier = Modifier
+                .padding(20.dp)
+        )
     }
 }
 
 @Composable
 fun Advertisement() {
     Card(
-        elevation = 8.dp,
+        elevation = CardDefaults.cardElevation(4.dp),
         modifier = Modifier
-            .padding(20.dp)
+            .padding(20.dp),
+        colors = CardDefaults.cardColors(
+            containerColor = Color(0xffffffff)
+        ),
+        shape = RoundedCornerShape(16.dp)
     ) {
         Image(
             painter = painterResource(id = R.drawable.home_banner_shinhan_ko_01),

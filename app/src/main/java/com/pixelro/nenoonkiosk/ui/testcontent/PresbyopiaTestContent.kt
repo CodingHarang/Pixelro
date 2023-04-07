@@ -66,6 +66,8 @@ fun PresbyopiaTestContent(
             PresbyopiaThirdPage(visibleState = thirdVisibleState)
         }
         Text(
+            modifier = Modifier
+                .padding(top = 20.dp),
             text = "현재 거리: ${(viewModel.screenToFaceDistance.collectAsState().value / 10).roundToInt()}cm",
             fontSize = 30.sp,
             color = Color(0xffffffff)

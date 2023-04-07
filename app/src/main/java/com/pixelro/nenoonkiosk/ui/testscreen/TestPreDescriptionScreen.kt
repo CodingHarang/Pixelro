@@ -49,16 +49,19 @@ fun TestPreDescriptionScreen(
     ) {
         TestPreDescriptionBackground()
         TestPreDescriptionContent(
+            viewModel = viewModel,
             navController = navController,
             selectedTest = selectedTest,
             changeDialogVisibility = {
-                isDescriptionDialogShowing = !isDescriptionDialogShowing
+                isDescriptionDialogShowing = true
             }
         )
         if(isDescriptionDialogShowing) {
             TestPreDescriptionDialog(
+                viewModel = viewModel,
+                selectedTest = selectedTest,
                 onDismissRequest = {
-                    isDescriptionDialogShowing = !isDescriptionDialogShowing
+                    isDescriptionDialogShowing = false
                 }
             )
         }
@@ -85,6 +88,7 @@ fun TestPreDescriptionBackground() {
 
 @Composable
 fun TestPreDescriptionContent(
+    viewModel: NenoonViewModel,
     navController: NavHostController,
     selectedTest: TestType,
     changeDialogVisibility: () -> Unit
@@ -99,13 +103,18 @@ fun TestPreDescriptionContent(
         ) {
             Text(
                 modifier = Modifier
-                    .padding(top = 40.dp),
-                text = "검사 종류",
-                fontSize = 40.sp,
-                color = Color(0xffffffff)
+                    .padding(40.dp),
+                text = viewModel.selectedTestName.collectAsState().value,
+                fontSize = 60.sp,
+                fontWeight = FontWeight.Bold,
+                color = Color(0xffffffff),
+                textAlign = TextAlign.Center
             )
             Text(
-                text = selectedTest.name,
+                modifier = Modifier
+                    .padding(start = 60.dp, end = 60.dp),
+                text = viewModel.selectedTestDescription.collectAsState().value,
+                fontSize = 30.sp,
                 color = Color(0xffffffff)
             )
         }
@@ -138,7 +147,14 @@ fun TestPreDescriptionContent(
                         indication = null,
                         interactionSource = remember { MutableInteractionSource() }
                     ) {
-                        navController.navigate(GlobalConstants.ROUTE_PRESBYOPIA_TEST)
+                        when(selectedTest) {
+                            TestType.Presbyopia -> navController.navigate(GlobalConstants.ROUTE_PRESBYOPIA_TEST)
+                            TestType.ShortDistanceVisualAcuity -> navController.navigate(GlobalConstants.ROUTE_SHORT_VISUAL_ACUITY_TEST)
+                            TestType.LongDistanceVisualAcuity -> navController.navigate(GlobalConstants.ROUTE_LONG_VISUAL_ACUITY_TEST)
+                            TestType.ChildrenVisualAcuity -> navController.navigate(GlobalConstants.ROUTE_CHILDREN_VISUAL_ACUITY_TEST)
+                            TestType.AmslerGrid -> navController.navigate(GlobalConstants.ROUTE_AMSLER_GRID_TEST)
+                            else -> navController.navigate(GlobalConstants.ROUTE_M_CHART_TEST)
+                        }
                     },
                 painter = painterResource(id = R.drawable.btn_start_ko),
                 contentDescription = ""
@@ -150,6 +166,8 @@ fun TestPreDescriptionContent(
 @OptIn(ExperimentalGlideComposeApi::class)
 @Composable
 fun TestPreDescriptionDialog(
+    viewModel: NenoonViewModel,
+    selectedTest: TestType,
     onDismissRequest: () -> Unit
 ) {
     Dialog(
@@ -165,12 +183,13 @@ fun TestPreDescriptionDialog(
                 horizontalAlignment = Alignment.CenterHorizontally
             ) {
                 Text(
-                    text = "실험 이름",
+                    text = viewModel.selectedTestName.collectAsState().value,
                     modifier = Modifier
                         .padding(top = 20.dp),
                     fontSize = 40.sp,
                     fontWeight = FontWeight.Medium,
                     color = Color(0xff1d71e1),
+                    textAlign = TextAlign.Center
                 )
                 Text(
                     text = "검사 방법",
@@ -191,7 +210,16 @@ fun TestPreDescriptionDialog(
                     modifier = Modifier
                         .wrapContentSize()
                         .padding(start = 20.dp, end = 20.dp, bottom = 20.dp),
-                    painter = painterResource(id = R.drawable.text_popup_ko_presbyopia),
+                    painter = painterResource(
+                        id = when(selectedTest) {
+                                TestType.Presbyopia -> R.drawable.text_popup_ko_presbyopia
+                                TestType.ShortDistanceVisualAcuity -> R.drawable.text_popup_ko_near
+                                TestType.LongDistanceVisualAcuity -> R.drawable.text_popup_ko_long
+                                TestType.ChildrenVisualAcuity -> R.drawable.text_popup_ko_child
+                                TestType.AmslerGrid -> R.drawable.text_popup_ko_amsler
+                                else -> R.drawable.text_popup_ko_m_chart
+                            }
+                        ),
                     contentDescription = "",
                     contentScale = ContentScale.FillWidth
                 )

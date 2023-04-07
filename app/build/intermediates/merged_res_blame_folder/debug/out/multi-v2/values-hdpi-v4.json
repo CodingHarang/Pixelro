@@ -1,7 +1,7 @@
 {
     "logs": [
         {
-            "outputFile": "com.pixelro.nenoonkiosk.app-mergeDebugResources-61:/values-hdpi-v4/values-hdpi-v4.xml",
+            "outputFile": "com.pixelro.nenoonkiosk.app-mergeDebugResources-62:/values-hdpi-v4/values-hdpi-v4.xml",
             "map": [
                 {
                     "source": "C:\\Users\\txepa\\.gradle\\caches\\transforms-3\\1eeb5d255c108edd0323f87486b2835b\\transformed\\appcompat-1.1.0\\res\\values-hdpi-v4\\values-hdpi-v4.xml",

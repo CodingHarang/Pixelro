@@ -14,6 +14,7 @@ import com.pixelro.nenoonkiosk.NenoonViewModel
 @Composable
 fun MacularTestListContent(
     toAmslerGridTest: () -> Unit,
+    toMChartTest: () -> Unit,
     toPreDescriptionScreen: () -> Unit,
     viewModel: NenoonViewModel = viewModel()
 ) {
@@ -33,7 +34,8 @@ fun MacularTestListContent(
             title = "M-Chart",
             description = "description",
             onClickMethod = {
-
+                toMChartTest()
+                toPreDescriptionScreen()
             }
         )
     }

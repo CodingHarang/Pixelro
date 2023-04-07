@@ -61,6 +61,10 @@ class NenoonViewModel : ViewModel() {
     val focalLength: StateFlow<Float> = _focalLength
     private val _lensSize = MutableStateFlow(SizeF(0f, 0f))
     val lensSize: StateFlow<SizeF> = _lensSize
+    private val _selectedTestName = MutableStateFlow("")
+    val selectedTestName: StateFlow<String> = _selectedTestName
+    private val _selectedTestDescription = MutableStateFlow("")
+    val selectedTestDescription: StateFlow<String> = _selectedTestDescription
 
     fun updateLocalConfigurationValues(pixelDensity: Float, screenWidthDp: Int, screenHeightDp: Int, focalLength: Float, lensSize: SizeF) {
         _pixelDensity.update { pixelDensity }
@@ -72,6 +76,26 @@ class NenoonViewModel : ViewModel() {
 
     fun updateSelectedTestType(testType: TestType) {
         _selectedTestType.update { testType }
+        _selectedTestName.update {
+            when(testType) {
+                TestType.Presbyopia -> "조절력 검사\n(안구 나이 검사)"
+                TestType.ShortDistanceVisualAcuity -> "근거리 시력 검사"
+                TestType.LongDistanceVisualAcuity -> "원거리 시력 검사"
+                TestType.ChildrenVisualAcuity -> "어린이 시력 검사"
+                TestType.AmslerGrid -> "암슬러 차트"
+                else -> "엠식 변형시 검사"
+            }
+        }
+        _selectedTestDescription.update {
+            when(testType) {
+                TestType.Presbyopia -> "나이가 들면서 수정체의 탄성력이 감소되어 조절력이 떨어지는 안질환으로 가까운 곳의 글자가 잘 안보이는 현상을 노안이라고 말합니다."
+                TestType.ShortDistanceVisualAcuity -> "눈이 두 점을 구별할 수 있는 최소의 시각을 최소시각이라고 하며, 시력은 이 최소시각이 어느정도인가를 말하는 것입니다.\n\n정식 검사는 6m 거리에서 시행합니다. 본 검사는 3m 이하에서 측정가능하도록 개발되었습니다."
+                TestType.LongDistanceVisualAcuity -> "눈이 두 점을 구별할 수 있는 최소의 시각을 최소시각이라고 하며, 시력은 이 최소시각이 어느정도인가를 말하는 것입니다.\n\n정식 검사는 6m 거리에서 시행합니다. 본 검사는 3m 이하에서 측정가능하도록 개발되었습니다."
+                TestType.ChildrenVisualAcuity -> "눈이 두 점을 구별할 수 있는 최소의 시각을 최소시각이라고 하며, 시력은 이 최소시각이 어느정도인가를 말하는 것입니다.\n\n정식 검사는 6m 거리에서 시행합니다. 본 검사는 3m 이하에서 측정가능하도록 개발되었습니다."
+                TestType.AmslerGrid -> "망막신경 중에서 초점이 맺히는 부분인 황반에 변성이 생기면 격자 무늬가 휘어져 보이거나 공백 또는 검게 보이는 현상이 발생합니다."
+                else -> "굴절이상은 망막에 초점이 정확하게 맺히지 못할 때 생기며, 근시와 원시로 구별하여 안경으로 교정합니다. 성장기 어린이와 청소년의 경우 6개월, 성인의 경우 1년마다 안경 렌즈를 바꾸는 것이 좋습니다."
+            }
+        }
     }
 
     fun updateFaceDetectionData(rightEyePosition: PointF, leftEyePosition: PointF, rotX: Float, rotY: Float, rotZ: Float, width: Float, height: Float) {

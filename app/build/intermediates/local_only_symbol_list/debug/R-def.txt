@@ -22,6 +22,11 @@ drawable img_test_presbyopia_1
 drawable img_test_presbyopia_2
 drawable img_test_presbyopia_3
 drawable text_popup_en_amsler
+drawable text_popup_ko_amsler
+drawable text_popup_ko_child
+drawable text_popup_ko_long
+drawable text_popup_ko_m_chart
+drawable text_popup_ko_near
 drawable text_popup_ko_presbyopia
 mipmap ic_launcher
 mipmap ic_launcher_round

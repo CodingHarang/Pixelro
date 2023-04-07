@@ -1,22 +1,20 @@
 package com.pixelro.nenoonkiosk
 
 import android.os.Bundle
-import android.util.Log
+import android.provider.Settings
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
-import androidx.activity.viewModels
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Surface
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.platform.LocalContext
-import androidx.lifecycle.viewmodel.compose.viewModel
 import com.pixelro.nenoonkiosk.ui.NenoonApp
 import com.pixelro.nenoonkiosk.ui.theme.NenoonKioskTheme
 
 class MainActivity : ComponentActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
+        Settings.System.putInt(contentResolver, Settings.System.SCREEN_OFF_TIMEOUT, 3600_000)
         super.onCreate(savedInstanceState)
         setContent {
             NenoonKioskTheme {

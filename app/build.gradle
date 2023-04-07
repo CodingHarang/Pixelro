@@ -88,4 +88,7 @@ dependencies {
 
     // glide
     implementation "com.github.bumptech.glide:compose:1.0.0-alpha.1"
+
+    // material3
+    implementation "androidx.compose.material3:material3:1.0.1"
 }

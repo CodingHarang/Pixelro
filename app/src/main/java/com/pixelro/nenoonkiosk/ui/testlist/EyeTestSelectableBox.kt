@@ -2,10 +2,15 @@ package com.pixelro.nenoonkiosk.ui.testlist
 
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
-import androidx.compose.material.Card
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.Text
+import androidx.compose.material3.Card
+import androidx.compose.material3.CardColors
+import androidx.compose.material3.CardDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 
@@ -17,15 +22,22 @@ fun EyeTestSelectableBox(
     onClickMethod: () -> Unit
 ) {
     Card(
-        elevation = 4.dp,
+        elevation = CardDefaults.cardElevation(4.dp),
         modifier = Modifier
+//            .clip(RoundedCornerShape(16.dp))
             .padding(start = 20.dp, top = 10.dp, end = 20.dp)
-            .fillMaxWidth()
-            .clickable {
-                onClickMethod()
-            }
+            .fillMaxWidth(),
+        colors = CardDefaults.cardColors(
+            containerColor = Color(0xffffffff)
+        )
     ) {
-        Box() {
+        Box(
+            modifier = Modifier
+                .fillMaxWidth()
+                .clickable {
+                    onClickMethod()
+                }
+        ) {
             Column(
                 modifier = Modifier
                     .height(150.dp)

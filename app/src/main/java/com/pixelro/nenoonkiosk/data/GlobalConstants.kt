@@ -12,6 +12,7 @@ class GlobalConstants {
         const val ROUTE_LONG_VISUAL_ACUITY_TEST = "VisualAcuityTestList/LongDistanceVisualAcuityTest"
         const val ROUTE_CHILDREN_VISUAL_ACUITY_TEST = "VisualAcuityTestList/ChildrenVisualAcuityTest"
         const val ROUTE_AMSLER_GRID_TEST = "MacularDegenerationTestList/AmslerGridTest"
+        const val ROUTE_M_CHART_TEST = "MacularDegenerationTestList/MChartTest"
 
         const val ROUTE_TEST_PRE_DESCRIPTION = "TestPreDescription"
         const val ROUTE_TEST_RESULT = "TestResultScreen"
