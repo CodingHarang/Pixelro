@@ -1,9 +1,9 @@
 -- Merging decision tree log ---
 manifest
-ADDED from C:\YJS\NenoonKiosk\app\src\main\AndroidManifest.xml:2:1-44:12
-INJECTED from C:\YJS\NenoonKiosk\app\src\main\AndroidManifest.xml:2:1-44:12
-INJECTED from C:\YJS\NenoonKiosk\app\src\main\AndroidManifest.xml:2:1-44:12
-INJECTED from C:\YJS\NenoonKiosk\app\src\main\AndroidManifest.xml:2:1-44:12
+ADDED from D:\MyProjects\Pixelro\app\src\main\AndroidManifest.xml:2:1-44:12
+INJECTED from D:\MyProjects\Pixelro\app\src\main\AndroidManifest.xml:2:1-44:12
+INJECTED from D:\MyProjects\Pixelro\app\src\main\AndroidManifest.xml:2:1-44:12
+INJECTED from D:\MyProjects\Pixelro\app\src\main\AndroidManifest.xml:2:1-44:12
 MERGED from [com.google.accompanist:accompanist-navigation-animation:0.29.2-rc] C:\Users\txepa\.gradle\caches\transforms-3\8006a38165608211d266499aff8e6c1d\transformed\accompanist-navigation-animation-0.29.2-rc\AndroidManifest.xml:17:1-25:12
 MERGED from [com.google.accompanist:accompanist-permissions:0.29.2-rc] C:\Users\txepa\.gradle\caches\transforms-3\46660b4488c6646eea06f4630d54c803\transformed\accompanist-permissions-0.29.2-rc\AndroidManifest.xml:17:1-25:12
 MERGED from [com.github.bumptech.glide:compose:1.0.0-alpha.1] C:\Users\txepa\.gradle\caches\transforms-3\5a710108941a5e1ffd3ac3966806936f\transformed\compose-1.0.0-alpha.1\AndroidManifest.xml:2:1-9:12
@@ -98,67 +98,67 @@ MERGED from [androidx.arch.core:core-runtime:2.2.0] C:\Users\txepa\.gradle\cache
 MERGED from [androidx.interpolator:interpolator:1.0.0] C:\Users\txepa\.gradle\caches\transforms-3\14cf0f12229a19f9854ef132476f78e1\transformed\interpolator-1.0.0\AndroidManifest.xml:17:1-22:12
 MERGED from [androidx.test:monitor:1.4.0] C:\Users\txepa\.gradle\caches\transforms-3\c727e234476523c657732295f1203ffd\transformed\monitor-1.4.0\AndroidManifest.xml:17:1-24:12
 MERGED from [com.google.android.odml:image:1.0.0-beta1] C:\Users\txepa\.gradle\caches\transforms-3\74d0845bf59a0a4b1b82fb9a6da945a6\transformed\image-1.0.0-beta1\AndroidManifest.xml:2:1-9:12
-INJECTED from C:\YJS\NenoonKiosk\app\src\main\AndroidManifest.xml:2:1-44:12
-INJECTED from C:\YJS\NenoonKiosk\app\src\main\AndroidManifest.xml:2:1-44:12
-INJECTED from C:\YJS\NenoonKiosk\app\src\main\AndroidManifest.xml:2:1-44:12
+INJECTED from D:\MyProjects\Pixelro\app\src\main\AndroidManifest.xml:2:1-44:12
+INJECTED from D:\MyProjects\Pixelro\app\src\main\AndroidManifest.xml:2:1-44:12
+INJECTED from D:\MyProjects\Pixelro\app\src\main\AndroidManifest.xml:2:1-44:12
 	package
-		INJECTED from C:\YJS\NenoonKiosk\app\src\main\AndroidManifest.xml
-		ADDED from C:\YJS\NenoonKiosk\app\src\main\AndroidManifest.xml:2:1-44:12
-		INJECTED from C:\YJS\NenoonKiosk\app\src\main\AndroidManifest.xml
+		INJECTED from D:\MyProjects\Pixelro\app\src\main\AndroidManifest.xml
+		ADDED from D:\MyProjects\Pixelro\app\src\main\AndroidManifest.xml:2:1-44:12
+		INJECTED from D:\MyProjects\Pixelro\app\src\main\AndroidManifest.xml
 	android:versionName
-		INJECTED from C:\YJS\NenoonKiosk\app\src\main\AndroidManifest.xml
-		ADDED from C:\YJS\NenoonKiosk\app\src\main\AndroidManifest.xml:2:1-44:12
-		INJECTED from C:\YJS\NenoonKiosk\app\src\main\AndroidManifest.xml
+		INJECTED from D:\MyProjects\Pixelro\app\src\main\AndroidManifest.xml
+		ADDED from D:\MyProjects\Pixelro\app\src\main\AndroidManifest.xml:2:1-44:12
+		INJECTED from D:\MyProjects\Pixelro\app\src\main\AndroidManifest.xml
 	xmlns:tools
-		ADDED from C:\YJS\NenoonKiosk\app\src\main\AndroidManifest.xml:3:5-51
+		ADDED from D:\MyProjects\Pixelro\app\src\main\AndroidManifest.xml:3:5-51
 	android:versionCode
-		INJECTED from C:\YJS\NenoonKiosk\app\src\main\AndroidManifest.xml
-		ADDED from C:\YJS\NenoonKiosk\app\src\main\AndroidManifest.xml:2:1-44:12
-		INJECTED from C:\YJS\NenoonKiosk\app\src\main\AndroidManifest.xml
+		INJECTED from D:\MyProjects\Pixelro\app\src\main\AndroidManifest.xml
+		ADDED from D:\MyProjects\Pixelro\app\src\main\AndroidManifest.xml:2:1-44:12
+		INJECTED from D:\MyProjects\Pixelro\app\src\main\AndroidManifest.xml
 	xmlns:android
-		ADDED from C:\YJS\NenoonKiosk\app\src\main\AndroidManifest.xml:2:11-69
+		ADDED from D:\MyProjects\Pixelro\app\src\main\AndroidManifest.xml:2:11-69
 uses-feature#android.hardware.camera.any
-ADDED from C:\YJS\NenoonKiosk\app\src\main\AndroidManifest.xml:5:5-64
+ADDED from D:\MyProjects\Pixelro\app\src\main\AndroidManifest.xml:5:5-64
 	android:name
-		ADDED from C:\YJS\NenoonKiosk\app\src\main\AndroidManifest.xml:5:19-61
+		ADDED from D:\MyProjects\Pixelro\app\src\main\AndroidManifest.xml:5:19-61
 uses-permission#android.permission.CAMERA
-ADDED from C:\YJS\NenoonKiosk\app\src\main\AndroidManifest.xml:6:5-65
+ADDED from D:\MyProjects\Pixelro\app\src\main\AndroidManifest.xml:6:5-65
 	android:name
-		ADDED from C:\YJS\NenoonKiosk\app\src\main\AndroidManifest.xml:6:22-62
+		ADDED from D:\MyProjects\Pixelro\app\src\main\AndroidManifest.xml:6:22-62
 uses-permission#android.permission.QUERY_ALL_PACKAGES
-ADDED from C:\YJS\NenoonKiosk\app\src\main\AndroidManifest.xml:7:5-8:53
+ADDED from D:\MyProjects\Pixelro\app\src\main\AndroidManifest.xml:7:5-8:53
 	tools:ignore
-		ADDED from C:\YJS\NenoonKiosk\app\src\main\AndroidManifest.xml:8:9-50
+		ADDED from D:\MyProjects\Pixelro\app\src\main\AndroidManifest.xml:8:9-50
 	android:name
-		ADDED from C:\YJS\NenoonKiosk\app\src\main\AndroidManifest.xml:7:22-74
+		ADDED from D:\MyProjects\Pixelro\app\src\main\AndroidManifest.xml:7:22-74
 uses-permission#android.permission.WRITE_EXTERNAL_STORAGE
-ADDED from C:\YJS\NenoonKiosk\app\src\main\AndroidManifest.xml:9:5-10:40
+ADDED from D:\MyProjects\Pixelro\app\src\main\AndroidManifest.xml:9:5-10:40
 	tools:ignore
-		ADDED from C:\YJS\NenoonKiosk\app\src\main\AndroidManifest.xml:10:9-37
+		ADDED from D:\MyProjects\Pixelro\app\src\main\AndroidManifest.xml:10:9-37
 	android:name
-		ADDED from C:\YJS\NenoonKiosk\app\src\main\AndroidManifest.xml:9:22-78
+		ADDED from D:\MyProjects\Pixelro\app\src\main\AndroidManifest.xml:9:22-78
 uses-permission#android.permission.READ_EXTERNAL_STORAGE
-ADDED from C:\YJS\NenoonKiosk\app\src\main\AndroidManifest.xml:11:5-80
+ADDED from D:\MyProjects\Pixelro\app\src\main\AndroidManifest.xml:11:5-80
 	android:name
-		ADDED from C:\YJS\NenoonKiosk\app\src\main\AndroidManifest.xml:11:22-77
+		ADDED from D:\MyProjects\Pixelro\app\src\main\AndroidManifest.xml:11:22-77
 uses-permission#android.permission.WRITE_SETTINGS
-ADDED from C:\YJS\NenoonKiosk\app\src\main\AndroidManifest.xml:12:5-13:47
+ADDED from D:\MyProjects\Pixelro\app\src\main\AndroidManifest.xml:12:5-13:47
 	tools:ignore
-		ADDED from C:\YJS\NenoonKiosk\app\src\main\AndroidManifest.xml:13:9-44
+		ADDED from D:\MyProjects\Pixelro\app\src\main\AndroidManifest.xml:13:9-44
 	android:name
-		ADDED from C:\YJS\NenoonKiosk\app\src\main\AndroidManifest.xml:12:22-70
+		ADDED from D:\MyProjects\Pixelro\app\src\main\AndroidManifest.xml:12:22-70
 queries
-ADDED from C:\YJS\NenoonKiosk\app\src\main\AndroidManifest.xml:15:5-20:15
+ADDED from D:\MyProjects\Pixelro\app\src\main\AndroidManifest.xml:15:5-20:15
 MERGED from [androidx.camera:camera-extensions:1.3.0-alpha04] C:\Users\txepa\.gradle\caches\transforms-3\a85b36da7e363aecf769e7cb5c40751c\transformed\camera-extensions-1.3.0-alpha04\AndroidManifest.xml:22:5-26:15
 MERGED from [androidx.camera:camera-extensions:1.3.0-alpha04] C:\Users\txepa\.gradle\caches\transforms-3\a85b36da7e363aecf769e7cb5c40751c\transformed\camera-extensions-1.3.0-alpha04\AndroidManifest.xml:22:5-26:15
 intent#action:name:android.intent.action.TTS_SERVICE
-ADDED from C:\YJS\NenoonKiosk\app\src\main\AndroidManifest.xml:16:9-19:18
+ADDED from D:\MyProjects\Pixelro\app\src\main\AndroidManifest.xml:16:9-19:18
 action#android.intent.action.TTS_SERVICE
-ADDED from C:\YJS\NenoonKiosk\app\src\main\AndroidManifest.xml:17:13-18:68
+ADDED from D:\MyProjects\Pixelro\app\src\main\AndroidManifest.xml:17:13-18:68
 	android:name
-		ADDED from C:\YJS\NenoonKiosk\app\src\main\AndroidManifest.xml:18:17-65
+		ADDED from D:\MyProjects\Pixelro\app\src\main\AndroidManifest.xml:18:17-65
 application
-ADDED from C:\YJS\NenoonKiosk\app\src\main\AndroidManifest.xml:22:5-42:19
+ADDED from D:\MyProjects\Pixelro\app\src\main\AndroidManifest.xml:22:5-42:19
 MERGED from [com.google.android.gms:play-services-mlkit-face-detection:17.0.1] C:\Users\txepa\.gradle\caches\transforms-3\ecdb3f2c21f564270554420781e54b7b\transformed\play-services-mlkit-face-detection-17.0.1\AndroidManifest.xml:8:5-16:19
 MERGED from [com.google.android.gms:play-services-mlkit-face-detection:17.0.1] C:\Users\txepa\.gradle\caches\transforms-3\ecdb3f2c21f564270554420781e54b7b\transformed\play-services-mlkit-face-detection-17.0.1\AndroidManifest.xml:8:5-16:19
 MERGED from [com.google.mlkit:vision-common:17.1.0] C:\Users\txepa\.gradle\caches\transforms-3\88a327785cb1faf9e97a5870b960b534\transformed\vision-common-17.1.0\AndroidManifest.xml:8:5-16:19
@@ -210,45 +210,45 @@ MERGED from [com.google.android.odml:image:1.0.0-beta1] C:\Users\txepa\.gradle\c
 	android:appComponentFactory
 		ADDED from [androidx.core:core:1.9.0] C:\Users\txepa\.gradle\caches\transforms-3\43eeba27e46c0f9e8270c8e6a59600bf\transformed\core-1.9.0\AndroidManifest.xml:28:18-86
 	android:supportsRtl
-		ADDED from C:\YJS\NenoonKiosk\app\src\main\AndroidManifest.xml:28:9-35
+		ADDED from D:\MyProjects\Pixelro\app\src\main\AndroidManifest.xml:28:9-35
 	android:label
-		ADDED from C:\YJS\NenoonKiosk\app\src\main\AndroidManifest.xml:27:9-41
+		ADDED from D:\MyProjects\Pixelro\app\src\main\AndroidManifest.xml:27:9-41
 	android:fullBackupContent
-		ADDED from C:\YJS\NenoonKiosk\app\src\main\AndroidManifest.xml:25:9-54
+		ADDED from D:\MyProjects\Pixelro\app\src\main\AndroidManifest.xml:25:9-54
 	tools:targetApi
-		ADDED from C:\YJS\NenoonKiosk\app\src\main\AndroidManifest.xml:30:9-29
+		ADDED from D:\MyProjects\Pixelro\app\src\main\AndroidManifest.xml:30:9-29
 	android:icon
-		ADDED from C:\YJS\NenoonKiosk\app\src\main\AndroidManifest.xml:26:9-43
+		ADDED from D:\MyProjects\Pixelro\app\src\main\AndroidManifest.xml:26:9-43
 	android:allowBackup
-		ADDED from C:\YJS\NenoonKiosk\app\src\main\AndroidManifest.xml:23:9-35
+		ADDED from D:\MyProjects\Pixelro\app\src\main\AndroidManifest.xml:23:9-35
 	android:theme
-		ADDED from C:\YJS\NenoonKiosk\app\src\main\AndroidManifest.xml:29:9-49
+		ADDED from D:\MyProjects\Pixelro\app\src\main\AndroidManifest.xml:29:9-49
 	android:dataExtractionRules
-		ADDED from C:\YJS\NenoonKiosk\app\src\main\AndroidManifest.xml:24:9-65
+		ADDED from D:\MyProjects\Pixelro\app\src\main\AndroidManifest.xml:24:9-65
 activity#com.pixelro.nenoonkiosk.MainActivity
-ADDED from C:\YJS\NenoonKiosk\app\src\main\AndroidManifest.xml:31:9-41:20
+ADDED from D:\MyProjects\Pixelro\app\src\main\AndroidManifest.xml:31:9-41:20
 	android:label
-		ADDED from C:\YJS\NenoonKiosk\app\src\main\AndroidManifest.xml:34:13-45
+		ADDED from D:\MyProjects\Pixelro\app\src\main\AndroidManifest.xml:34:13-45
 	android:exported
-		ADDED from C:\YJS\NenoonKiosk\app\src\main\AndroidManifest.xml:33:13-36
+		ADDED from D:\MyProjects\Pixelro\app\src\main\AndroidManifest.xml:33:13-36
 	android:theme
-		ADDED from C:\YJS\NenoonKiosk\app\src\main\AndroidManifest.xml:35:13-53
+		ADDED from D:\MyProjects\Pixelro\app\src\main\AndroidManifest.xml:35:13-53
 	android:name
-		ADDED from C:\YJS\NenoonKiosk\app\src\main\AndroidManifest.xml:32:13-41
+		ADDED from D:\MyProjects\Pixelro\app\src\main\AndroidManifest.xml:32:13-41
 intent-filter#action:name:android.intent.action.MAIN+category:name:android.intent.category.LAUNCHER
-ADDED from C:\YJS\NenoonKiosk\app\src\main\AndroidManifest.xml:36:13-40:29
+ADDED from D:\MyProjects\Pixelro\app\src\main\AndroidManifest.xml:36:13-40:29
 action#android.intent.action.MAIN
-ADDED from C:\YJS\NenoonKiosk\app\src\main\AndroidManifest.xml:37:17-69
+ADDED from D:\MyProjects\Pixelro\app\src\main\AndroidManifest.xml:37:17-69
 	android:name
-		ADDED from C:\YJS\NenoonKiosk\app\src\main\AndroidManifest.xml:37:25-66
+		ADDED from D:\MyProjects\Pixelro\app\src\main\AndroidManifest.xml:37:25-66
 category#android.intent.category.LAUNCHER
-ADDED from C:\YJS\NenoonKiosk\app\src\main\AndroidManifest.xml:39:17-77
+ADDED from D:\MyProjects\Pixelro\app\src\main\AndroidManifest.xml:39:17-77
 	android:name
-		ADDED from C:\YJS\NenoonKiosk\app\src\main\AndroidManifest.xml:39:27-74
+		ADDED from D:\MyProjects\Pixelro\app\src\main\AndroidManifest.xml:39:27-74
 uses-sdk
-INJECTED from C:\YJS\NenoonKiosk\app\src\main\AndroidManifest.xml reason: use-sdk injection requested
-INJECTED from C:\YJS\NenoonKiosk\app\src\main\AndroidManifest.xml
-INJECTED from C:\YJS\NenoonKiosk\app\src\main\AndroidManifest.xml
+INJECTED from D:\MyProjects\Pixelro\app\src\main\AndroidManifest.xml reason: use-sdk injection requested
+INJECTED from D:\MyProjects\Pixelro\app\src\main\AndroidManifest.xml
+INJECTED from D:\MyProjects\Pixelro\app\src\main\AndroidManifest.xml
 MERGED from [com.google.accompanist:accompanist-navigation-animation:0.29.2-rc] C:\Users\txepa\.gradle\caches\transforms-3\8006a38165608211d266499aff8e6c1d\transformed\accompanist-navigation-animation-0.29.2-rc\AndroidManifest.xml:21:5-23:42
 MERGED from [com.google.accompanist:accompanist-navigation-animation:0.29.2-rc] C:\Users\txepa\.gradle\caches\transforms-3\8006a38165608211d266499aff8e6c1d\transformed\accompanist-navigation-animation-0.29.2-rc\AndroidManifest.xml:21:5-23:42
 MERGED from [com.google.accompanist:accompanist-permissions:0.29.2-rc] C:\Users\txepa\.gradle\caches\transforms-3\46660b4488c6646eea06f4630d54c803\transformed\accompanist-permissions-0.29.2-rc\AndroidManifest.xml:21:5-23:42
@@ -437,18 +437,18 @@ MERGED from [androidx.test:monitor:1.4.0] C:\Users\txepa\.gradle\caches\transfor
 MERGED from [androidx.test:monitor:1.4.0] C:\Users\txepa\.gradle\caches\transforms-3\c727e234476523c657732295f1203ffd\transformed\monitor-1.4.0\AndroidManifest.xml:20:5-22:41
 MERGED from [com.google.android.odml:image:1.0.0-beta1] C:\Users\txepa\.gradle\caches\transforms-3\74d0845bf59a0a4b1b82fb9a6da945a6\transformed\image-1.0.0-beta1\AndroidManifest.xml:5:5-44
 MERGED from [com.google.android.odml:image:1.0.0-beta1] C:\Users\txepa\.gradle\caches\transforms-3\74d0845bf59a0a4b1b82fb9a6da945a6\transformed\image-1.0.0-beta1\AndroidManifest.xml:5:5-44
-INJECTED from C:\YJS\NenoonKiosk\app\src\main\AndroidManifest.xml
-INJECTED from C:\YJS\NenoonKiosk\app\src\main\AndroidManifest.xml
+INJECTED from D:\MyProjects\Pixelro\app\src\main\AndroidManifest.xml
+INJECTED from D:\MyProjects\Pixelro\app\src\main\AndroidManifest.xml
 	android:targetSdkVersion
-		INJECTED from C:\YJS\NenoonKiosk\app\src\main\AndroidManifest.xml
-		ADDED from C:\YJS\NenoonKiosk\app\src\main\AndroidManifest.xml
-		INJECTED from C:\YJS\NenoonKiosk\app\src\main\AndroidManifest.xml
+		INJECTED from D:\MyProjects\Pixelro\app\src\main\AndroidManifest.xml
+		ADDED from D:\MyProjects\Pixelro\app\src\main\AndroidManifest.xml
+		INJECTED from D:\MyProjects\Pixelro\app\src\main\AndroidManifest.xml
 	tools:ignore
 		ADDED from [com.google.accompanist:accompanist-navigation-animation:0.29.2-rc] C:\Users\txepa\.gradle\caches\transforms-3\8006a38165608211d266499aff8e6c1d\transformed\accompanist-navigation-animation-0.29.2-rc\AndroidManifest.xml:23:9-39
 	android:minSdkVersion
-		INJECTED from C:\YJS\NenoonKiosk\app\src\main\AndroidManifest.xml
-		ADDED from C:\YJS\NenoonKiosk\app\src\main\AndroidManifest.xml
-		INJECTED from C:\YJS\NenoonKiosk\app\src\main\AndroidManifest.xml
+		INJECTED from D:\MyProjects\Pixelro\app\src\main\AndroidManifest.xml
+		ADDED from D:\MyProjects\Pixelro\app\src\main\AndroidManifest.xml
+		INJECTED from D:\MyProjects\Pixelro\app\src\main\AndroidManifest.xml
 service#com.google.mlkit.common.internal.MlKitComponentDiscoveryService
 ADDED from [com.google.android.gms:play-services-mlkit-face-detection:17.0.1] C:\Users\txepa\.gradle\caches\transforms-3\ecdb3f2c21f564270554420781e54b7b\transformed\play-services-mlkit-face-detection-17.0.1\AndroidManifest.xml:9:9-15:19
 MERGED from [com.google.mlkit:vision-common:17.1.0] C:\Users\txepa\.gradle\caches\transforms-3\88a327785cb1faf9e97a5870b960b534\transformed\vision-common-17.1.0\AndroidManifest.xml:9:9-15:19
