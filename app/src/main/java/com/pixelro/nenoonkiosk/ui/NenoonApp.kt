@@ -3,13 +3,11 @@ package com.pixelro.nenoonkiosk.ui
 import android.content.Context
 import android.hardware.camera2.CameraCharacteristics
 import android.hardware.camera2.CameraManager
-import android.util.Log
 import android.util.SizeF
 import androidx.compose.animation.AnimatedContentScope
 import androidx.compose.animation.ExperimentalAnimationApi
 import androidx.compose.animation.core.TweenSpec
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.platform.LocalContext
@@ -20,8 +18,6 @@ import com.google.accompanist.navigation.animation.composable
 import com.google.accompanist.navigation.animation.rememberAnimatedNavController
 import com.pixelro.nenoonkiosk.NenoonViewModel
 import com.pixelro.nenoonkiosk.data.GlobalConstants
-import com.pixelro.nenoonkiosk.ui.testcontent.TestPreDescriptionScreen
-import com.pixelro.nenoonkiosk.ui.testlist.MacularTestListContent
 import com.pixelro.nenoonkiosk.ui.testscreen.*
 
 @OptIn(ExperimentalAnimationApi::class)

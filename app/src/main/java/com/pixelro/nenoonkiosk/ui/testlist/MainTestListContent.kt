@@ -1,7 +1,5 @@
 package com.pixelro.nenoonkiosk.ui.testlist
 
-import android.util.Log
-import androidx.activity.compose.BackHandler
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.padding
 import androidx.compose.runtime.Composable

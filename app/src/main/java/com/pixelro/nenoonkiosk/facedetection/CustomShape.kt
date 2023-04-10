@@ -1,17 +1,14 @@
 package com.pixelro.nenoonkiosk.facedetection
 
-import android.util.Log
-import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.compose.foundation.Canvas
 import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.padding
 import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.onGloballyPositioned
 import androidx.compose.ui.unit.IntSize
-import androidx.compose.ui.unit.dp
+import androidx.lifecycle.viewmodel.compose.viewModel
 import com.pixelro.nenoonkiosk.NenoonViewModel
 
 @Composable

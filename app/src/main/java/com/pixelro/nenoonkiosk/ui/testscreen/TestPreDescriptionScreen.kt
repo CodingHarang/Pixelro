@@ -1,4 +1,4 @@
-package com.pixelro.nenoonkiosk.ui.testcontent
+package com.pixelro.nenoonkiosk.ui.testscreen
 
 import android.util.Log
 import androidx.compose.foundation.Image

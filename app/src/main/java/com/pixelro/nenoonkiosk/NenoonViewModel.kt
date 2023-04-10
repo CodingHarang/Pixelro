@@ -1,11 +1,7 @@
 package com.pixelro.nenoonkiosk
 
-import android.app.Application
 import android.graphics.PointF
-import android.speech.tts.TextToSpeech
-import android.util.Log
 import android.util.SizeF
-import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.ViewModel
 import com.pixelro.nenoonkiosk.data.TestType
 import kotlinx.coroutines.flow.MutableStateFlow

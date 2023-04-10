@@ -1,24 +1,16 @@
-import android.util.Log
+package com.pixelro.nenoonkiosk.ui.testlist
+
 import androidx.compose.animation.AnimatedContentScope
 import androidx.compose.animation.ExperimentalAnimationApi
 import androidx.compose.animation.core.TweenSpec
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
-import androidx.lifecycle.viewmodel.compose.viewModel
-import androidx.navigation.NavController
 import androidx.navigation.NavHostController
 import com.google.accompanist.navigation.animation.AnimatedNavHost
 import com.google.accompanist.navigation.animation.composable
-import com.google.accompanist.navigation.animation.rememberAnimatedNavController
 import com.pixelro.nenoonkiosk.NenoonViewModel
 import com.pixelro.nenoonkiosk.data.GlobalConstants
 import com.pixelro.nenoonkiosk.data.TestType
-import com.pixelro.nenoonkiosk.ui.testlist.MacularTestListContent
-import com.pixelro.nenoonkiosk.ui.testlist.MainTestListContent
-import com.pixelro.nenoonkiosk.ui.testlist.VisualAcuityTestListContent
-import com.pixelro.nenoonkiosk.ui.testscreen.ChildrenVisualAcuityTestScreen
-import com.pixelro.nenoonkiosk.ui.testscreen.LongDistanceVisualAcuityTestScreen
-import com.pixelro.nenoonkiosk.ui.testscreen.ShortDistanceVisualAcuityTestScreen
 
 @OptIn(ExperimentalAnimationApi::class)
 @Composable
