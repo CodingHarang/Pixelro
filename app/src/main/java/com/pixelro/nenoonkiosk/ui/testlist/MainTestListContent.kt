@@ -16,18 +16,18 @@ fun MainTestListContent(
         modifier = Modifier.padding(bottom = 10.dp)
     ) {
         EyeTestSelectableBox(
-            title = "Presbyopia Test",
-            description = "description",
+            title = "조절력 검사(안구 나이 검사)",
+            description = "수정체의 탄력이 감소하여 가까이 있는 물체의 초점을 잘 맞추지 못하는 현상.",
             onClickMethod = toPreDescriptionScreen
         )
         EyeTestSelectableBox(
-            title = "Visual acuity Test",
-            description = "description",
+            title = "시력 검사",
+            description = "내 눈의 시력이 어느 정도인지 알아봅니다.",
             onClickMethod = toVisualAcuityTestList
         )
         EyeTestSelectableBox(
-            title = "Macular degeneration test",
-            description = "description",
+            title = "황반변성 검사",
+            description = "망막에 위치한 황반에 이상이 생기면 시력을 잃을 수 있습니다. 조기 발견으로 예방하세요.",
             onClickMethod = toMacularDegenerationTestList
         )
     }

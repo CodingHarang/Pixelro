@@ -21,24 +21,24 @@ fun VisualAcuityTestListContent(
         padding(bottom = 10.dp)
     ) {
         EyeTestSelectableBox(
-            title = "near",
-            description = "description",
+            title = "근거리 시력 검사",
+            description = "내 눈의 시력이 어느정도인지 알아볼 수 있어요.",
             onClickMethod = {
                 toShortDistanceVisualAcuityTest()
                 toPreDescriptionScreen()
             }
         )
         EyeTestSelectableBox(
-            title = "far",
-            description = "description",
+            title = "원거리 시력 검사",
+            description = "내 눈의 시력이 어느정도인지 알아볼 수 있어요.",
             onClickMethod = {
                 toLongDistanceVisualAcuityTest()
                 toPreDescriptionScreen()
             }
         )
         EyeTestSelectableBox(
-            title = "child",
-            description = "description",
+            title = "어린이 시력 검사",
+            description = "내 눈의 시력이 어느정도인지 알아볼 수 있어요.",
             onClickMethod = {
                 toChildrenVisualAcuityTest()
                 toPreDescriptionScreen()

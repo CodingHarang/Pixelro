@@ -20,16 +20,16 @@ fun MacularTestListContent(
         padding(bottom = 10.dp)
     ) {
         EyeTestSelectableBox(
-            title = "AmslerGrid",
-            description = "description",
+            title = "암슬러 차트",
+            description = "암슬러 차트를 이용하여 이상이 있는 곳의 범위를 알아냅니다.",
             onClickMethod = {
                 toAmslerGridTest()
                 toPreDescriptionScreen()
             }
         )
         EyeTestSelectableBox(
-            title = "M-Chart",
-            description = "description",
+            title = "엠식 변형시 검사",
+            description = "수직 및 수평선의 도트 간격을 이용하여 시각 왜곡 정도를 측정합니다.",
             onClickMethod = {
                 toMChartTest()
                 toPreDescriptionScreen()

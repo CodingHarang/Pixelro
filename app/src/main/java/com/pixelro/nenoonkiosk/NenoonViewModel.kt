@@ -10,7 +10,7 @@ import kotlinx.coroutines.flow.update
 
 class NenoonViewModel : ViewModel() {
 
-
+    // Face Detection
     private val _screenToFaceDistance = MutableStateFlow(0f)
     val screenToFaceDistance: StateFlow<Float> = _screenToFaceDistance
 
@@ -44,9 +44,6 @@ class NenoonViewModel : ViewModel() {
     val lowerLipBottomContour: StateFlow<List<PointF>> = _lowerLipBottomContour
     val faceContour: StateFlow<List<PointF>> = _faceContour
 
-    private val _selectedTestType = MutableStateFlow(TestType.None)
-    val selectedTestType: StateFlow<TestType> = _selectedTestType
-
     private val _pixelDensity = MutableStateFlow(0f)
     val pixelDensity: StateFlow<Float> = _pixelDensity
     private val _screenWidthDp = MutableStateFlow(0)
@@ -57,10 +54,16 @@ class NenoonViewModel : ViewModel() {
     val focalLength: StateFlow<Float> = _focalLength
     private val _lensSize = MutableStateFlow(SizeF(0f, 0f))
     val lensSize: StateFlow<SizeF> = _lensSize
+
+
+    private val _selectedTestType = MutableStateFlow(TestType.None)
+    val selectedTestType: StateFlow<TestType> = _selectedTestType
     private val _selectedTestName = MutableStateFlow("")
     val selectedTestName: StateFlow<String> = _selectedTestName
     private val _selectedTestDescription = MutableStateFlow("")
     val selectedTestDescription: StateFlow<String> = _selectedTestDescription
+    private val _selectedTestMenuDescription = MutableStateFlow("")
+    val selectedTestMenuDescription: StateFlow<String> = _selectedTestMenuDescription
 
     fun updateLocalConfigurationValues(pixelDensity: Float, screenWidthDp: Int, screenHeightDp: Int, focalLength: Float, lensSize: SizeF) {
         _pixelDensity.update { pixelDensity }
