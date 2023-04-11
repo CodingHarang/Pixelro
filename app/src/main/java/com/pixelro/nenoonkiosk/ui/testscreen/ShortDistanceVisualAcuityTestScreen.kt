@@ -31,13 +31,13 @@ fun ShortDistanceVisualAcuityTestScreen(
     FaceDetection(
         viewModel = viewModel
     )
-    Column() {
-        Text(
-            text = "${viewModel.leftEyeOpenProbability.collectAsState().value.toString().format(DecimalFormat("00.00"))}, ${viewModel.rightEyeOpenProbability.collectAsState().value.toString().format(DecimalFormat("00.00"))}",
-            fontSize = 40.sp
-        )
-        ShortDistanceVisualAcuityTestContent(
+//    Column() {
+//        Text(
+//            text = "${viewModel.leftEyeOpenProbability.collectAsState().value.toString().format(DecimalFormat("00.00"))}, ${viewModel.rightEyeOpenProbability.collectAsState().value.toString().format(DecimalFormat("00.00"))}",
+//            fontSize = 40.sp
+//        )
+//    }
+    ShortDistanceVisualAcuityTestContent(
             viewModel = viewModel
-        )
-    }
+    )
 }

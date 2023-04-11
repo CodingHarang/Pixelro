@@ -1,5 +1,6 @@
 package com.pixelro.nenoonkiosk.ui.testcontent
 
+import android.util.Log
 import androidx.compose.animation.*
 import androidx.compose.animation.core.MutableTransitionState
 import androidx.compose.animation.core.tween
@@ -15,6 +16,7 @@ import androidx.compose.ui.unit.IntOffset
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.pixelro.nenoonkiosk.NenoonViewModel
+import java.util.*
 import kotlin.math.roundToInt
 
 @Composable
@@ -24,6 +26,20 @@ fun VisualAcuityTestCommonContent(
     fourthVisibleState: MutableTransitionState<Boolean>,
     testDistance: MutableState<Int>
 ) {
+    val sightValue = remember { mutableStateOf(0.1) }
+    val randomList = listOf {
+        val list = mutableListOf<Int>()
+        var ranNum = (2..7).random()
+        for(i in 1..3) {
+            while(ranNum in list) {
+                ranNum = (2..7).random()
+                list.add(ranNum)
+            }
+        }
+        list
+    }
+    Log.e("list", "${}")
+
     AnimatedVisibility(
         visibleState = thirdVisibleState,
         enter = slideIn(
@@ -71,51 +87,71 @@ fun VisualAcuityTestCommonContent(
             Row() {
                 Box(
                     modifier = Modifier
-                        .height(100.dp)
-                        .width(100.dp)
-                        .background(
-                            color = Color(0xffffffff),
-                            shape = RoundedCornerShape(16.dp)
-                        ),
-                    contentAlignment = Alignment.Center
+                        .padding(20.dp)
                 ) {
+                    Box(
+                        modifier = Modifier
+                            .height(100.dp)
+                            .width(100.dp)
+                            .background(
+                                color = Color(0xffffffff),
+                                shape = RoundedCornerShape(16.dp)
+                            ),
+                        contentAlignment = Alignment.Center
+                    ) {
 
+                    }
                 }
                 Box(
                     modifier = Modifier
-                        .height(100.dp)
-                        .width(100.dp)
-                        .background(
-                            color = Color(0xffffffff),
-                            shape = RoundedCornerShape(16.dp)
-                        ),
-                    contentAlignment = Alignment.Center
+                        .padding(20.dp)
                 ) {
+                    Box(
+                        modifier = Modifier
+                            .height(100.dp)
+                            .width(100.dp)
+                            .background(
+                                color = Color(0xffffffff),
+                                shape = RoundedCornerShape(16.dp)
+                            ),
+                        contentAlignment = Alignment.Center
+                    ) {
 
+                    }
                 }
                 Box(
                     modifier = Modifier
-                        .height(100.dp)
-                        .width(100.dp)
-                        .background(
-                            color = Color(0xffffffff),
-                            shape = RoundedCornerShape(16.dp)
-                        ),
-                    contentAlignment = Alignment.Center
+                        .padding(20.dp)
                 ) {
+                    Box(
+                        modifier = Modifier
+                            .height(100.dp)
+                            .width(100.dp)
+                            .background(
+                                color = Color(0xffffffff),
+                                shape = RoundedCornerShape(16.dp)
+                            ),
+                        contentAlignment = Alignment.Center
+                    ) {
 
+                    }
                 }
                 Box(
                     modifier = Modifier
-                        .height(100.dp)
-                        .width(100.dp)
-                        .background(
-                            color = Color(0xffffffff),
-                            shape = RoundedCornerShape(16.dp)
-                        ),
-                    contentAlignment = Alignment.Center
+                        .padding(20.dp)
                 ) {
+                    Box(
+                        modifier = Modifier
+                            .height(100.dp)
+                            .width(100.dp)
+                            .background(
+                                color = Color(0xffffffff),
+                                shape = RoundedCornerShape(16.dp)
+                            ),
+                        contentAlignment = Alignment.Center
+                    ) {
 
+                    }
                 }
             }
         }
