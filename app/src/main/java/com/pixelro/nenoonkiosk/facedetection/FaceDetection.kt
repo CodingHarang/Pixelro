@@ -61,7 +61,8 @@ fun FaceDetectionScreenContent(
                         executor, MyFaceAnalyzer(
                             viewModel::updateFaceDetectionData,
                             viewModel::updateFaceContourData,
-                            viewModel::updateInputImageSize
+                            viewModel::updateInputImageSize,
+                            viewModel::updateEyeOpenProbability
                         )
                     )
                 }

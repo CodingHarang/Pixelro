@@ -3,6 +3,7 @@ package com.pixelro.nenoonkiosk.facedetection
 import android.annotation.SuppressLint
 import android.graphics.PointF
 import android.os.SystemClock
+import android.util.Log
 import androidx.camera.core.ImageAnalysis
 import androidx.camera.core.ImageProxy
 import com.google.mlkit.vision.common.InputImage
@@ -12,13 +13,14 @@ import com.google.mlkit.vision.face.FaceLandmark
 class MyFaceAnalyzer(
     val updateFaceDetectionData: (PointF, PointF, Float, Float, Float, Float, Float) -> Unit,
     val updateFaceContourData: (List<PointF>, List<PointF>, List<PointF>, List<PointF>, List<PointF>, List<PointF>, List<PointF>, Float, Float) -> Unit,
-    val updateInputImageSize: (Float, Float) -> Unit
+    val updateInputImageSize: (Float, Float) -> Unit,
+    val updateEyeOpenProbability: (Float, Float) -> Unit
 ) : ImageAnalysis.Analyzer {
     private val realTimeOpts =
         FaceDetectorOptions.Builder().setContourMode(FaceDetectorOptions.CONTOUR_MODE_ALL)
             .setPerformanceMode(FaceDetectorOptions.PERFORMANCE_MODE_FAST)
             .setLandmarkMode(FaceDetectorOptions.LANDMARK_MODE_ALL)
-            .setClassificationMode(FaceDetectorOptions.CLASSIFICATION_MODE_NONE)
+            .setClassificationMode(FaceDetectorOptions.CLASSIFICATION_MODE_ALL)
             .setMinFaceSize(0.1f)
             .enableTracking()
             .build()
@@ -56,10 +58,18 @@ class MyFaceAnalyzer(
                     val rotX = face.headEulerAngleX
                     val rotY = face.headEulerAngleY
                     val rotZ = face.headEulerAngleZ
-                    val rightEyePosition = face.getLandmark(FaceLandmark.RIGHT_EYE)?.position
                     val leftEyePosition = face.getLandmark(FaceLandmark.LEFT_EYE)?.position
+                    val rightEyePosition = face.getLandmark(FaceLandmark.RIGHT_EYE)?.position
+                    val leftEyeOpenProbability = face.leftEyeOpenProbability
+                    val rightEyeOpenProbability = face.rightEyeOpenProbability
 //                    Log.e("rotX, rotY, rotZ, rightEyePosition, leftEyePosition", "$rotX $rotY  $rotZ, $rightEyePosition $leftEyePosition ${image.width.toFloat()} ${image.height.toFloat()}")
 
+                    if(leftEyeOpenProbability != null && rightEyeOpenProbability != null) {
+                        updateEyeOpenProbability(leftEyeOpenProbability, rightEyeOpenProbability)
+                        Log.e("", "$leftEyeOpenProbability, $rightEyeOpenProbability")
+                    } else {
+                        Log.e("null", "null")
+                    }
                     if (rightEyePosition != null && leftEyePosition != null) {
                         updateFaceDetectionData(rightEyePosition, leftEyePosition, rotX, rotY, rotZ, image.width.toFloat(), image.height.toFloat())
                     }

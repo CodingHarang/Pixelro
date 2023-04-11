@@ -28,6 +28,8 @@ class NenoonViewModel : ViewModel() {
     private val _lowerLipTopContour = MutableStateFlow(listOf(PointF(0f, 0f)))
     private val _lowerLipBottomContour = MutableStateFlow(listOf(PointF(0f, 0f)))
     private val _faceContour = MutableStateFlow(listOf(PointF(0f, 0f)))
+    private val _leftEyeOpenProbability = MutableStateFlow(0f)
+    private val _rightEyeOpenProbability = MutableStateFlow(0f)
 
     val inputImageSizeX: StateFlow<Float> = _inputImageSizeX
     val inputImageSizeY: StateFlow<Float> = _inputImageSizeY
@@ -43,6 +45,8 @@ class NenoonViewModel : ViewModel() {
     val lowerLipTopContour: StateFlow<List<PointF>> = _lowerLipTopContour
     val lowerLipBottomContour: StateFlow<List<PointF>> = _lowerLipBottomContour
     val faceContour: StateFlow<List<PointF>> = _faceContour
+    val leftEyeOpenProbability: StateFlow<Float> = _leftEyeOpenProbability
+    val rightEyeOpenProbability: StateFlow<Float> = _rightEyeOpenProbability
 
     private val _pixelDensity = MutableStateFlow(0f)
     val pixelDensity: StateFlow<Float> = _pixelDensity
@@ -147,10 +151,16 @@ class NenoonViewModel : ViewModel() {
         }
     }
 
+    fun updateEyeOpenProbability(left: Float, right: Float) {
+        _leftEyeOpenProbability.update { left }
+        _rightEyeOpenProbability.update { right }
+    }
+
     fun updateInputImageSize(x: Float, y: Float) {
         _inputImageSizeX.update { x }
         _inputImageSizeY.update { y }
     }
+
 
     fun updateScreenToFaceDistance() {
         if((rightEyePosition.value.x - leftEyePosition.value.y) != 0f && lensSize.value.width != 0f) {
