@@ -69,6 +69,52 @@ class NenoonViewModel : ViewModel() {
     private val _selectedTestMenuDescription = MutableStateFlow("")
     val selectedTestMenuDescription: StateFlow<String> = _selectedTestMenuDescription
 
+    private val _sightHistory = MutableStateFlow(emptyMap<Int, Pair<Int, Int>>())
+    val sightHistory: StateFlow<Map<Int, Pair<Int, Int>>> = _sightHistory
+    private val _testDistance = MutableStateFlow(0)
+    val testDistance: StateFlow<Int> = _testDistance
+    private val _sightValue = MutableStateFlow(0.1f)
+    val sightValue: StateFlow<Float> = _sightValue
+    private val _randomList = MutableStateFlow(mutableListOf(0))
+    val randomList: StateFlow<MutableList<Int>> = _randomList
+    private val _ansNum = MutableStateFlow(0)
+    val ansNum: StateFlow<Int> = _ansNum
+    private val _correctCount = MutableStateFlow(0)
+    val correctCount: StateFlow<Int> = _correctCount
+    private val _wrongCount = MutableStateFlow(0)
+    val wrongCount: StateFlow<Int> = _wrongCount
+
+
+    fun updateTestDistance() {
+        _testDistance.update { (screenToFaceDistance.value / 10).toInt() }
+    }
+
+    fun updateSightValue(value: Float) {
+        _sightValue.update { value }
+    }
+
+    fun updateRandomList() {
+        _randomList.update { mutableListOf() }
+        var ranNum = (2..7).random()
+        for(i in 1..3) {
+            while(ranNum in randomList.value) {
+                ranNum = (2..7).random()
+            }
+            _randomList.update {
+                it.add(ranNum)
+                it
+            }
+        }
+        val prevNum = ansNum.value
+        _ansNum.update {
+            var newNum = randomList.value[(0..2).random()]
+            while(prevNum == newNum) {
+                newNum = randomList.value[(0..2).random()]
+            }
+            newNum
+        }
+    }
+
     fun updateLocalConfigurationValues(pixelDensity: Float, screenWidthDp: Int, screenHeightDp: Int, focalLength: Float, lensSize: SizeF) {
         _pixelDensity.update { pixelDensity }
         _screenWidthDp.update { screenWidthDp }
@@ -161,7 +207,6 @@ class NenoonViewModel : ViewModel() {
         _inputImageSizeY.update { y }
     }
 
-
     fun updateScreenToFaceDistance() {
         if((rightEyePosition.value.x - leftEyePosition.value.y) != 0f && lensSize.value.width != 0f) {
             _screenToFaceDistance.update {
@@ -170,5 +215,31 @@ class NenoonViewModel : ViewModel() {
         } else {
             return
         }
+    }
+
+    fun initializeSightHistory() {
+        _sightHistory.update {
+            mapOf(
+                1 to Pair(0, 0),
+                2 to Pair(0, 0),
+                3 to Pair(0, 0),
+                4 to Pair(0, 0),
+                5 to Pair(0, 0),
+                6 to Pair(0, 0),
+                7 to Pair(0, 0),
+                8 to Pair(0, 0),
+                9 to Pair(0, 0),
+                10 to Pair(0, 0)
+            )
+        }
+    }
+
+    fun updateSightHistory(sight: Int, right: Int ) {
+
+    }
+
+    init {
+        updateRandomList()
+        initializeSightHistory()
     }
 }

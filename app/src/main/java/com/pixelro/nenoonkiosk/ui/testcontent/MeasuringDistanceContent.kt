@@ -27,8 +27,7 @@ import kotlin.math.roundToInt
 fun MeasuringDistanceContent(
     viewModel: NenoonViewModel,
     firstVisibleState: MutableTransitionState<Boolean>,
-    secondVisibleState: MutableTransitionState<Boolean>,
-    testDistance: MutableState<Int>
+    secondVisibleState: MutableTransitionState<Boolean>
 ) {
     AnimatedVisibility(
         visibleState = firstVisibleState,
@@ -72,7 +71,7 @@ fun MeasuringDistanceContent(
                     modifier = Modifier
                         .height(256.dp)
                         .clickable {
-                            testDistance.value = viewModel.screenToFaceDistance.value.toInt()
+                            viewModel.updateTestDistance()
                             firstVisibleState.targetState = false
                             secondVisibleState.targetState = true
                         },

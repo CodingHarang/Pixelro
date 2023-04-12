@@ -25,7 +25,6 @@ fun ShortDistanceVisualAcuityTestContent(
             .background(Color(0xff000000)),
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
-        val testDistance = remember { mutableStateOf(0) }
         val firstVisibleState = remember { MutableTransitionState(true) }
         val secondVisibleState = remember { MutableTransitionState(false) }
         val thirdVisibleState = remember { MutableTransitionState(false) }
@@ -44,8 +43,7 @@ fun ShortDistanceVisualAcuityTestContent(
             MeasuringDistanceContent(
                 viewModel = viewModel,
                 firstVisibleState = firstVisibleState,
-                secondVisibleState = secondVisibleState,
-                testDistance = testDistance
+                secondVisibleState = secondVisibleState
             )
             CoveredEyeCheckingContent(
                 secondVisibleState = secondVisibleState,
@@ -54,8 +52,7 @@ fun ShortDistanceVisualAcuityTestContent(
             VisualAcuityTestCommonContent(
                 viewModel = viewModel,
                 thirdVisibleState = thirdVisibleState,
-                fourthVisibleState = fourthVisibleState,
-                testDistance = testDistance
+                fourthVisibleState = fourthVisibleState
             )
         }
 
