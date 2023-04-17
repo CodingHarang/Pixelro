@@ -116,7 +116,8 @@ fun VisualAcuityTestCommonContent(
                     ) {
                         Image(
                             modifier = Modifier
-                                .padding(10.dp),
+                                .padding(10.dp)
+                                .height(100.dp),
                             imageVector = ImageVector.vectorResource(id =
                                 when(randomList[0]) {
                                     2 -> R.drawable.two
@@ -148,7 +149,8 @@ fun VisualAcuityTestCommonContent(
                     ) {
                         Image(
                             modifier = Modifier
-                                .padding(10.dp),
+                                .padding(10.dp)
+                                .height(100.dp),
                             imageVector = ImageVector.vectorResource(id =
                             when(randomList[1]) {
                                 2 -> R.drawable.two
@@ -180,16 +182,17 @@ fun VisualAcuityTestCommonContent(
                     ) {
                         Image(
                             modifier = Modifier
-                                .padding(10.dp),
+                                .padding(10.dp)
+                                .height(100.dp),
                             imageVector = ImageVector.vectorResource(id =
-                            when(randomList[2]) {
-                                2 -> R.drawable.two
-                                3 -> R.drawable.three
-                                4 -> R.drawable.four
-                                5 -> R.drawable.five
-                                6 -> R.drawable.six
-                                else -> R.drawable.seven
-                            }
+                                when(randomList[2]) {
+                                    2 -> R.drawable.two
+                                    3 -> R.drawable.three
+                                    4 -> R.drawable.four
+                                    5 -> R.drawable.five
+                                    6 -> R.drawable.six
+                                    else -> R.drawable.seven
+                                }
                             ),
                             contentDescription = ""
                         )

@@ -3,10 +3,7 @@ package com.pixelro.nenoonkiosk.ui
 import androidx.compose.animation.*
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.Image
-import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.height
-import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.pager.HorizontalPager
 import androidx.compose.foundation.pager.rememberPagerState
 import androidx.compose.foundation.shape.RoundedCornerShape
@@ -40,24 +37,378 @@ fun TestListScreen(
     viewModel: NenoonViewModel
 ) {
     Column() {
-//        Image(
-//            modifier = Modifier
-//                .padding(20.dp),
-//            imageVector = ImageVector.vectorResource(id = R.drawable.four_186),
-//            contentDescription = ""
-//        )
-//        Image(
-//            modifier = Modifier
-//                .padding(20.dp),
-//            imageVector = ImageVector.vectorResource(id = R.drawable.seven),
-//            contentDescription = ""
-//        )
-//        Image(
-//            modifier = Modifier
-//                .padding(20.dp),
-//            imageVector = ImageVector.vectorResource(id = R.drawable.three),
-//            contentDescription = ""
-//        )
+        Row() {
+            Image(
+                modifier = Modifier
+                    .padding(20.dp),
+                imageVector = ImageVector.vectorResource(id = R.drawable._50cm_2_1),
+                contentDescription = ""
+            )
+            Image(
+                modifier = Modifier
+                    .padding(20.dp),
+                imageVector = ImageVector.vectorResource(id = R.drawable._50cm_2_2),
+                contentDescription = ""
+            )
+            Image(
+                modifier = Modifier
+                    .padding(20.dp),
+                imageVector = ImageVector.vectorResource(id = R.drawable._50cm_2_3),
+                contentDescription = ""
+            )
+            Image(
+                modifier = Modifier
+                    .padding(20.dp),
+                imageVector = ImageVector.vectorResource(id = R.drawable._50cm_2_4),
+                contentDescription = ""
+            )
+            Image(
+                modifier = Modifier
+                    .padding(20.dp),
+                imageVector = ImageVector.vectorResource(id = R.drawable._50cm_2_5),
+                contentDescription = ""
+            )
+            Image(
+                modifier = Modifier
+                    .padding(20.dp),
+                imageVector = ImageVector.vectorResource(id = R.drawable._50cm_2_6),
+                contentDescription = ""
+            )
+            Image(
+                modifier = Modifier
+                    .padding(20.dp),
+                imageVector = ImageVector.vectorResource(id = R.drawable._50cm_2_7),
+                contentDescription = ""
+            )
+            Image(
+                modifier = Modifier
+                    .padding(20.dp),
+                imageVector = ImageVector.vectorResource(id = R.drawable._50cm_2_8),
+                contentDescription = ""
+            )
+            Image(
+                modifier = Modifier
+                    .padding(20.dp),
+                imageVector = ImageVector.vectorResource(id = R.drawable._50cm_2_9),
+                contentDescription = ""
+            )
+            Image(
+                modifier = Modifier
+                    .padding(20.dp),
+                imageVector = ImageVector.vectorResource(id = R.drawable._50cm_2_10),
+                contentDescription = ""
+            )
+        }
+        Row() {
+            Image(
+                modifier = Modifier
+                    .padding(20.dp),
+                imageVector = ImageVector.vectorResource(id = R.drawable._50cm_3_1),
+                contentDescription = ""
+            )
+            Image(
+                modifier = Modifier
+                    .padding(20.dp),
+                imageVector = ImageVector.vectorResource(id = R.drawable._50cm_3_2),
+                contentDescription = ""
+            )
+            Image(
+                modifier = Modifier
+                    .padding(20.dp),
+                imageVector = ImageVector.vectorResource(id = R.drawable._50cm_3_3),
+                contentDescription = ""
+            )
+            Image(
+                modifier = Modifier
+                    .padding(20.dp),
+                imageVector = ImageVector.vectorResource(id = R.drawable._50cm_3_4),
+                contentDescription = ""
+            )
+            Image(
+                modifier = Modifier
+                    .padding(20.dp),
+                imageVector = ImageVector.vectorResource(id = R.drawable._50cm_3_5),
+                contentDescription = ""
+            )
+            Image(
+                modifier = Modifier
+                    .padding(20.dp),
+                imageVector = ImageVector.vectorResource(id = R.drawable._50cm_3_6),
+                contentDescription = ""
+            )
+            Image(
+                modifier = Modifier
+                    .padding(20.dp),
+                imageVector = ImageVector.vectorResource(id = R.drawable._50cm_3_7),
+                contentDescription = ""
+            )
+            Image(
+                modifier = Modifier
+                    .padding(20.dp),
+                imageVector = ImageVector.vectorResource(id = R.drawable._50cm_3_8),
+                contentDescription = ""
+            )
+            Image(
+                modifier = Modifier
+                    .padding(20.dp),
+                imageVector = ImageVector.vectorResource(id = R.drawable._50cm_3_9),
+                contentDescription = ""
+            )
+            Image(
+                modifier = Modifier
+                    .padding(20.dp),
+                imageVector = ImageVector.vectorResource(id = R.drawable._50cm_3_10),
+                contentDescription = ""
+            )
+        }
+        Row() {
+            Image(
+                modifier = Modifier
+                    .padding(20.dp),
+                imageVector = ImageVector.vectorResource(id = R.drawable._50cm_4_1),
+                contentDescription = ""
+            )
+            Image(
+                modifier = Modifier
+                    .padding(20.dp),
+                imageVector = ImageVector.vectorResource(id = R.drawable._50cm_4_2),
+                contentDescription = ""
+            )
+            Image(
+                modifier = Modifier
+                    .padding(20.dp),
+                imageVector = ImageVector.vectorResource(id = R.drawable._50cm_4_3),
+                contentDescription = ""
+            )
+            Image(
+                modifier = Modifier
+                    .padding(20.dp),
+                imageVector = ImageVector.vectorResource(id = R.drawable._50cm_4_4),
+                contentDescription = ""
+            )
+            Image(
+                modifier = Modifier
+                    .padding(20.dp),
+                imageVector = ImageVector.vectorResource(id = R.drawable._50cm_4_5),
+                contentDescription = ""
+            )
+            Image(
+                modifier = Modifier
+                    .padding(20.dp),
+                imageVector = ImageVector.vectorResource(id = R.drawable._50cm_4_6),
+                contentDescription = ""
+            )
+            Image(
+                modifier = Modifier
+                    .padding(20.dp),
+                imageVector = ImageVector.vectorResource(id = R.drawable._50cm_4_7),
+                contentDescription = ""
+            )
+            Image(
+                modifier = Modifier
+                    .padding(20.dp),
+                imageVector = ImageVector.vectorResource(id = R.drawable._50cm_4_8),
+                contentDescription = ""
+            )
+            Image(
+                modifier = Modifier
+                    .padding(20.dp),
+                imageVector = ImageVector.vectorResource(id = R.drawable._50cm_4_9),
+                contentDescription = ""
+            )
+            Image(
+                modifier = Modifier
+                    .padding(20.dp),
+                imageVector = ImageVector.vectorResource(id = R.drawable._50cm_4_10),
+                contentDescription = ""
+            )
+        }
+        Row() {
+            Image(
+                modifier = Modifier
+                    .padding(20.dp),
+                imageVector = ImageVector.vectorResource(id = R.drawable._50cm_5_1),
+                contentDescription = ""
+            )
+            Image(
+                modifier = Modifier
+                    .padding(20.dp),
+                imageVector = ImageVector.vectorResource(id = R.drawable._50cm_5_2),
+                contentDescription = ""
+            )
+            Image(
+                modifier = Modifier
+                    .padding(20.dp),
+                imageVector = ImageVector.vectorResource(id = R.drawable._50cm_5_3),
+                contentDescription = ""
+            )
+            Image(
+                modifier = Modifier
+                    .padding(20.dp),
+                imageVector = ImageVector.vectorResource(id = R.drawable._50cm_5_4),
+                contentDescription = ""
+            )
+            Image(
+                modifier = Modifier
+                    .padding(20.dp),
+                imageVector = ImageVector.vectorResource(id = R.drawable._50cm_5_5),
+                contentDescription = ""
+            )
+            Image(
+                modifier = Modifier
+                    .padding(20.dp),
+                imageVector = ImageVector.vectorResource(id = R.drawable._50cm_5_6),
+                contentDescription = ""
+            )
+            Image(
+                modifier = Modifier
+                    .padding(20.dp),
+                imageVector = ImageVector.vectorResource(id = R.drawable._50cm_5_7),
+                contentDescription = ""
+            )
+            Image(
+                modifier = Modifier
+                    .padding(20.dp),
+                imageVector = ImageVector.vectorResource(id = R.drawable._50cm_5_8),
+                contentDescription = ""
+            )
+            Image(
+                modifier = Modifier
+                    .padding(20.dp),
+                imageVector = ImageVector.vectorResource(id = R.drawable._50cm_5_9),
+                contentDescription = ""
+            )
+            Image(
+                modifier = Modifier
+                    .padding(20.dp),
+                imageVector = ImageVector.vectorResource(id = R.drawable._50cm_5_10),
+                contentDescription = ""
+            )
+        }
+        Row() {
+            Image(
+                modifier = Modifier
+                    .padding(20.dp),
+                imageVector = ImageVector.vectorResource(id = R.drawable._50cm_6_1),
+                contentDescription = ""
+            )
+            Image(
+                modifier = Modifier
+                    .padding(20.dp),
+                imageVector = ImageVector.vectorResource(id = R.drawable._50cm_6_2),
+                contentDescription = ""
+            )
+            Image(
+                modifier = Modifier
+                    .padding(20.dp),
+                imageVector = ImageVector.vectorResource(id = R.drawable._50cm_6_3),
+                contentDescription = ""
+            )
+            Image(
+                modifier = Modifier
+                    .padding(20.dp),
+                imageVector = ImageVector.vectorResource(id = R.drawable._50cm_6_4),
+                contentDescription = ""
+            )
+            Image(
+                modifier = Modifier
+                    .padding(20.dp),
+                imageVector = ImageVector.vectorResource(id = R.drawable._50cm_6_5),
+                contentDescription = ""
+            )
+            Image(
+                modifier = Modifier
+                    .padding(20.dp),
+                imageVector = ImageVector.vectorResource(id = R.drawable._50cm_6_6),
+                contentDescription = ""
+            )
+            Image(
+                modifier = Modifier
+                    .padding(20.dp),
+                imageVector = ImageVector.vectorResource(id = R.drawable._50cm_6_7),
+                contentDescription = ""
+            )
+            Image(
+                modifier = Modifier
+                    .padding(20.dp),
+                imageVector = ImageVector.vectorResource(id = R.drawable._50cm_6_8),
+                contentDescription = ""
+            )
+            Image(
+                modifier = Modifier
+                    .padding(20.dp),
+                imageVector = ImageVector.vectorResource(id = R.drawable._50cm_6_9),
+                contentDescription = ""
+            )
+            Image(
+                modifier = Modifier
+                    .padding(20.dp),
+                imageVector = ImageVector.vectorResource(id = R.drawable._50cm_6_10),
+                contentDescription = ""
+            )
+        }
+        Row() {
+            Image(
+                modifier = Modifier
+                    .padding(20.dp),
+                imageVector = ImageVector.vectorResource(id = R.drawable._50cm_7_1),
+                contentDescription = ""
+            )
+            Image(
+                modifier = Modifier
+                    .padding(20.dp),
+                imageVector = ImageVector.vectorResource(id = R.drawable._50cm_7_2),
+                contentDescription = ""
+            )
+            Image(
+                modifier = Modifier
+                    .padding(20.dp),
+                imageVector = ImageVector.vectorResource(id = R.drawable._50cm_7_3),
+                contentDescription = ""
+            )
+            Image(
+                modifier = Modifier
+                    .padding(20.dp),
+                imageVector = ImageVector.vectorResource(id = R.drawable._50cm_7_4),
+                contentDescription = ""
+            )
+            Image(
+                modifier = Modifier
+                    .padding(20.dp),
+                imageVector = ImageVector.vectorResource(id = R.drawable._50cm_7_5),
+                contentDescription = ""
+            )
+            Image(
+                modifier = Modifier
+                    .padding(20.dp),
+                imageVector = ImageVector.vectorResource(id = R.drawable._50cm_7_6),
+                contentDescription = ""
+            )
+            Image(
+                modifier = Modifier
+                    .padding(20.dp),
+                imageVector = ImageVector.vectorResource(id = R.drawable._50cm_7_7),
+                contentDescription = ""
+            )
+            Image(
+                modifier = Modifier
+                    .padding(20.dp),
+                imageVector = ImageVector.vectorResource(id = R.drawable._50cm_7_8),
+                contentDescription = ""
+            )
+            Image(
+                modifier = Modifier
+                    .padding(20.dp),
+                imageVector = ImageVector.vectorResource(id = R.drawable._50cm_7_9),
+                contentDescription = ""
+            )
+            Image(
+                modifier = Modifier
+                    .padding(20.dp),
+                imageVector = ImageVector.vectorResource(id = R.drawable._50cm_7_10),
+                contentDescription = ""
+            )
+        }
         HorizontalPager(
             state = rememberPagerState(
                 initialPage = 500000
