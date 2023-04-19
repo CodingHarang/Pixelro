@@ -14,7 +14,6 @@ import com.pixelro.nenoonkiosk.ui.theme.NenoonKioskTheme
 class MainActivity : ComponentActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
-        Settings.System.putInt(contentResolver, Settings.System.SCREEN_OFF_TIMEOUT, 3600_000)
         super.onCreate(savedInstanceState)
         setContent {
             NenoonKioskTheme {

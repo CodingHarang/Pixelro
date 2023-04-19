@@ -1,13 +1,16 @@
 package com.pixelro.nenoonkiosk.ui
 
+import android.Manifest
 import android.content.Context
 import android.hardware.camera2.CameraCharacteristics
 import android.hardware.camera2.CameraManager
+import android.provider.Settings
 import android.util.SizeF
 import androidx.compose.animation.AnimatedContentScope
 import androidx.compose.animation.ExperimentalAnimationApi
 import androidx.compose.animation.core.TweenSpec
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.DisposableEffect
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.platform.LocalContext
@@ -16,11 +19,13 @@ import androidx.navigation.NavHostController
 import com.google.accompanist.navigation.animation.AnimatedNavHost
 import com.google.accompanist.navigation.animation.composable
 import com.google.accompanist.navigation.animation.rememberAnimatedNavController
+import com.google.accompanist.permissions.ExperimentalPermissionsApi
+import com.google.accompanist.permissions.rememberMultiplePermissionsState
 import com.pixelro.nenoonkiosk.NenoonViewModel
 import com.pixelro.nenoonkiosk.data.GlobalConstants
 import com.pixelro.nenoonkiosk.ui.testscreen.*
 
-@OptIn(ExperimentalAnimationApi::class)
+@OptIn(ExperimentalAnimationApi::class, ExperimentalPermissionsApi::class)
 @Composable
 fun NenoonApp(
     viewModel: NenoonViewModel = viewModel(),
@@ -33,6 +38,22 @@ fun NenoonApp(
     val cameraManager = context.getSystemService(Context.CAMERA_SERVICE) as CameraManager
     val cameraCharacteristics =
         (context.getSystemService(Context.CAMERA_SERVICE) as CameraManager).getCameraCharacteristics(cameraManager.cameraIdList[1])
+
+    val permissionState = rememberMultiplePermissionsState(
+        permissions = listOf(
+            Manifest.permission.WRITE_SECURE_SETTINGS, Manifest.permission.WRITE_SETTINGS
+        )
+    )
+    DisposableEffect(true) {
+
+        permissionState.launchMultiplePermissionRequest()
+        if(permissionState.allPermissionsGranted) {
+            Settings.System.putInt(context.contentResolver, Settings.System.SCREEN_OFF_TIMEOUT, 3600_000)
+        }
+        onDispose {
+
+        }
+    }
 
     viewModel.updateLocalConfigurationValues(
         pixelDensity = context.resources.displayMetrics.density,
@@ -109,7 +130,7 @@ fun NenoonApp(
             }
         ) {
             ShortDistanceVisualAcuityTestScreen(
-                navController = testNavController,
+                toResultScreen = { mainNavController.navigate(GlobalConstants.ROUTE_TEST_RESULT) },
                 viewModel = viewModel
             )
         }

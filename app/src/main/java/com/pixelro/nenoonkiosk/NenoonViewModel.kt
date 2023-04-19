@@ -172,7 +172,7 @@ class NenoonViewModel : ViewModel() {
     }
 
     fun updateTestDistance() {
-        _testDistance.update { (screenToFaceDistance.value / 10).toInt() }
+        _testDistance.update { screenToFaceDistance.value.toInt() }
     }
 
     // Presbyopia test
@@ -181,28 +181,48 @@ class NenoonViewModel : ViewModel() {
 
     // Visual acuity test
 
-    private val _sightHistory = MutableStateFlow(emptyMap<Int, Pair<Int, Int>>())
-    val sightHistory: StateFlow<Map<Int, Pair<Int, Int>>> = _sightHistory
+    private val _sightHistory = MutableStateFlow(mutableMapOf<Int, Pair<Int, Int>>())
+    val sightHistory: StateFlow<MutableMap<Int, Pair<Int, Int>>> = _sightHistory
     private val _testDistance = MutableStateFlow(0)
     val testDistance: StateFlow<Int> = _testDistance
-    private val _sightValue = MutableStateFlow(0.1f)
-    val sightValue: StateFlow<Float> = _sightValue
+    private val _sightValue = MutableStateFlow(1)
+    val sightValue: StateFlow<Int> = _sightValue
+    private val _leftEyeSightValue = MutableStateFlow(1)
+    val leftEyeSightValue: StateFlow<Int> = _leftEyeSightValue
+    private val _rightEyeSightValue = MutableStateFlow(1)
+    val rightEyeSightValue: StateFlow<Int> = _rightEyeSightValue
     private val _randomList = MutableStateFlow(mutableListOf(0))
     val randomList: StateFlow<MutableList<Int>> = _randomList
+    private val _isLeftEye = MutableStateFlow(false)
+    val isLeftEye: StateFlow<Boolean> = _isLeftEye
     private val _ansNum = MutableStateFlow(0)
     val ansNum: StateFlow<Int> = _ansNum
-    private val _correctCount = MutableStateFlow(0)
-    val correctCount: StateFlow<Int> = _correctCount
-    private val _wrongCount = MutableStateFlow(0)
-    val wrongCount: StateFlow<Int> = _wrongCount
+    private val _isSightednessTesting = MutableStateFlow(false)
+    val isSightednessTesting: StateFlow<Boolean> = _isSightednessTesting
 
-    fun updateSightValue(value: Float) {
+    fun updateIsSightednessTesting(isTesting: Boolean) {
+        _isSightednessTesting.update { isTesting }
+    }
+
+    fun updateSightValue(value: Int) {
         _sightValue.update { value }
     }
 
-    fun initializeSightHistory() {
+    fun updateLeftEyeSightValue(value: Int) {
+        _leftEyeSightValue.update { value }
+    }
+
+    fun updateRightEyeSightValue(value: Int) {
+        _rightEyeSightValue.update { value }
+    }
+
+    fun updateIsLeftEye(isLeftEye: Boolean) {
+        _isLeftEye.update { isLeftEye }
+    }
+
+    fun initializeSightTest() {
         _sightHistory.update {
-            mapOf(
+            mutableMapOf(
                 1 to Pair(0, 0),
                 2 to Pair(0, 0),
                 3 to Pair(0, 0),
@@ -214,6 +234,34 @@ class NenoonViewModel : ViewModel() {
                 9 to Pair(0, 0),
                 10 to Pair(0, 0)
             )
+        }
+        _sightValue.update { 1 }
+        _isSightednessTesting.update { false }
+        _isLeftEye.update { false }
+    }
+
+    fun initializeRightTest() {
+        _sightHistory.update {
+            mutableMapOf(
+                1 to Pair(0, 0),
+                2 to Pair(0, 0),
+                3 to Pair(0, 0),
+                4 to Pair(0, 0),
+                5 to Pair(0, 0),
+                6 to Pair(0, 0),
+                7 to Pair(0, 0),
+                8 to Pair(0, 0),
+                9 to Pair(0, 0),
+                10 to Pair(0, 0)
+            )
+        }
+        _sightValue.update { 1 }
+    }
+
+    fun updateSightHistory(sightValue: Int, rightCount: Int, wrongCount: Int) {
+        _sightHistory.update {
+            it[sightValue] = Pair(rightCount, wrongCount)
+            it
         }
     }
 
@@ -237,10 +285,6 @@ class NenoonViewModel : ViewModel() {
             }
             newNum
         }
-    }
-
-    fun updateSightHistory(sight: Int, right: Int ) {
-
     }
 
     // Macular degeneration test
@@ -267,6 +311,5 @@ class NenoonViewModel : ViewModel() {
 
     init {
         updateRandomList()
-        initializeSightHistory()
     }
 }

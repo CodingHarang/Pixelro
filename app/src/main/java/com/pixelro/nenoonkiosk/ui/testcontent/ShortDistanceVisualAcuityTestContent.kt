@@ -18,6 +18,7 @@ import com.pixelro.nenoonkiosk.NenoonViewModel
 
 @Composable
 fun ShortDistanceVisualAcuityTestContent(
+    toResultScreen: () -> Unit,
     viewModel: NenoonViewModel
 ) {
     Column(
@@ -50,6 +51,7 @@ fun ShortDistanceVisualAcuityTestContent(
                 thirdVisibleState = thirdVisibleState
             )
             VisualAcuityTestCommonContent(
+                toResultScreen = toResultScreen,
                 viewModel = viewModel,
                 thirdVisibleState = thirdVisibleState,
                 fourthVisibleState = fourthVisibleState
