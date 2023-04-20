@@ -9,6 +9,7 @@ import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.pixelro.nenoonkiosk.NenoonViewModel
@@ -24,10 +25,12 @@ fun ShortDistanceVisualAcuityTestResultContent(
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
         Text(
-            text = "시력 검사 결과"
+            text = "시력 검사 결과",
+            fontSize = 30.sp
         )
         Text(
-            text = "측정 거리:"
+            text = "측정 거리:",
+            fontSize = 30.sp
         )
         Row() {
             Column(
@@ -36,7 +39,8 @@ fun ShortDistanceVisualAcuityTestResultContent(
                 Text(
                     text = "왼쪽",
                     color = Color(0xff0000ff),
-                    fontSize = 40.sp
+                    fontSize = 30.sp,
+                    fontWeight = FontWeight.Bold
                 )
                 Box(
                     modifier = Modifier
@@ -87,7 +91,8 @@ fun ShortDistanceVisualAcuityTestResultContent(
                 Text(
                     text = "오른쪽",
                     color = Color(0xff0000ff),
-                    fontSize = 40.sp
+                    fontSize = 30.sp,
+                    fontWeight = FontWeight.Bold
                 )
                 Box(
                     modifier = Modifier
@@ -124,7 +129,9 @@ fun ShortDistanceVisualAcuityTestResultContent(
                             VisionDisorderType.Hyperopia -> "원시"
                             VisionDisorderType.Astigmatism -> "난시"
                             else -> "오류"
-                        }
+                        },
+                        fontSize = 30.sp,
+                        fontWeight = FontWeight.Bold
                     )
                 }
             }

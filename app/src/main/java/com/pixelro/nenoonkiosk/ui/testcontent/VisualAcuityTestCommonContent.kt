@@ -1122,6 +1122,7 @@ fun SightednessTestContent(
             ) {
                 Text(
                     text = "초록",
+                    fontSize = 30.sp
                 )
             }
 
@@ -1150,6 +1151,7 @@ fun SightednessTestContent(
             ) {
                 Text(
                     text = "빨강",
+                    fontSize = 30.sp
                 )
             }
         }
@@ -1181,6 +1183,7 @@ fun SightednessTestContent(
             ) {
                 Text(
                     text = "둘다 잘 보인다",
+                    fontSize = 30.sp
                 )
             }
             Box(
@@ -1208,6 +1211,7 @@ fun SightednessTestContent(
             ) {
                 Text(
                     text = "둘 다 뿌옇다",
+                    fontSize = 30.sp
                 )
             }
         }
