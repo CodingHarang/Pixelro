@@ -7,7 +7,7 @@ import com.pixelro.nenoonkiosk.NenoonViewModel
 
 @Composable
 fun LongDistanceVisualAcuityTestScreen(
-    navController: NavHostController,
+    toResultScreen: () -> Unit,
     viewModel: NenoonViewModel
 ) {
     Text("LongDistanceVisualAcuityTestScreen")

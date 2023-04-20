@@ -25,6 +25,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.pixelro.nenoonkiosk.NenoonViewModel
 import com.pixelro.nenoonkiosk.R
+import com.pixelro.nenoonkiosk.data.VisionDisorderType
 import java.util.*
 import kotlin.math.roundToInt
 
@@ -32,7 +33,7 @@ import kotlin.math.roundToInt
 fun VisualAcuityTestCommonContent(
     toResultScreen: () -> Unit,
     viewModel: NenoonViewModel,
-    thirdVisibleState: MutableTransitionState<Boolean>,
+    visualAcuityTestCommonContentVisibleState: MutableTransitionState<Boolean>,
     fourthVisibleState: MutableTransitionState<Boolean>
 ) {
     Log.e("VisualAcuityTestCommonContent", "VisualAcuityTestCommonContent")
@@ -51,7 +52,7 @@ fun VisualAcuityTestCommonContent(
             )
         } else {
             AnimatedVisibility(
-                visibleState = thirdVisibleState,
+                visibleState = visualAcuityTestCommonContentVisibleState,
                 enter = slideIn(
                     animationSpec = tween(durationMillis = 500),
                     initialOffset = { IntOffset(it.width, 0) }
@@ -64,6 +65,11 @@ fun VisualAcuityTestCommonContent(
                 Column(
                     horizontalAlignment = Alignment.CenterHorizontally
                 ) {
+                    Text(
+                        text = "시력: ${viewModel.sightValue.collectAsState().value}",
+                        color = Color(0xffffffff),
+                        fontSize = 40.sp
+                    )
                     Box(
                         modifier = Modifier
                             .height(400.dp)
@@ -1029,10 +1035,10 @@ fun SightednessTestContent(
     Column(
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
-        Row(
-            verticalAlignment = Alignment.CenterVertically
-        ) {
-            Box() {
+        Box() {
+            Row(
+                verticalAlignment = Alignment.CenterVertically
+            ) {
                 Box(
                     modifier = Modifier
                         .height(500.dp)
@@ -1101,11 +1107,13 @@ fun SightednessTestContent(
                         shape = RoundedCornerShape(8.dp)
                     )
                     .clickable {
-                        if(isLeftEye) {
+                        if (isLeftEye) {
+                            viewModel.updateLeftEyeSightedValue(VisionDisorderType.Hyperopia)
                             viewModel.updateIsSightednessTesting(false)
                             viewModel.updateIsLeftEye(false)
                             toResultScreen()
                         } else {
+                            viewModel.updateRightEyeSightedValue(VisionDisorderType.Hyperopia)
                             viewModel.updateIsSightednessTesting(false)
                             viewModel.updateIsLeftEye(true)
                         }
@@ -1127,11 +1135,13 @@ fun SightednessTestContent(
                         shape = RoundedCornerShape(8.dp)
                     )
                     .clickable {
-                        if(isLeftEye) {
+                        if (isLeftEye) {
+                            viewModel.updateLeftEyeSightedValue(VisionDisorderType.Myopia)
                             viewModel.updateIsSightednessTesting(false)
                             viewModel.updateIsLeftEye(false)
                             toResultScreen()
                         } else {
+                            viewModel.updateRightEyeSightedValue(VisionDisorderType.Myopia)
                             viewModel.updateIsSightednessTesting(false)
                             viewModel.updateIsLeftEye(true)
                         }
@@ -1156,11 +1166,13 @@ fun SightednessTestContent(
                         shape = RoundedCornerShape(8.dp)
                     )
                     .clickable {
-                        if(isLeftEye) {
+                        if (isLeftEye) {
+                            viewModel.updateLeftEyeSightedValue(VisionDisorderType.Normal)
                             viewModel.updateIsSightednessTesting(false)
                             viewModel.updateIsLeftEye(false)
                             toResultScreen()
                         } else {
+                            viewModel.updateRightEyeSightedValue(VisionDisorderType.Normal)
                             viewModel.updateIsSightednessTesting(false)
                             viewModel.updateIsLeftEye(true)
                         }
@@ -1181,11 +1193,13 @@ fun SightednessTestContent(
                         shape = RoundedCornerShape(8.dp)
                     )
                     .clickable {
-                        if(isLeftEye) {
+                        if (isLeftEye) {
+                            viewModel.updateLeftEyeSightedValue(VisionDisorderType.Astigmatism)
                             viewModel.updateIsSightednessTesting(false)
                             viewModel.updateIsLeftEye(false)
                             toResultScreen()
                         } else {
+                            viewModel.updateRightEyeSightedValue(VisionDisorderType.Astigmatism)
                             viewModel.updateIsSightednessTesting(false)
                             viewModel.updateIsLeftEye(true)
                         }

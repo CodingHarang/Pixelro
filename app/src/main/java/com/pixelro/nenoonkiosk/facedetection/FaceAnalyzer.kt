@@ -18,7 +18,7 @@ class MyFaceAnalyzer(
 ) : ImageAnalysis.Analyzer {
     private val realTimeOpts =
         FaceDetectorOptions.Builder().setContourMode(FaceDetectorOptions.CONTOUR_MODE_ALL)
-            .setPerformanceMode(FaceDetectorOptions.PERFORMANCE_MODE_FAST)
+            .setPerformanceMode(FaceDetectorOptions.PERFORMANCE_MODE_ACCURATE)
             .setLandmarkMode(FaceDetectorOptions.LANDMARK_MODE_ALL)
             .setClassificationMode(FaceDetectorOptions.CLASSIFICATION_MODE_ALL)
             .setMinFaceSize(0.1f)
@@ -66,7 +66,7 @@ class MyFaceAnalyzer(
 
                     if(leftEyeOpenProbability != null && rightEyeOpenProbability != null) {
                         updateEyeOpenProbability(leftEyeOpenProbability, rightEyeOpenProbability)
-                        Log.e("", "$leftEyeOpenProbability, $rightEyeOpenProbability")
+//                        Log.e("", "$leftEyeOpenProbability, $rightEyeOpenProbability")
                     } else {
                         Log.e("null", "null")
                     }

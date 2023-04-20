@@ -19,11 +19,11 @@ import com.pixelro.nenoonkiosk.R
 
 @Composable
 fun CoveredEyeCheckingContent(
-    secondVisibleState: MutableTransitionState<Boolean>,
-    thirdVisibleState: MutableTransitionState<Boolean>
+    coveredEyeCheckingContentVisibleState: MutableTransitionState<Boolean>,
+    nextVisibleState: MutableTransitionState<Boolean>
 ) {
     AnimatedVisibility(
-        visibleState = secondVisibleState,
+        visibleState = coveredEyeCheckingContentVisibleState,
         enter = slideIn(
             animationSpec = tween(durationMillis = 500),
             initialOffset = { IntOffset(it.width, 0) }
@@ -49,8 +49,8 @@ fun CoveredEyeCheckingContent(
                 modifier = Modifier
                     .height(256.dp)
                     .clickable {
-                        secondVisibleState.targetState = false
-                        thirdVisibleState.targetState = true
+                        coveredEyeCheckingContentVisibleState.targetState = false
+                        nextVisibleState.targetState = true
                     },
                 painter = painterResource(id = R.drawable.baseline_check_circle_48),
                 contentDescription = ""

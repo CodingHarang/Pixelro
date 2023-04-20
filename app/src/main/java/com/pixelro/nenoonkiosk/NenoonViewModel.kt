@@ -1,12 +1,17 @@
 package com.pixelro.nenoonkiosk
 
 import android.graphics.PointF
+import android.util.Log
 import android.util.SizeF
+import androidx.compose.ui.geometry.Offset
+import androidx.compose.ui.graphics.Color
 import androidx.lifecycle.ViewModel
 import com.pixelro.nenoonkiosk.data.TestType
+import com.pixelro.nenoonkiosk.data.VisionDisorderType
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.update
+import kotlin.math.tan
 
 class NenoonViewModel : ViewModel() {
 
@@ -67,7 +72,7 @@ class NenoonViewModel : ViewModel() {
         _rotZ.update { rotZ }
         _inputImageSizeX.update { width }
         _inputImageSizeY.update { height }
-
+        Log.e("rotation", "${rotY}, ${(100f * tan(rotY * 0.0174533)).toFloat()}, ${rotY}, ${(100f * tan(rotY * 0.0174533)).toFloat()}")
         updateScreenToFaceDistance()
     }
 
@@ -146,6 +151,8 @@ class NenoonViewModel : ViewModel() {
     val selectedTestDescription: StateFlow<String> = _selectedTestDescription
     private val _selectedTestMenuDescription = MutableStateFlow("")
     val selectedTestMenuDescription: StateFlow<String> = _selectedTestMenuDescription
+    private val _testDistance = MutableStateFlow(0)
+    val testDistance: StateFlow<Int> = _testDistance
 
     fun updateSelectedTestType(testType: TestType) {
         _selectedTestType.update { testType }
@@ -183,14 +190,16 @@ class NenoonViewModel : ViewModel() {
 
     private val _sightHistory = MutableStateFlow(mutableMapOf<Int, Pair<Int, Int>>())
     val sightHistory: StateFlow<MutableMap<Int, Pair<Int, Int>>> = _sightHistory
-    private val _testDistance = MutableStateFlow(0)
-    val testDistance: StateFlow<Int> = _testDistance
     private val _sightValue = MutableStateFlow(1)
     val sightValue: StateFlow<Int> = _sightValue
     private val _leftEyeSightValue = MutableStateFlow(1)
     val leftEyeSightValue: StateFlow<Int> = _leftEyeSightValue
     private val _rightEyeSightValue = MutableStateFlow(1)
     val rightEyeSightValue: StateFlow<Int> = _rightEyeSightValue
+    private val _leftEyeSightedValue = MutableStateFlow(VisionDisorderType.Normal)
+    val leftEyeSightedValue: StateFlow<VisionDisorderType> = _leftEyeSightedValue
+    private val _rightEyeSightedValue = MutableStateFlow(VisionDisorderType.Normal)
+    val rightEyeSightedValue: StateFlow<VisionDisorderType> = _rightEyeSightedValue
     private val _randomList = MutableStateFlow(mutableListOf(0))
     val randomList: StateFlow<MutableList<Int>> = _randomList
     private val _isLeftEye = MutableStateFlow(false)
@@ -199,6 +208,14 @@ class NenoonViewModel : ViewModel() {
     val ansNum: StateFlow<Int> = _ansNum
     private val _isSightednessTesting = MutableStateFlow(false)
     val isSightednessTesting: StateFlow<Boolean> = _isSightednessTesting
+
+    fun updateLeftEyeSightedValue(type: VisionDisorderType) {
+        _leftEyeSightedValue.update { type }
+    }
+
+    fun updateRightEyeSightedValue(type: VisionDisorderType) {
+        _rightEyeSightedValue.update { type }
+    }
 
     fun updateIsSightednessTesting(isTesting: Boolean) {
         _isSightednessTesting.update { isTesting }
@@ -289,9 +306,32 @@ class NenoonViewModel : ViewModel() {
 
     // Macular degeneration test
 
+    private val _color = MutableStateFlow(Color(0x00000000))
+    val color: StateFlow<Color> = _color
+    private val _gazingPoint = MutableStateFlow(Offset(0f, 0f))
+    val gazingPoint:StateFlow<Offset> = _gazingPoint
+    private val _touchPosition = MutableStateFlow(Offset(0f, 0f))
+    val touchPosition: StateFlow<Offset> = _touchPosition
+    private val _widthSize = MutableStateFlow(100f)
+    val widthSize: StateFlow<Float> = _widthSize
+    private val _heightSize = MutableStateFlow(100f)
+    val heightSize: StateFlow<Float> = _heightSize
 
+    fun updateColor(color: Color) {
+        _color.update { color }
+    }
 
+    fun updateWidthSize(size: Float) {
+        _widthSize.update { size }
+    }
 
+    fun updateHeightSize(size: Float) {
+        _heightSize.update { size }
+    }
+
+    fun updateTouchPosition(position: Offset) {
+        _touchPosition.update { position }
+    }
 
 
 

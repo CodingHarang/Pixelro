@@ -7,7 +7,7 @@ import com.pixelro.nenoonkiosk.NenoonViewModel
 
 @Composable
 fun ChildrenVisualAcuityTestScreen(
-    navController: NavHostController,
+    toResultScreen: () -> Unit,
     viewModel: NenoonViewModel
 ) {
     Text("ChildrenVisualAcuityTestScreen")

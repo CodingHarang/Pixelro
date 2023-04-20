@@ -9,6 +9,7 @@ import androidx.compose.foundation.layout.width
 import androidx.compose.material.Icon
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.DisposableEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.vector.ImageVector
@@ -31,13 +32,18 @@ fun ShortDistanceVisualAcuityTestScreen(
     FaceDetection(
         viewModel = viewModel
     )
-    viewModel.initializeSightTest()
 //    Column() {
 //        Text(
 //            text = "${viewModel.leftEyeOpenProbability.collectAsState().value.toString().format(DecimalFormat("00.00"))}, ${viewModel.rightEyeOpenProbability.collectAsState().value.toString().format(DecimalFormat("00.00"))}",
 //            fontSize = 40.sp
 //        )
 //    }
+    DisposableEffect(true) {
+        viewModel.initializeSightTest()
+        onDispose() {
+
+        }
+    }
     ShortDistanceVisualAcuityTestContent(
         toResultScreen = toResultScreen,
         viewModel = viewModel

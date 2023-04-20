@@ -26,11 +26,11 @@ import kotlin.math.roundToInt
 @Composable
 fun MeasuringDistanceContent(
     viewModel: NenoonViewModel,
-    firstVisibleState: MutableTransitionState<Boolean>,
-    secondVisibleState: MutableTransitionState<Boolean>
+    measuringDistanceContentVisibleState: MutableTransitionState<Boolean>,
+    nextVisibleState: MutableTransitionState<Boolean>
 ) {
     AnimatedVisibility(
-        visibleState = firstVisibleState,
+        visibleState = measuringDistanceContentVisibleState,
         enter = slideIn(
             animationSpec = tween(durationMillis = 500),
             initialOffset = { IntOffset(it.width, 0) }
@@ -72,8 +72,8 @@ fun MeasuringDistanceContent(
                         .height(256.dp)
                         .clickable {
                             viewModel.updateTestDistance()
-                            firstVisibleState.targetState = false
-                            secondVisibleState.targetState = true
+                            measuringDistanceContentVisibleState.targetState = false
+                            nextVisibleState.targetState = true
                         },
                     painter = painterResource(id = R.drawable.baseline_check_circle_48),
                     contentDescription = ""

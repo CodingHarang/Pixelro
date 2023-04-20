@@ -152,7 +152,7 @@ fun NenoonApp(
             }
         ) {
             LongDistanceVisualAcuityTestScreen(
-                navController = testNavController,
+                toResultScreen = { mainNavController.navigate(GlobalConstants.ROUTE_TEST_RESULT) },
                 viewModel = viewModel)
         }
 
@@ -173,7 +173,7 @@ fun NenoonApp(
             }
         ) {
             ChildrenVisualAcuityTestScreen(
-                navController = testNavController,
+                toResultScreen = { mainNavController.navigate(GlobalConstants.ROUTE_TEST_RESULT) },
                 viewModel = viewModel)
         }
 
@@ -194,7 +194,7 @@ fun NenoonApp(
             }
         ) {
             AmslerGridTestScreen(
-                navController = testNavController,
+                toResultScreen = { mainNavController.navigate(GlobalConstants.ROUTE_TEST_RESULT) },
                 viewModel = viewModel)
         }
 
@@ -257,7 +257,10 @@ fun NenoonApp(
                 )
             }
         ) {
-            TestResultScreen()
+            TestResultScreen(
+                viewModel = viewModel,
+                navController = mainNavController
+            )
         }
     }
 }
