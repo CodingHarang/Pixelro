@@ -12,6 +12,7 @@ import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.pixelro.nenoonkiosk.NenoonViewModel
@@ -29,14 +30,14 @@ fun ShortDistanceVisualAcuityTestContent(
         val measuringDistanceContentVisibleState = remember { MutableTransitionState(true) }
         val coveredEyeCheckingContentVisibleState = remember { MutableTransitionState(false) }
         val visualAcuityTestCommonContentVisibleState = remember { MutableTransitionState(false) }
-        val fourthVisibleState = remember { MutableTransitionState(false) }
 
         Text(
             modifier = Modifier
                 .padding(top = 40.dp, bottom = 40.dp),
             text = "근거리 시력 검사",
             color = Color(0xffffffff),
-            fontSize = 40.sp
+            fontSize = 40.sp,
+            fontWeight = FontWeight.ExtraBold
         )
         Box(
             contentAlignment = Alignment.TopCenter
@@ -47,6 +48,7 @@ fun ShortDistanceVisualAcuityTestContent(
                 nextVisibleState = coveredEyeCheckingContentVisibleState
             )
             CoveredEyeCheckingContent(
+                viewModel = viewModel,
                 coveredEyeCheckingContentVisibleState = coveredEyeCheckingContentVisibleState,
                 nextVisibleState = visualAcuityTestCommonContentVisibleState
             )
@@ -54,7 +56,7 @@ fun ShortDistanceVisualAcuityTestContent(
                 toResultScreen = toResultScreen,
                 viewModel = viewModel,
                 visualAcuityTestCommonContentVisibleState = visualAcuityTestCommonContentVisibleState,
-                fourthVisibleState = fourthVisibleState
+                nextVisibleState = coveredEyeCheckingContentVisibleState
             )
         }
 

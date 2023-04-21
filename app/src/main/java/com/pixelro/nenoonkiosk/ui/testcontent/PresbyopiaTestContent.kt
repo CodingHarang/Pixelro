@@ -20,6 +20,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.IntOffset
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
@@ -48,7 +49,8 @@ fun PresbyopiaTestContent(
                 .padding(top = 40.dp, bottom = 40.dp),
             text = "조절력 검사(안구 나이 검사)",
             color = Color(0xffffffff),
-            fontSize = 40.sp
+            fontSize = 40.sp,
+            fontWeight = FontWeight.ExtraBold
         )
         Box(
             contentAlignment = Alignment.Center,

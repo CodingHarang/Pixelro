@@ -2,27 +2,17 @@ package com.pixelro.nenoonkiosk.ui.theme
 
 import androidx.compose.material.Typography
 import androidx.compose.ui.text.TextStyle
+import androidx.compose.ui.text.font.Font
 import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.sp
+import com.pixelro.nenoonkiosk.R
 
-// Set of Material typography styles to start with
+
 val Typography = Typography(
-    body1 = TextStyle(
-        fontFamily = FontFamily.Default,
-        fontWeight = FontWeight.Normal,
-        fontSize = 16.sp
+    defaultFontFamily = FontFamily(
+        Font(R.font.nanumgothic_regular, FontWeight.Normal),
+        Font(R.font.nanumgothic_bold, FontWeight.Bold),
+        Font(R.font.nanumgothic_extrabold, FontWeight.ExtraBold)
     )
-    /* Other default text styles to override
-    button = TextStyle(
-        fontFamily = FontFamily.Default,
-        fontWeight = FontWeight.W500,
-        fontSize = 14.sp
-    ),
-    caption = TextStyle(
-        fontFamily = FontFamily.Default,
-        fontWeight = FontWeight.Normal,
-        fontSize = 12.sp
-    )
-    */
 )

@@ -27,7 +27,7 @@ fun MainTestListContent(
         )
         EyeTestSelectableBox(
             title = "황반변성 검사",
-            description = "망막에 위치한 황반에 이상이 생기면 시력을 잃을 수 있습니다. 조기 발견으로 예방하세요.",
+            description = "망막에 위치한 황반에 이상이 생기면 시력을 잃을 수 있습니다.\n조기 발견으로 예방하세요.",
             onClickMethod = toMacularDegenerationTestList
         )
     }

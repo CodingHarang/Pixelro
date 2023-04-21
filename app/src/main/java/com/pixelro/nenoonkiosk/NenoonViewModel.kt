@@ -72,7 +72,6 @@ class NenoonViewModel : ViewModel() {
         _rotZ.update { rotZ }
         _inputImageSizeX.update { width }
         _inputImageSizeY.update { height }
-        Log.e("rotation", "${rotY}, ${(100f * tan(rotY * 0.0174533)).toFloat()}, ${rotY}, ${(100f * tan(rotY * 0.0174533)).toFloat()}")
         updateScreenToFaceDistance()
     }
 
@@ -142,6 +141,12 @@ class NenoonViewModel : ViewModel() {
         }
     }
 
+    // Nemonic Printer
+
+
+    // UI
+
+
     // Global
     private val _selectedTestType = MutableStateFlow(TestType.None)
     val selectedTestType: StateFlow<TestType> = _selectedTestType
@@ -153,6 +158,9 @@ class NenoonViewModel : ViewModel() {
     val selectedTestMenuDescription: StateFlow<String> = _selectedTestMenuDescription
     private val _testDistance = MutableStateFlow(0)
     val testDistance: StateFlow<Int> = _testDistance
+    private val _nemonicList = MutableStateFlow(emptyList<Pair<String, String>>())
+    val nemonicList: StateFlow<List<Pair<String, String>>> = _nemonicList
+
 
     fun updateSelectedTestType(testType: TestType) {
         _selectedTestType.update { testType }
@@ -180,6 +188,17 @@ class NenoonViewModel : ViewModel() {
 
     fun updateTestDistance() {
         _testDistance.update { screenToFaceDistance.value.toInt() }
+    }
+
+    fun updateNemonicList(name: String, addr: String) {
+        _nemonicList.update {
+            if(Pair(name, addr) !in it) {
+                it + (Pair(name, addr))
+            } else {
+                it
+            }
+        }
+        Log.e("viewModel", "${_nemonicList.value}")
     }
 
     // Presbyopia test
@@ -305,6 +324,7 @@ class NenoonViewModel : ViewModel() {
     }
 
     // Macular degeneration test
+    //
 
     private val _color = MutableStateFlow(Color(0x00000000))
     val color: StateFlow<Color> = _color

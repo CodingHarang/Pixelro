@@ -7,6 +7,7 @@ import androidx.compose.animation.core.tween
 import androidx.compose.foundation.Canvas
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.gestures.detectTapGestures
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
@@ -23,6 +24,7 @@ import androidx.compose.ui.geometry.Size
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.input.pointer.pointerInput
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.IntOffset
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
@@ -52,7 +54,8 @@ fun AmslerGridTestContent(
                 .padding(top = 40.dp, bottom = 40.dp),
             text = "암슬러 차트 검사",
             color = Color(0xffffffff),
-            fontSize = 40.sp
+            fontSize = 40.sp,
+            fontWeight = FontWeight.ExtraBold
         )
         Box(
             contentAlignment = Alignment.TopCenter,
@@ -65,6 +68,7 @@ fun AmslerGridTestContent(
                 nextVisibleState = coveredEyeCheckingContentVisibleState
             )
             CoveredEyeCheckingContent(
+                viewModel = viewModel,
                 coveredEyeCheckingContentVisibleState = coveredEyeCheckingContentVisibleState,
                 nextVisibleState = amslerGridContentVisibleState
             )
@@ -116,7 +120,8 @@ fun AmslerGridContent(
             ) {
                 Canvas(
                     modifier = Modifier
-                        .fillMaxSize()
+                        .width(520.dp)
+                        .height(520.dp)
                         .pointerInput(this) {
                             detectTapGestures(
                                 onPress = {
@@ -127,15 +132,20 @@ fun AmslerGridContent(
                             )
                         }
                 ) {
-                    drawOval(
-                        color = ovalColor,
-                        topLeft = Offset(touchPosition.x - (width / 2), touchPosition.y - (height / 2)),
-                        size = Size(width, height)
+                    drawCircle(
+                        color = Color(0xff00ff00),
+                        radius = 100f,
+                        center = Offset(390f, 390f)
                     )
                     drawCircle(
                         color = Color(0xffff0000),
                         radius = 20f,
-                        center = Offset(390f + (30f * tan(rotY.toDouble())).toFloat(), 390f + (30f * tan(rotX.toDouble())).toFloat())
+                        center = Offset(390f - (200f * tan(rotY * 0.0174533)).toFloat(), 390f - (200f * tan(rotX * 0.0174533)).toFloat())
+                    )
+                    drawOval(
+                        color = ovalColor,
+                        topLeft = Offset(touchPosition.x - (width / 2), touchPosition.y - (height / 2)),
+                        size = Size(width, height)
                     )
                 }
                 Image(
@@ -143,12 +153,20 @@ fun AmslerGridContent(
                     contentDescription = ""
                 )
             }
+            Spacer(
+                modifier = Modifier
+                    .height(16.dp)
+            )
             Slider(
                 value = width,
                 onValueChange = {
                     viewModel.updateWidthSize(it)
                 },
                 valueRange = 1f..200f
+            )
+            Spacer(
+                modifier = Modifier
+                    .height(16.dp)
             )
             Slider(
                 value = height,
@@ -157,8 +175,19 @@ fun AmslerGridContent(
                 },
                 valueRange = 1f..200f
             )
+            Spacer(
+                modifier = Modifier
+                    .height(16.dp)
+            )
+            Image(
+                modifier = Modifier
+                    .height(256.dp)
+                    .clickable {
 
+                    },
+                painter = painterResource(id = R.drawable.baseline_check_circle_48),
+                contentDescription = ""
+            )
         }
-
     }
 }

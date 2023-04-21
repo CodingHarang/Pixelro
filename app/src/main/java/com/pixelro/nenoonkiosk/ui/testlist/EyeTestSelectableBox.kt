@@ -8,6 +8,7 @@ import androidx.compose.material3.CardDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 
@@ -40,15 +41,16 @@ fun EyeTestSelectableBox(
                     .height(150.dp)
             ) {
                 Text(
-                    title,
+                    text = title,
                     modifier = Modifier
-                        .padding(start = 10.dp, top = 10.dp),
-                    fontSize = 30.sp
+                        .padding(start = 20.dp, top = 20.dp),
+                    fontSize = 30.sp,
+                    fontWeight = FontWeight.Bold
                 )
                 Text(
                     description,
                     modifier = Modifier
-                        .padding(start = 10.dp, top = 10.dp, bottom = 10.dp),
+                        .padding(start = 20.dp, top = 20.dp, end = 20.dp),
                     fontSize = 20.sp
                 )
             }

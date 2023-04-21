@@ -34,7 +34,7 @@ fun VisualAcuityTestCommonContent(
     toResultScreen: () -> Unit,
     viewModel: NenoonViewModel,
     visualAcuityTestCommonContentVisibleState: MutableTransitionState<Boolean>,
-    fourthVisibleState: MutableTransitionState<Boolean>
+    nextVisibleState: MutableTransitionState<Boolean>
 ) {
     Log.e("VisualAcuityTestCommonContent", "VisualAcuityTestCommonContent")
     val sightValue = viewModel.sightValue.collectAsState().value
@@ -48,7 +48,9 @@ fun VisualAcuityTestCommonContent(
         if(isSightednessTesting) {
             SightednessTestContent(
                 toResultScreen = toResultScreen,
-                viewModel = viewModel
+                viewModel = viewModel,
+                visualAcuityTestCommonContentVisibleState = visualAcuityTestCommonContentVisibleState,
+                nextVisibleState = nextVisibleState
             )
         } else {
             AnimatedVisibility(
@@ -66,7 +68,7 @@ fun VisualAcuityTestCommonContent(
                     horizontalAlignment = Alignment.CenterHorizontally
                 ) {
                     Text(
-                        text = "시력: ${viewModel.sightValue.collectAsState().value}",
+                        text = "시력: ${viewModel.sightValue.collectAsState().value.toFloat() / 10}",
                         color = Color(0xffffffff),
                         fontSize = 40.sp
                     )
@@ -160,22 +162,34 @@ fun VisualAcuityTestCommonContent(
                             contentDescription = ""
                         )
                     }
+                    Spacer(
+                        modifier = Modifier
+                            .height(20.dp)
+                    )
                     Text(
-                        text = "측정 거리: ${viewModel.testDistance.collectAsState().value / 10}",
+                        text = "측정 거리: ${viewModel.testDistance.collectAsState().value / 10}cm",
                         fontSize = 30.sp,
                         color = Color(0xffffffff)
                     )
-                    Text(
+                    Spacer(
                         modifier = Modifier
-                            .padding(top = 20.dp),
+                            .height(20.dp)
+                    )
+                    Text(
                         text = "현재 거리: ${(viewModel.screenToFaceDistance.collectAsState().value / 10).roundToInt()}cm",
                         fontSize = 30.sp,
-                        color = Color(0xffffffff)
+                        color = Color(0xffffffff),
+                        fontWeight = FontWeight.Bold
+                    )
+                    Spacer(
+                        modifier = Modifier
+                            .height(20.dp)
                     )
                     Text(
                         text = "보이는 것을 선택해주세요.",
-                        fontSize = 30.sp,
-                        color = Color(0xffffffff)
+                        fontSize = 40.sp,
+                        color = Color(0xffffffff),
+                        fontWeight = FontWeight.Bold
                     )
                     Row() {
                         // 1
@@ -1012,10 +1026,101 @@ fun VisualAcuityTestCommonContent(
                                     .background(
                                         color = Color(0xffffffff),
                                         shape = RoundedCornerShape(16.dp)
-                                    ),
+                                    )
+                                    .clickable {
+                                        viewModel.updateSightHistory(
+                                            sightValue,
+                                            sightHistory[sightValue]!!.first,
+                                            sightHistory[sightValue]!!.second + 1
+                                        )
+                                        // 5번 중 5번째 검사일 때
+                                        if (sightHistory[sightValue]!!.first + sightHistory[sightValue]!!.second >= 5) {
+                                            // 5번 중 4번 이상 맞췄을 때
+                                            if (sightHistory[sightValue]!!.first >= 4) {
+                                                // 다음 단계로 넘어간다.
+                                                viewModel.updateSightValue(sightValue + 1)
+                                            } // 5번 중 3번 맞췄을 때
+                                            else if (sightHistory[sightValue]!!.first == 3) {
+                                                // 오른쪽 눈의 시력 검사일 때
+                                                if (!isLeftEye) {
+                                                    // 시력 검사를 초기화하고 왼쪽 눈 검사로 넘어간다.
+                                                    viewModel.updateRightEyeSightValue(
+                                                        sightValue
+                                                    )
+                                                    viewModel.initializeRightTest()
+                                                    viewModel.updateIsSightednessTesting(true)
+                                                } // 왼쪽 눈의 시력 검사일 때
+                                                else {
+                                                    // 검사를 끝낸다.
+                                                    viewModel.updateLeftEyeSightValue(sightValue)
+                                                    viewModel.updateIsSightednessTesting(true)
+                                                }
+                                            } // 5번중 2번 이하 맞췄을 때
+                                            else {
+                                                // 0.1단계일 때
+                                                if (sightValue == 1) {
+                                                    // 오른쪽 눈의 시력 검사일 때
+                                                    if (!isLeftEye) {
+                                                        // 시력 검사를 초기화하고 왼쪽 눈 검사로 넘어간다.
+                                                        viewModel.updateRightEyeSightValue(
+                                                            sightValue
+                                                        )
+                                                        viewModel.initializeRightTest()
+                                                        viewModel.updateIsSightednessTesting(
+                                                            true
+                                                        )
+                                                    } // 왼쪽쪽 눈의 시력 검사일 때
+                                                    else {
+                                                        // 검사를 끝낸다.
+                                                        viewModel.updateLeftEyeSightValue(
+                                                            sightValue
+                                                        )
+                                                        viewModel.updateIsSightednessTesting(
+                                                            true
+                                                        )
+                                                    }
+                                                } // 0.1단계가 아닐 때
+                                                else {
+                                                    // 이전 단계를 5번 모두 완료했을 때
+                                                    if (sightHistory[sightValue - 1]!!.first + sightHistory[sightValue - 1]!!.second >= 5) {
+                                                        // 오른쪽 눈의 시력 검사일 때
+                                                        if (!isLeftEye) {
+                                                            // 시력 검사를 초기화하고 오른쪽 눈 검사로 넘어간다.
+                                                            viewModel.updateRightEyeSightValue(
+                                                                sightValue
+                                                            )
+                                                            viewModel.initializeRightTest()
+                                                            viewModel.updateIsSightednessTesting(
+                                                                true
+                                                            )
+                                                        } // 왼쪽 눈의 시력 검사일 때
+                                                        else {
+                                                            // 검사를 끝낸다.
+                                                            viewModel.updateLeftEyeSightValue(
+                                                                sightValue
+                                                            )
+                                                            viewModel.updateIsSightednessTesting(
+                                                                true
+                                                            )
+                                                        }
+                                                    } // 이전 단계를 5번 모두 완료하지 않았을 때
+                                                    else {
+                                                        viewModel.updateSightValue(sightValue - 1)
+                                                    }
+                                                }
+                                            }
+                                        }
+                                        viewModel.updateRandomList()
+                                    },
                                 contentAlignment = Alignment.Center
                             ) {
-
+                                Image(
+                                    modifier = Modifier
+                                        .padding(10.dp)
+                                        .height(150.dp),
+                                    imageVector = ImageVector.vectorResource(id = R.drawable.question_mark),
+                                    contentDescription = ""
+                                )
                             }
                         }
                     }
@@ -1028,7 +1133,9 @@ fun VisualAcuityTestCommonContent(
 @Composable
 fun SightednessTestContent(
     toResultScreen: () -> Unit,
-    viewModel: NenoonViewModel
+    viewModel: NenoonViewModel,
+    visualAcuityTestCommonContentVisibleState: MutableTransitionState<Boolean>,
+    nextVisibleState: MutableTransitionState<Boolean>
 ) {
     val isSightednessTesting = viewModel.isSightednessTesting.collectAsState().value
     val isLeftEye = viewModel.isLeftEye.collectAsState().value
@@ -1059,7 +1166,7 @@ fun SightednessTestContent(
                             .padding(top = 40.dp),
                         text = "초록",
                         fontSize = 48.sp,
-                        fontWeight = FontWeight.W900,
+                        fontWeight = FontWeight.ExtraBold,
                         textAlign = TextAlign.Center
                     )
                 }
@@ -1083,16 +1190,25 @@ fun SightednessTestContent(
                             .padding(top = 40.dp),
                         text = "빨강",
                         fontSize = 48.sp,
-                        fontWeight = FontWeight.W900,
+                        fontWeight = FontWeight.ExtraBold,
                         textAlign = TextAlign.Center
                     )
                 }
             }
         }
+        Spacer(
+            modifier = Modifier
+                .height(20.dp)
+        )
         Text(
             text = "글자가 더 잘 보이는 쪽을 고르세요.",
             color = Color(0xffffffff),
-            fontSize = 30.sp
+            fontSize = 40.sp,
+            fontWeight = FontWeight.Bold
+        )
+        Spacer(
+            modifier = Modifier
+                .height(20.dp)
         )
         Row(
             verticalAlignment = Alignment.CenterVertically
@@ -1116,13 +1232,16 @@ fun SightednessTestContent(
                             viewModel.updateRightEyeSightedValue(VisionDisorderType.Hyperopia)
                             viewModel.updateIsSightednessTesting(false)
                             viewModel.updateIsLeftEye(true)
+                            nextVisibleState.targetState = true
+                            visualAcuityTestCommonContentVisibleState.targetState = false
                         }
                     },
                 contentAlignment = Alignment.Center
             ) {
                 Text(
                     text = "초록",
-                    fontSize = 30.sp
+                    fontSize = 30.sp,
+                    fontWeight = FontWeight.Bold
                 )
             }
 
@@ -1142,16 +1261,19 @@ fun SightednessTestContent(
                             viewModel.updateIsLeftEye(false)
                             toResultScreen()
                         } else {
+                            nextVisibleState.targetState = true
                             viewModel.updateRightEyeSightedValue(VisionDisorderType.Myopia)
                             viewModel.updateIsSightednessTesting(false)
                             viewModel.updateIsLeftEye(true)
+                            visualAcuityTestCommonContentVisibleState.targetState = false
                         }
                     },
                 contentAlignment = Alignment.Center
             ) {
                 Text(
                     text = "빨강",
-                    fontSize = 30.sp
+                    fontSize = 30.sp,
+                    fontWeight = FontWeight.Bold
                 )
             }
         }
@@ -1174,16 +1296,19 @@ fun SightednessTestContent(
                             viewModel.updateIsLeftEye(false)
                             toResultScreen()
                         } else {
+                            nextVisibleState.targetState = true
                             viewModel.updateRightEyeSightedValue(VisionDisorderType.Normal)
                             viewModel.updateIsSightednessTesting(false)
                             viewModel.updateIsLeftEye(true)
+                            visualAcuityTestCommonContentVisibleState.targetState = false
                         }
                     },
                 contentAlignment = Alignment.Center
             ) {
                 Text(
                     text = "둘다 잘 보인다",
-                    fontSize = 30.sp
+                    fontSize = 30.sp,
+                    fontWeight = FontWeight.Bold
                 )
             }
             Box(
@@ -1202,16 +1327,19 @@ fun SightednessTestContent(
                             viewModel.updateIsLeftEye(false)
                             toResultScreen()
                         } else {
+                            nextVisibleState.targetState = true
                             viewModel.updateRightEyeSightedValue(VisionDisorderType.Astigmatism)
                             viewModel.updateIsSightednessTesting(false)
                             viewModel.updateIsLeftEye(true)
+                            visualAcuityTestCommonContentVisibleState.targetState = false
                         }
                     },
                 contentAlignment = Alignment.Center
             ) {
                 Text(
                     text = "둘 다 뿌옇다",
-                    fontSize = 30.sp
+                    fontSize = 30.sp,
+                    fontWeight = FontWeight.Bold
                 )
             }
         }

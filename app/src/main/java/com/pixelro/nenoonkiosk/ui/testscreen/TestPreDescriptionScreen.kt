@@ -187,9 +187,13 @@ fun TestPreDescriptionDialog(
                     modifier = Modifier
                         .padding(top = 20.dp),
                     fontSize = 40.sp,
-                    fontWeight = FontWeight.Medium,
+                    fontWeight = FontWeight.ExtraBold,
                     color = Color(0xff1d71e1),
                     textAlign = TextAlign.Center
+                )
+                Spacer(
+                    modifier = Modifier
+                        .height(20.dp)
                 )
                 Text(
                     text = "검사 방법",
@@ -233,7 +237,7 @@ fun TestPreDescriptionDialog(
                     text = "확인",
                     fontSize = 30.sp,
                     color = Color(0xff1d71e1),
-                    fontWeight = FontWeight.Normal,
+                    fontWeight = FontWeight.Bold,
                     textAlign = TextAlign.Center,
                     modifier = Modifier
                         .padding(top = 12.dp, bottom = 12.dp)
