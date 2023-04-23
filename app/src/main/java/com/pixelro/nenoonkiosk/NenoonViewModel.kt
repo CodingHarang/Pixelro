@@ -162,6 +162,7 @@ class NenoonViewModel : ViewModel() {
     val nemonicList: StateFlow<List<Pair<String, String>>> = _nemonicList
 
 
+
     fun updateSelectedTestType(testType: TestType) {
         _selectedTestType.update { testType }
         _selectedTestName.update {

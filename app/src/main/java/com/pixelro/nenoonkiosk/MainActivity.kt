@@ -77,14 +77,13 @@ class MainActivity : ComponentActivity() {
                 Toast.makeText(applicationContext, "Bluetooth permission is not Granted", Toast.LENGTH_SHORT).show()
             }
         }
-        takeResultLauncher = registerForActivityResult(ActivityResultContracts.StartActivityForResult(), ActivityResultCallback {
-                result ->
-            if(result.resultCode == RESULT_OK) {
+        takeResultLauncher = registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
+            if (result.resultCode == RESULT_OK) {
                 Toast.makeText(applicationContext, "Bluetooth ON", Toast.LENGTH_SHORT).show()
             } else {
                 Toast.makeText(applicationContext, "Bluetooth OFF", Toast.LENGTH_SHORT).show()
             }
-        })
+        }
 
         setContent {
             NenoonKioskTheme {

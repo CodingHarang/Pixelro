@@ -94,5 +94,5 @@ dependencies {
     implementation "androidx.compose.material3:material3:1.0.1"
 
     // Nemonic printer
-    implementation files('C:\\YJS\\test_apps\\NemonicComposeTest\\app\\libs\\nemonic.aar')
+    implementation files('D:/MyProjects/Pixelro/app/libs/nemonic.aar')
 }

@@ -5,12 +5,15 @@ import android.bluetooth.BluetoothAdapter
 import android.bluetooth.BluetoothDevice
 import android.content.BroadcastReceiver
 import android.content.Context
+import android.content.Intent
 import android.content.IntentFilter
 import android.hardware.camera2.CameraCharacteristics
 import android.hardware.camera2.CameraManager
 import android.provider.Settings
 import android.util.Log
 import android.util.SizeF
+import androidx.activity.compose.rememberLauncherForActivityResult
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.animation.AnimatedContentScope
 import androidx.compose.animation.ExperimentalAnimationApi
 import androidx.compose.animation.core.TweenSpec
@@ -62,16 +65,29 @@ fun NenoonApp(
         lensSize = cameraCharacteristics.get(CameraCharacteristics.SENSOR_INFO_PHYSICAL_SIZE) ?: SizeF(0f, 0f)
     )
 
-    val permissionState = rememberMultiplePermissionsState(
-        permissions = listOf(
-            Manifest.permission.WRITE_SECURE_SETTINGS, Manifest.permission.WRITE_SETTINGS, Manifest.permission.BLUETOOTH_SCAN,
-            Manifest.permission.BLUETOOTH_CONNECT, Manifest.permission.BLUETOOTH, Manifest.permission.ACCESS_COARSE_LOCATION,
-            Manifest.permission.ACCESS_FINE_LOCATION, Manifest.permission.CAMERA, Manifest.permission.RECORD_AUDIO,
-            Settings.ACTION_MANAGE_WRITE_SETTINGS
-        )
-    )
+    val permissionRequestLauncher = rememberLauncherForActivityResult(ActivityResultContracts.RequestMultiplePermissions()) {
+        result ->
+        Log.e("permissionRequestLauncher", "${result.entries}")
+    }
+
+    val permissions = arrayOf(
+        Manifest.permission.WRITE_SECURE_SETTINGS, Manifest.permission.WRITE_SETTINGS, Manifest.permission.BLUETOOTH_SCAN,
+        Manifest.permission.BLUETOOTH_CONNECT, Manifest.permission.BLUETOOTH, Manifest.permission.ACCESS_COARSE_LOCATION,
+        Manifest.permission.ACCESS_FINE_LOCATION, Manifest.permission.CAMERA, Manifest.permission.RECORD_AUDIO,
+        Settings.ACTION_MANAGE_WRITE_SETTINGS)
+//    val permissionState = rememberMultiplePermissionsState(
+//
+//    )
     DisposableEffect(true) {
-        permissionState.launchMultiplePermissionRequest()
+//        permissionState.launchMultiplePermissionRequest()
+        permissionRequestLauncher.launch(permissions)
+        if(!Settings.System.canWrite(context)) {
+            Log.e("cannot write", "cannotWrite")
+            context.startActivity(Intent(Settings.ACTION_MANAGE_WRITE_SETTINGS))
+        } else {
+            Settings.System.putInt(context.contentResolver, Settings.System.SCREEN_OFF_TIMEOUT, 600_000)
+            Log.e("can write", "canWrite")
+        }
         onDispose {
 
         }
@@ -86,8 +102,11 @@ fun NenoonApp(
     Log.e("permissionState8", "${ContextCompat.checkSelfPermission(context, Manifest.permission.CAMERA)}")
     Log.e("permissionState9", "${ContextCompat.checkSelfPermission(context, Manifest.permission.RECORD_AUDIO)}")
     Log.e("permissionState0", "${ContextCompat.checkSelfPermission(context, Settings.ACTION_MANAGE_WRITE_SETTINGS)}")
-    if(permissionState.allPermissionsGranted) {
-        Settings.System.putInt(context.contentResolver, Settings.System.SCREEN_OFF_TIMEOUT, 3600_000)
+    if(true) {
+        SplashScreen()
+    }
+    else if(false) {
+//        Settings.System.putInt(context.contentResolver, Settings.System.SCREEN_OFF_TIMEOUT, 3600_000)
         AnimatedNavHost(
             navController = mainNavController,
             startDestination = GlobalConstants.ROUTE_TEST_LIST,
