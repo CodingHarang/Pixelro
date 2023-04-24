@@ -24,13 +24,26 @@ fun SplashScreen() {
             ),
         contentAlignment = Alignment.Center
     ) {
+        Box(
+            modifier = Modifier
+                .fillMaxSize(),
+            contentAlignment = Alignment.BottomCenter
+        ) {
+            Image(
+                modifier = Modifier
+                    .height(100.dp)
+                    .padding(bottom = 40.dp),
+                painter = painterResource(id = R.drawable.pixelro_logo),
+                contentDescription = ""
+            )
+        }
         Column(
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
             Image(
                 modifier = Modifier
                     .height(300.dp),
-                painter = painterResource(id = R.drawable.logo),
+                painter = painterResource(id = R.drawable.nenoon_logo),
                 contentDescription = ""
             )
             Spacer(

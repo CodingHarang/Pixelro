@@ -35,36 +35,14 @@ class MainActivity : ComponentActivity() {
     lateinit var takePermission: ActivityResultLauncher<String>
     lateinit var takeResultLauncher: ActivityResultLauncher<Intent>
 
+    override fun onResume() {
+        super.onResume()
+
+        viewModel.checkIfAllPermissionsGranted()
+    }
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-
-        val receiver = object : BroadcastReceiver() {
-            override fun onReceive(context: Context?, intent: Intent?) {
-                val action: String? = intent?.action
-                when(action) {
-                    BluetoothDevice.ACTION_FOUND -> {
-                        // Discovery has found a device. Get the BluetoothDevice
-                        // object and its info from the Intent.
-                        val device: BluetoothDevice? = intent.getParcelableExtra(BluetoothDevice.EXTRA_DEVICE)
-
-                        if (ActivityCompat.checkSelfPermission(
-                                applicationContext,
-                                Manifest.permission.BLUETOOTH_CONNECT
-                            ) != PackageManager.PERMISSION_GRANTED
-                        ) {
-                            return
-                        }
-
-                        val deviceName = device?.name
-                        val deviceHardwareAddress = device?.address // MAC address
-                        if (deviceHardwareAddress != null && deviceName != null && deviceHardwareAddress.contains("74:F0:7D")) {
-                            Log.e("onReceive", "$deviceName, $deviceHardwareAddress")
-                            viewModel.updateNemonicList(deviceName, deviceHardwareAddress)
-                        }
-                    }
-                }
-            }
-        }
 
         bluetoothManager = getSystemService(BLUETOOTH_SERVICE) as BluetoothManager
         bluetoothAdapter = bluetoothManager.adapter
@@ -93,8 +71,6 @@ class MainActivity : ComponentActivity() {
                     color = MaterialTheme.colors.background
                 ) {
                     NenoonApp(
-                        bluetoothAdapter = bluetoothAdapter,
-                        receiver = receiver,
                         viewModel = viewModel
                     )
                 }

@@ -34,7 +34,7 @@ fun PresbyopiaTestContent(
     toResultScreen: () -> Unit,
     viewModel: NenoonViewModel
 ) {
-    Log.e("PresbyopiaTestContent", "PresbyopiaTestContent")
+//    Log.e("PresbyopiaTestContent", "PresbyopiaTestContent")
     val firstVisibleState = remember { MutableTransitionState(true) }
     val secondVisibleState = remember { MutableTransitionState(false) }
     val thirdVisibleState = remember { MutableTransitionState(false) }

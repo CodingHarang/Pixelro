@@ -6,14 +6,28 @@ import android.util.SizeF
 import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.graphics.Color
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
 import com.pixelro.nenoonkiosk.data.TestType
 import com.pixelro.nenoonkiosk.data.VisionDisorderType
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.update
+import kotlinx.coroutines.launch
 import kotlin.math.tan
 
 class NenoonViewModel : ViewModel() {
+
+    init {
+        showSplashScreen()
+    }
+
+    fun showSplashScreen() {
+        viewModelScope.launch {
+            delay(5000)
+            _isLaunching.update { false }
+        }
+    }
 
     // Face detection
     private val _screenToFaceDistance = MutableStateFlow(0f)
@@ -148,6 +162,16 @@ class NenoonViewModel : ViewModel() {
 
 
     // Global
+    private val _isLaunching = MutableStateFlow(true)
+    val isLaunching: StateFlow<Boolean> = _isLaunching
+    private val _isWriteSettingsPermissionGranted = MutableStateFlow(false)
+    val isWriteSettingsPermissionGranted: StateFlow<Boolean> = _isWriteSettingsPermissionGranted
+    private val _isBluetoothPermissionsGranted = MutableStateFlow(false)
+    val isBluetoothPermissionsGranted: StateFlow<Boolean> = _isBluetoothPermissionsGranted
+    private val _isCameraPermissionGranted = MutableStateFlow(false)
+    val isCameraPermissionGranted: StateFlow<Boolean> = _isCameraPermissionGranted
+    private val _isAllPermissionsGranted = MutableStateFlow(false)
+    val isAllPermissionsGranted: StateFlow<Boolean> = _isAllPermissionsGranted
     private val _selectedTestType = MutableStateFlow(TestType.None)
     val selectedTestType: StateFlow<TestType> = _selectedTestType
     private val _selectedTestName = MutableStateFlow("")
@@ -158,10 +182,32 @@ class NenoonViewModel : ViewModel() {
     val selectedTestMenuDescription: StateFlow<String> = _selectedTestMenuDescription
     private val _testDistance = MutableStateFlow(0)
     val testDistance: StateFlow<Int> = _testDistance
+    private val _printerName = MutableStateFlow("")
+    val printerName: StateFlow<String> = _printerName
+    private val _printerMacAddress = MutableStateFlow("")
+    val printerMacAddress: StateFlow<String> = _printerMacAddress
     private val _nemonicList = MutableStateFlow(emptyList<Pair<String, String>>())
     val nemonicList: StateFlow<List<Pair<String, String>>> = _nemonicList
 
+    fun updateIsWriteSettingsPermissionGranted(granted: Boolean) {
+        _isWriteSettingsPermissionGranted.update { granted }
+    }
 
+    fun updateIsBluetoothPermissionsGranted(granted: Boolean) {
+        _isBluetoothPermissionsGranted.update { granted }
+    }
+
+    fun updateIsCameraPermissionGranted(granted: Boolean) {
+        _isCameraPermissionGranted.update { granted }
+    }
+
+    fun checkIfAllPermissionsGranted() {
+        if(isBluetoothPermissionsGranted.value && isCameraPermissionGranted.value && isWriteSettingsPermissionGranted.value) {
+            _isAllPermissionsGranted.update { true }
+        } else {
+            _isAllPermissionsGranted.update { false }
+        }
+    }
 
     fun updateSelectedTestType(testType: TestType) {
         _selectedTestType.update { testType }
@@ -191,15 +237,9 @@ class NenoonViewModel : ViewModel() {
         _testDistance.update { screenToFaceDistance.value.toInt() }
     }
 
-    fun updateNemonicList(name: String, addr: String) {
-        _nemonicList.update {
-            if(Pair(name, addr) !in it) {
-                it + (Pair(name, addr))
-            } else {
-                it
-            }
-        }
-        Log.e("viewModel", "${_nemonicList.value}")
+    fun updatePrinter(name: String, address: String) {
+        _printerName.update { name }
+        _printerMacAddress.update { address }
     }
 
     // Presbyopia test
