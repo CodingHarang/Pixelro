@@ -7,18 +7,32 @@ import android.util.SizeF
 import androidx.compose.animation.AnimatedContentScope
 import androidx.compose.animation.ExperimentalAnimationApi
 import androidx.compose.animation.core.TweenSpec
+import androidx.compose.foundation.Image
+import androidx.compose.foundation.background
+import androidx.compose.foundation.layout.*
+import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.DisposableEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.Alignment
+import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import androidx.navigation.NavHostController
 import com.google.accompanist.navigation.animation.AnimatedNavHost
 import com.google.accompanist.navigation.animation.composable
 import com.google.accompanist.navigation.animation.rememberAnimatedNavController
 import com.google.accompanist.permissions.ExperimentalPermissionsApi
+import com.google.accompanist.systemuicontroller.rememberSystemUiController
 import com.pixelro.nenoonkiosk.NenoonViewModel
+import com.pixelro.nenoonkiosk.R
 import com.pixelro.nenoonkiosk.data.GlobalConstants
+import com.pixelro.nenoonkiosk.data.TestType
 import com.pixelro.nenoonkiosk.ui.testscreen.*
 
 @OptIn(ExperimentalAnimationApi::class, ExperimentalPermissionsApi::class)
@@ -29,6 +43,7 @@ fun NenoonApp(
     subNavController: NavHostController = rememberAnimatedNavController(),
     testNavController: NavHostController = rememberAnimatedNavController()
 ) {
+
 
     val context = LocalContext.current
     val configuration = LocalConfiguration.current
@@ -44,9 +59,10 @@ fun NenoonApp(
         lensSize = cameraCharacteristics.get(CameraCharacteristics.SENSOR_INFO_PHYSICAL_SIZE) ?: SizeF(0f, 0f)
     )
 
-
     if(viewModel.isLaunching.collectAsState().value) {
-        SplashScreen()
+        SplashScreen(
+            viewModel = viewModel
+        )
     }
     else {
         if(!viewModel.isAllPermissionsGranted.collectAsState().value) {
@@ -54,207 +70,277 @@ fun NenoonApp(
                 viewModel
             )
         } else {
-            AnimatedNavHost(
-                navController = mainNavController,
-                startDestination = GlobalConstants.ROUTE_TEST_LIST,
-                contentAlignment = Alignment.TopCenter
+            Column(
+                modifier = Modifier
+                    .fillMaxSize()
             ) {
-
-                // 검사 선택 화면
-                composable(
-                    route = GlobalConstants.ROUTE_TEST_LIST,
-                    enterTransition = {
-                        slideIntoContainer(
-                            towards = AnimatedContentScope.SlideDirection.Left,
-                            animationSpec = TweenSpec(durationMillis = 500)
+                Box(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .height(80.dp)
+                        .background(
+                            color = when(viewModel.selectedTestType.collectAsState().value) {
+                                TestType.None -> Color(0xff1d71e1)
+                                else -> Color(0xff000000)
+                            }
                         )
-                    },
-                    exitTransition = {
-                        slideOutOfContainer(
-                            towards = AnimatedContentScope.SlideDirection.Left,
-                            animationSpec = TweenSpec(durationMillis = 500)
-                        )
-                    }
+                        .statusBarsPadding()
                 ) {
-                    TestListScreen(
-                        toPreDescriptionScreen = { mainNavController.navigate(GlobalConstants.ROUTE_TEST_PRE_DESCRIPTION) },
-                        navController = subNavController,
-                        viewModel = viewModel
-                    )
+                    Box(
+                        modifier = Modifier
+                            .fillMaxSize(),
+                        contentAlignment = Alignment.CenterStart
+                    ) {
+                        Row(
+                            verticalAlignment = Alignment.CenterVertically
+                        ) {
+                            Spacer(
+                                modifier = Modifier
+                                    .width(12.dp)
+                            )
+                            Image(
+                                modifier = Modifier
+                                    .height(40.dp),
+                                painter = painterResource(id = R.drawable.nenoon_logo),
+                                contentDescription = ""
+                            )
+                            Spacer(
+                                modifier = Modifier
+                                    .width(12.dp)
+                            )
+                            Text(
+                                text = "내눈",
+                                fontWeight = FontWeight.ExtraBold,
+                                color = Color(0xffffffff),
+                                fontSize = 30.sp
+                            )
+                        }
+                    }
+                    Box(
+                        modifier = Modifier
+                            .fillMaxSize(),
+                        contentAlignment = Alignment.CenterEnd
+                    ) {
+                        Row() {
+                            Image(
+                                modifier = Modifier
+                                    .height(40.dp),
+                                painter = painterResource(id = R.drawable.pixelro_logo),
+                                contentDescription = ""
+                            )
+                            Spacer(
+                                modifier = Modifier
+                                    .width(12.dp)
+                            )
+                        }
+                    }
                 }
 
-                // 안구 나이 검사
-                composable(
-                    GlobalConstants.ROUTE_PRESBYOPIA_TEST,
-                    enterTransition = {
-                        slideIntoContainer(
-                            towards = AnimatedContentScope.SlideDirection.Left,
-                            animationSpec = TweenSpec(durationMillis = 500)
-                        )
-                    },
-                    exitTransition = {
-                        slideOutOfContainer(
-                            towards = AnimatedContentScope.SlideDirection.Left,
-                            animationSpec = TweenSpec(durationMillis = 500)
-                        )
-                    }
+                AnimatedNavHost(
+                    modifier = Modifier
+                        .fillMaxSize(),
+                    navController = mainNavController,
+                    startDestination = GlobalConstants.ROUTE_TEST_LIST,
+                    contentAlignment = Alignment.TopCenter
                 ) {
-                    PresbyopiaTestScreen(
-                        toResultScreen = { mainNavController.navigate(GlobalConstants.ROUTE_TEST_RESULT) },
-                        viewModel = viewModel
-                    )
-                }
 
-                // 근거리 시력 검사
-                composable(
-                    GlobalConstants.ROUTE_SHORT_VISUAL_ACUITY_TEST,
-                    enterTransition = {
-                        slideIntoContainer(
-                            towards = AnimatedContentScope.SlideDirection.Left,
-                            animationSpec = TweenSpec(durationMillis = 500)
-                        )
-                    },
-                    exitTransition = {
-                        slideOutOfContainer(
-                            towards = AnimatedContentScope.SlideDirection.Left,
-                            animationSpec = TweenSpec(durationMillis = 500)
+                    // 검사 선택 화면
+                    composable(
+                        route = GlobalConstants.ROUTE_TEST_LIST,
+                        enterTransition = {
+                            slideIntoContainer(
+                                towards = AnimatedContentScope.SlideDirection.Left,
+                                animationSpec = TweenSpec(durationMillis = 500)
+                            )
+                        },
+                        exitTransition = {
+                            slideOutOfContainer(
+                                towards = AnimatedContentScope.SlideDirection.Left,
+                                animationSpec = TweenSpec(durationMillis = 500)
+                            )
+                        }
+                    ) {
+                        TestListScreen(
+                            toPreDescriptionScreen = { mainNavController.navigate(GlobalConstants.ROUTE_TEST_PRE_DESCRIPTION) },
+                            navController = subNavController,
+                            viewModel = viewModel
                         )
                     }
-                ) {
-                    ShortDistanceVisualAcuityTestScreen(
-                        toResultScreen = { mainNavController.navigate(GlobalConstants.ROUTE_TEST_RESULT) },
-                        viewModel = viewModel
-                    )
-                }
 
-                // 원거리 시력 검사
-                composable(
-                    GlobalConstants.ROUTE_LONG_VISUAL_ACUITY_TEST,
-                    enterTransition = {
-                        slideIntoContainer(
-                            towards = AnimatedContentScope.SlideDirection.Left,
-                            animationSpec = TweenSpec(durationMillis = 500)
-                        )
-                    },
-                    exitTransition = {
-                        slideOutOfContainer(
-                            towards = AnimatedContentScope.SlideDirection.Left,
-                            animationSpec = TweenSpec(durationMillis = 500)
+                    // 안구 나이 검사
+                    composable(
+                        GlobalConstants.ROUTE_PRESBYOPIA_TEST,
+                        enterTransition = {
+                            slideIntoContainer(
+                                towards = AnimatedContentScope.SlideDirection.Left,
+                                animationSpec = TweenSpec(durationMillis = 500)
+                            )
+                        },
+                        exitTransition = {
+                            slideOutOfContainer(
+                                towards = AnimatedContentScope.SlideDirection.Left,
+                                animationSpec = TweenSpec(durationMillis = 500)
+                            )
+                        }
+                    ) {
+                        PresbyopiaTestScreen(
+                            toResultScreen = { mainNavController.navigate(GlobalConstants.ROUTE_TEST_RESULT) },
+                            viewModel = viewModel
                         )
                     }
-                ) {
-                    LongDistanceVisualAcuityTestScreen(
-                        toResultScreen = { mainNavController.navigate(GlobalConstants.ROUTE_TEST_RESULT) },
-                        viewModel = viewModel)
-                }
 
-                // 어린이 시력 검사
-                composable(
-                    GlobalConstants.ROUTE_CHILDREN_VISUAL_ACUITY_TEST,
-                    enterTransition = {
-                        slideIntoContainer(
-                            towards = AnimatedContentScope.SlideDirection.Left,
-                            animationSpec = TweenSpec(durationMillis = 500)
-                        )
-                    },
-                    exitTransition = {
-                        slideOutOfContainer(
-                            towards = AnimatedContentScope.SlideDirection.Left,
-                            animationSpec = TweenSpec(durationMillis = 500)
+                    // 근거리 시력 검사
+                    composable(
+                        GlobalConstants.ROUTE_SHORT_VISUAL_ACUITY_TEST,
+                        enterTransition = {
+                            slideIntoContainer(
+                                towards = AnimatedContentScope.SlideDirection.Left,
+                                animationSpec = TweenSpec(durationMillis = 500)
+                            )
+                        },
+                        exitTransition = {
+                            slideOutOfContainer(
+                                towards = AnimatedContentScope.SlideDirection.Left,
+                                animationSpec = TweenSpec(durationMillis = 500)
+                            )
+                        }
+                    ) {
+                        ShortDistanceVisualAcuityTestScreen(
+                            toResultScreen = { mainNavController.navigate(GlobalConstants.ROUTE_TEST_RESULT) },
+                            viewModel = viewModel
                         )
                     }
-                ) {
-                    ChildrenVisualAcuityTestScreen(
-                        toResultScreen = { mainNavController.navigate(GlobalConstants.ROUTE_TEST_RESULT) },
-                        viewModel = viewModel)
-                }
 
-                // 암슬러 차트 검사
-                composable(
-                    GlobalConstants.ROUTE_AMSLER_GRID_TEST,
-                    enterTransition = {
-                        slideIntoContainer(
-                            towards = AnimatedContentScope.SlideDirection.Left,
-                            animationSpec = TweenSpec(durationMillis = 500)
-                        )
-                    },
-                    exitTransition = {
-                        slideOutOfContainer(
-                            towards = AnimatedContentScope.SlideDirection.Left,
-                            animationSpec = TweenSpec(durationMillis = 500)
-                        )
+                    // 원거리 시력 검사
+                    composable(
+                        GlobalConstants.ROUTE_LONG_VISUAL_ACUITY_TEST,
+                        enterTransition = {
+                            slideIntoContainer(
+                                towards = AnimatedContentScope.SlideDirection.Left,
+                                animationSpec = TweenSpec(durationMillis = 500)
+                            )
+                        },
+                        exitTransition = {
+                            slideOutOfContainer(
+                                towards = AnimatedContentScope.SlideDirection.Left,
+                                animationSpec = TweenSpec(durationMillis = 500)
+                            )
+                        }
+                    ) {
+                        LongDistanceVisualAcuityTestScreen(
+                            toResultScreen = { mainNavController.navigate(GlobalConstants.ROUTE_TEST_RESULT) },
+                            viewModel = viewModel)
                     }
-                ) {
-                    AmslerGridTestScreen(
-                        toResultScreen = { mainNavController.navigate(GlobalConstants.ROUTE_TEST_RESULT) },
-                        viewModel = viewModel)
-                }
 
-                // 엠식 변형시 검사
-                composable(
-                    GlobalConstants.ROUTE_M_CHART_TEST,
-                    enterTransition = {
-                        slideIntoContainer(
-                            towards = AnimatedContentScope.SlideDirection.Left,
-                            animationSpec = TweenSpec(durationMillis = 500)
-                        )
-                    },
-                    exitTransition = {
-                        slideOutOfContainer(
-                            towards = AnimatedContentScope.SlideDirection.Left,
-                            animationSpec = TweenSpec(durationMillis = 500)
-                        )
+                    // 어린이 시력 검사
+                    composable(
+                        GlobalConstants.ROUTE_CHILDREN_VISUAL_ACUITY_TEST,
+                        enterTransition = {
+                            slideIntoContainer(
+                                towards = AnimatedContentScope.SlideDirection.Left,
+                                animationSpec = TweenSpec(durationMillis = 500)
+                            )
+                        },
+                        exitTransition = {
+                            slideOutOfContainer(
+                                towards = AnimatedContentScope.SlideDirection.Left,
+                                animationSpec = TweenSpec(durationMillis = 500)
+                            )
+                        }
+                    ) {
+                        ChildrenVisualAcuityTestScreen(
+                            toResultScreen = { mainNavController.navigate(GlobalConstants.ROUTE_TEST_RESULT) },
+                            viewModel = viewModel)
                     }
-                ) {
-                    MChartTestScreen(
-                        navController = testNavController,
-                        viewModel = viewModel)
-                }
 
-                // 검사 사전 설명 페이지
-                composable(
-                    GlobalConstants.ROUTE_TEST_PRE_DESCRIPTION,
-                    enterTransition = {
-                        slideIntoContainer(
-                            towards = AnimatedContentScope.SlideDirection.Left,
-                            animationSpec = TweenSpec(durationMillis = 500)
-                        )
-                    },
-                    exitTransition = {
-                        slideOutOfContainer(
-                            towards = AnimatedContentScope.SlideDirection.Left,
-                            animationSpec = TweenSpec(durationMillis = 500)
-                        )
+                    // 암슬러 차트 검사
+                    composable(
+                        GlobalConstants.ROUTE_AMSLER_GRID_TEST,
+                        enterTransition = {
+                            slideIntoContainer(
+                                towards = AnimatedContentScope.SlideDirection.Left,
+                                animationSpec = TweenSpec(durationMillis = 500)
+                            )
+                        },
+                        exitTransition = {
+                            slideOutOfContainer(
+                                towards = AnimatedContentScope.SlideDirection.Left,
+                                animationSpec = TweenSpec(durationMillis = 500)
+                            )
+                        }
+                    ) {
+                        AmslerGridTestScreen(
+                            toResultScreen = { mainNavController.navigate(GlobalConstants.ROUTE_TEST_RESULT) },
+                            viewModel = viewModel)
                     }
-                ) {
-                    TestPreDescriptionScreen(
-                        viewModel,
-                        mainNavController
-                    )
-                }
 
-                // 검사 결과 화면
-                composable(
-                    route = GlobalConstants.ROUTE_TEST_RESULT,
-                    enterTransition = {
-                        slideIntoContainer(
-                            towards = AnimatedContentScope.SlideDirection.Left,
-                            animationSpec = TweenSpec(durationMillis = 500)
-                        )
-                    },
-                    exitTransition = {
-                        slideOutOfContainer(
-                            towards = AnimatedContentScope.SlideDirection.Left,
-                            animationSpec = TweenSpec(durationMillis = 500)
+                    // 엠식 변형시 검사
+                    composable(
+                        GlobalConstants.ROUTE_M_CHART_TEST,
+                        enterTransition = {
+                            slideIntoContainer(
+                                towards = AnimatedContentScope.SlideDirection.Left,
+                                animationSpec = TweenSpec(durationMillis = 500)
+                            )
+                        },
+                        exitTransition = {
+                            slideOutOfContainer(
+                                towards = AnimatedContentScope.SlideDirection.Left,
+                                animationSpec = TweenSpec(durationMillis = 500)
+                            )
+                        }
+                    ) {
+                        MChartTestScreen(
+                            navController = testNavController,
+                            viewModel = viewModel)
+                    }
+
+                    // 검사 사전 설명 페이지
+                    composable(
+                        GlobalConstants.ROUTE_TEST_PRE_DESCRIPTION,
+                        enterTransition = {
+                            slideIntoContainer(
+                                towards = AnimatedContentScope.SlideDirection.Left,
+                                animationSpec = TweenSpec(durationMillis = 500)
+                            )
+                        },
+                        exitTransition = {
+                            slideOutOfContainer(
+                                towards = AnimatedContentScope.SlideDirection.Left,
+                                animationSpec = TweenSpec(durationMillis = 500)
+                            )
+                        }
+                    ) {
+                        TestPreDescriptionScreen(
+                            viewModel,
+                            mainNavController
                         )
                     }
-                ) {
-                    TestResultScreen(
-                        viewModel = viewModel,
-                        navController = mainNavController
-                    )
+
+                    // 검사 결과 화면
+                    composable(
+                        route = GlobalConstants.ROUTE_TEST_RESULT,
+                        enterTransition = {
+                            slideIntoContainer(
+                                towards = AnimatedContentScope.SlideDirection.Left,
+                                animationSpec = TweenSpec(durationMillis = 500)
+                            )
+                        },
+                        exitTransition = {
+                            slideOutOfContainer(
+                                towards = AnimatedContentScope.SlideDirection.Left,
+                                animationSpec = TweenSpec(durationMillis = 500)
+                            )
+                        }
+                    ) {
+                        TestResultScreen(
+                            viewModel = viewModel,
+                            navController = mainNavController
+                        )
+                    }
                 }
             }
+
         }
 
     }

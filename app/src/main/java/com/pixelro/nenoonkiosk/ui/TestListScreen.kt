@@ -3,6 +3,7 @@ package com.pixelro.nenoonkiosk.ui
 import androidx.compose.animation.*
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.pager.HorizontalPager
 import androidx.compose.foundation.pager.rememberPagerState
@@ -38,7 +39,12 @@ fun TestListScreen(
     navController: NavHostController,
     viewModel: NenoonViewModel
 ) {
-    Column() {
+    Column(
+        modifier = Modifier
+            .background(
+                color = Color(0xffffffff)
+            )
+    ) {
 
         HorizontalPager(
             state = rememberPagerState(

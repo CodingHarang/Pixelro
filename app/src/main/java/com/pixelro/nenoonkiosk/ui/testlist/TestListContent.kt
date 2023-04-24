@@ -14,7 +14,7 @@ import com.pixelro.nenoonkiosk.data.TestType
 
 @OptIn(ExperimentalAnimationApi::class)
 @Composable
-fun  TestListContent(
+fun TestListContent(
     toPreDescriptionScreen: () -> Unit,
     navController: NavHostController,
     viewModel: NenoonViewModel

@@ -20,13 +20,13 @@ fun EyeTestSelectableBox(
     onClickMethod: () -> Unit
 ) {
     Card(
-        elevation = CardDefaults.cardElevation(4.dp),
+        elevation = CardDefaults.cardElevation(0.dp),
         modifier = Modifier
 //            .clip(RoundedCornerShape(16.dp))
-            .padding(start = 20.dp, top = 10.dp, end = 20.dp)
+            .padding(start = 20.dp, end = 20.dp)
             .fillMaxWidth(),
         colors = CardDefaults.cardColors(
-            containerColor = Color(0xffffffff)
+            containerColor = Color(0xFFC9D5FF)
         )
     ) {
         Box(
@@ -47,10 +47,14 @@ fun EyeTestSelectableBox(
                     fontSize = 30.sp,
                     fontWeight = FontWeight.Bold
                 )
+                Spacer(
+                    modifier = Modifier
+                        .height(20.dp)
+                )
                 Text(
                     description,
                     modifier = Modifier
-                        .padding(start = 20.dp, top = 20.dp, end = 20.dp),
+                        .padding(start = 20.dp, end = 20.dp),
                     fontSize = 20.sp
                 )
             }

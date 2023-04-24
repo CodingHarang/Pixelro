@@ -1,6 +1,8 @@
 package com.pixelro.nenoonkiosk.ui.testlist
 
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
@@ -26,6 +28,10 @@ fun MacularTestListContent(
                 toAmslerGridTest()
                 toPreDescriptionScreen()
             }
+        )
+        Spacer(
+            modifier = Modifier
+                .height(20.dp)
         )
         EyeTestSelectableBox(
             title = "엠식 변형시 검사",

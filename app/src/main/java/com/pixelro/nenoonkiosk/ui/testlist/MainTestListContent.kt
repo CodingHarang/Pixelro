@@ -1,6 +1,8 @@
 package com.pixelro.nenoonkiosk.ui.testlist
 
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
@@ -20,10 +22,18 @@ fun MainTestListContent(
             description = "수정체의 탄력이 감소하여 가까이 있는 물체의 초점을 잘 맞추지 못하는 현상.",
             onClickMethod = toPreDescriptionScreen
         )
+        Spacer(
+            modifier = Modifier
+                .height(20.dp)
+        )
         EyeTestSelectableBox(
             title = "시력 검사",
             description = "내 눈의 시력이 어느 정도인지 알아봅니다.",
             onClickMethod = toVisualAcuityTestList
+        )
+        Spacer(
+            modifier = Modifier
+                .height(20.dp)
         )
         EyeTestSelectableBox(
             title = "황반변성 검사",

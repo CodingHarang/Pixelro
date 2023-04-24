@@ -24,7 +24,7 @@ class NenoonViewModel : ViewModel() {
 
     fun showSplashScreen() {
         viewModelScope.launch {
-            delay(5000)
+            delay(1000)
             _isLaunching.update { false }
         }
     }

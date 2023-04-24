@@ -95,4 +95,7 @@ dependencies {
 
     // Nemonic printer
     implementation files('./libs/nemonic.aar')
+
+    // System UI Controller
+    implementation "com.google.accompanist:accompanist-systemuicontroller:0.30.0"
 }
