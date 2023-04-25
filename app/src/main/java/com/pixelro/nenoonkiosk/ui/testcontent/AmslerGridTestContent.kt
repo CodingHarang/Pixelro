@@ -140,7 +140,7 @@ fun AmslerGridContent(
                     drawCircle(
                         color = Color(0xffff0000),
                         radius = 20f,
-                        center = Offset(390f - (400f * tan(rotY * 0.0174533)).toFloat(), 390f - (400f * tan((rotX + 5) * 0.0174533)).toFloat())
+                        center = Offset(390f - (400f * tan(rotY * 0.0174533)).toFloat(), 390f - (400f * tan((rotX) * 0.0174533)).toFloat())
                     )
                     drawOval(
                         color = ovalColor,

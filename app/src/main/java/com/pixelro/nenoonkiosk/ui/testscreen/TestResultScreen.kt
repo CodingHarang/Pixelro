@@ -102,7 +102,7 @@ fun TestResultScreen(
         if(printerMacAddress != "") {
             Log.e("printResult", "print, ${bm.height}, ${bm.width}, $nPaperHeight, $printerMacAddress")
             mNemonicWrapper.openPrinter(printerMacAddress)
-            Log.e("print", "${mNemonicWrapper.print(bm, nPrintWidth, nPaperHeight, nCopies)}")
+            mNemonicWrapper.print(bm, nPrintWidth, nPaperHeight, nCopies)
             mNemonicWrapper.closePrinter()
         } else {
             Toast.makeText(context, "연결된 프린터가 없습니다.", Toast.LENGTH_SHORT).show()
@@ -174,9 +174,10 @@ fun textAsBitmap(text: String?, textSize: Float, textColor: Int): Bitmap {
     val baseline = -paint.ascent() // ascent() is negative
     val width = 576
     val height = (baseline + paint.descent() + 0.5f).toInt()
-    val image = Bitmap.createBitmap(width, height, Bitmap.Config.ARGB_8888)
+    val image = Bitmap.createBitmap(width, 400, Bitmap.Config.ARGB_8888)
     val canvas = Canvas(image)
     canvas.drawColor(android.graphics.Color.parseColor("#FFFFFFFF"))
     canvas.drawText(text!!, 0f, baseline, paint)
+    canvas.drawText("text\ntext\ntext", 0f,  baseline + 40, paint)
     return image!!
 }
