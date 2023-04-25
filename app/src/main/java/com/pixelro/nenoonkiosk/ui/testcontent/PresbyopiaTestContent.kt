@@ -78,14 +78,18 @@ fun PresbyopiaTestContent(
                 .height(256.dp)
                 .clickable {
                     if (firstVisibleState.currentState) {
+                        viewModel.updateFirstDistance()
                         firstVisibleState.targetState = false
                         secondVisibleState.targetState = true
                         thirdVisibleState.targetState = false
+
                     } else if (secondVisibleState.currentState) {
+                        viewModel.updateSecondDistance()
                         firstVisibleState.targetState = false
                         secondVisibleState.targetState = false
                         thirdVisibleState.targetState = true
                     } else {
+                        viewModel.updateThirdDistance()
                         toResultScreen()
                     }
                 },

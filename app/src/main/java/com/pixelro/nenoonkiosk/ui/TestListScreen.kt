@@ -99,18 +99,17 @@ fun TestListScreen(
 @Composable
 fun Advertisement() {
     Card(
-        elevation = CardDefaults.cardElevation(4.dp),
+        elevation = CardDefaults.cardElevation(16.dp),
         modifier = Modifier
+            .fillMaxWidth()
+            .height(300.dp)
             .padding(20.dp),
         colors = CardDefaults.cardColors(
             containerColor = Color(0xffffffff)
         ),
         shape = RoundedCornerShape(16.dp)
     ) {
-        Image(
-            painter = painterResource(id = R.drawable.home_banner_shinhan_ko_01),
-            contentDescription = ""
-        )
+
     }
 }
 

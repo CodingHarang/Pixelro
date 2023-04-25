@@ -82,7 +82,7 @@ dependencies {
     implementation "androidx.camera:camera-extensions:${camerax_version}"
 
     // com.google.common
-    implementation "com.google.guava:guava:31.1-android"
+//    implementation "com.google.guava:guava:31.1-android"
 
     // permission
     implementation "com.google.accompanist:accompanist-permissions:0.29.2-rc"

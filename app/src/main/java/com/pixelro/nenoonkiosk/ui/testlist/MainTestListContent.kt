@@ -15,7 +15,7 @@ fun MainTestListContent(
     toMacularDegenerationTestList: () -> Unit
 ) {
     Column(
-        modifier = Modifier.padding(bottom = 10.dp)
+        modifier = Modifier.padding(bottom = 40.dp)
     ) {
         EyeTestSelectableBox(
             title = "조절력 검사(안구 나이 검사)",

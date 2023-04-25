@@ -3,6 +3,7 @@ package com.pixelro.nenoonkiosk.ui
 import android.content.Context
 import android.hardware.camera2.CameraCharacteristics
 import android.hardware.camera2.CameraManager
+import android.provider.Settings
 import android.util.SizeF
 import androidx.compose.animation.AnimatedContentScope
 import androidx.compose.animation.ExperimentalAnimationApi
@@ -28,7 +29,6 @@ import com.google.accompanist.navigation.animation.AnimatedNavHost
 import com.google.accompanist.navigation.animation.composable
 import com.google.accompanist.navigation.animation.rememberAnimatedNavController
 import com.google.accompanist.permissions.ExperimentalPermissionsApi
-import com.google.accompanist.systemuicontroller.rememberSystemUiController
 import com.pixelro.nenoonkiosk.NenoonViewModel
 import com.pixelro.nenoonkiosk.R
 import com.pixelro.nenoonkiosk.data.GlobalConstants
@@ -44,12 +44,16 @@ fun NenoonApp(
     testNavController: NavHostController = rememberAnimatedNavController()
 ) {
 
-
     val context = LocalContext.current
     val configuration = LocalConfiguration.current
     val cameraManager = context.getSystemService(Context.CAMERA_SERVICE) as CameraManager
     val cameraCharacteristics =
         (context.getSystemService(Context.CAMERA_SERVICE) as CameraManager).getCameraCharacteristics(cameraManager.cameraIdList[1])
+
+    DisposableEffect(true) {
+        Settings.System.putInt(context.contentResolver, Settings.System.SCREEN_OFF_TIMEOUT, 3600_000)
+        onDispose {  }
+    }
 
     viewModel.updateLocalConfigurationValues(
         pixelDensity = context.resources.displayMetrics.density,
@@ -79,8 +83,8 @@ fun NenoonApp(
                         .fillMaxWidth()
                         .height(80.dp)
                         .background(
-                            color = when(viewModel.selectedTestType.collectAsState().value) {
-                                TestType.None -> Color(0xff1d71e1)
+                            color = when (viewModel.selectedTestType.collectAsState().value) {
+                                TestType.None -> Color(0xff000000)
                                 else -> Color(0xff000000)
                             }
                         )

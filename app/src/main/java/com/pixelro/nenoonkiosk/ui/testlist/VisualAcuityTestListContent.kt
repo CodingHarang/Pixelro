@@ -19,8 +19,8 @@ fun VisualAcuityTestListContent(
     viewModel: NenoonViewModel = viewModel()
 ) {
     Column(
-        modifier = Modifier.
-        padding(bottom = 10.dp)
+        modifier = Modifier
+            .padding(bottom = 40.dp)
     ) {
         EyeTestSelectableBox(
             title = "근거리 시력 검사",

@@ -8,8 +8,12 @@ import android.content.Context
 import android.content.Intent
 import android.content.IntentFilter
 import android.content.pm.PackageManager
+import android.graphics.Bitmap
+import android.graphics.Canvas
 import android.graphics.Color
+import android.graphics.Paint
 import android.util.Log
+import android.widget.Toast
 import androidx.activity.compose.BackHandler
 import androidx.compose.foundation.layout.Column
 import androidx.compose.material.Button
@@ -100,6 +104,8 @@ fun TestResultScreen(
             mNemonicWrapper.openPrinter(printerMacAddress)
             Log.e("print", "${mNemonicWrapper.print(bm, nPrintWidth, nPaperHeight, nCopies)}")
             mNemonicWrapper.closePrinter()
+        } else {
+            Toast.makeText(context, "연결된 프린터가 없습니다.", Toast.LENGTH_SHORT).show()
         }
     }
 
@@ -108,7 +114,7 @@ fun TestResultScreen(
             onClick = {
                 bluetoothAdapter.startDiscovery()
                 Log.e("onClick", "${bluetoothAdapter.hashCode()}, ${bluetoothAdapter.isEnabled} ${bluetoothAdapter.isDiscovering} ${bluetoothAdapter.state}")
-                printResult("hello\nworld!")
+                printResult("hello\nworld!\nhello\nworld")
             }
         ) {
             Text(
@@ -158,5 +164,19 @@ fun TestResultScreen(
             }
         }
     }
+}
 
+fun textAsBitmap(text: String?, textSize: Float, textColor: Int): Bitmap {
+    val paint = Paint(Paint.ANTI_ALIAS_FLAG)
+    paint.textSize = textSize
+    paint.color = textColor
+    paint.textAlign = Paint.Align.LEFT
+    val baseline = -paint.ascent() // ascent() is negative
+    val width = 576
+    val height = (baseline + paint.descent() + 0.5f).toInt()
+    val image = Bitmap.createBitmap(width, height, Bitmap.Config.ARGB_8888)
+    val canvas = Canvas(image)
+    canvas.drawColor(android.graphics.Color.parseColor("#FFFFFFFF"))
+    canvas.drawText(text!!, 0f, baseline, paint)
+    return image!!
 }

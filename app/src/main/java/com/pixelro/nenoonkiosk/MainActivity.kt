@@ -60,7 +60,7 @@ class MainActivity : ComponentActivity() {
                     val systemUiController = rememberSystemUiController()
                     DisposableEffect(true) {
                         systemUiController.setStatusBarColor(
-                            color = Color(0xff1d71e1),
+                            color = Color(0xff000000),
                             darkIcons = false
                         )
                         onDispose {}

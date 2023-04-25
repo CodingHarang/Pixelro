@@ -244,7 +244,32 @@ class NenoonViewModel : ViewModel() {
 
     // Presbyopia test
 
+    private val _firstDistance = MutableStateFlow(0f)
+    val firstDistance: StateFlow<Float> = _firstDistance
+    private val _secondDistance = MutableStateFlow(0f)
+    val secondDistance: StateFlow<Float> = _secondDistance
+    private val _thirdDistance = MutableStateFlow(0f)
+    val thirdDistance: StateFlow<Float> = _thirdDistance
+    private val _avgDistance = MutableStateFlow(0f)
+    val avgDistance: StateFlow<Float> = _avgDistance
 
+    fun updateFirstDistance() {
+        _firstDistance.update { screenToFaceDistance.value }
+    }
+
+    fun updateSecondDistance() {
+        _secondDistance.update { screenToFaceDistance.value }
+    }
+
+    fun updateThirdDistance() {
+        _thirdDistance.update { screenToFaceDistance.value }
+    }
+
+    fun updateAvgDistance() {
+        _avgDistance.update {
+            (firstDistance.value + secondDistance.value + thirdDistance.value) / 3
+        }
+    }
 
     // Visual acuity test
 

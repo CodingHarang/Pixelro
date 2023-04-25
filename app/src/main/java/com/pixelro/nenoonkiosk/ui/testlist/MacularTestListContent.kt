@@ -18,8 +18,8 @@ fun MacularTestListContent(
     viewModel: NenoonViewModel = viewModel()
 ) {
     Column(
-        modifier = Modifier.
-        padding(bottom = 10.dp)
+        modifier = Modifier
+            .padding(bottom = 40.dp)
     ) {
         EyeTestSelectableBox(
             title = "암슬러 차트",
