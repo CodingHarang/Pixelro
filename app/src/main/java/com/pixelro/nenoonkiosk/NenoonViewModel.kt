@@ -390,7 +390,7 @@ class NenoonViewModel : ViewModel() {
     }
 
     // Macular degeneration test
-    //
+    // Amsler Grid Test
 
     private val _color = MutableStateFlow(Color(0x00000000))
     val color: StateFlow<Color> = _color
@@ -402,6 +402,22 @@ class NenoonViewModel : ViewModel() {
     val widthSize: StateFlow<Float> = _widthSize
     private val _heightSize = MutableStateFlow(100f)
     val heightSize: StateFlow<Float> = _heightSize
+    private val _leftPointList = MutableStateFlow(emptyList<Offset>())
+    val leftPointList: StateFlow<List<Offset>> = _leftPointList
+    private val _rightPointList = MutableStateFlow(emptyList<Offset>())
+    val rightPointList: StateFlow<List<Offset>> = _rightPointList
+    private val _isRightEyeClosed = MutableStateFlow(false)
+    val isRightEyeClosed: StateFlow<Boolean> = _isRightEyeClosed
+    private val _isLeftEyeClosed = MutableStateFlow(false)
+    val isLeftEyeClosed: StateFlow<Boolean> = _isLeftEyeClosed
+
+    fun updateLeftPointList(list: List<Offset>) {
+        _leftPointList.update { list }
+    }
+
+    fun updateRightPointList(list: List<Offset>) {
+        _rightPointList.update { list }
+    }
 
     fun updateColor(color: Color) {
         _color.update { color }
@@ -419,7 +435,7 @@ class NenoonViewModel : ViewModel() {
         _touchPosition.update { position }
     }
 
-
+    // M-Chart Test
 
 
 

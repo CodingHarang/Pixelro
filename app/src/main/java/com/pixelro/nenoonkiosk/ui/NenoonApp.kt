@@ -35,7 +35,7 @@ import com.pixelro.nenoonkiosk.data.GlobalConstants
 import com.pixelro.nenoonkiosk.data.TestType
 import com.pixelro.nenoonkiosk.ui.testscreen.*
 
-@OptIn(ExperimentalAnimationApi::class, ExperimentalPermissionsApi::class)
+@OptIn(ExperimentalAnimationApi::class)
 @Composable
 fun NenoonApp(
     viewModel: NenoonViewModel,
@@ -49,11 +49,6 @@ fun NenoonApp(
     val cameraManager = context.getSystemService(Context.CAMERA_SERVICE) as CameraManager
     val cameraCharacteristics =
         (context.getSystemService(Context.CAMERA_SERVICE) as CameraManager).getCameraCharacteristics(cameraManager.cameraIdList[1])
-
-    DisposableEffect(true) {
-        Settings.System.putInt(context.contentResolver, Settings.System.SCREEN_OFF_TIMEOUT, 3600_000)
-        onDispose {  }
-    }
 
     viewModel.updateLocalConfigurationValues(
         pixelDensity = context.resources.displayMetrics.density,
@@ -74,6 +69,10 @@ fun NenoonApp(
                 viewModel
             )
         } else {
+            DisposableEffect(true) {
+                Settings.System.putInt(context.contentResolver, Settings.System.SCREEN_OFF_TIMEOUT, 3600_000)
+                onDispose {  }
+            }
             Column(
                 modifier = Modifier
                     .fillMaxSize()

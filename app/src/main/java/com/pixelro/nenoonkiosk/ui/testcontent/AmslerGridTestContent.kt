@@ -140,7 +140,7 @@ fun AmslerGridContent(
                     drawCircle(
                         color = Color(0xffff0000),
                         radius = 20f,
-                        center = Offset(390f - (400f * tan(rotY * 0.0174533)).toFloat(), 390f - (400f * tan((rotX) * 0.0174533)).toFloat())
+                        center = Offset(390f - (400f * tan(rotY * 0.0174533)).toFloat(), 390f - (400f * tan((rotX + 10) * 0.0174533)).toFloat())
                     )
                     drawOval(
                         color = ovalColor,
@@ -179,15 +179,36 @@ fun AmslerGridContent(
                 modifier = Modifier
                     .height(16.dp)
             )
-            Image(
-                modifier = Modifier
-                    .height(256.dp)
-                    .clickable {
-
-                    },
-                painter = painterResource(id = R.drawable.baseline_check_circle_48),
-                contentDescription = ""
-            )
+            Row() {
+                Box(
+                    modifier = Modifier
+                        .width(200.dp)
+                        .height(100.dp)
+                        .background(
+                            color = Color(0xffffffff),
+                            shape = RoundedCornerShape(8.dp)
+                        )
+                ) {
+                    Text(
+                        text = "왜곡된 영역 추가하기",
+                        fontSize = 30.sp
+                    )
+                }
+                Box(
+                    modifier = Modifier
+                        .width(200.dp)
+                        .height(100.dp)
+                        .background(
+                            color = Color(0xffffffff),
+                            shape = RoundedCornerShape(8.dp)
+                        )
+                ) {
+                    Text(
+                        text = "완료",
+                        fontSize = 30.sp
+                    )
+                }
+            }
         }
     }
 }
