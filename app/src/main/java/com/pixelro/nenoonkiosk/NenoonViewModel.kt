@@ -410,6 +410,8 @@ class NenoonViewModel : ViewModel() {
     val isRightEyeClosed: StateFlow<Boolean> = _isRightEyeClosed
     private val _isLeftEyeClosed = MutableStateFlow(false)
     val isLeftEyeClosed: StateFlow<Boolean> = _isLeftEyeClosed
+    private val _isAddingArea = MutableStateFlow(false)
+    val isAddingArea: StateFlow<Boolean> = _isAddingArea
 
     fun updateLeftPointList(list: List<Offset>) {
         _leftPointList.update { list }

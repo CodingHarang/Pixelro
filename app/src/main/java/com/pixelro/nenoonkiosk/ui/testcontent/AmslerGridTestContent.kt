@@ -179,7 +179,11 @@ fun AmslerGridContent(
                 modifier = Modifier
                     .height(16.dp)
             )
-            Row() {
+            Row(
+                modifier = Modifier
+                    .fillMaxWidth(),
+                horizontalArrangement = Arrangement.Center
+            ) {
                 Box(
                     modifier = Modifier
                         .width(200.dp)
@@ -188,12 +192,20 @@ fun AmslerGridContent(
                             color = Color(0xffffffff),
                             shape = RoundedCornerShape(8.dp)
                         )
+                        .clickable {
+
+                        },
+                    contentAlignment = Alignment.Center
                 ) {
                     Text(
-                        text = "왜곡된 영역 추가하기",
+                        text = "영역 추가하기",
                         fontSize = 30.sp
                     )
                 }
+                Spacer(
+                    modifier = Modifier
+                        .width(20.dp)
+                )
                 Box(
                     modifier = Modifier
                         .width(200.dp)
@@ -202,6 +214,10 @@ fun AmslerGridContent(
                             color = Color(0xffffffff),
                             shape = RoundedCornerShape(8.dp)
                         )
+                        .clickable {
+
+                        },
+                    contentAlignment = Alignment.Center
                 ) {
                     Text(
                         text = "완료",
