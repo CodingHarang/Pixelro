@@ -66,9 +66,9 @@ class MyFaceAnalyzer(
 
                     if(leftEyeOpenProbability != null && rightEyeOpenProbability != null) {
                         updateEyeOpenProbability(leftEyeOpenProbability, rightEyeOpenProbability)
-//                        Log.e("", "$leftEyeOpenProbability, $rightEyeOpenProbability")
+//                        Log.e("faceDetection", "$leftEyeOpenProbability, $rightEyeOpenProbability")
                     } else {
-                        Log.e("null", "null")
+//                        Log.e("null", "null")
                     }
                     if (rightEyePosition != null && leftEyePosition != null) {
                         updateFaceDetectionData(rightEyePosition, leftEyePosition, rotX, rotY, rotZ, image.width.toFloat(), image.height.toFloat())

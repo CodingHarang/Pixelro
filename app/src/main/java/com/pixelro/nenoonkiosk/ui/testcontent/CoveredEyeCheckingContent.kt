@@ -1,5 +1,6 @@
 package com.pixelro.nenoonkiosk.ui.testcontent
 
+import android.util.Log
 import androidx.compose.animation.*
 import androidx.compose.animation.core.MutableTransitionState
 import androidx.compose.animation.core.tween
@@ -10,6 +11,8 @@ import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.height
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.DisposableEffect
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -23,6 +26,8 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.pixelro.nenoonkiosk.NenoonViewModel
 import com.pixelro.nenoonkiosk.R
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.launch
 
 @Composable
 fun CoveredEyeCheckingContent(
@@ -31,6 +36,22 @@ fun CoveredEyeCheckingContent(
     nextVisibleState: MutableTransitionState<Boolean>
 ) {
     val isLeftEye = viewModel.isLeftEye.collectAsState().value
+    val leftEyeOpenProbability = viewModel.leftEyeOpenProbability.collectAsState().value
+    val rightEyeOpenProbability = viewModel.rightEyeOpenProbability.collectAsState().value
+    val isCoveredEyeCheckingDone = viewModel.isCoveredEyeCheckingDone.collectAsState().value
+    Log.e("CoveredEyeCheckingContent", "outsideAnimatedVisibility")
+    DisposableEffect(true) {
+        viewModel.updateIsCheckingCoveredEye(true)
+        viewModel.checkCoveredEye()
+        onDispose {
+            viewModel.updateIsCheckingCoveredEye(false)
+        }
+    }
+
+    if(isCoveredEyeCheckingDone) {
+        coveredEyeCheckingContentVisibleState.targetState = false
+        nextVisibleState.targetState = true
+    }
 
     AnimatedVisibility(
         visibleState = coveredEyeCheckingContentVisibleState,
@@ -43,6 +64,7 @@ fun CoveredEyeCheckingContent(
             targetOffset = { IntOffset(-it.width, 0) }
         ) + fadeOut()
     ) {
+        Log.e("CoveredEyeCheckingContent", "insideAnimatedVisibility")
         Column(
             modifier = Modifier,
             horizontalAlignment = Alignment.CenterHorizontally
@@ -72,20 +94,20 @@ fun CoveredEyeCheckingContent(
                 fontWeight = FontWeight.Bold,
                 textAlign = TextAlign.Center
             )
-            Spacer(
-                modifier = Modifier
-                    .height(20.dp)
-            )
-            Image(
-                modifier = Modifier
-                    .height(256.dp)
-                    .clickable {
-                        coveredEyeCheckingContentVisibleState.targetState = false
-                        nextVisibleState.targetState = true
-                    },
-                painter = painterResource(id = R.drawable.baseline_check_circle_48),
-                contentDescription = ""
-            )
+//            Spacer(
+//                modifier = Modifier
+//                    .height(20.dp)
+//            )
+//            Image(
+//                modifier = Modifier
+//                    .height(256.dp)
+//                    .clickable {
+//                        coveredEyeCheckingContentVisibleState.targetState = false
+//                        nextVisibleState.targetState = true
+//                    },
+//                painter = painterResource(id = R.drawable.baseline_check_circle_48),
+//                contentDescription = ""
+//            )
         }
     }
 }

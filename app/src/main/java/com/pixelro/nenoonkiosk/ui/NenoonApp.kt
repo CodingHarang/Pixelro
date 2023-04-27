@@ -274,7 +274,8 @@ fun NenoonApp(
                     ) {
                         AmslerGridTestScreen(
                             toResultScreen = { mainNavController.navigate(GlobalConstants.ROUTE_TEST_RESULT) },
-                            viewModel = viewModel)
+                            viewModel = viewModel
+                        )
                     }
 
                     // 엠식 변형시 검사
@@ -295,7 +296,8 @@ fun NenoonApp(
                     ) {
                         MChartTestScreen(
                             navController = testNavController,
-                            viewModel = viewModel)
+                            viewModel = viewModel
+                        )
                     }
 
                     // 검사 사전 설명 페이지
@@ -347,16 +349,4 @@ fun NenoonApp(
         }
 
     }
-//    else {
-//        Box(
-//            modifier = Modifier
-//                .fillMaxSize(),
-//            contentAlignment = Alignment.Center
-//        ) {
-//            Text(
-//                text = "권한이 필요합니다.",
-//                fontSize = 30.sp
-//            )
-//        }
-//    }
 }

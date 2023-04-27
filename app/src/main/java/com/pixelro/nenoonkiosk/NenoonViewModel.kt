@@ -34,37 +34,36 @@ class NenoonViewModel : ViewModel() {
     val screenToFaceDistance: StateFlow<Float> = _screenToFaceDistance
 
     private val _inputImageSizeX = MutableStateFlow(1f)
-    private val _inputImageSizeY = MutableStateFlow(1f)
-    private val _rightEyePosition = MutableStateFlow(PointF(0f, 0f))
-    private val _leftEyePosition = MutableStateFlow(PointF(0f, 0f))
-    private val _rotX = MutableStateFlow(0f)
-    private val _rotY = MutableStateFlow(0f)
-    private val _rotZ = MutableStateFlow(0f)
-    private val _leftEyeContour = MutableStateFlow(listOf(PointF(0f, 0f)))
-    private val _rightEyeContour = MutableStateFlow(listOf(PointF(0f, 0f)))
-    private val _upperLipTopContour = MutableStateFlow(listOf(PointF(0f, 0f)))
-    private val _upperLipBottomContour = MutableStateFlow(listOf(PointF(0f, 0f)))
-    private val _lowerLipTopContour = MutableStateFlow(listOf(PointF(0f, 0f)))
-    private val _lowerLipBottomContour = MutableStateFlow(listOf(PointF(0f, 0f)))
-    private val _faceContour = MutableStateFlow(listOf(PointF(0f, 0f)))
-    private val _leftEyeOpenProbability = MutableStateFlow(0f)
-    private val _rightEyeOpenProbability = MutableStateFlow(0f)
-
     val inputImageSizeX: StateFlow<Float> = _inputImageSizeX
+    private val _inputImageSizeY = MutableStateFlow(1f)
     val inputImageSizeY: StateFlow<Float> = _inputImageSizeY
+    private val _rightEyePosition = MutableStateFlow(PointF(0f, 0f))
     val rightEyePosition: StateFlow<PointF> = _rightEyePosition
+    private val _leftEyePosition = MutableStateFlow(PointF(0f, 0f))
     val leftEyePosition: StateFlow<PointF> = _leftEyePosition
+    private val _rotX = MutableStateFlow(0f)
     val rotX: StateFlow<Float> = _rotX
+    private val _rotY = MutableStateFlow(0f)
     val rotY: StateFlow<Float> = _rotY
+    private val _rotZ = MutableStateFlow(0f)
     val rotZ: StateFlow<Float> = _rotZ
+    private val _leftEyeContour = MutableStateFlow(listOf(PointF(0f, 0f)))
     val leftEyeContour: StateFlow<List<PointF>> = _leftEyeContour
+    private val _rightEyeContour = MutableStateFlow(listOf(PointF(0f, 0f)))
     val rightEyeContour: StateFlow<List<PointF>> = _rightEyeContour
+    private val _upperLipTopContour = MutableStateFlow(listOf(PointF(0f, 0f)))
     val upperLipTopContour: StateFlow<List<PointF>> = _upperLipTopContour
+    private val _upperLipBottomContour = MutableStateFlow(listOf(PointF(0f, 0f)))
     val upperLipBottomContour: StateFlow<List<PointF>> = _upperLipBottomContour
+    private val _lowerLipTopContour = MutableStateFlow(listOf(PointF(0f, 0f)))
     val lowerLipTopContour: StateFlow<List<PointF>> = _lowerLipTopContour
+    private val _lowerLipBottomContour = MutableStateFlow(listOf(PointF(0f, 0f)))
     val lowerLipBottomContour: StateFlow<List<PointF>> = _lowerLipBottomContour
+    private val _faceContour = MutableStateFlow(listOf(PointF(0f, 0f)))
     val faceContour: StateFlow<List<PointF>> = _faceContour
+    private val _leftEyeOpenProbability = MutableStateFlow(0f)
     val leftEyeOpenProbability: StateFlow<Float> = _leftEyeOpenProbability
+    private val _rightEyeOpenProbability = MutableStateFlow(0f)
     val rightEyeOpenProbability: StateFlow<Float> = _rightEyeOpenProbability
 
     private val _pixelDensity = MutableStateFlow(0f)
@@ -155,8 +154,53 @@ class NenoonViewModel : ViewModel() {
         }
     }
 
-    // Nemonic Printer
+    // Measuring Distance
+    private val _testDistance = MutableStateFlow(0)
+    val testDistance: StateFlow<Int> = _testDistance
 
+    fun updateTestDistance() {
+        _testDistance.update { screenToFaceDistance.value.toInt() }
+    }
+
+    // Covered Eye Checking
+    private val _isCoveredEyeCheckingDone = MutableStateFlow(false)
+    val isCoveredEyeCheckingDone: StateFlow<Boolean> = _isCoveredEyeCheckingDone
+    private val _isCheckingCoveredEye = MutableStateFlow(false)
+    val isCheckingCoveredEye: StateFlow<Boolean> = _isCheckingCoveredEye
+
+    fun updateIsCheckingCoveredEye(isChecking: Boolean) {
+        _isCheckingCoveredEye.update { isChecking }
+    }
+
+    fun checkCoveredEye() {
+        viewModelScope.launch {
+            var count = 0
+            while(isCheckingCoveredEye.value && count < 10) {
+                delay(333)
+                Log.e("checkCoveredEye", "$count")
+                if(leftEyeOpenProbability.value < 0.7f) {
+                    count++
+                } else {
+                    count = 0
+                }
+            }
+            _isCheckingCoveredEye.update { false }
+            _isCoveredEyeCheckingDone.update { true }
+        }
+    }
+
+    // Nemonic Printer
+    private val _printerName = MutableStateFlow("")
+    val printerName: StateFlow<String> = _printerName
+    private val _printerMacAddress = MutableStateFlow("")
+    val printerMacAddress: StateFlow<String> = _printerMacAddress
+    private val _nemonicList = MutableStateFlow(emptyList<Pair<String, String>>())
+    val nemonicList: StateFlow<List<Pair<String, String>>> = _nemonicList
+
+    fun updatePrinter(name: String, address: String) {
+        _printerName.update { name }
+        _printerMacAddress.update { address }
+    }
 
     // UI
 
@@ -180,14 +224,8 @@ class NenoonViewModel : ViewModel() {
     val selectedTestDescription: StateFlow<String> = _selectedTestDescription
     private val _selectedTestMenuDescription = MutableStateFlow("")
     val selectedTestMenuDescription: StateFlow<String> = _selectedTestMenuDescription
-    private val _testDistance = MutableStateFlow(0)
-    val testDistance: StateFlow<Int> = _testDistance
-    private val _printerName = MutableStateFlow("")
-    val printerName: StateFlow<String> = _printerName
-    private val _printerMacAddress = MutableStateFlow("")
-    val printerMacAddress: StateFlow<String> = _printerMacAddress
-    private val _nemonicList = MutableStateFlow(emptyList<Pair<String, String>>())
-    val nemonicList: StateFlow<List<Pair<String, String>>> = _nemonicList
+    private val _isLeftEye = MutableStateFlow(false)
+    val isLeftEye: StateFlow<Boolean> = _isLeftEye
 
     fun updateIsWriteSettingsPermissionGranted(granted: Boolean) {
         _isWriteSettingsPermissionGranted.update { granted }
@@ -231,15 +269,6 @@ class NenoonViewModel : ViewModel() {
                 else -> "굴절이상은 망막에 초점이 정확하게 맺히지 못할 때 생기며, 근시와 원시로 구별하여 안경으로 교정합니다. 성장기 어린이와 청소년의 경우 6개월, 성인의 경우 1년마다 안경 렌즈를 바꾸는 것이 좋습니다."
             }
         }
-    }
-
-    fun updateTestDistance() {
-        _testDistance.update { screenToFaceDistance.value.toInt() }
-    }
-
-    fun updatePrinter(name: String, address: String) {
-        _printerName.update { name }
-        _printerMacAddress.update { address }
     }
 
     // Presbyopia test
@@ -287,8 +316,6 @@ class NenoonViewModel : ViewModel() {
     val rightEyeSightedValue: StateFlow<VisionDisorderType> = _rightEyeSightedValue
     private val _randomList = MutableStateFlow(mutableListOf(0))
     val randomList: StateFlow<MutableList<Int>> = _randomList
-    private val _isLeftEye = MutableStateFlow(false)
-    val isLeftEye: StateFlow<Boolean> = _isLeftEye
     private val _ansNum = MutableStateFlow(0)
     val ansNum: StateFlow<Int> = _ansNum
     private val _isSightednessTesting = MutableStateFlow(false)
@@ -394,47 +421,54 @@ class NenoonViewModel : ViewModel() {
 
     private val _color = MutableStateFlow(Color(0x00000000))
     val color: StateFlow<Color> = _color
-    private val _gazingPoint = MutableStateFlow(Offset(0f, 0f))
-    val gazingPoint:StateFlow<Offset> = _gazingPoint
-    private val _touchPosition = MutableStateFlow(Offset(0f, 0f))
-    val touchPosition: StateFlow<Offset> = _touchPosition
     private val _widthSize = MutableStateFlow(100f)
     val widthSize: StateFlow<Float> = _widthSize
     private val _heightSize = MutableStateFlow(100f)
     val heightSize: StateFlow<Float> = _heightSize
-    private val _leftPointList = MutableStateFlow(emptyList<Offset>())
-    val leftPointList: StateFlow<List<Offset>> = _leftPointList
-    private val _rightPointList = MutableStateFlow(emptyList<Offset>())
-    val rightPointList: StateFlow<List<Offset>> = _rightPointList
-    private val _isRightEyeClosed = MutableStateFlow(false)
-    val isRightEyeClosed: StateFlow<Boolean> = _isRightEyeClosed
-    private val _isLeftEyeClosed = MutableStateFlow(false)
-    val isLeftEyeClosed: StateFlow<Boolean> = _isLeftEyeClosed
-    private val _isAddingArea = MutableStateFlow(false)
-    val isAddingArea: StateFlow<Boolean> = _isAddingArea
+    private val _currentSelectedArea = MutableStateFlow(mutableListOf(false, false, false, false, false, false, false, false, false))
+    val currentSelectedArea: StateFlow<List<Boolean>> = _currentSelectedArea
+    private val _leftSelectedArea = MutableStateFlow(emptyList<Boolean>())
+    val leftSelectedArea: StateFlow<List<Boolean>> = _leftSelectedArea
+    private val _rightSelectedArea = MutableStateFlow(listOf(false, false, false, false, false, false, false, false, false))
+    val rightSelectedArea: StateFlow<List<Boolean>> = _rightSelectedArea
 
-    fun updateLeftPointList(list: List<Offset>) {
-        _leftPointList.update { list }
+    fun initializeAmslerGridTest() {
+        _isLeftEye.update { false }
+        _isCoveredEyeCheckingDone.update { false }
+
     }
 
-    fun updateRightPointList(list: List<Offset>) {
-        _rightPointList.update { list }
+    fun updateCurrentSelectedArea(position: Offset) {
+        _currentSelectedArea.update {
+            if(position.x in 0f..299f && position.y in 0f..299f) {
+                it[0] = !it[0]
+            } else if(position.x in 300f..599f && position.y in 0f..299f) {
+                it[1] = !it[1]
+            } else if(position.x in 600f..900f && position.y in 0f..299f) {
+                it[2] = !it[2]
+            } else if(position.x in 0f..299f && position.y in 300f..599f) {
+                it[3] = !it[3]
+            } else if(position.x in 300f..599f && position.y in 300f..599f) {
+                it[4] = !it[4]
+            } else if(position.x in 600f..900f && position.y in 300f..599f) {
+                it[5] = !it[5]
+            } else if(position.x in 0f..299f && position.y in 600f..900f) {
+                it[6] = !it[6]
+            } else if(position.x in 300f..599f && position.y in 600f..900f) {
+                it[7] = !it[7]
+            } else {
+                it[8] = !it[8]
+            }
+            it
+        }
     }
 
-    fun updateColor(color: Color) {
-        _color.update { color }
+    fun updateLeftSelectedArea(list: List<Boolean>) {
+        _leftSelectedArea.update { list }
     }
 
-    fun updateWidthSize(size: Float) {
-        _widthSize.update { size }
-    }
-
-    fun updateHeightSize(size: Float) {
-        _heightSize.update { size }
-    }
-
-    fun updateTouchPosition(position: Offset) {
-        _touchPosition.update { position }
+    fun updateRightSelectedArea(list: List<Boolean>) {
+        _rightSelectedArea.update { list }
     }
 
     // M-Chart Test
