@@ -70,8 +70,6 @@ class MainActivity : ComponentActivity() {
             viewModel.updateIsWriteSettingsPermissionGranted(false)
         }
         viewModel.checkIfAllPermissionsGranted()
-
-
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -89,8 +87,6 @@ class MainActivity : ComponentActivity() {
                 if(!locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER)) {
                     Log.e("lifecycleScope", "not enabled")
 //                    startActivity(Intent(Settings.ACTION_LOCATION_SOURCE_SETTINGS))
-
-
 
                     val locationRequest: LocationRequest = LocationRequest.Builder(10000).build()
                     val client: SettingsClient = LocationServices.getSettingsClient(context)
@@ -127,7 +123,6 @@ class MainActivity : ComponentActivity() {
                     modifier = Modifier.fillMaxSize(),
                     color = MaterialTheme.colors.background
                 ) {
-
 //                    val systemUiController = rememberSystemUiController()
 //                    DisposableEffect(true) {
 //                        systemUiController.setStatusBarColor(
