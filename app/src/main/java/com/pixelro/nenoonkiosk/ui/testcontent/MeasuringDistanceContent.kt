@@ -108,8 +108,6 @@ fun MeasuringDistanceContent(
                             viewModel.updateTestDistance()
                             measuringDistanceContentVisibleState.targetState = false
                             nextVisibleState.targetState = true
-                            Log.e("done", "${measuringDistanceContentVisibleState.currentState}, ${nextVisibleState.currentState}")
-                            Log.e("done", "${measuringDistanceContentVisibleState.targetState}, ${nextVisibleState.targetState}")
                         },
                     painter = painterResource(id = R.drawable.baseline_check_circle_48),
                     contentDescription = ""

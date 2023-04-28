@@ -36,17 +36,9 @@ fun CoveredEyeCheckingContent(
     nextVisibleState: MutableTransitionState<Boolean>
 ) {
     val isLeftEye = viewModel.isLeftEye.collectAsState().value
-    val leftEyeOpenProbability = viewModel.leftEyeOpenProbability.collectAsState().value
-    val rightEyeOpenProbability = viewModel.rightEyeOpenProbability.collectAsState().value
     val isCoveredEyeCheckingDone = viewModel.isCoveredEyeCheckingDone.collectAsState().value
     Log.e("CoveredEyeCheckingContent", "outsideAnimatedVisibility")
-    DisposableEffect(true) {
-        viewModel.updateIsCheckingCoveredEye(true)
-        viewModel.checkCoveredEye()
-        onDispose {
-            viewModel.updateIsCheckingCoveredEye(false)
-        }
-    }
+
 
     if(isCoveredEyeCheckingDone) {
         coveredEyeCheckingContentVisibleState.targetState = false
@@ -64,6 +56,12 @@ fun CoveredEyeCheckingContent(
             targetOffset = { IntOffset(-it.width, 0) }
         ) + fadeOut()
     ) {
+        DisposableEffect(true) {
+            viewModel.initializeCoveredEyeChecking()
+            onDispose {
+                viewModel.updateIsCheckingCoveredEye(false)
+        }
+    }
         Log.e("CoveredEyeCheckingContent", "insideAnimatedVisibility")
         Column(
             modifier = Modifier,
@@ -94,6 +92,14 @@ fun CoveredEyeCheckingContent(
                 fontWeight = FontWeight.Bold,
                 textAlign = TextAlign.Center
             )
+            if(viewModel.isTimerShowing.collectAsState().value) {
+                Text(
+                    text = "${viewModel.leftTime.collectAsState().value.toInt()}",
+                    color = Color(0xffffffff),
+                    fontSize = 30.sp,
+                    fontWeight = FontWeight.Bold
+                )
+            }
 //            Spacer(
 //                modifier = Modifier
 //                    .height(20.dp)

@@ -43,7 +43,6 @@ fun NenoonApp(
     subNavController: NavHostController = rememberAnimatedNavController(),
     testNavController: NavHostController = rememberAnimatedNavController()
 ) {
-
     val context = LocalContext.current
     val configuration = LocalConfiguration.current
     val cameraManager = context.getSystemService(Context.CAMERA_SERVICE) as CameraManager
@@ -52,8 +51,8 @@ fun NenoonApp(
 
     viewModel.updateLocalConfigurationValues(
         pixelDensity = context.resources.displayMetrics.density,
-        screenHeightDp = configuration.screenHeightDp,
         screenWidthDp = configuration.screenWidthDp,
+        screenHeightDp = configuration.screenHeightDp,
         focalLength = cameraCharacteristics.get(CameraCharacteristics.LENS_INFO_AVAILABLE_FOCAL_LENGTHS)?.get(0) ?: 0f,
         lensSize = cameraCharacteristics.get(CameraCharacteristics.SENSOR_INFO_PHYSICAL_SIZE) ?: SizeF(0f, 0f)
     )

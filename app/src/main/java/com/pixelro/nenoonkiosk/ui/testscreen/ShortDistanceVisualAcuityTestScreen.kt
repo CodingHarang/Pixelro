@@ -29,6 +29,7 @@ fun ShortDistanceVisualAcuityTestScreen(
     toResultScreen: () -> Unit,
     viewModel: NenoonViewModel
 ) {
+
     FaceDetection(
         viewModel = viewModel
     )

@@ -3,6 +3,7 @@ package com.pixelro.nenoonkiosk
 import android.graphics.PointF
 import android.util.Log
 import android.util.SizeF
+import androidx.compose.animation.core.MutableTransitionState
 import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.graphics.Color
 import androidx.lifecycle.ViewModel
@@ -14,15 +15,26 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
+import kotlin.math.abs
 import kotlin.math.tan
 
 class NenoonViewModel : ViewModel() {
 
     init {
         showSplashScreen()
+
     }
 
-    fun showSplashScreen() {
+    private fun checkBackground() {
+        viewModelScope.launch {
+            while(true) {
+
+                delay(100000)
+            }
+        }
+    }
+
+    private fun showSplashScreen() {
         viewModelScope.launch {
             delay(1000)
             _isLaunching.update { false }
@@ -32,7 +44,6 @@ class NenoonViewModel : ViewModel() {
     // Face detection
     private val _screenToFaceDistance = MutableStateFlow(0f)
     val screenToFaceDistance: StateFlow<Float> = _screenToFaceDistance
-
     private val _inputImageSizeX = MutableStateFlow(1f)
     val inputImageSizeX: StateFlow<Float> = _inputImageSizeX
     private val _inputImageSizeY = MutableStateFlow(1f)
@@ -155,6 +166,7 @@ class NenoonViewModel : ViewModel() {
     }
 
     // Measuring Distance
+    val measuringDistanceContentVisibleState = MutableTransitionState(false)
     private val _testDistance = MutableStateFlow(0)
     val testDistance: StateFlow<Int> = _testDistance
 
@@ -163,10 +175,27 @@ class NenoonViewModel : ViewModel() {
     }
 
     // Covered Eye Checking
+    val coveredEyeCheckingContentVisibleState = MutableTransitionState(false)
     private val _isCoveredEyeCheckingDone = MutableStateFlow(false)
     val isCoveredEyeCheckingDone: StateFlow<Boolean> = _isCoveredEyeCheckingDone
     private val _isCheckingCoveredEye = MutableStateFlow(false)
     val isCheckingCoveredEye: StateFlow<Boolean> = _isCheckingCoveredEye
+    private val _leftTime = MutableStateFlow(0f)
+    val leftTime: StateFlow<Float> = _leftTime
+    private val _isTimerShowing = MutableStateFlow(false)
+    val isTimerShowing: StateFlow<Boolean> = _isTimerShowing
+
+    fun initializeCoveredEyeChecking() {
+        _isCoveredEyeCheckingDone.update { false }
+        _isCheckingCoveredEye.update { true }
+        _leftTime.update { 3f }
+        _isTimerShowing.update { false }
+        checkCoveredEye()
+    }
+
+    fun updateIsCoveredEyeCheckingDone(isDone: Boolean) {
+        _isCoveredEyeCheckingDone.update { false }
+    }
 
     fun updateIsCheckingCoveredEye(isChecking: Boolean) {
         _isCheckingCoveredEye.update { isChecking }
@@ -175,13 +204,28 @@ class NenoonViewModel : ViewModel() {
     fun checkCoveredEye() {
         viewModelScope.launch {
             var count = 0
-            while(isCheckingCoveredEye.value && count < 10) {
-                delay(333)
+            _leftTime.update { 3f }
+            while(isCheckingCoveredEye.value && count < 6) {
+                delay(500)
                 Log.e("checkCoveredEye", "$count")
-                if(leftEyeOpenProbability.value < 0.7f) {
+                if(
+//                    when(isLeftEye.value) {
+//                        true -> leftEyeOpenProbability.value
+//                        else -> rightEyeOpenProbability.value
+//                    } < 0.7f && abs(leftEyeOpenProbability.value - rightEyeOpenProbability.value) > 0.4f
+                    true
+                ) {
+                    if(!isTimerShowing.value) {
+                        _isTimerShowing.update { true }
+                    }
                     count++
+                    _leftTime.update { (it - 0.5f) }
                 } else {
+                    if(isTimerShowing.value) {
+                        _isTimerShowing.update { false }
+                    }
                     count = 0
+                    _leftTime.update { 3f }
                 }
             }
             _isCheckingCoveredEye.update { false }
@@ -205,9 +249,7 @@ class NenoonViewModel : ViewModel() {
     // UI
 
 
-    // Global
-    private val _isLaunching = MutableStateFlow(true)
-    val isLaunching: StateFlow<Boolean> = _isLaunching
+    // Permission
     private val _isWriteSettingsPermissionGranted = MutableStateFlow(false)
     val isWriteSettingsPermissionGranted: StateFlow<Boolean> = _isWriteSettingsPermissionGranted
     private val _isBluetoothPermissionsGranted = MutableStateFlow(false)
@@ -216,16 +258,6 @@ class NenoonViewModel : ViewModel() {
     val isCameraPermissionGranted: StateFlow<Boolean> = _isCameraPermissionGranted
     private val _isAllPermissionsGranted = MutableStateFlow(false)
     val isAllPermissionsGranted: StateFlow<Boolean> = _isAllPermissionsGranted
-    private val _selectedTestType = MutableStateFlow(TestType.None)
-    val selectedTestType: StateFlow<TestType> = _selectedTestType
-    private val _selectedTestName = MutableStateFlow("")
-    val selectedTestName: StateFlow<String> = _selectedTestName
-    private val _selectedTestDescription = MutableStateFlow("")
-    val selectedTestDescription: StateFlow<String> = _selectedTestDescription
-    private val _selectedTestMenuDescription = MutableStateFlow("")
-    val selectedTestMenuDescription: StateFlow<String> = _selectedTestMenuDescription
-    private val _isLeftEye = MutableStateFlow(false)
-    val isLeftEye: StateFlow<Boolean> = _isLeftEye
 
     fun updateIsWriteSettingsPermissionGranted(granted: Boolean) {
         _isWriteSettingsPermissionGranted.update { granted }
@@ -239,6 +271,10 @@ class NenoonViewModel : ViewModel() {
         _isCameraPermissionGranted.update { granted }
     }
 
+    fun updateIsAllPermissionsGranted(granted: Boolean) {
+        _isAllPermissionsGranted.update { granted }
+    }
+
     fun checkIfAllPermissionsGranted() {
         if(isBluetoothPermissionsGranted.value && isCameraPermissionGranted.value && isWriteSettingsPermissionGranted.value) {
             _isAllPermissionsGranted.update { true }
@@ -246,6 +282,23 @@ class NenoonViewModel : ViewModel() {
             _isAllPermissionsGranted.update { false }
         }
     }
+
+    // Global
+    private val _isLaunching = MutableStateFlow(true)
+    val isLaunching: StateFlow<Boolean> = _isLaunching
+
+    private val _selectedTestType = MutableStateFlow(TestType.None)
+    val selectedTestType: StateFlow<TestType> = _selectedTestType
+    private val _selectedTestName = MutableStateFlow("")
+    val selectedTestName: StateFlow<String> = _selectedTestName
+    private val _selectedTestDescription = MutableStateFlow("")
+    val selectedTestDescription: StateFlow<String> = _selectedTestDescription
+    private val _selectedTestMenuDescription = MutableStateFlow("")
+    val selectedTestMenuDescription: StateFlow<String> = _selectedTestMenuDescription
+    private val _isLeftEye = MutableStateFlow(false)
+    val isLeftEye: StateFlow<Boolean> = _isLeftEye
+
+
 
     fun updateSelectedTestType(testType: TestType) {
         _selectedTestType.update { testType }
@@ -281,6 +334,10 @@ class NenoonViewModel : ViewModel() {
     val thirdDistance: StateFlow<Float> = _thirdDistance
     private val _avgDistance = MutableStateFlow(0f)
     val avgDistance: StateFlow<Float> = _avgDistance
+
+    fun initializePresbyopiaTest() {
+
+    }
 
     fun updateFirstDistance() {
         _firstDistance.update { screenToFaceDistance.value }
@@ -320,6 +377,10 @@ class NenoonViewModel : ViewModel() {
     val ansNum: StateFlow<Int> = _ansNum
     private val _isSightednessTesting = MutableStateFlow(false)
     val isSightednessTesting: StateFlow<Boolean> = _isSightednessTesting
+
+    fun initializeVisualAcuityTest() {
+
+    }
 
     fun updateLeftEyeSightedValue(type: VisionDisorderType) {
         _leftEyeSightedValue.update { type }
@@ -418,14 +479,12 @@ class NenoonViewModel : ViewModel() {
 
     // Macular degeneration test
     // Amsler Grid Test
-
-    private val _color = MutableStateFlow(Color(0x00000000))
-    val color: StateFlow<Color> = _color
+    val amslerGridContentVisibleState = MutableTransitionState(false)
     private val _widthSize = MutableStateFlow(100f)
     val widthSize: StateFlow<Float> = _widthSize
     private val _heightSize = MutableStateFlow(100f)
     val heightSize: StateFlow<Float> = _heightSize
-    private val _currentSelectedArea = MutableStateFlow(mutableListOf(false, false, false, false, false, false, false, false, false))
+    private val _currentSelectedArea = MutableStateFlow(listOf(false, false, false, false, false, false, false, false, false))
     val currentSelectedArea: StateFlow<List<Boolean>> = _currentSelectedArea
     private val _leftSelectedArea = MutableStateFlow(emptyList<Boolean>())
     val leftSelectedArea: StateFlow<List<Boolean>> = _leftSelectedArea
@@ -433,33 +492,36 @@ class NenoonViewModel : ViewModel() {
     val rightSelectedArea: StateFlow<List<Boolean>> = _rightSelectedArea
 
     fun initializeAmslerGridTest() {
+        measuringDistanceContentVisibleState.targetState = true
+        coveredEyeCheckingContentVisibleState.targetState = false
+        amslerGridContentVisibleState.targetState = false
         _isLeftEye.update { false }
         _isCoveredEyeCheckingDone.update { false }
-
     }
 
     fun updateCurrentSelectedArea(position: Offset) {
         _currentSelectedArea.update {
+            val tmpList = it.toMutableList()
             if(position.x in 0f..299f && position.y in 0f..299f) {
-                it[0] = !it[0]
+                tmpList[0] = !it[0]
             } else if(position.x in 300f..599f && position.y in 0f..299f) {
-                it[1] = !it[1]
+                tmpList[1] = !it[1]
             } else if(position.x in 600f..900f && position.y in 0f..299f) {
-                it[2] = !it[2]
+                tmpList[2] = !it[2]
             } else if(position.x in 0f..299f && position.y in 300f..599f) {
-                it[3] = !it[3]
+                tmpList[3] = !it[3]
             } else if(position.x in 300f..599f && position.y in 300f..599f) {
-                it[4] = !it[4]
+                tmpList[4] = !it[4]
             } else if(position.x in 600f..900f && position.y in 300f..599f) {
-                it[5] = !it[5]
+                tmpList[5] = !it[5]
             } else if(position.x in 0f..299f && position.y in 600f..900f) {
-                it[6] = !it[6]
+                tmpList[6] = !it[6]
             } else if(position.x in 300f..599f && position.y in 600f..900f) {
-                it[7] = !it[7]
+                tmpList[7] = !it[7]
             } else {
-                it[8] = !it[8]
+                tmpList[8] = !it[8]
             }
-            it
+            tmpList
         }
     }
 

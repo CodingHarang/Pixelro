@@ -4,7 +4,6 @@ import android.Manifest
 import android.content.Intent
 import android.net.Uri
 import android.provider.Settings
-import android.util.Log
 import android.widget.Toast
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
@@ -12,7 +11,13 @@ import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
-import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
@@ -40,6 +45,18 @@ fun PermissionRequestScreen(
     val cameraPermissions = arrayOf(
         Manifest.permission.CAMERA
     )
+
+    val writeSettingPermissionRequestLauncher = rememberLauncherForActivityResult(ActivityResultContracts.StartActivityForResult()) {
+        if(Settings.System.canWrite(context)) {
+            viewModel.updateIsWriteSettingsPermissionGranted(true)
+            Toast.makeText(context, "시스템 설정 변경 권한이 허용되었습니다.", Toast.LENGTH_SHORT).show()
+        } else {
+            viewModel.updateIsWriteSettingsPermissionGranted(false)
+            Toast.makeText(context, "시스템 설정 변경 권한이 허용되지 않았습니다.", Toast.LENGTH_SHORT).show()
+        }
+        viewModel.checkIfAllPermissionsGranted()
+    }
+
     val permissionRequestLauncher = rememberLauncherForActivityResult(ActivityResultContracts.RequestMultiplePermissions()) {
         result ->
         if(result.keys.contains(Manifest.permission.BLUETOOTH_SCAN)) {
@@ -49,32 +66,21 @@ fun PermissionRequestScreen(
                 && result.entries.contains(mapOf(Manifest.permission.BLUETOOTH_ADMIN to true).entries.first())
                 && result.entries.contains(mapOf(Manifest.permission.ACCESS_FINE_LOCATION to true).entries.first())
                 && result.entries.contains(mapOf(Manifest.permission.ACCESS_COARSE_LOCATION to true).entries.first())) {
-                Log.e("permissionRequestLauncher", "Bluetooth permissions granted")
                 viewModel.updateIsBluetoothPermissionsGranted(true)
+                Toast.makeText(context, "블루투스 권한이 허용되었습니다.", Toast.LENGTH_SHORT).show()
             } else {
-                Log.e("permissionRequestLauncher", "Bluetooth permissions not granted")
+                viewModel.updateIsBluetoothPermissionsGranted(false)
                 Toast.makeText(context, "블루투스 권한이 허용되지 않았습니다.", Toast.LENGTH_SHORT).show()
             }
         }
         if(result.keys.contains(Manifest.permission.CAMERA)) {
             if(result.entries.contains(mapOf(Manifest.permission.CAMERA to true).entries.first())) {
-                Log.e("permissionRequestLauncher", "Camera permissions granted")
-                Toast.makeText(context, "블루투스 권한이 허용되었습니다.", Toast.LENGTH_SHORT).show()
                 viewModel.updateIsCameraPermissionGranted(true)
+                Toast.makeText(context, "카메라 권한이 허용되었습니다.", Toast.LENGTH_SHORT).show()
             } else {
-                Log.e("permissionRequestLauncher", "Camera permissions not granted")
+                viewModel.updateIsCameraPermissionGranted(false)
                 Toast.makeText(context, "카메라 권한이 허용되지 않았습니다.", Toast.LENGTH_SHORT).show()
             }
-        }
-        viewModel.checkIfAllPermissionsGranted()
-    }
-
-    val writeSettingPermissionRequestLauncher = rememberLauncherForActivityResult(ActivityResultContracts.StartActivityForResult()) {
-        if(Settings.System.canWrite(context)) {
-            Toast.makeText(context, "시스템 설정 변경 권한이 허용되었습니다.", Toast.LENGTH_SHORT).show()
-            viewModel.updateIsWriteSettingsPermissionGranted(true)
-        } else {
-            Toast.makeText(context, "시스템 설정 변경 권한이 허용되지 않았습니다.", Toast.LENGTH_SHORT).show()
         }
         viewModel.checkIfAllPermissionsGranted()
     }

@@ -16,6 +16,7 @@ import androidx.compose.material.SliderColors
 import androidx.compose.material.SliderDefaults
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.DisposableEffect
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.remember
@@ -39,9 +40,10 @@ fun AmslerGridTestContent(
     toResultScreen: () -> Unit,
     viewModel: NenoonViewModel
 ) {
-    val measuringDistanceContentVisibleState = remember { MutableTransitionState(true) }
-    val coveredEyeCheckingContentVisibleState = remember { MutableTransitionState(false) }
-    val amslerGridContentVisibleState = remember { MutableTransitionState(false) }
+    Log.e("AmslerGridTestContent", "AmslerGridTestContent")
+    val measuringDistanceContentVisibleState = viewModel.measuringDistanceContentVisibleState
+    val coveredEyeCheckingContentVisibleState = viewModel.coveredEyeCheckingContentVisibleState
+    val amslerGridContentVisibleState = viewModel.amslerGridContentVisibleState
 
     Log.e("AmslerGridTestContent", "${measuringDistanceContentVisibleState.currentState}, ${coveredEyeCheckingContentVisibleState.currentState}, ${amslerGridContentVisibleState.currentState}")
 
@@ -78,7 +80,9 @@ fun AmslerGridTestContent(
             )
             AmslerGridContent(
                 viewModel = viewModel,
-                amslerGridContentVisibleState = amslerGridContentVisibleState
+                amslerGridContentVisibleState = amslerGridContentVisibleState,
+                nextVisibleState = coveredEyeCheckingContentVisibleState,
+                toResultScreen = toResultScreen
             )
         }
     }
@@ -87,8 +91,11 @@ fun AmslerGridTestContent(
 @Composable
 fun AmslerGridContent(
     viewModel: NenoonViewModel,
-    amslerGridContentVisibleState: MutableTransitionState<Boolean>
+    amslerGridContentVisibleState: MutableTransitionState<Boolean>,
+    nextVisibleState: MutableTransitionState<Boolean>,
+    toResultScreen: () -> Unit
 ) {
+    Log.e("AmslerGridContent", "AmslerGridContent")
     AnimatedVisibility(
         visibleState = amslerGridContentVisibleState,
         enter = slideIn(
@@ -100,16 +107,21 @@ fun AmslerGridContent(
             targetOffset = { IntOffset(-it.width, 0) }
         ) + fadeOut()
     ) {
+        DisposableEffect(true) {
+            onDispose() {
+            }
+        }
         Column(
             modifier = Modifier
                 .width(700.dp)
         ) {
             val width = viewModel.widthSize.collectAsState().value
             val height = viewModel.heightSize.collectAsState().value
-            val ovalColor = viewModel.color.collectAsState().value
             val rotX = viewModel.rotX.collectAsState().value
             val rotY = viewModel.rotY.collectAsState().value
             val currentSelectedArea = viewModel.currentSelectedArea.collectAsState().value
+            val isLeft = viewModel.isLeftEye.collectAsState().value
+
             Box(
                 contentAlignment = Alignment.Center,
                 modifier = Modifier
@@ -122,6 +134,13 @@ fun AmslerGridContent(
                     .height(700.dp)
                     .padding(40.dp)
             ) {
+                Image(
+                    modifier = Modifier
+                        .width(600.dp)
+                        .height(600.dp),
+                    painter = painterResource(id = R.drawable.amsler_grid),
+                    contentDescription = ""
+                )
                 Canvas(
                     modifier = Modifier
                         .width(600.dp)
@@ -165,13 +184,6 @@ fun AmslerGridContent(
                         center = Offset(450f - (400f * tan(rotY * 0.0174533)).toFloat(), 450f - (400f * tan((rotX + 10) * 0.0174533)).toFloat())
                     )
                 }
-                Image(
-                    modifier = Modifier
-                        .width(600.dp)
-                        .height(600.dp),
-                    painter = painterResource(id = R.drawable.amsler_grid),
-                    contentDescription = ""
-                )
             }
             Spacer(
                 modifier = Modifier
@@ -191,7 +203,14 @@ fun AmslerGridContent(
                             shape = RoundedCornerShape(8.dp)
                         )
                         .clickable {
-
+                            if (isLeft) {
+                                toResultScreen()
+                            } else {
+                                viewModel.updateIsLeftEye(true)
+                                viewModel.updateIsCoveredEyeCheckingDone(false)
+                                amslerGridContentVisibleState.targetState = false
+                                nextVisibleState.targetState = true
+                            }
                         },
                     contentAlignment = Alignment.Center
                 ) {
