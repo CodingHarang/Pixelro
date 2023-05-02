@@ -10,11 +10,11 @@ import android.content.IntentFilter
 import android.content.pm.PackageManager
 import android.graphics.Bitmap
 import android.graphics.Canvas
-import android.graphics.Color
 import android.graphics.Paint
 import android.util.Log
 import android.widget.Toast
 import androidx.activity.compose.BackHandler
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Column
 import androidx.compose.material.Button
 import androidx.compose.material.Text
@@ -22,6 +22,8 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.DisposableEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.rememberCoroutineScope
+import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat.getSystemService
@@ -89,7 +91,10 @@ fun TestResultScreen(
 
     val printerMacAddress = viewModel.printerMacAddress.collectAsState().value
 
-    fun printResult(result: String) {
+    fun printResult(
+        testType: TestType,
+        printString: String
+    ) {
         val mNemonicWrapper = nemonicWrapper(context)
         mNemonicWrapper.enableLastPageCut(true)
         mNemonicWrapper.setTimeoutConstant(500)
@@ -97,7 +102,7 @@ fun TestResultScreen(
         mNemonicWrapper.setContrastLevel(0)
         val nCopies = 1
 
-        val bm = textAsBitmap(result,40f, Color.parseColor("#FF000000"))
+        val bm = textAsBitmap(testType, printString, 40f, android.graphics.Color.parseColor("#FF000000"))
         val nResult = 0
         val nPrintWidth = 576
         val nPaperHeight = ((bm.height.toFloat() / bm.width.toFloat()) * 576).toInt()
@@ -112,18 +117,23 @@ fun TestResultScreen(
         }
     }
 
-    Column() {
+    Column {
+        val testType = viewModel.selectedTestType.collectAsState().value
+        val printString = viewModel.printString.collectAsState().value
         Button(
             onClick = {
                 composableScope.launch {
                     bluetoothAdapter.startDiscovery()
                     Log.e("onClick", "${bluetoothAdapter.hashCode()}, ${bluetoothAdapter.isEnabled} ${bluetoothAdapter.isDiscovering} ${bluetoothAdapter.state}")
-                    printResult("hello\nworld!\nhello\nworld")
+                    printResult(
+                        testType = testType,
+                        printString = printString
+                    )
                 }
             }
         ) {
             Text(
-                text = "Print"
+                text = "결과 프린트하기"
             )
         }
         when (viewModel.selectedTestType.collectAsState().value) {
@@ -171,7 +181,12 @@ fun TestResultScreen(
     }
 }
 
-fun textAsBitmap(text: String?, textSize: Float, textColor: Int): Bitmap {
+fun textAsBitmap(
+    testType: TestType,
+    printString: String,
+    textSize: Float,
+    textColor: Int
+): Bitmap {
     val paint = Paint(Paint.ANTI_ALIAS_FLAG)
     paint.textSize = textSize
     paint.color = textColor
@@ -179,10 +194,36 @@ fun textAsBitmap(text: String?, textSize: Float, textColor: Int): Bitmap {
     val baseline = -paint.ascent() // ascent() is negative
     val width = 576
     val height = (baseline + paint.descent() + 0.5f).toInt()
-    val image = Bitmap.createBitmap(width, 400, Bitmap.Config.ARGB_8888)
+    val image = Bitmap.createBitmap(width, 300, Bitmap.Config.ARGB_8888)
     val canvas = Canvas(image)
     canvas.drawColor(android.graphics.Color.parseColor("#FFFFFFFF"))
-    canvas.drawText(text!!, 0f, baseline, paint)
-    canvas.drawText("text\ntext\ntext", 0f,  baseline + 40, paint)
+    when(testType) {
+        TestType.Presbyopia -> {
+            canvas.drawText("조절력 검사", 0f, baseline, paint)
+            canvas.drawText(printString, 0f, baseline + 40f, paint)
+        }
+        TestType.ShortDistanceVisualAcuity -> {
+            canvas.drawText("근거리 시력 검사", 0f, baseline, paint)
+            val leftEye = printString.split(",")[0]
+            val rightEye = printString.split(",")[1]
+            canvas.drawText(leftEye, 0f, baseline + 40f, paint)
+            canvas.drawText(rightEye, 0f, baseline + 80f, paint)
+        }
+        TestType.LongDistanceVisualAcuity -> {
+            canvas.drawText("원거리 시력 검사", 0f, baseline, paint)
+        }
+        TestType.ChildrenVisualAcuity -> {
+            canvas.drawText("어린이 시력 검사", 0f, baseline, paint)
+        }
+        TestType.AmslerGrid -> {
+            canvas.drawText("암슬러 차트 검사", 0f, baseline, paint)
+        }
+        TestType.MChart -> {
+            canvas.drawText("엠식 변형시 검사", 0f, baseline, paint)
+        }
+        else -> {
+
+        }
+    }
     return image!!
 }

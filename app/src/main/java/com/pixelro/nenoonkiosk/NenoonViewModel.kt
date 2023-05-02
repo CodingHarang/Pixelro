@@ -4,6 +4,7 @@ import android.graphics.PointF
 import android.util.Log
 import android.util.SizeF
 import androidx.compose.animation.core.MutableTransitionState
+import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.graphics.Color
 import androidx.lifecycle.ViewModel
@@ -16,6 +17,7 @@ import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import kotlin.math.abs
+import kotlin.math.roundToInt
 import kotlin.math.tan
 
 class NenoonViewModel : ViewModel() {
@@ -240,6 +242,12 @@ class NenoonViewModel : ViewModel() {
     val printerMacAddress: StateFlow<String> = _printerMacAddress
     private val _nemonicList = MutableStateFlow(emptyList<Pair<String, String>>())
     val nemonicList: StateFlow<List<Pair<String, String>>> = _nemonicList
+    private val _printString = MutableStateFlow("")
+    val printString: StateFlow<String> = _printString
+
+    fun updatePrintString(string: String) {
+        _printString.update { string }
+    }
 
     fun updatePrinter(name: String, address: String) {
         _printerName.update { name }
@@ -355,6 +363,9 @@ class NenoonViewModel : ViewModel() {
         _avgDistance.update {
             (firstDistance.value + secondDistance.value + thirdDistance.value) / 3
         }
+        _printString.update {
+            "조절력: ${(avgDistance.value).roundToInt().toFloat() / 10}cm"
+        }
     }
 
     // Visual acuity test
@@ -408,6 +419,26 @@ class NenoonViewModel : ViewModel() {
 
     fun updateIsLeftEye(isLeftEye: Boolean) {
         _isLeftEye.update { isLeftEye }
+    }
+
+    fun updateSightTestResult() {
+        _printString.update {
+            val leftEyeSighted = when(leftEyeSightedValue.value) {
+                VisionDisorderType.Normal -> "정상"
+                VisionDisorderType.Myopia -> "근시"
+                VisionDisorderType.Hyperopia -> "원시"
+                else -> "난시"
+            }
+
+            val rightEyeSighted = when(rightEyeSightedValue.value) {
+                VisionDisorderType.Normal -> "정상"
+                VisionDisorderType.Myopia -> "근시"
+                VisionDisorderType.Hyperopia -> "원시"
+                else -> "난시"
+            }
+            "좌안 시력: ${leftEyeSightValue.value.toFloat() / 10} $leftEyeSighted," +
+            "우안 시력: ${rightEyeSightValue.value.toFloat() / 10} $rightEyeSighted"
+        }
     }
 
     fun initializeSightTest() {

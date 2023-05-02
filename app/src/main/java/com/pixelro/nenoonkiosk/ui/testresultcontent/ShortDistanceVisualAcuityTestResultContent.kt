@@ -26,6 +26,7 @@ fun ShortDistanceVisualAcuityTestResultContent(
     viewModel: NenoonViewModel,
     navController: NavHostController
 ) {
+    viewModel.updateSightTestResult()
     Column(
         modifier = Modifier
             .fillMaxSize(),
@@ -72,7 +73,7 @@ fun ShortDistanceVisualAcuityTestResultContent(
                     contentAlignment = Alignment.Center
                 ) {
                     Text(
-                        text = "${viewModel.leftEyeSightValue.collectAsState().value}",
+                        text = "${viewModel.leftEyeSightValue.collectAsState().value.toFloat() / 10}",
                         fontSize = 30.sp,
                     )
                 }
@@ -126,7 +127,7 @@ fun ShortDistanceVisualAcuityTestResultContent(
                     contentAlignment = Alignment.Center
                 ) {
                     Text(
-                        text = "${viewModel.rightEyeSightValue.collectAsState().value}",
+                        text = "${viewModel.rightEyeSightValue.collectAsState().value.toFloat() / 10}",
                         fontSize = 30.sp,
                     )
                 }
