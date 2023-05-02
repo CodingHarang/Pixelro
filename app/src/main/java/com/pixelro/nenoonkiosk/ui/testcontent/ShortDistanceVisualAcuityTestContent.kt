@@ -22,12 +22,13 @@ fun ShortDistanceVisualAcuityTestContent(
     toResultScreen: () -> Unit,
     viewModel: NenoonViewModel
 ) {
-    viewModel.initializeVisualAcuityTest()
     Column(
         modifier = Modifier
             .background(Color(0xff000000)),
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
+        viewModel.initializeVisualAcuityTest()
+        viewModel.initializeCoveredEyeChecking()
         val measuringDistanceContentVisibleState = viewModel.measuringDistanceContentVisibleState
         val coveredEyeCheckingContentVisibleState = viewModel.coveredEyeCheckingContentVisibleState
         val visualAcuityTestCommonContentVisibleState = viewModel.visualAcuityTestCommonContentVisibleState

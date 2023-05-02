@@ -67,11 +67,11 @@ fun VisualAcuityTestCommonContent(
                 Column(
                     horizontalAlignment = Alignment.CenterHorizontally
                 ) {
-                    Text(
-                        text = "시력: ${viewModel.sightValue.collectAsState().value.toFloat() / 10}",
-                        color = Color(0xffffffff),
-                        fontSize = 40.sp
-                    )
+//                    Text(
+//                        text = "시력: ${viewModel.sightValue.collectAsState().value.toFloat() / 10}",
+//                        color = Color(0xffffffff),
+//                        fontSize = 40.sp
+//                    )
                     Box(
                         modifier = Modifier
                             .height(400.dp)
@@ -1227,6 +1227,7 @@ fun SightednessTestContent(
                             viewModel.updateLeftEyeSightedValue(VisionDisorderType.Hyperopia)
                             viewModel.updateIsSightednessTesting(false)
                             viewModel.updateIsLeftEye(false)
+                            visualAcuityTestCommonContentVisibleState.targetState = false
                             toResultScreen()
                         } else {
                             viewModel.updateRightEyeSightedValue(VisionDisorderType.Hyperopia)
@@ -1259,6 +1260,7 @@ fun SightednessTestContent(
                             viewModel.updateLeftEyeSightedValue(VisionDisorderType.Myopia)
                             viewModel.updateIsSightednessTesting(false)
                             viewModel.updateIsLeftEye(false)
+                            visualAcuityTestCommonContentVisibleState.targetState = false
                             toResultScreen()
                         } else {
                             nextVisibleState.targetState = true
@@ -1294,6 +1296,7 @@ fun SightednessTestContent(
                             viewModel.updateLeftEyeSightedValue(VisionDisorderType.Normal)
                             viewModel.updateIsSightednessTesting(false)
                             viewModel.updateIsLeftEye(false)
+                            visualAcuityTestCommonContentVisibleState.targetState = false
                             toResultScreen()
                         } else {
                             nextVisibleState.targetState = true
@@ -1325,6 +1328,7 @@ fun SightednessTestContent(
                             viewModel.updateLeftEyeSightedValue(VisionDisorderType.Astigmatism)
                             viewModel.updateIsSightednessTesting(false)
                             viewModel.updateIsLeftEye(false)
+                            visualAcuityTestCommonContentVisibleState.targetState = false
                             toResultScreen()
                         } else {
                             nextVisibleState.targetState = true

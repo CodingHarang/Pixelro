@@ -151,7 +151,6 @@ fun ShortDistanceVisualAcuityTestResultContent(
                             VisionDisorderType.Myopia -> "근시"
                             VisionDisorderType.Hyperopia -> "원시"
                             VisionDisorderType.Astigmatism -> "난시"
-                            else -> "오류"
                         },
                         fontSize = 30.sp,
                         fontWeight = FontWeight.Bold

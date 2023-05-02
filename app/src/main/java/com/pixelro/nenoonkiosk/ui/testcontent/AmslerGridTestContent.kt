@@ -207,7 +207,7 @@ fun AmslerGridContent(
                                 toResultScreen()
                             } else {
                                 viewModel.updateIsLeftEye(true)
-                                viewModel.updateIsCoveredEyeCheckingDone(false)
+//                                viewModel.updateIsCoveredEyeCheckingDone(false)
                                 amslerGridContentVisibleState.targetState = false
                                 nextVisibleState.targetState = true
                             }

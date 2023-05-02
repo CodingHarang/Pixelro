@@ -178,43 +178,35 @@ class NenoonViewModel : ViewModel() {
 
     // Covered Eye Checking
     val coveredEyeCheckingContentVisibleState = MutableTransitionState(false)
-    private val _isCoveredEyeCheckingDone = MutableStateFlow(false)
-    val isCoveredEyeCheckingDone: StateFlow<Boolean> = _isCoveredEyeCheckingDone
-    private val _isCheckingCoveredEye = MutableStateFlow(false)
-    val isCheckingCoveredEye: StateFlow<Boolean> = _isCheckingCoveredEye
     private val _leftTime = MutableStateFlow(0f)
     val leftTime: StateFlow<Float> = _leftTime
     private val _isTimerShowing = MutableStateFlow(false)
     val isTimerShowing: StateFlow<Boolean> = _isTimerShowing
 
     fun initializeCoveredEyeChecking() {
-        _isCoveredEyeCheckingDone.update { false }
-        _isCheckingCoveredEye.update { true }
+//        _isCoveredEyeCheckingDone.update { false }
         _leftTime.update { 3f }
         _isTimerShowing.update { false }
-        checkCoveredEye()
     }
 
-    fun updateIsCoveredEyeCheckingDone(isDone: Boolean) {
-        _isCoveredEyeCheckingDone.update { false }
-    }
+//    fun updateIsCoveredEyeCheckingDone(isDone: Boolean) {
+//        _isCoveredEyeCheckingDone.update { isDone }
+//    }
 
-    fun updateIsCheckingCoveredEye(isChecking: Boolean) {
-        _isCheckingCoveredEye.update { isChecking }
-    }
-
-    fun checkCoveredEye() {
+    fun checkCoveredEye(
+        nextVisibleState: MutableTransitionState<Boolean>
+    ) {
         viewModelScope.launch {
             var count = 0
             _leftTime.update { 3f }
-            while(isCheckingCoveredEye.value && count < 6) {
+            while(count < 6) {
                 delay(500)
                 Log.e("checkCoveredEye", "$count")
                 if(
 //                    when(isLeftEye.value) {
 //                        true -> leftEyeOpenProbability.value
 //                        else -> rightEyeOpenProbability.value
-//                    } < 0.7f && abs(leftEyeOpenProbability.value - rightEyeOpenProbability.value) > 0.4f
+//                    } < 0.7f && abs(leftEyeOpenProbability.value - rightEyeOpenProbability.value) > 0.3f
                     true
                 ) {
                     if(!isTimerShowing.value) {
@@ -230,8 +222,8 @@ class NenoonViewModel : ViewModel() {
                     _leftTime.update { 3f }
                 }
             }
-            _isCheckingCoveredEye.update { false }
-            _isCoveredEyeCheckingDone.update { true }
+            coveredEyeCheckingContentVisibleState.targetState = false
+            nextVisibleState.targetState = true
         }
     }
 
@@ -530,7 +522,6 @@ class NenoonViewModel : ViewModel() {
         coveredEyeCheckingContentVisibleState.targetState = false
         amslerGridContentVisibleState.targetState = false
         _isLeftEye.update { false }
-        _isCoveredEyeCheckingDone.update { false }
     }
 
     fun updateCurrentSelectedArea(position: Offset) {
@@ -570,16 +561,65 @@ class NenoonViewModel : ViewModel() {
     // M-Chart Test
 
     val mChartContentVisibleState = MutableTransitionState(false)
+    private val _mChartResult = MutableStateFlow(listOf<Int>())
+    val mChartResult: StateFlow<List<Int>> = _mChartResult
+    private val _isVertical = MutableStateFlow(true)
+    val isVertical: StateFlow<Boolean> = _isVertical
+    private val _currentLevel = MutableStateFlow(0)
+    val currentLevel: StateFlow<Int> = _currentLevel
+    private val _mChartImageId = MutableStateFlow(R.drawable.mchart_0_0)
+    val mChartImageId: StateFlow<Int> = _mChartImageId
 
     fun initializeMChartTest() {
+        _isVertical.update { true }
+        _currentLevel.update { 0 }
+        _mChartResult.update { listOf() }
         measuringDistanceContentVisibleState.targetState = true
         coveredEyeCheckingContentVisibleState.targetState = false
         mChartContentVisibleState.targetState = false
         _isLeftEye.update { false }
     }
 
+    fun updateMChartResult(value: Int) {
+        _mChartResult.update {
+            val list = it + value
+            list
+        }
+        Log.e("updateMChartResult", "${mChartResult.value}")
+    }
 
+    fun updateIsVertical(isVertical: Boolean) {
+        _isVertical.update { isVertical }
+    }
 
+    fun updateCurrentLevel(level: Int) {
+        _currentLevel.update { level }
+        _mChartImageId.update {
+            when(currentLevel.value) {
+                0 -> R.drawable.mchart_0_0
+                1 -> R.drawable.mchart_0_1
+                2 -> R.drawable.mchart_0_2
+                3 -> R.drawable.mchart_0_3
+                4 -> R.drawable.mchart_0_4
+                5 -> R.drawable.mchart_0_5
+                6 -> R.drawable.mchart_0_6
+                7 -> R.drawable.mchart_0_7
+                8 -> R.drawable.mchart_0_8
+                9 -> R.drawable.mchart_0_9
+                10 -> R.drawable.mchart_1_0
+                11 -> R.drawable.mchart_1_1
+                12 -> R.drawable.mchart_1_2
+                13 -> R.drawable.mchart_1_3
+                14 -> R.drawable.mchart_1_4
+                15 -> R.drawable.mchart_1_5
+                16 -> R.drawable.mchart_1_6
+                17 -> R.drawable.mchart_1_7
+                18 -> R.drawable.mchart_1_8
+                19 -> R.drawable.mchart_1_9
+                else -> R.drawable.mchart_2_0
+            }
+        }
+    }
 
 
 

@@ -344,8 +344,6 @@ fun NenoonApp(
                     }
                 }
             }
-
         }
-
     }
 }

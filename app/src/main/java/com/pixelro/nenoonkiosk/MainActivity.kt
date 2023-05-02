@@ -85,7 +85,7 @@ class MainActivity : ComponentActivity() {
                 val locationManager = getSystemService(Context.LOCATION_SERVICE) as LocationManager
 
                 if(!locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER)) {
-                    Log.e("lifecycleScope", "not enabled")
+//                    Log.e("lifecycleScope", "not enabled")
 //                    startActivity(Intent(Settings.ACTION_LOCATION_SOURCE_SETTINGS))
 
                     val locationRequest: LocationRequest = LocationRequest.Builder(10000).build()
@@ -109,7 +109,7 @@ class MainActivity : ComponentActivity() {
                         }
                     }
                 } else {
-                    Log.e("lifecycleScope", "enabled")
+//                    Log.e("lifecycleScope", "enabled")
                 }
                 delay(1000)
 

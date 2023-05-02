@@ -35,16 +35,6 @@ fun CoveredEyeCheckingContent(
     coveredEyeCheckingContentVisibleState: MutableTransitionState<Boolean>,
     nextVisibleState: MutableTransitionState<Boolean>
 ) {
-    val isLeftEye = viewModel.isLeftEye.collectAsState().value
-    val isCoveredEyeCheckingDone = viewModel.isCoveredEyeCheckingDone.collectAsState().value
-    Log.e("CoveredEyeCheckingContent", "outsideAnimatedVisibility")
-
-
-    if(isCoveredEyeCheckingDone) {
-        coveredEyeCheckingContentVisibleState.targetState = false
-        nextVisibleState.targetState = true
-    }
-
     AnimatedVisibility(
         visibleState = coveredEyeCheckingContentVisibleState,
         enter = slideIn(
@@ -57,11 +47,12 @@ fun CoveredEyeCheckingContent(
         ) + fadeOut()
     ) {
         DisposableEffect(true) {
-            viewModel.initializeCoveredEyeChecking()
-            onDispose {
-                viewModel.updateIsCheckingCoveredEye(false)
+            Log.e("DisposableEffect", "${viewModel.coveredEyeCheckingContentVisibleState.targetState}")
+            viewModel.checkCoveredEye(nextVisibleState)
+            onDispose {}
         }
-    }
+        val isLeftEye = viewModel.isLeftEye.collectAsState().value
+//        val isCoveredEyeCheckingDone = viewModel.isCoveredEyeCheckingDone.collectAsState().value
         Log.e("CoveredEyeCheckingContent", "insideAnimatedVisibility")
         Column(
             modifier = Modifier,
