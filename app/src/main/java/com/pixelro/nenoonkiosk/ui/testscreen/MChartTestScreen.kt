@@ -1,14 +1,21 @@
 package com.pixelro.nenoonkiosk.ui.testscreen
 
-import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
-import androidx.navigation.NavHostController
 import com.pixelro.nenoonkiosk.NenoonViewModel
+import com.pixelro.nenoonkiosk.facedetection.FaceDetection
+import com.pixelro.nenoonkiosk.ui.testcontent.MChartTestContent
 
 @Composable
 fun MChartTestScreen(
-    navController: NavHostController,
+    toResultScreen: () -> Unit,
     viewModel: NenoonViewModel
 ) {
-    Text("MChart")
+    viewModel.initializeMChartTest()
+    FaceDetection(
+        viewModel = viewModel
+    )
+    MChartTestContent(
+        toResultScreen = toResultScreen,
+        viewModel = viewModel
+    )
 }

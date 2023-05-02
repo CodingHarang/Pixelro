@@ -40,9 +40,9 @@ import com.pixelro.nenoonkiosk.ui.testscreen.*
 fun NenoonApp(
     viewModel: NenoonViewModel,
     mainNavController: NavHostController = rememberAnimatedNavController(),
-    subNavController: NavHostController = rememberAnimatedNavController(),
-    testNavController: NavHostController = rememberAnimatedNavController()
+    subNavController: NavHostController = rememberAnimatedNavController()
 ) {
+
     val context = LocalContext.current
     val configuration = LocalConfiguration.current
     val cameraManager = context.getSystemService(Context.CAMERA_SERVICE) as CameraManager
@@ -294,7 +294,7 @@ fun NenoonApp(
                         }
                     ) {
                         MChartTestScreen(
-                            navController = testNavController,
+                            toResultScreen = { mainNavController.navigate(GlobalConstants.ROUTE_TEST_RESULT) },
                             viewModel = viewModel
                         )
                     }

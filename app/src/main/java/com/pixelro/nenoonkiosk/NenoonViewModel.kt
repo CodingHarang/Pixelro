@@ -369,7 +369,7 @@ class NenoonViewModel : ViewModel() {
     }
 
     // Visual acuity test
-
+    val visualAcuityTestCommonContentVisibleState = MutableTransitionState(false)
     private val _sightHistory = MutableStateFlow(mutableMapOf<Int, Pair<Int, Int>>())
     val sightHistory: StateFlow<MutableMap<Int, Pair<Int, Int>>> = _sightHistory
     private val _sightValue = MutableStateFlow(1)
@@ -390,7 +390,10 @@ class NenoonViewModel : ViewModel() {
     val isSightednessTesting: StateFlow<Boolean> = _isSightednessTesting
 
     fun initializeVisualAcuityTest() {
-
+        _isLeftEye.update { false }
+        measuringDistanceContentVisibleState.targetState = true
+        coveredEyeCheckingContentVisibleState.targetState = false
+        visualAcuityTestCommonContentVisibleState.targetState = false
     }
 
     fun updateLeftEyeSightedValue(type: VisionDisorderType) {
@@ -566,9 +569,14 @@ class NenoonViewModel : ViewModel() {
 
     // M-Chart Test
 
+    val mChartContentVisibleState = MutableTransitionState(false)
 
-
-
+    fun initializeMChartTest() {
+        measuringDistanceContentVisibleState.targetState = true
+        coveredEyeCheckingContentVisibleState.targetState = false
+        mChartContentVisibleState.targetState = false
+        _isLeftEye.update { false }
+    }
 
 
 
