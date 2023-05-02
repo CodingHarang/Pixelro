@@ -178,7 +178,22 @@ fun MChartContent(
                         shape = RoundedCornerShape(8.dp)
                     )
                     .clickable {
-                        viewModel.updateCurrentLevel(currentLevel + 1)
+                        if(currentLevel >= 20) {
+                            viewModel.updateMChartResult(currentLevel)
+                            viewModel.updateCurrentLevel(0)
+                            if(isVertical && !isLeftEye) {
+                                viewModel.updateIsVertical(false)
+                            } else if(!isVertical && !isLeftEye) {
+                                viewModel.updateIsVertical(true)
+                                viewModel.updateIsLeftEye(true)
+                            } else if(isVertical && isLeftEye) {
+                                viewModel.updateIsVertical(false)
+                            } else {
+                                viewModel.updateIsVertical(true)
+                            }
+                        } else {
+                            viewModel.updateCurrentLevel(currentLevel + 1)
+                        }
                     }
                     .padding(20.dp),
                 contentAlignment = Alignment.Center
