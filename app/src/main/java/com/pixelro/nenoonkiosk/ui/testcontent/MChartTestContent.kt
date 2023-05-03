@@ -153,10 +153,13 @@ fun MChartContent(
                         } else if(!isVertical && !isLeftEye) {
                             viewModel.updateIsVertical(true)
                             viewModel.updateIsLeftEye(true)
+                            nextVisibleState.targetState = true
+                            mChartContentVisibleState.targetState = false
                         } else if(isVertical && isLeftEye) {
                             viewModel.updateIsVertical(false)
                         } else {
-                            viewModel.updateIsVertical(true)
+                            viewModel.updateSavedResult()
+                            toResultScreen()
                         }
                     }
                     .padding(20.dp),

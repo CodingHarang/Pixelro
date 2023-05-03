@@ -517,6 +517,16 @@ class NenoonViewModel : ViewModel() {
     private val _rightSelectedArea = MutableStateFlow(listOf(false, false, false, false, false, false, false, false, false))
     val rightSelectedArea: StateFlow<List<Boolean>> = _rightSelectedArea
 
+    fun updateLeftSelectedArea() {
+        _leftSelectedArea.update { currentSelectedArea.value }
+        _currentSelectedArea.update { listOf(false, false, false, false, false, false, false, false, false) }
+    }
+
+    fun updateRightSelectedArea() {
+        _rightSelectedArea.update { currentSelectedArea.value }
+        _currentSelectedArea.update { listOf(false, false, false, false, false, false, false, false, false) }
+    }
+
     fun initializeAmslerGridTest() {
         measuringDistanceContentVisibleState.targetState = true
         coveredEyeCheckingContentVisibleState.targetState = false
@@ -563,6 +573,8 @@ class NenoonViewModel : ViewModel() {
     val mChartContentVisibleState = MutableTransitionState(false)
     private val _mChartResult = MutableStateFlow(listOf<Int>())
     val mChartResult: StateFlow<List<Int>> = _mChartResult
+    private val _savedResult = MutableStateFlow(listOf<Int>())
+    val savedResult: StateFlow<List<Int>> = _savedResult
     private val _isVertical = MutableStateFlow(true)
     val isVertical: StateFlow<Boolean> = _isVertical
     private val _currentLevel = MutableStateFlow(0)
@@ -571,6 +583,7 @@ class NenoonViewModel : ViewModel() {
     val mChartImageId: StateFlow<Int> = _mChartImageId
 
     fun initializeMChartTest() {
+        Log.e("initializeMChart", "initialize")
         _isVertical.update { true }
         _currentLevel.update { 0 }
         _mChartResult.update { listOf() }
@@ -590,6 +603,10 @@ class NenoonViewModel : ViewModel() {
 
     fun updateIsVertical(isVertical: Boolean) {
         _isVertical.update { isVertical }
+    }
+
+    fun updateSavedResult() {
+        _savedResult.update { mChartResult.value }
     }
 
     fun updateCurrentLevel(level: Int) {
