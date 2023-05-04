@@ -100,4 +100,7 @@ dependencies {
 
     // location
     implementation 'com.google.android.gms:play-services-location:21.0.1'
+
+    // MPAndroidChart
+    implementation 'com.github.PhilJay:MPAndroidChart:v3.1.0'
 }
