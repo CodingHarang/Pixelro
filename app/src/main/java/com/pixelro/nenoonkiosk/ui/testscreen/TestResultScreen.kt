@@ -16,15 +16,24 @@ import android.widget.Toast
 import androidx.activity.compose.BackHandler
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.padding
 import androidx.compose.material.Button
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.DisposableEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.rememberCoroutineScope
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat.getSystemService
 import androidx.navigation.NavHostController
@@ -45,7 +54,7 @@ fun TestResultScreen(
     }
 
     val composableScope = rememberCoroutineScope()
-
+    val testType = viewModel.selectedTestType.collectAsState().value
     val context = LocalContext.current
     val bluetoothManager = getSystemService(context, BluetoothManager::class.java) as BluetoothManager
     val bluetoothAdapter = bluetoothManager.adapter
@@ -117,26 +126,31 @@ fun TestResultScreen(
         }
     }
 
-    Column {
-        val testType = viewModel.selectedTestType.collectAsState().value
+    Column(
+        horizontalAlignment = Alignment.CenterHorizontally
+    ) {
         val printString = viewModel.printString.collectAsState().value
-        Button(
-            onClick = {
-                composableScope.launch {
-                    bluetoothAdapter.startDiscovery()
-                    Log.e("onClick", "${bluetoothAdapter.hashCode()}, ${bluetoothAdapter.isEnabled} ${bluetoothAdapter.isDiscovering} ${bluetoothAdapter.state}")
-                    printResult(
-                        testType = testType,
-                        printString = printString
-                    )
+        Text(
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(top = 40.dp),
+            text = when(testType) {
+                TestType.Presbyopia -> "조절력 검사 결과"
+                TestType.ShortDistanceVisualAcuity -> "근거리 시력 검사 결과"
+                TestType.LongDistanceVisualAcuity -> "원거리 시력 검사 결과"
+                TestType.ChildrenVisualAcuity -> "어린이 시력 검사 결과"
+                TestType.AmslerGrid -> "암슬러 차트 검사 결과"
+                TestType.MChart -> "엠식 변형시 검사 결과"
+                else -> {
+                    "None TestResultScreen"
                 }
-            }
-        ) {
-            Text(
-                text = "결과 프린트하기"
-            )
-        }
-        when (viewModel.selectedTestType.collectAsState().value) {
+            },
+            fontSize = 40.sp,
+            fontWeight = FontWeight.Bold,
+            textAlign = TextAlign.Center
+        )
+
+        when (testType) {
             TestType.Presbyopia -> {
                 PresbyopiaTestResultContent(
                     viewModel = viewModel,
@@ -177,6 +191,49 @@ fun TestResultScreen(
             else -> {
                 Text("None TestResultScreen")
             }
+        }
+        Spacer(
+            modifier = Modifier
+                .height(20.dp)
+        )
+        Button(
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(start = 80.dp, end = 80.dp),
+            onClick = {
+                composableScope.launch {
+                    bluetoothAdapter.startDiscovery()
+                    Log.e("onClick", "${bluetoothAdapter.hashCode()}, ${bluetoothAdapter.isEnabled} ${bluetoothAdapter.isDiscovering} ${bluetoothAdapter.state}")
+                    printResult(
+                        testType = testType,
+                        printString = printString
+                    )
+                }
+            }
+        ) {
+            Text(
+                text = "결과 프린트하기",
+                color = Color(0xffffffff),
+                fontSize = 30.sp
+            )
+        }
+        Spacer(
+            modifier = Modifier
+                .height(20.dp)
+        )
+        Button(
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(start = 80.dp, end = 80.dp),
+            onClick = {
+                navController.popBackStack(GlobalConstants.ROUTE_TEST_LIST, false)
+            }
+        ) {
+            Text(
+                text = "돌아가기",
+                color = Color(0xffffffff),
+                fontSize = 30.sp
+            )
         }
     }
 }
