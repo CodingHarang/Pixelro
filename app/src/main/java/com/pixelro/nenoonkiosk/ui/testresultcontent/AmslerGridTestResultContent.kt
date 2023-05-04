@@ -4,6 +4,7 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
@@ -28,12 +29,11 @@ fun AmslerGridTestResultContent(
     Text(
         text = "${leftSelectedArea}\n ${rightSelectedArea}"
     )
-    Column(
+    Row(
         modifier = Modifier
-            .width(300.dp)
-            .height(300.dp)
-            .padding(start = 80.dp, end = 80.dp),
-        horizontalAlignment = Alignment.CenterHorizontally
+            .width(650.dp)
+            .height(300.dp),
+        verticalAlignment = Alignment.CenterVertically
     ) {
         Column(
             modifier = Modifier
@@ -42,13 +42,14 @@ fun AmslerGridTestResultContent(
         ) {
             Row(
                 modifier = Modifier
-                    .weight(1f)
                     .width(300.dp)
+                    .weight(1f)
                     .height(100.dp)
             ) {
                 Box(
                     modifier = Modifier
                         .weight(1f)
+                        .height(100.dp)
                         .background(
                             color = Color(0xffff0000)
                         )
@@ -58,6 +59,7 @@ fun AmslerGridTestResultContent(
                 Box(
                     modifier = Modifier
                         .weight(1f)
+                        .height(100.dp)
                         .background(
                             color = Color(0xff00ff00)
                         )
@@ -67,6 +69,7 @@ fun AmslerGridTestResultContent(
                 Box(
                     modifier = Modifier
                         .weight(1f)
+                        .height(100.dp)
                         .background(
                             color = Color(0xffff00ff)
                         )
@@ -76,11 +79,14 @@ fun AmslerGridTestResultContent(
             }
             Row(
                 modifier = Modifier
+                    .width(300.dp)
                     .weight(1f)
+                    .height(100.dp)
             ) {
                 Box(
                     modifier = Modifier
                         .weight(1f)
+                        .height(100.dp)
                         .background(
                             color = Color(0xffff0000)
                         )
@@ -90,6 +96,7 @@ fun AmslerGridTestResultContent(
                 Box(
                     modifier = Modifier
                         .weight(1f)
+                        .height(100.dp)
                         .background(
                             color = Color(0xff00ff00)
                         )
@@ -99,6 +106,7 @@ fun AmslerGridTestResultContent(
                 Box(
                     modifier = Modifier
                         .weight(1f)
+                        .height(100.dp)
                         .background(
                             color = Color(0xffff00ff)
                         )
@@ -108,11 +116,14 @@ fun AmslerGridTestResultContent(
             }
             Row(
                 modifier = Modifier
+                    .width(300.dp)
                     .weight(1f)
+                    .height(100.dp)
             ) {
                 Box(
                     modifier = Modifier
                         .weight(1f)
+                        .height(100.dp)
                         .background(
                             color = Color(0xffff0000)
                         )
@@ -122,6 +133,7 @@ fun AmslerGridTestResultContent(
                 Box(
                     modifier = Modifier
                         .weight(1f)
+                        .height(100.dp)
                         .background(
                             color = Color(0xff00ff00)
                         )
@@ -131,6 +143,128 @@ fun AmslerGridTestResultContent(
                 Box(
                     modifier = Modifier
                         .weight(1f)
+                        .height(100.dp)
+                        .background(
+                            color = Color(0xffff00ff)
+                        )
+                ) {
+
+                }
+            }
+        }
+        Spacer(
+            modifier = Modifier
+                .width(50.dp)
+        )
+        Column(
+            modifier = Modifier
+                .width(300.dp)
+                .height(300.dp)
+        ) {
+            Row(
+                modifier = Modifier
+                    .width(300.dp)
+                    .weight(1f)
+                    .height(100.dp)
+            ) {
+                Box(
+                    modifier = Modifier
+                        .weight(1f)
+                        .height(100.dp)
+                        .background(
+                            color = Color(0xffff0000)
+                        )
+                ) {
+
+                }
+                Box(
+                    modifier = Modifier
+                        .weight(1f)
+                        .height(100.dp)
+                        .background(
+                            color = Color(0xff00ff00)
+                        )
+                ) {
+
+                }
+                Box(
+                    modifier = Modifier
+                        .weight(1f)
+                        .height(100.dp)
+                        .background(
+                            color = Color(0xffff00ff)
+                        )
+                ) {
+
+                }
+            }
+            Row(
+                modifier = Modifier
+                    .width(300.dp)
+                    .weight(1f)
+                    .height(100.dp)
+            ) {
+                Box(
+                    modifier = Modifier
+                        .weight(1f)
+                        .height(100.dp)
+                        .background(
+                            color = Color(0xffff0000)
+                        )
+                ) {
+
+                }
+                Box(
+                    modifier = Modifier
+                        .weight(1f)
+                        .height(100.dp)
+                        .background(
+                            color = Color(0xff00ff00)
+                        )
+                ) {
+
+                }
+                Box(
+                    modifier = Modifier
+                        .weight(1f)
+                        .height(100.dp)
+                        .background(
+                            color = Color(0xffff00ff)
+                        )
+                ) {
+
+                }
+            }
+            Row(
+                modifier = Modifier
+                    .width(300.dp)
+                    .weight(1f)
+                    .height(100.dp)
+            ) {
+                Box(
+                    modifier = Modifier
+                        .weight(1f)
+                        .height(100.dp)
+                        .background(
+                            color = Color(0xffff0000)
+                        )
+                ) {
+
+                }
+                Box(
+                    modifier = Modifier
+                        .weight(1f)
+                        .height(100.dp)
+                        .background(
+                            color = Color(0xff00ff00)
+                        )
+                ) {
+
+                }
+                Box(
+                    modifier = Modifier
+                        .weight(1f)
+                        .height(100.dp)
                         .background(
                             color = Color(0xffff00ff)
                         )
