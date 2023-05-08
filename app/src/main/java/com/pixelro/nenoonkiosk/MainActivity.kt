@@ -35,6 +35,8 @@ class MainActivity : ComponentActivity() {
 
     private val viewModel: NenoonViewModel by viewModels()
 
+    private var isChecking = true
+
     private val settingResultRequest = registerForActivityResult(
         ActivityResultContracts.StartIntentSenderForResult()
     ) { activityResult ->
@@ -43,6 +45,7 @@ class MainActivity : ComponentActivity() {
         else {
             Log.d("appDebug", "Denied")
         }
+        isChecking = true
     }
 
     override fun onResume() {
@@ -70,18 +73,9 @@ class MainActivity : ComponentActivity() {
             viewModel.updateIsWriteSettingsPermissionGranted(false)
         }
         viewModel.checkIfAllPermissionsGranted()
-    }
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-//        WindowCompat.setDecorFitsSystemWindows(window, false)
-//        window.setFlags(
-//            WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS,
-//            WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS
-//        )
-        val context = this
         lifecycleScope.launch {
-            while(true) {
+            while(isChecking) {
                 val locationManager = getSystemService(Context.LOCATION_SERVICE) as LocationManager
 
                 if(!locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER)) {
@@ -102,6 +96,7 @@ class MainActivity : ComponentActivity() {
                                 val intentSenderRequest = IntentSenderRequest
                                     .Builder(it.resolution)
                                     .build()
+                                isChecking = false
                                 settingResultRequest.launch(intentSenderRequest)
                             } catch(sendEx: IntentSender.SendIntentException) {
 
@@ -112,10 +107,19 @@ class MainActivity : ComponentActivity() {
 //                    Log.e("lifecycleScope", "enabled")
                 }
                 delay(1000)
-
-
             }
         }
+    }
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+//        WindowCompat.setDecorFitsSystemWindows(window, false)
+//        window.setFlags(
+//            WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS,
+//            WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS
+//        )
+        val context = this
+
         setContent {
             NenoonKioskTheme {
                 // A surface container using the 'background' color from the theme

@@ -130,7 +130,11 @@ fun MChartContent(
                 Image(
                     modifier = Modifier
                         .fillMaxSize()
-                        .rotate(90f),
+                        .rotate(
+                            when(isVertical) {
+                                true -> 0f
+                                else -> 90f
+                            }),
                     painter = painterResource(id = imageId),
                     contentDescription = ""
                 )
