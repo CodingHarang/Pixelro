@@ -152,13 +152,13 @@ fun NenoonApp(
                         enterTransition = {
                             slideIntoContainer(
                                 towards = AnimatedContentScope.SlideDirection.Left,
-                                animationSpec = TweenSpec(durationMillis = 500)
+                                animationSpec = TweenSpec(durationMillis = 200)
                             )
                         },
                         exitTransition = {
                             slideOutOfContainer(
                                 towards = AnimatedContentScope.SlideDirection.Left,
-                                animationSpec = TweenSpec(durationMillis = 500)
+                                animationSpec = TweenSpec(durationMillis = 200)
                             )
                         }
                     ) {
@@ -175,13 +175,13 @@ fun NenoonApp(
                         enterTransition = {
                             slideIntoContainer(
                                 towards = AnimatedContentScope.SlideDirection.Left,
-                                animationSpec = TweenSpec(durationMillis = 500)
+                                animationSpec = TweenSpec(durationMillis = 200)
                             )
                         },
                         exitTransition = {
                             slideOutOfContainer(
                                 towards = AnimatedContentScope.SlideDirection.Left,
-                                animationSpec = TweenSpec(durationMillis = 500)
+                                animationSpec = TweenSpec(durationMillis = 200)
                             )
                         }
                     ) {
@@ -197,13 +197,13 @@ fun NenoonApp(
                         enterTransition = {
                             slideIntoContainer(
                                 towards = AnimatedContentScope.SlideDirection.Left,
-                                animationSpec = TweenSpec(durationMillis = 500)
+                                animationSpec = TweenSpec(durationMillis = 200)
                             )
                         },
                         exitTransition = {
                             slideOutOfContainer(
                                 towards = AnimatedContentScope.SlideDirection.Left,
-                                animationSpec = TweenSpec(durationMillis = 500)
+                                animationSpec = TweenSpec(durationMillis = 200)
                             )
                         }
                     ) {
@@ -219,13 +219,13 @@ fun NenoonApp(
                         enterTransition = {
                             slideIntoContainer(
                                 towards = AnimatedContentScope.SlideDirection.Left,
-                                animationSpec = TweenSpec(durationMillis = 500)
+                                animationSpec = TweenSpec(durationMillis = 200)
                             )
                         },
                         exitTransition = {
                             slideOutOfContainer(
                                 towards = AnimatedContentScope.SlideDirection.Left,
-                                animationSpec = TweenSpec(durationMillis = 500)
+                                animationSpec = TweenSpec(durationMillis = 200)
                             )
                         }
                     ) {
@@ -240,13 +240,13 @@ fun NenoonApp(
                         enterTransition = {
                             slideIntoContainer(
                                 towards = AnimatedContentScope.SlideDirection.Left,
-                                animationSpec = TweenSpec(durationMillis = 500)
+                                animationSpec = TweenSpec(durationMillis = 200)
                             )
                         },
                         exitTransition = {
                             slideOutOfContainer(
                                 towards = AnimatedContentScope.SlideDirection.Left,
-                                animationSpec = TweenSpec(durationMillis = 500)
+                                animationSpec = TweenSpec(durationMillis = 200)
                             )
                         }
                     ) {
@@ -261,13 +261,13 @@ fun NenoonApp(
                         enterTransition = {
                             slideIntoContainer(
                                 towards = AnimatedContentScope.SlideDirection.Left,
-                                animationSpec = TweenSpec(durationMillis = 500)
+                                animationSpec = TweenSpec(durationMillis = 200)
                             )
                         },
                         exitTransition = {
                             slideOutOfContainer(
                                 towards = AnimatedContentScope.SlideDirection.Left,
-                                animationSpec = TweenSpec(durationMillis = 500)
+                                animationSpec = TweenSpec(durationMillis = 200)
                             )
                         }
                     ) {
@@ -283,13 +283,13 @@ fun NenoonApp(
                         enterTransition = {
                             slideIntoContainer(
                                 towards = AnimatedContentScope.SlideDirection.Left,
-                                animationSpec = TweenSpec(durationMillis = 500)
+                                animationSpec = TweenSpec(durationMillis = 200)
                             )
                         },
                         exitTransition = {
                             slideOutOfContainer(
                                 towards = AnimatedContentScope.SlideDirection.Left,
-                                animationSpec = TweenSpec(durationMillis = 500)
+                                animationSpec = TweenSpec(durationMillis = 200)
                             )
                         }
                     ) {
@@ -305,13 +305,13 @@ fun NenoonApp(
                         enterTransition = {
                             slideIntoContainer(
                                 towards = AnimatedContentScope.SlideDirection.Left,
-                                animationSpec = TweenSpec(durationMillis = 500)
+                                animationSpec = TweenSpec(durationMillis = 200)
                             )
                         },
                         exitTransition = {
                             slideOutOfContainer(
                                 towards = AnimatedContentScope.SlideDirection.Left,
-                                animationSpec = TweenSpec(durationMillis = 500)
+                                animationSpec = TweenSpec(durationMillis = 200)
                             )
                         }
                     ) {
@@ -327,13 +327,13 @@ fun NenoonApp(
                         enterTransition = {
                             slideIntoContainer(
                                 towards = AnimatedContentScope.SlideDirection.Left,
-                                animationSpec = TweenSpec(durationMillis = 500)
+                                animationSpec = TweenSpec(durationMillis = 200)
                             )
                         },
                         exitTransition = {
                             slideOutOfContainer(
                                 towards = AnimatedContentScope.SlideDirection.Left,
-                                animationSpec = TweenSpec(durationMillis = 500)
+                                animationSpec = TweenSpec(durationMillis = 200)
                             )
                         }
                     ) {
