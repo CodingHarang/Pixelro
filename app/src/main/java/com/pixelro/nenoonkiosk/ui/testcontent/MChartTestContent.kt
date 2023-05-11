@@ -95,11 +95,11 @@ fun MChartContent(
         visibleState = mChartContentVisibleState,
         enter = slideIn(
             animationSpec = tween(durationMillis = 500),
-            initialOffset = { IntOffset(it.width, 0) }
+            initialOffset = { IntOffset(100, 0) }
         ) + fadeIn(),
         exit = slideOut(
             animationSpec = tween(durationMillis = 500),
-            targetOffset = { IntOffset(-it.width, 0) }
+            targetOffset = { IntOffset(-100, 0) }
         ) + fadeOut()
     ) {
         val isLeftEye = viewModel.isLeftEye.collectAsState().value

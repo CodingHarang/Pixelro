@@ -28,9 +28,9 @@ fun AmslerGridTestResultContent(
 ) {
     val leftSelectedArea = viewModel.leftSelectedArea.collectAsState().value
     val rightSelectedArea = viewModel.rightSelectedArea.collectAsState().value
-    Text(
-        text = "${leftSelectedArea}\n ${rightSelectedArea}"
-    )
+//    Text(
+//        text = "${leftSelectedArea}\n ${rightSelectedArea}"
+//    )
     Row(
         modifier = Modifier
             .width(650.dp)
