@@ -5,9 +5,15 @@ import android.hardware.camera2.CameraCharacteristics
 import android.hardware.camera2.CameraManager
 import android.provider.Settings
 import android.util.SizeF
+import androidx.compose.animation.AnimatedContent
 import androidx.compose.animation.AnimatedContentScope
 import androidx.compose.animation.ExperimentalAnimationApi
 import androidx.compose.animation.core.TweenSpec
+import androidx.compose.animation.fadeIn
+import androidx.compose.animation.fadeOut
+import androidx.compose.animation.slideIn
+import androidx.compose.animation.slideInHorizontally
+import androidx.compose.animation.slideOut
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
@@ -22,6 +28,8 @@ import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.unit.IntOffset
+import androidx.compose.ui.unit.IntSize
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavHostController
@@ -150,15 +158,19 @@ fun NenoonApp(
                     composable(
                         route = GlobalConstants.ROUTE_TEST_LIST,
                         enterTransition = {
-                            slideIntoContainer(
-                                towards = AnimatedContentScope.SlideDirection.Left,
-                                animationSpec = TweenSpec(durationMillis = 200)
+                            slideIn(
+                                animationSpec = TweenSpec(durationMillis = 1000),
+                                initialOffset = { IntOffset(100, 0) }
+                            ) + fadeIn(
+                                animationSpec = TweenSpec(durationMillis = 1000)
                             )
                         },
                         exitTransition = {
-                            slideOutOfContainer(
-                                towards = AnimatedContentScope.SlideDirection.Left,
-                                animationSpec = TweenSpec(durationMillis = 200)
+                            slideOut(
+                                animationSpec = TweenSpec(durationMillis = 1000),
+                                targetOffset = { IntOffset(-100, 0) }
+                            ) + fadeOut(
+                                animationSpec = TweenSpec(durationMillis = 1000)
                             )
                         }
                     ) {
@@ -173,15 +185,19 @@ fun NenoonApp(
                     composable(
                         GlobalConstants.ROUTE_PRESBYOPIA_TEST,
                         enterTransition = {
-                            slideIntoContainer(
-                                towards = AnimatedContentScope.SlideDirection.Left,
-                                animationSpec = TweenSpec(durationMillis = 200)
+                            slideIn(
+                                animationSpec = TweenSpec(durationMillis = 1000),
+                                initialOffset = { IntOffset(100, 0) }
+                            ) + fadeIn(
+                                animationSpec = TweenSpec(durationMillis = 1000)
                             )
                         },
                         exitTransition = {
-                            slideOutOfContainer(
-                                towards = AnimatedContentScope.SlideDirection.Left,
-                                animationSpec = TweenSpec(durationMillis = 200)
+                            slideOut(
+                                animationSpec = TweenSpec(durationMillis = 1000),
+                                targetOffset = { IntOffset(-100, 0) }
+                            ) + fadeOut(
+                                animationSpec = TweenSpec(durationMillis = 1000)
                             )
                         }
                     ) {
@@ -195,15 +211,19 @@ fun NenoonApp(
                     composable(
                         GlobalConstants.ROUTE_SHORT_VISUAL_ACUITY_TEST,
                         enterTransition = {
-                            slideIntoContainer(
-                                towards = AnimatedContentScope.SlideDirection.Left,
-                                animationSpec = TweenSpec(durationMillis = 200)
+                            slideIn(
+                                animationSpec = TweenSpec(durationMillis = 1000),
+                                initialOffset = { IntOffset(100, 0) }
+                            ) + fadeIn(
+                                animationSpec = TweenSpec(durationMillis = 1000)
                             )
                         },
                         exitTransition = {
-                            slideOutOfContainer(
-                                towards = AnimatedContentScope.SlideDirection.Left,
-                                animationSpec = TweenSpec(durationMillis = 200)
+                            slideOut(
+                                animationSpec = TweenSpec(durationMillis = 1000),
+                                targetOffset = { IntOffset(-100, 0) }
+                            ) + fadeOut(
+                                animationSpec = TweenSpec(durationMillis = 1000)
                             )
                         }
                     ) {
@@ -217,15 +237,19 @@ fun NenoonApp(
                     composable(
                         GlobalConstants.ROUTE_LONG_VISUAL_ACUITY_TEST,
                         enterTransition = {
-                            slideIntoContainer(
-                                towards = AnimatedContentScope.SlideDirection.Left,
-                                animationSpec = TweenSpec(durationMillis = 200)
+                            slideIn(
+                                animationSpec = TweenSpec(durationMillis = 1000),
+                                initialOffset = { IntOffset(100, 0) }
+                            ) + fadeIn(
+                                animationSpec = TweenSpec(durationMillis = 1000)
                             )
                         },
                         exitTransition = {
-                            slideOutOfContainer(
-                                towards = AnimatedContentScope.SlideDirection.Left,
-                                animationSpec = TweenSpec(durationMillis = 200)
+                            slideOut(
+                                animationSpec = TweenSpec(durationMillis = 1000),
+                                targetOffset = { IntOffset(-100, 0) }
+                            ) + fadeOut(
+                                animationSpec = TweenSpec(durationMillis = 1000)
                             )
                         }
                     ) {
@@ -238,15 +262,19 @@ fun NenoonApp(
                     composable(
                         GlobalConstants.ROUTE_CHILDREN_VISUAL_ACUITY_TEST,
                         enterTransition = {
-                            slideIntoContainer(
-                                towards = AnimatedContentScope.SlideDirection.Left,
-                                animationSpec = TweenSpec(durationMillis = 200)
+                            slideIn(
+                                animationSpec = TweenSpec(durationMillis = 1000),
+                                initialOffset = { IntOffset(100, 0) }
+                            ) + fadeIn(
+                                animationSpec = TweenSpec(durationMillis = 1000)
                             )
                         },
                         exitTransition = {
-                            slideOutOfContainer(
-                                towards = AnimatedContentScope.SlideDirection.Left,
-                                animationSpec = TweenSpec(durationMillis = 200)
+                            slideOut(
+                                animationSpec = TweenSpec(durationMillis = 1000),
+                                targetOffset = { IntOffset(-100, 0) }
+                            ) + fadeOut(
+                                animationSpec = TweenSpec(durationMillis = 1000)
                             )
                         }
                     ) {
@@ -259,15 +287,19 @@ fun NenoonApp(
                     composable(
                         GlobalConstants.ROUTE_AMSLER_GRID_TEST,
                         enterTransition = {
-                            slideIntoContainer(
-                                towards = AnimatedContentScope.SlideDirection.Left,
-                                animationSpec = TweenSpec(durationMillis = 200)
+                            slideIn(
+                                animationSpec = TweenSpec(durationMillis = 1000),
+                                initialOffset = { IntOffset(100, 0) }
+                            ) + fadeIn(
+                                animationSpec = TweenSpec(durationMillis = 1000)
                             )
                         },
                         exitTransition = {
-                            slideOutOfContainer(
-                                towards = AnimatedContentScope.SlideDirection.Left,
-                                animationSpec = TweenSpec(durationMillis = 200)
+                            slideOut(
+                                animationSpec = TweenSpec(durationMillis = 1000),
+                                targetOffset = { IntOffset(-100, 0) }
+                            ) + fadeOut(
+                                animationSpec = TweenSpec(durationMillis = 1000)
                             )
                         }
                     ) {
@@ -281,15 +313,19 @@ fun NenoonApp(
                     composable(
                         GlobalConstants.ROUTE_M_CHART_TEST,
                         enterTransition = {
-                            slideIntoContainer(
-                                towards = AnimatedContentScope.SlideDirection.Left,
-                                animationSpec = TweenSpec(durationMillis = 200)
+                            slideIn(
+                                animationSpec = TweenSpec(durationMillis = 1000),
+                                initialOffset = { IntOffset(100, 0) }
+                            ) + fadeIn(
+                                animationSpec = TweenSpec(durationMillis = 1000)
                             )
                         },
                         exitTransition = {
-                            slideOutOfContainer(
-                                towards = AnimatedContentScope.SlideDirection.Left,
-                                animationSpec = TweenSpec(durationMillis = 200)
+                            slideOut(
+                                animationSpec = TweenSpec(durationMillis = 1000),
+                                targetOffset = { IntOffset(-100, 0) }
+                            ) + fadeOut(
+                                animationSpec = TweenSpec(durationMillis = 1000)
                             )
                         }
                     ) {
@@ -303,15 +339,19 @@ fun NenoonApp(
                     composable(
                         GlobalConstants.ROUTE_TEST_PRE_DESCRIPTION,
                         enterTransition = {
-                            slideIntoContainer(
-                                towards = AnimatedContentScope.SlideDirection.Left,
-                                animationSpec = TweenSpec(durationMillis = 200)
+                            slideIn(
+                                animationSpec = TweenSpec(durationMillis = 1000),
+                                initialOffset = { IntOffset(100, 0) }
+                            ) + fadeIn(
+                                animationSpec = TweenSpec(durationMillis = 1000)
                             )
                         },
                         exitTransition = {
-                            slideOutOfContainer(
-                                towards = AnimatedContentScope.SlideDirection.Left,
-                                animationSpec = TweenSpec(durationMillis = 200)
+                            slideOut(
+                                animationSpec = TweenSpec(durationMillis = 1000),
+                                targetOffset = { IntOffset(-100, 0) }
+                            ) + fadeOut(
+                                animationSpec = TweenSpec(durationMillis = 1000)
                             )
                         }
                     ) {
@@ -325,15 +365,19 @@ fun NenoonApp(
                     composable(
                         route = GlobalConstants.ROUTE_TEST_RESULT,
                         enterTransition = {
-                            slideIntoContainer(
-                                towards = AnimatedContentScope.SlideDirection.Left,
-                                animationSpec = TweenSpec(durationMillis = 200)
+                            slideIn(
+                                animationSpec = TweenSpec(durationMillis = 1000),
+                                initialOffset = { IntOffset(100, 0) }
+                            ) + fadeIn(
+                                animationSpec = TweenSpec(durationMillis = 1000)
                             )
                         },
                         exitTransition = {
-                            slideOutOfContainer(
-                                towards = AnimatedContentScope.SlideDirection.Left,
-                                animationSpec = TweenSpec(durationMillis = 200)
+                            slideOut(
+                                animationSpec = TweenSpec(durationMillis = 1000),
+                                targetOffset = { IntOffset(-100, 0) }
+                            ) + fadeOut(
+                                animationSpec = TweenSpec(durationMillis = 1000)
                             )
                         }
                     ) {

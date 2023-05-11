@@ -3,10 +3,15 @@ package com.pixelro.nenoonkiosk.ui.testlist
 import androidx.compose.animation.AnimatedContentScope
 import androidx.compose.animation.ExperimentalAnimationApi
 import androidx.compose.animation.core.TweenSpec
+import androidx.compose.animation.fadeIn
+import androidx.compose.animation.fadeOut
+import androidx.compose.animation.slideIn
+import androidx.compose.animation.slideOut
 import androidx.compose.foundation.layout.padding
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.unit.IntOffset
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavHostController
 import com.google.accompanist.navigation.animation.AnimatedNavHost
@@ -31,15 +36,19 @@ fun TestListContent(
         composable(
             route = GlobalConstants.ROUTE_MAIN_TEST_LIST,
             enterTransition = {
-                slideIntoContainer(
-                    towards = AnimatedContentScope.SlideDirection.Right,
-                    animationSpec = TweenSpec(durationMillis = 500)
+                slideIn(
+                    animationSpec = TweenSpec(durationMillis = 1000),
+                    initialOffset = { IntOffset(100, 0) }
+                ) + fadeIn(
+                    animationSpec = TweenSpec(durationMillis = 1000)
                 )
             },
             exitTransition = {
-                slideOutOfContainer(
-                    towards = AnimatedContentScope.SlideDirection.Left,
-                    animationSpec = TweenSpec(durationMillis = 500)
+                slideOut(
+                    animationSpec = TweenSpec(durationMillis = 1000),
+                    targetOffset = { IntOffset(-100, 0) }
+                ) + fadeOut(
+                    animationSpec = TweenSpec(durationMillis = 1000)
                 )
             }
         ) {
@@ -57,15 +66,19 @@ fun TestListContent(
         composable(
             GlobalConstants.ROUTE_VISUAL_ACUITY_TEST_LIST,
             enterTransition = {
-                slideIntoContainer(
-                    towards = AnimatedContentScope.SlideDirection.Left,
-                    animationSpec = TweenSpec(durationMillis = 500)
+                slideIn(
+                    animationSpec = TweenSpec(durationMillis = 1000),
+                    initialOffset = { IntOffset(100, 0) }
+                ) + fadeIn(
+                    animationSpec = TweenSpec(durationMillis = 1000)
                 )
             },
             exitTransition = {
-                slideOutOfContainer(
-                    towards = AnimatedContentScope.SlideDirection.Right,
-                    animationSpec = TweenSpec(durationMillis = 500)
+                slideOut(
+                    animationSpec = TweenSpec(durationMillis = 1000),
+                    targetOffset = { IntOffset(-100, 0) }
+                ) + fadeOut(
+                    animationSpec = TweenSpec(durationMillis = 1000)
                 )
             }
         ) {
@@ -87,15 +100,19 @@ fun TestListContent(
         composable(
             GlobalConstants.ROUTE_MACULAR_DEGENERATION_TEST_LIST,
             enterTransition = {
-                slideIntoContainer(
-                    towards = AnimatedContentScope.SlideDirection.Left,
-                    animationSpec = TweenSpec(durationMillis = 500)
+                slideIn(
+                    animationSpec = TweenSpec(durationMillis = 1000),
+                    initialOffset = { IntOffset(100, 0) }
+                ) + fadeIn(
+                    animationSpec = TweenSpec(durationMillis = 1000)
                 )
             },
             exitTransition = {
-                slideOutOfContainer(
-                    towards = AnimatedContentScope.SlideDirection.Right,
-                    animationSpec = TweenSpec(durationMillis = 500)
+                slideOut(
+                    animationSpec = TweenSpec(durationMillis = 1000),
+                    targetOffset = { IntOffset(-100, 0) }
+                ) + fadeOut(
+                    animationSpec = TweenSpec(durationMillis = 1000)
                 )
             }
         ) {

@@ -30,7 +30,6 @@ class NenoonViewModel : ViewModel() {
     private fun checkBackground() {
         viewModelScope.launch {
             while(true) {
-
                 delay(100000)
             }
         }
