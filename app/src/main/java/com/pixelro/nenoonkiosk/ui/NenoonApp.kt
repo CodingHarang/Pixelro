@@ -20,7 +20,9 @@ import androidx.compose.foundation.layout.*
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.DisposableEffect
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.mutableStateOf
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -32,6 +34,7 @@ import androidx.compose.ui.unit.IntOffset
 import androidx.compose.ui.unit.IntSize
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.lifecycle.lifecycleScope
 import androidx.navigation.NavHostController
 import com.google.accompanist.navigation.animation.AnimatedNavHost
 import com.google.accompanist.navigation.animation.composable
@@ -42,6 +45,8 @@ import com.pixelro.nenoonkiosk.R
 import com.pixelro.nenoonkiosk.data.GlobalConstants
 import com.pixelro.nenoonkiosk.data.TestType
 import com.pixelro.nenoonkiosk.ui.testscreen.*
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.launch
 
 @OptIn(ExperimentalAnimationApi::class)
 @Composable
@@ -50,7 +55,6 @@ fun NenoonApp(
     mainNavController: NavHostController = rememberAnimatedNavController(),
     subNavController: NavHostController = rememberAnimatedNavController()
 ) {
-
     val context = LocalContext.current
     val configuration = LocalConfiguration.current
     val cameraManager = context.getSystemService(Context.CAMERA_SERVICE) as CameraManager
@@ -64,7 +68,6 @@ fun NenoonApp(
         focalLength = cameraCharacteristics.get(CameraCharacteristics.LENS_INFO_AVAILABLE_FOCAL_LENGTHS)?.get(0) ?: 0f,
         lensSize = cameraCharacteristics.get(CameraCharacteristics.SENSOR_INFO_PHYSICAL_SIZE) ?: SizeF(0f, 0f)
     )
-
     if(viewModel.isLaunching.collectAsState().value) {
         SplashScreen(
             viewModel = viewModel

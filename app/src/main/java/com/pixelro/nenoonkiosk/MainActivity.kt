@@ -8,6 +8,8 @@ import android.location.LocationManager
 import android.os.Bundle
 import android.provider.Settings
 import android.util.Log
+import android.view.MotionEvent
+import android.view.WindowManager
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.result.IntentSenderRequest
@@ -19,6 +21,7 @@ import androidx.compose.material.Surface
 import androidx.compose.ui.Modifier
 import androidx.core.content.ContextCompat
 import androidx.lifecycle.lifecycleScope
+import androidx.media3.exoplayer.ExoPlayer
 import com.google.android.gms.common.api.ResolvableApiException
 import com.google.android.gms.location.LocationRequest
 import com.google.android.gms.location.LocationServices
@@ -46,6 +49,11 @@ class MainActivity : ComponentActivity() {
             Log.d("appDebug", "Denied")
         }
         isChecking = true
+    }
+
+    override fun onTouchEvent(event: MotionEvent?): Boolean {
+        viewModel.resetScreenSaverTimer()
+        return super.onTouchEvent(event)
     }
 
     override fun onResume() {
@@ -118,7 +126,9 @@ class MainActivity : ComponentActivity() {
 //            WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS,
 //            WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS
 //        )
-        val context = this
+        window.addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON)
+        val exoPlayer = ExoPlayer.Builder(this).build()
+
 
         setContent {
             NenoonKioskTheme {

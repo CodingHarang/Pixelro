@@ -24,7 +24,7 @@ class NenoonViewModel : ViewModel() {
 
     init {
         showSplashScreen()
-
+        startScreenSaverTimer()
     }
 
     private fun checkBackground() {
@@ -39,6 +39,27 @@ class NenoonViewModel : ViewModel() {
         viewModelScope.launch {
             delay(1000)
             _isLaunching.update { false }
+        }
+    }
+
+    // Screen Saver
+    private val _screenSaverTimer = MutableStateFlow(100)
+    val screenSaverTimer: StateFlow<Int> = _screenSaverTimer
+    private val _isScreenSaverOn = MutableStateFlow(false)
+    val isScreenSaverOn: StateFlow<Boolean> = _isScreenSaverOn
+
+    fun resetScreenSaverTimer() {
+        _screenSaverTimer.update { 20 }
+        _isScreenSaverOn.update { false }
+    }
+
+    private fun startScreenSaverTimer() {
+        viewModelScope.launch {
+            delay(1000)
+            _screenSaverTimer.update { screenSaverTimer.value - 1 }
+            if(screenSaverTimer.value < 0) {
+                _isScreenSaverOn.update { true }
+            }
         }
     }
 
