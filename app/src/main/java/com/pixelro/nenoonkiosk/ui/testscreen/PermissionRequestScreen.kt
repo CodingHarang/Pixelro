@@ -1,11 +1,15 @@
 package com.pixelro.nenoonkiosk.ui.testscreen
 
 import android.Manifest
+import android.app.Instrumentation.ActivityResult
 import android.content.Intent
 import android.net.Uri
 import android.provider.Settings
+import android.util.Log
 import android.widget.Toast
+import androidx.activity.ComponentActivity
 import androidx.activity.compose.rememberLauncherForActivityResult
+import androidx.activity.result.IntentSenderRequest
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
@@ -30,6 +34,7 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.google.android.gms.common.api.ResolvableApiException
 import com.pixelro.nenoonkiosk.NenoonViewModel
 import com.pixelro.nenoonkiosk.R
 
@@ -46,15 +51,17 @@ fun PermissionRequestScreen(
         Manifest.permission.CAMERA
     )
 
+    val isLocationOn = viewModel.isLocationOn.collectAsState().value
+    val locationServiceResolvableApiException = viewModel.resolvableApiException.collectAsState().value
+
     val writeSettingPermissionRequestLauncher = rememberLauncherForActivityResult(ActivityResultContracts.StartActivityForResult()) {
         if(Settings.System.canWrite(context)) {
-            viewModel.updateIsWriteSettingsPermissionGranted(true)
+//            viewModel.updateIsWriteSettingsPermissionGranted(true)
             Toast.makeText(context, "시스템 설정 변경 권한이 허용되었습니다.", Toast.LENGTH_SHORT).show()
         } else {
-            viewModel.updateIsWriteSettingsPermissionGranted(false)
+//            viewModel.updateIsWriteSettingsPermissionGranted(false)
             Toast.makeText(context, "시스템 설정 변경 권한이 허용되지 않았습니다.", Toast.LENGTH_SHORT).show()
         }
-        viewModel.checkIfAllPermissionsGranted()
     }
 
     val permissionRequestLauncher = rememberLauncherForActivityResult(ActivityResultContracts.RequestMultiplePermissions()) {
@@ -66,23 +73,33 @@ fun PermissionRequestScreen(
                 && result.entries.contains(mapOf(Manifest.permission.BLUETOOTH_ADMIN to true).entries.first())
                 && result.entries.contains(mapOf(Manifest.permission.ACCESS_FINE_LOCATION to true).entries.first())
                 && result.entries.contains(mapOf(Manifest.permission.ACCESS_COARSE_LOCATION to true).entries.first())) {
-                viewModel.updateIsBluetoothPermissionsGranted(true)
+//                viewModel.updateIsBluetoothPermissionsGranted(true)
                 Toast.makeText(context, "블루투스 권한이 허용되었습니다.", Toast.LENGTH_SHORT).show()
             } else {
-                viewModel.updateIsBluetoothPermissionsGranted(false)
+//                viewModel.updateIsBluetoothPermissionsGranted(false)
                 Toast.makeText(context, "블루투스 권한이 허용되지 않았습니다.", Toast.LENGTH_SHORT).show()
             }
         }
         if(result.keys.contains(Manifest.permission.CAMERA)) {
             if(result.entries.contains(mapOf(Manifest.permission.CAMERA to true).entries.first())) {
-                viewModel.updateIsCameraPermissionGranted(true)
+//                viewModel.updateIsCameraPermissionGranted(true)
                 Toast.makeText(context, "카메라 권한이 허용되었습니다.", Toast.LENGTH_SHORT).show()
             } else {
-                viewModel.updateIsCameraPermissionGranted(false)
+//                viewModel.updateIsCameraPermissionGranted(false)
                 Toast.makeText(context, "카메라 권한이 허용되지 않았습니다.", Toast.LENGTH_SHORT).show()
             }
         }
-        viewModel.checkIfAllPermissionsGranted()
+    }
+
+    val locationServiceRequestLauncher = rememberLauncherForActivityResult(
+        ActivityResultContracts.StartIntentSenderForResult()
+    ) {
+        activityResult ->
+        if (activityResult.resultCode == ComponentActivity.RESULT_OK)
+            Log.d("locationServiceRequest", "location service accepted")
+        else {
+            Log.d("locationServiceRequest", "location service denied")
+        }
     }
 
     Box(
@@ -109,7 +126,10 @@ fun PermissionRequestScreen(
                         .width(400.dp)
                         .height(80.dp)
                         .clickable {
-                            val intent = Intent(Settings.ACTION_MANAGE_WRITE_SETTINGS, Uri.parse("package:" + context.packageName))
+                            val intent = Intent(
+                                Settings.ACTION_MANAGE_WRITE_SETTINGS,
+                                Uri.parse("package:" + context.packageName)
+                            )
                             writeSettingPermissionRequestLauncher.launch(intent)
                         },
                     contentAlignment = Alignment.Center
@@ -194,6 +214,91 @@ fun PermissionRequestScreen(
                 ) {
                     Text(
                         text = "카메라 권한",
+                        color = Color(0xffffffff),
+                        fontWeight = FontWeight.Bold,
+                        fontSize = 30.sp
+                    )
+                }
+                Image(
+                    modifier = Modifier
+                        .width(80.dp)
+                        .height(80.dp),
+                    painter = when(viewModel.isCameraPermissionGranted.collectAsState().value) {
+                        true -> painterResource(id = R.drawable.baseline_check_96_green)
+                        else -> painterResource(id = R.drawable.close_96_red)
+                    },
+                    contentDescription = ""
+                )
+            }
+            Spacer(
+                modifier = Modifier
+                    .height(20.dp)
+            )
+            Row(
+                verticalAlignment = Alignment.CenterVertically
+            ) {
+                Box(
+                    modifier = Modifier
+                        .border(
+                            width = 4.dp,
+                            color = Color(0xffffffff),
+                            shape = RoundedCornerShape(8.dp)
+                        )
+                        .width(400.dp)
+                        .height(80.dp)
+                        .clickable {
+                            if (!isLocationOn) {
+                                val locationServiceIntentSenderRequest = IntentSenderRequest
+                                    .Builder(locationServiceResolvableApiException.resolution)
+                                    .build()
+                                locationServiceRequestLauncher.launch(
+                                    locationServiceIntentSenderRequest
+                                )
+                            }
+                        },
+                    contentAlignment = Alignment.Center
+                ) {
+                    Text(
+                        text = "위치 서비스",
+                        color = Color(0xffffffff),
+                        fontWeight = FontWeight.Bold,
+                        fontSize = 30.sp
+                    )
+                }
+                Image(
+                    modifier = Modifier
+                        .width(80.dp)
+                        .height(80.dp),
+                    painter = when(viewModel.isLocationOn.collectAsState().value) {
+                        true -> painterResource(id = R.drawable.baseline_check_96_green)
+                        else -> painterResource(id = R.drawable.close_96_red)
+                    },
+                    contentDescription = ""
+                )
+            }
+            Spacer(
+                modifier = Modifier
+                    .height(20.dp)
+            )
+            Row(
+                verticalAlignment = Alignment.CenterVertically
+            ) {
+                Box(
+                    modifier = Modifier
+                        .border(
+                            width = 4.dp,
+                            color = Color(0xffffffff),
+                            shape = RoundedCornerShape(8.dp)
+                        )
+                        .width(400.dp)
+                        .height(80.dp)
+                        .clickable {
+                            permissionRequestLauncher.launch(cameraPermissions)
+                        },
+                    contentAlignment = Alignment.Center
+                ) {
+                    Text(
+                        text = "블루투스 서비스",
                         color = Color(0xffffffff),
                         fontWeight = FontWeight.Bold,
                         fontSize = 30.sp

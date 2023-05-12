@@ -57,337 +57,348 @@ fun NenoonApp(
 ) {
     val context = LocalContext.current
     val configuration = LocalConfiguration.current
-    val cameraManager = context.getSystemService(Context.CAMERA_SERVICE) as CameraManager
-    val cameraCharacteristics =
-        (context.getSystemService(Context.CAMERA_SERVICE) as CameraManager).getCameraCharacteristics(cameraManager.cameraIdList[1])
+    DisposableEffect(true) {
+        val cameraManager = context.getSystemService(Context.CAMERA_SERVICE) as CameraManager
+        val cameraCharacteristics =
+            (context.getSystemService(Context.CAMERA_SERVICE) as CameraManager).getCameraCharacteristics(cameraManager.cameraIdList[1])
 
-    viewModel.updateLocalConfigurationValues(
-        pixelDensity = context.resources.displayMetrics.density,
-        screenWidthDp = configuration.screenWidthDp,
-        screenHeightDp = configuration.screenHeightDp,
-        focalLength = cameraCharacteristics.get(CameraCharacteristics.LENS_INFO_AVAILABLE_FOCAL_LENGTHS)?.get(0) ?: 0f,
-        lensSize = cameraCharacteristics.get(CameraCharacteristics.SENSOR_INFO_PHYSICAL_SIZE) ?: SizeF(0f, 0f)
-    )
-    if(viewModel.isLaunching.collectAsState().value) {
+        viewModel.updateLocalConfigurationValues(
+            pixelDensity = context.resources.displayMetrics.density,
+            screenWidthDp = configuration.screenWidthDp,
+            screenHeightDp = configuration.screenHeightDp,
+            focalLength = cameraCharacteristics.get(CameraCharacteristics.LENS_INFO_AVAILABLE_FOCAL_LENGTHS)?.get(0) ?: 0f,
+            lensSize = cameraCharacteristics.get(CameraCharacteristics.SENSOR_INFO_PHYSICAL_SIZE) ?: SizeF(0f, 0f)
+        )
+
+        onDispose {
+
+        }
+    }
+
+    if(viewModel.isShowingSplashScreen.collectAsState().value) {
         SplashScreen(
             viewModel = viewModel
         )
     }
     else {
-        if(!viewModel.isAllPermissionsGranted.collectAsState().value) {
-            PermissionRequestScreen(
-                viewModel
-            )
+        if(viewModel.isScreenSaverOn.collectAsState().value) {
+            ScreenSaverScreen(viewModel)
         } else {
-            DisposableEffect(true) {
-                Settings.System.putInt(context.contentResolver, Settings.System.SCREEN_OFF_TIMEOUT, 3600_000)
-                onDispose {  }
-            }
-            Column(
-                modifier = Modifier
-                    .fillMaxSize()
-            ) {
-                Box(
+            if(!viewModel.isAllPermissionsGranted.collectAsState().value) {
+                PermissionRequestScreen(
+                    viewModel
+                )
+            } else {
+//            DisposableEffect(true) {
+//                Settings.System.putInt(context.contentResolver, Settings.System.SCREEN_OFF_TIMEOUT, 3600_000)
+//                onDispose {  }
+//            }
+                Column(
                     modifier = Modifier
-                        .fillMaxWidth()
-                        .height(80.dp)
-                        .background(
-                            color = when (viewModel.selectedTestType.collectAsState().value) {
-                                TestType.None -> Color(0xff000000)
-                                else -> Color(0xff000000)
-                            }
-                        )
-                        .statusBarsPadding()
+                        .fillMaxSize()
                 ) {
                     Box(
                         modifier = Modifier
-                            .fillMaxSize(),
-                        contentAlignment = Alignment.CenterStart
+                            .fillMaxWidth()
+                            .height(80.dp)
+                            .background(
+                                color = when (viewModel.selectedTestType.collectAsState().value) {
+                                    TestType.None -> Color(0xff000000)
+                                    else -> Color(0xff000000)
+                                }
+                            )
+                            .statusBarsPadding()
                     ) {
-                        Row(
-                            verticalAlignment = Alignment.CenterVertically
+                        Box(
+                            modifier = Modifier
+                                .fillMaxSize(),
+                            contentAlignment = Alignment.CenterStart
                         ) {
-                            Spacer(
-                                modifier = Modifier
-                                    .width(12.dp)
-                            )
-                            Image(
-                                modifier = Modifier
-                                    .height(40.dp),
-                                painter = painterResource(id = R.drawable.nenoon_logo),
-                                contentDescription = ""
-                            )
-                            Spacer(
-                                modifier = Modifier
-                                    .width(12.dp)
-                            )
-                            Text(
-                                text = "내눈",
-                                fontWeight = FontWeight.ExtraBold,
-                                color = Color(0xffffffff),
-                                fontSize = 30.sp
-                            )
+                            Row(
+                                verticalAlignment = Alignment.CenterVertically
+                            ) {
+                                Spacer(
+                                    modifier = Modifier
+                                        .width(12.dp)
+                                )
+                                Image(
+                                    modifier = Modifier
+                                        .height(40.dp),
+                                    painter = painterResource(id = R.drawable.nenoon_logo),
+                                    contentDescription = ""
+                                )
+                                Spacer(
+                                    modifier = Modifier
+                                        .width(12.dp)
+                                )
+                                Text(
+                                    text = "내눈",
+                                    fontWeight = FontWeight.ExtraBold,
+                                    color = Color(0xffffffff),
+                                    fontSize = 30.sp
+                                )
+                            }
+                        }
+                        Box(
+                            modifier = Modifier
+                                .fillMaxSize(),
+                            contentAlignment = Alignment.CenterEnd
+                        ) {
+                            Row() {
+                                Image(
+                                    modifier = Modifier
+                                        .height(40.dp),
+                                    painter = painterResource(id = R.drawable.pixelro_logo),
+                                    contentDescription = ""
+                                )
+                                Spacer(
+                                    modifier = Modifier
+                                        .width(12.dp)
+                                )
+                            }
                         }
                     }
-                    Box(
+
+                    AnimatedNavHost(
                         modifier = Modifier
                             .fillMaxSize(),
-                        contentAlignment = Alignment.CenterEnd
+                        navController = mainNavController,
+                        startDestination = GlobalConstants.ROUTE_TEST_LIST,
+                        contentAlignment = Alignment.TopCenter
                     ) {
-                        Row() {
-                            Image(
-                                modifier = Modifier
-                                    .height(40.dp),
-                                painter = painterResource(id = R.drawable.pixelro_logo),
-                                contentDescription = ""
-                            )
-                            Spacer(
-                                modifier = Modifier
-                                    .width(12.dp)
+
+                        // 검사 선택 화면
+                        composable(
+                            route = GlobalConstants.ROUTE_TEST_LIST,
+                            enterTransition = {
+                                slideIn(
+                                    animationSpec = TweenSpec(durationMillis = 1000),
+                                    initialOffset = { IntOffset(100, 0) }
+                                ) + fadeIn(
+                                    animationSpec = TweenSpec(durationMillis = 1000)
+                                )
+                            },
+                            exitTransition = {
+                                slideOut(
+                                    animationSpec = TweenSpec(durationMillis = 1000),
+                                    targetOffset = { IntOffset(-100, 0) }
+                                ) + fadeOut(
+                                    animationSpec = TweenSpec(durationMillis = 1000)
+                                )
+                            }
+                        ) {
+                            TestListScreen(
+                                toPreDescriptionScreen = { mainNavController.navigate(GlobalConstants.ROUTE_TEST_PRE_DESCRIPTION) },
+                                navController = subNavController,
+                                viewModel = viewModel
                             )
                         }
-                    }
-                }
 
-                AnimatedNavHost(
-                    modifier = Modifier
-                        .fillMaxSize(),
-                    navController = mainNavController,
-                    startDestination = GlobalConstants.ROUTE_TEST_LIST,
-                    contentAlignment = Alignment.TopCenter
-                ) {
-
-                    // 검사 선택 화면
-                    composable(
-                        route = GlobalConstants.ROUTE_TEST_LIST,
-                        enterTransition = {
-                            slideIn(
-                                animationSpec = TweenSpec(durationMillis = 1000),
-                                initialOffset = { IntOffset(100, 0) }
-                            ) + fadeIn(
-                                animationSpec = TweenSpec(durationMillis = 1000)
-                            )
-                        },
-                        exitTransition = {
-                            slideOut(
-                                animationSpec = TweenSpec(durationMillis = 1000),
-                                targetOffset = { IntOffset(-100, 0) }
-                            ) + fadeOut(
-                                animationSpec = TweenSpec(durationMillis = 1000)
+                        // 안구 나이 검사
+                        composable(
+                            GlobalConstants.ROUTE_PRESBYOPIA_TEST,
+                            enterTransition = {
+                                slideIn(
+                                    animationSpec = TweenSpec(durationMillis = 1000),
+                                    initialOffset = { IntOffset(100, 0) }
+                                ) + fadeIn(
+                                    animationSpec = TweenSpec(durationMillis = 1000)
+                                )
+                            },
+                            exitTransition = {
+                                slideOut(
+                                    animationSpec = TweenSpec(durationMillis = 1000),
+                                    targetOffset = { IntOffset(-100, 0) }
+                                ) + fadeOut(
+                                    animationSpec = TweenSpec(durationMillis = 1000)
+                                )
+                            }
+                        ) {
+                            PresbyopiaTestScreen(
+                                toResultScreen = { mainNavController.navigate(GlobalConstants.ROUTE_TEST_RESULT) },
+                                viewModel = viewModel
                             )
                         }
-                    ) {
-                        TestListScreen(
-                            toPreDescriptionScreen = { mainNavController.navigate(GlobalConstants.ROUTE_TEST_PRE_DESCRIPTION) },
-                            navController = subNavController,
-                            viewModel = viewModel
-                        )
-                    }
 
-                    // 안구 나이 검사
-                    composable(
-                        GlobalConstants.ROUTE_PRESBYOPIA_TEST,
-                        enterTransition = {
-                            slideIn(
-                                animationSpec = TweenSpec(durationMillis = 1000),
-                                initialOffset = { IntOffset(100, 0) }
-                            ) + fadeIn(
-                                animationSpec = TweenSpec(durationMillis = 1000)
-                            )
-                        },
-                        exitTransition = {
-                            slideOut(
-                                animationSpec = TweenSpec(durationMillis = 1000),
-                                targetOffset = { IntOffset(-100, 0) }
-                            ) + fadeOut(
-                                animationSpec = TweenSpec(durationMillis = 1000)
+                        // 근거리 시력 검사
+                        composable(
+                            GlobalConstants.ROUTE_SHORT_VISUAL_ACUITY_TEST,
+                            enterTransition = {
+                                slideIn(
+                                    animationSpec = TweenSpec(durationMillis = 1000),
+                                    initialOffset = { IntOffset(100, 0) }
+                                ) + fadeIn(
+                                    animationSpec = TweenSpec(durationMillis = 1000)
+                                )
+                            },
+                            exitTransition = {
+                                slideOut(
+                                    animationSpec = TweenSpec(durationMillis = 1000),
+                                    targetOffset = { IntOffset(-100, 0) }
+                                ) + fadeOut(
+                                    animationSpec = TweenSpec(durationMillis = 1000)
+                                )
+                            }
+                        ) {
+                            ShortDistanceVisualAcuityTestScreen(
+                                toResultScreen = { mainNavController.navigate(GlobalConstants.ROUTE_TEST_RESULT) },
+                                viewModel = viewModel
                             )
                         }
-                    ) {
-                        PresbyopiaTestScreen(
-                            toResultScreen = { mainNavController.navigate(GlobalConstants.ROUTE_TEST_RESULT) },
-                            viewModel = viewModel
-                        )
-                    }
 
-                    // 근거리 시력 검사
-                    composable(
-                        GlobalConstants.ROUTE_SHORT_VISUAL_ACUITY_TEST,
-                        enterTransition = {
-                            slideIn(
-                                animationSpec = TweenSpec(durationMillis = 1000),
-                                initialOffset = { IntOffset(100, 0) }
-                            ) + fadeIn(
-                                animationSpec = TweenSpec(durationMillis = 1000)
-                            )
-                        },
-                        exitTransition = {
-                            slideOut(
-                                animationSpec = TweenSpec(durationMillis = 1000),
-                                targetOffset = { IntOffset(-100, 0) }
-                            ) + fadeOut(
-                                animationSpec = TweenSpec(durationMillis = 1000)
+                        // 원거리 시력 검사
+                        composable(
+                            GlobalConstants.ROUTE_LONG_VISUAL_ACUITY_TEST,
+                            enterTransition = {
+                                slideIn(
+                                    animationSpec = TweenSpec(durationMillis = 1000),
+                                    initialOffset = { IntOffset(100, 0) }
+                                ) + fadeIn(
+                                    animationSpec = TweenSpec(durationMillis = 1000)
+                                )
+                            },
+                            exitTransition = {
+                                slideOut(
+                                    animationSpec = TweenSpec(durationMillis = 1000),
+                                    targetOffset = { IntOffset(-100, 0) }
+                                ) + fadeOut(
+                                    animationSpec = TweenSpec(durationMillis = 1000)
+                                )
+                            }
+                        ) {
+                            LongDistanceVisualAcuityTestScreen(
+                                toResultScreen = { mainNavController.navigate(GlobalConstants.ROUTE_TEST_RESULT) },
+                                viewModel = viewModel)
+                        }
+
+                        // 어린이 시력 검사
+                        composable(
+                            GlobalConstants.ROUTE_CHILDREN_VISUAL_ACUITY_TEST,
+                            enterTransition = {
+                                slideIn(
+                                    animationSpec = TweenSpec(durationMillis = 1000),
+                                    initialOffset = { IntOffset(100, 0) }
+                                ) + fadeIn(
+                                    animationSpec = TweenSpec(durationMillis = 1000)
+                                )
+                            },
+                            exitTransition = {
+                                slideOut(
+                                    animationSpec = TweenSpec(durationMillis = 1000),
+                                    targetOffset = { IntOffset(-100, 0) }
+                                ) + fadeOut(
+                                    animationSpec = TweenSpec(durationMillis = 1000)
+                                )
+                            }
+                        ) {
+                            ChildrenVisualAcuityTestScreen(
+                                toResultScreen = { mainNavController.navigate(GlobalConstants.ROUTE_TEST_RESULT) },
+                                viewModel = viewModel)
+                        }
+
+                        // 암슬러 차트 검사
+                        composable(
+                            GlobalConstants.ROUTE_AMSLER_GRID_TEST,
+                            enterTransition = {
+                                slideIn(
+                                    animationSpec = TweenSpec(durationMillis = 1000),
+                                    initialOffset = { IntOffset(100, 0) }
+                                ) + fadeIn(
+                                    animationSpec = TweenSpec(durationMillis = 1000)
+                                )
+                            },
+                            exitTransition = {
+                                slideOut(
+                                    animationSpec = TweenSpec(durationMillis = 1000),
+                                    targetOffset = { IntOffset(-100, 0) }
+                                ) + fadeOut(
+                                    animationSpec = TweenSpec(durationMillis = 1000)
+                                )
+                            }
+                        ) {
+                            AmslerGridTestScreen(
+                                toResultScreen = { mainNavController.navigate(GlobalConstants.ROUTE_TEST_RESULT) },
+                                viewModel = viewModel
                             )
                         }
-                    ) {
-                        ShortDistanceVisualAcuityTestScreen(
-                            toResultScreen = { mainNavController.navigate(GlobalConstants.ROUTE_TEST_RESULT) },
-                            viewModel = viewModel
-                        )
-                    }
 
-                    // 원거리 시력 검사
-                    composable(
-                        GlobalConstants.ROUTE_LONG_VISUAL_ACUITY_TEST,
-                        enterTransition = {
-                            slideIn(
-                                animationSpec = TweenSpec(durationMillis = 1000),
-                                initialOffset = { IntOffset(100, 0) }
-                            ) + fadeIn(
-                                animationSpec = TweenSpec(durationMillis = 1000)
-                            )
-                        },
-                        exitTransition = {
-                            slideOut(
-                                animationSpec = TweenSpec(durationMillis = 1000),
-                                targetOffset = { IntOffset(-100, 0) }
-                            ) + fadeOut(
-                                animationSpec = TweenSpec(durationMillis = 1000)
+                        // 엠식 변형시 검사
+                        composable(
+                            GlobalConstants.ROUTE_M_CHART_TEST,
+                            enterTransition = {
+                                slideIn(
+                                    animationSpec = TweenSpec(durationMillis = 1000),
+                                    initialOffset = { IntOffset(100, 0) }
+                                ) + fadeIn(
+                                    animationSpec = TweenSpec(durationMillis = 1000)
+                                )
+                            },
+                            exitTransition = {
+                                slideOut(
+                                    animationSpec = TweenSpec(durationMillis = 1000),
+                                    targetOffset = { IntOffset(-100, 0) }
+                                ) + fadeOut(
+                                    animationSpec = TweenSpec(durationMillis = 1000)
+                                )
+                            }
+                        ) {
+                            MChartTestScreen(
+                                toResultScreen = { mainNavController.navigate(GlobalConstants.ROUTE_TEST_RESULT) },
+                                viewModel = viewModel
                             )
                         }
-                    ) {
-                        LongDistanceVisualAcuityTestScreen(
-                            toResultScreen = { mainNavController.navigate(GlobalConstants.ROUTE_TEST_RESULT) },
-                            viewModel = viewModel)
-                    }
 
-                    // 어린이 시력 검사
-                    composable(
-                        GlobalConstants.ROUTE_CHILDREN_VISUAL_ACUITY_TEST,
-                        enterTransition = {
-                            slideIn(
-                                animationSpec = TweenSpec(durationMillis = 1000),
-                                initialOffset = { IntOffset(100, 0) }
-                            ) + fadeIn(
-                                animationSpec = TweenSpec(durationMillis = 1000)
-                            )
-                        },
-                        exitTransition = {
-                            slideOut(
-                                animationSpec = TweenSpec(durationMillis = 1000),
-                                targetOffset = { IntOffset(-100, 0) }
-                            ) + fadeOut(
-                                animationSpec = TweenSpec(durationMillis = 1000)
+                        // 검사 사전 설명 페이지
+                        composable(
+                            GlobalConstants.ROUTE_TEST_PRE_DESCRIPTION,
+                            enterTransition = {
+                                slideIn(
+                                    animationSpec = TweenSpec(durationMillis = 1000),
+                                    initialOffset = { IntOffset(100, 0) }
+                                ) + fadeIn(
+                                    animationSpec = TweenSpec(durationMillis = 1000)
+                                )
+                            },
+                            exitTransition = {
+                                slideOut(
+                                    animationSpec = TweenSpec(durationMillis = 1000),
+                                    targetOffset = { IntOffset(-100, 0) }
+                                ) + fadeOut(
+                                    animationSpec = TweenSpec(durationMillis = 1000)
+                                )
+                            }
+                        ) {
+                            TestPreDescriptionScreen(
+                                viewModel,
+                                mainNavController
                             )
                         }
-                    ) {
-                        ChildrenVisualAcuityTestScreen(
-                            toResultScreen = { mainNavController.navigate(GlobalConstants.ROUTE_TEST_RESULT) },
-                            viewModel = viewModel)
-                    }
 
-                    // 암슬러 차트 검사
-                    composable(
-                        GlobalConstants.ROUTE_AMSLER_GRID_TEST,
-                        enterTransition = {
-                            slideIn(
-                                animationSpec = TweenSpec(durationMillis = 1000),
-                                initialOffset = { IntOffset(100, 0) }
-                            ) + fadeIn(
-                                animationSpec = TweenSpec(durationMillis = 1000)
-                            )
-                        },
-                        exitTransition = {
-                            slideOut(
-                                animationSpec = TweenSpec(durationMillis = 1000),
-                                targetOffset = { IntOffset(-100, 0) }
-                            ) + fadeOut(
-                                animationSpec = TweenSpec(durationMillis = 1000)
+                        // 검사 결과 화면
+                        composable(
+                            route = GlobalConstants.ROUTE_TEST_RESULT,
+                            enterTransition = {
+                                slideIn(
+                                    animationSpec = TweenSpec(durationMillis = 1000),
+                                    initialOffset = { IntOffset(100, 0) }
+                                ) + fadeIn(
+                                    animationSpec = TweenSpec(durationMillis = 1000)
+                                )
+                            },
+                            exitTransition = {
+                                slideOut(
+                                    animationSpec = TweenSpec(durationMillis = 1000),
+                                    targetOffset = { IntOffset(-100, 0) }
+                                ) + fadeOut(
+                                    animationSpec = TweenSpec(durationMillis = 1000)
+                                )
+                            }
+                        ) {
+                            TestResultScreen(
+                                viewModel = viewModel,
+                                navController = mainNavController
                             )
                         }
-                    ) {
-                        AmslerGridTestScreen(
-                            toResultScreen = { mainNavController.navigate(GlobalConstants.ROUTE_TEST_RESULT) },
-                            viewModel = viewModel
-                        )
-                    }
-
-                    // 엠식 변형시 검사
-                    composable(
-                        GlobalConstants.ROUTE_M_CHART_TEST,
-                        enterTransition = {
-                            slideIn(
-                                animationSpec = TweenSpec(durationMillis = 1000),
-                                initialOffset = { IntOffset(100, 0) }
-                            ) + fadeIn(
-                                animationSpec = TweenSpec(durationMillis = 1000)
-                            )
-                        },
-                        exitTransition = {
-                            slideOut(
-                                animationSpec = TweenSpec(durationMillis = 1000),
-                                targetOffset = { IntOffset(-100, 0) }
-                            ) + fadeOut(
-                                animationSpec = TweenSpec(durationMillis = 1000)
-                            )
-                        }
-                    ) {
-                        MChartTestScreen(
-                            toResultScreen = { mainNavController.navigate(GlobalConstants.ROUTE_TEST_RESULT) },
-                            viewModel = viewModel
-                        )
-                    }
-
-                    // 검사 사전 설명 페이지
-                    composable(
-                        GlobalConstants.ROUTE_TEST_PRE_DESCRIPTION,
-                        enterTransition = {
-                            slideIn(
-                                animationSpec = TweenSpec(durationMillis = 1000),
-                                initialOffset = { IntOffset(100, 0) }
-                            ) + fadeIn(
-                                animationSpec = TweenSpec(durationMillis = 1000)
-                            )
-                        },
-                        exitTransition = {
-                            slideOut(
-                                animationSpec = TweenSpec(durationMillis = 1000),
-                                targetOffset = { IntOffset(-100, 0) }
-                            ) + fadeOut(
-                                animationSpec = TweenSpec(durationMillis = 1000)
-                            )
-                        }
-                    ) {
-                        TestPreDescriptionScreen(
-                            viewModel,
-                            mainNavController
-                        )
-                    }
-
-                    // 검사 결과 화면
-                    composable(
-                        route = GlobalConstants.ROUTE_TEST_RESULT,
-                        enterTransition = {
-                            slideIn(
-                                animationSpec = TweenSpec(durationMillis = 1000),
-                                initialOffset = { IntOffset(100, 0) }
-                            ) + fadeIn(
-                                animationSpec = TweenSpec(durationMillis = 1000)
-                            )
-                        },
-                        exitTransition = {
-                            slideOut(
-                                animationSpec = TweenSpec(durationMillis = 1000),
-                                targetOffset = { IntOffset(-100, 0) }
-                            ) + fadeOut(
-                                animationSpec = TweenSpec(durationMillis = 1000)
-                            )
-                        }
-                    ) {
-                        TestResultScreen(
-                            viewModel = viewModel,
-                            navController = mainNavController
-                        )
                     }
                 }
             }

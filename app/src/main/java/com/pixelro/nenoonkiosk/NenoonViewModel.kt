@@ -1,14 +1,41 @@
 package com.pixelro.nenoonkiosk
 
+import android.Manifest
+import android.app.Activity
+import android.app.Application
+import android.content.Context
+import android.content.IntentSender
+import android.content.pm.PackageManager
 import android.graphics.PointF
+import android.location.LocationManager
+import android.provider.Settings
 import android.util.Log
 import android.util.SizeF
+import android.widget.Toast
+import androidx.activity.compose.rememberLauncherForActivityResult
+import androidx.activity.result.IntentSenderRequest
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.animation.core.MutableTransitionState
 import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.currentCompositionLocalContext
 import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.graphics.Color
+import androidx.core.content.ContextCompat
+import androidx.core.content.ContextCompat.getSystemService
+import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import androidx.media3.common.MediaItem
+import androidx.media3.common.Player
+import androidx.media3.exoplayer.ExoPlayer
+import com.google.android.gms.common.api.ResolvableApiException
+import com.google.android.gms.common.api.Status
+import com.google.android.gms.location.LocationRequest
+import com.google.android.gms.location.LocationServices
+import com.google.android.gms.location.LocationSettingsRequest
+import com.google.android.gms.location.LocationSettingsResponse
+import com.google.android.gms.location.SettingsClient
+import com.google.android.gms.tasks.Task
 import com.pixelro.nenoonkiosk.data.TestType
 import com.pixelro.nenoonkiosk.data.VisionDisorderType
 import kotlinx.coroutines.delay
@@ -20,47 +47,42 @@ import kotlin.math.abs
 import kotlin.math.roundToInt
 import kotlin.math.tan
 
-class NenoonViewModel : ViewModel() {
+class NenoonViewModel(application: Application) : AndroidViewModel(application) {
 
-    init {
-        showSplashScreen()
-        startScreenSaverTimer()
-    }
-
-    private fun checkBackground() {
+    private fun checkBackgroundStatus() {
         viewModelScope.launch {
             while(true) {
-                delay(100000)
+                if(_isResumed.value) {
+                    // Check screen saver timer
+                    Log.e("viewModelScope", "${screenSaverTimer.value}")
+                    _screenSaverTimer.update { screenSaverTimer.value - 1 }
+                    if(screenSaverTimer.value < 0) {
+                        _isScreenSaverOn.update { true }
+                    }
+                    // Check permissions
+                    checkPermissions()
+                    checkIsLocationOn()
+                }
+                delay(1000)
             }
         }
     }
 
-    private fun showSplashScreen() {
-        viewModelScope.launch {
-            delay(1000)
-            _isLaunching.update { false }
-        }
-    }
+    // check location is on
+
 
     // Screen Saver
-    private val _screenSaverTimer = MutableStateFlow(100)
+    private val _isResumed = MutableStateFlow(false)
+    private val _isPaused = MutableStateFlow(false)
+    val exoPlayer = ExoPlayer.Builder(application.applicationContext).build()
+    private val _screenSaverTimer = MutableStateFlow(10)
     val screenSaverTimer: StateFlow<Int> = _screenSaverTimer
     private val _isScreenSaverOn = MutableStateFlow(false)
     val isScreenSaverOn: StateFlow<Boolean> = _isScreenSaverOn
 
     fun resetScreenSaverTimer() {
-        _screenSaverTimer.update { 20 }
+        _screenSaverTimer.update { 10 }
         _isScreenSaverOn.update { false }
-    }
-
-    private fun startScreenSaverTimer() {
-        viewModelScope.launch {
-            delay(1000)
-            _screenSaverTimer.update { screenSaverTimer.value - 1 }
-            if(screenSaverTimer.value < 0) {
-                _isScreenSaverOn.update { true }
-            }
-        }
     }
 
     // Face detection
@@ -98,7 +120,6 @@ class NenoonViewModel : ViewModel() {
     val leftEyeOpenProbability: StateFlow<Float> = _leftEyeOpenProbability
     private val _rightEyeOpenProbability = MutableStateFlow(0f)
     val rightEyeOpenProbability: StateFlow<Float> = _rightEyeOpenProbability
-
     private val _pixelDensity = MutableStateFlow(0f)
     val pixelDensity: StateFlow<Float> = _pixelDensity
     private val _screenWidthDp = MutableStateFlow(0)
@@ -269,7 +290,7 @@ class NenoonViewModel : ViewModel() {
     // UI
 
 
-    // Permission
+    // Checking permission, location, bluetooth
     private val _isWriteSettingsPermissionGranted = MutableStateFlow(false)
     val isWriteSettingsPermissionGranted: StateFlow<Boolean> = _isWriteSettingsPermissionGranted
     private val _isBluetoothPermissionsGranted = MutableStateFlow(false)
@@ -278,6 +299,10 @@ class NenoonViewModel : ViewModel() {
     val isCameraPermissionGranted: StateFlow<Boolean> = _isCameraPermissionGranted
     private val _isAllPermissionsGranted = MutableStateFlow(false)
     val isAllPermissionsGranted: StateFlow<Boolean> = _isAllPermissionsGranted
+    private val _isLocationOn = MutableStateFlow(false)
+    val isLocationOn: StateFlow<Boolean> = _isLocationOn
+    private val _resolvableApiException = MutableStateFlow(ResolvableApiException(Status.RESULT_CANCELED))
+    val resolvableApiException: StateFlow<ResolvableApiException> = _resolvableApiException
 
     fun updateIsWriteSettingsPermissionGranted(granted: Boolean) {
         _isWriteSettingsPermissionGranted.update { granted }
@@ -291,22 +316,87 @@ class NenoonViewModel : ViewModel() {
         _isCameraPermissionGranted.update { granted }
     }
 
-    fun updateIsAllPermissionsGranted(granted: Boolean) {
-        _isAllPermissionsGranted.update { granted }
+    fun updateIsLocationOn(isOn: Boolean) {
+        _isLocationOn
     }
 
-    fun checkIfAllPermissionsGranted() {
-        if(isBluetoothPermissionsGranted.value && isCameraPermissionGranted.value && isWriteSettingsPermissionGranted.value) {
+
+    private fun checkPermissions() {
+        Log.e("checkPermission", "checkPermissions")
+        if(ContextCompat.checkSelfPermission(getApplication(), Manifest.permission.BLUETOOTH_SCAN) == PackageManager.PERMISSION_GRANTED
+            && ContextCompat.checkSelfPermission(getApplication(), Manifest.permission.BLUETOOTH_CONNECT) == PackageManager.PERMISSION_GRANTED
+            && ContextCompat.checkSelfPermission(getApplication(), Manifest.permission.BLUETOOTH) == PackageManager.PERMISSION_GRANTED
+            && ContextCompat.checkSelfPermission(getApplication(), Manifest.permission.BLUETOOTH_ADMIN) == PackageManager.PERMISSION_GRANTED
+            && ContextCompat.checkSelfPermission(getApplication(), Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED
+            && ContextCompat.checkSelfPermission(getApplication(), Manifest.permission.ACCESS_COARSE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
+            _isBluetoothPermissionsGranted.update { true }
+            Log.e("checkPermission", "Bluetooth Permission Granted")
+        } else {
+            _isBluetoothPermissionsGranted.update { false }
+            Log.e("checkPermission", "Bluetooth Permission not Granted")
+        }
+        if(ContextCompat.checkSelfPermission(getApplication(), Manifest.permission.CAMERA) == PackageManager.PERMISSION_GRANTED) {
+            _isCameraPermissionGranted.update { true }
+            Log.e("checkPermission", "Camera Permission Granted")
+        } else {
+            _isCameraPermissionGranted.update { false }
+            Log.e("checkPermission", "Camera Permission not Granted")
+        }
+        if(Settings.System.canWrite(getApplication())) {
+            _isWriteSettingsPermissionGranted.update { true }
+            Log.e("checkPermission", "Settings Permission Granted")
+        } else {
+            _isWriteSettingsPermissionGranted.update { false }
+            Log.e("checkPermission", "Settings Permission not Granted")
+        }
+
+        if(isBluetoothPermissionsGranted.value && isCameraPermissionGranted.value && isWriteSettingsPermissionGranted.value && isLocationOn.value) {
             _isAllPermissionsGranted.update { true }
         } else {
             _isAllPermissionsGranted.update { false }
         }
     }
 
-    // Global
-    private val _isLaunching = MutableStateFlow(true)
-    val isLaunching: StateFlow<Boolean> = _isLaunching
+    private fun checkIsLocationOn() {
+        val locationManager = getSystemService(getApplication(), LocationManager::class.java) as LocationManager
 
+        if(!locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER)) {
+//                    Log.e("lifecycleScope", "not enabled")
+//                    startActivity(Intent(Settings.ACTION_LOCATION_SOURCE_SETTINGS))
+
+            val locationRequest: LocationRequest = LocationRequest.Builder(10000).build()
+            val client: SettingsClient = LocationServices.getSettingsClient(getApplication() as Context)
+            val builder: LocationSettingsRequest.Builder = LocationSettingsRequest
+                .Builder()
+                .addLocationRequest(locationRequest)
+            val gpsSettingTask: Task<LocationSettingsResponse> = client.checkLocationSettings(builder.build())
+
+            gpsSettingTask.addOnSuccessListener {
+                Log.e("checkIsLocationOn", "success")
+            }
+            gpsSettingTask.addOnFailureListener { exception ->
+                Log.e("checkIsLocationOn", "failure")
+                if(exception is ResolvableApiException) {
+                    try {
+//                        val intentSenderRequest = IntentSenderRequest
+//                            .Builder(exception.resolution)
+//                            .build()
+//                        Log.e("exception", "${exception}, ${exception.resolution}")
+                        _resolvableApiException.update { exception }
+                        _isLocationOn.update { false }
+                    } catch(sendEx: IntentSender.SendIntentException) {
+
+                    }
+                }
+            }
+        } else {
+            _isLocationOn.update { true }
+        }
+    }
+
+    // Global
+    private val _isShowingSplashScreen = MutableStateFlow(true)
+    val isShowingSplashScreen: StateFlow<Boolean> = _isShowingSplashScreen
     private val _selectedTestType = MutableStateFlow(TestType.None)
     val selectedTestType: StateFlow<TestType> = _selectedTestType
     private val _selectedTestName = MutableStateFlow("")
@@ -318,7 +408,22 @@ class NenoonViewModel : ViewModel() {
     private val _isLeftEye = MutableStateFlow(false)
     val isLeftEye: StateFlow<Boolean> = _isLeftEye
 
+    private fun showSplashScreen() {
+        viewModelScope.launch {
+            delay(2000)
+            _isShowingSplashScreen.update { false }
+        }
+    }
 
+    fun updateToResumed() {
+        _isResumed.update { true }
+        _isPaused.update { false }
+    }
+
+    fun updateToPaused() {
+        _isResumed.update { false }
+        _isPaused.update { true }
+    }
 
     fun updateSelectedTestType(testType: TestType) {
         _selectedTestType.update { testType }
@@ -345,7 +450,6 @@ class NenoonViewModel : ViewModel() {
     }
 
     // Presbyopia test
-
     private val _firstDistance = MutableStateFlow(0f)
     val firstDistance: StateFlow<Float> = _firstDistance
     private val _secondDistance = MutableStateFlow(0f)
@@ -658,14 +762,13 @@ class NenoonViewModel : ViewModel() {
         }
     }
 
-
-
-
-
-
-
-
     init {
         updateRandomList()
+        showSplashScreen()
+        checkBackgroundStatus()
+        exoPlayer.setMediaItem(MediaItem.fromUri("https://www.learningcontainer.com/wp-content/uploads/2020/05/sample-mp4-file.mp4"))
+        exoPlayer.prepare()
+        exoPlayer.repeatMode = Player.REPEAT_MODE_ONE
+        exoPlayer.playWhenReady = true
     }
 }

@@ -40,16 +40,16 @@ class MainActivity : ComponentActivity() {
 
     private var isChecking = true
 
-    private val settingResultRequest = registerForActivityResult(
-        ActivityResultContracts.StartIntentSenderForResult()
-    ) { activityResult ->
-        if (activityResult.resultCode == RESULT_OK)
-            Log.d("appDebug", "Accepted")
-        else {
-            Log.d("appDebug", "Denied")
-        }
-        isChecking = true
-    }
+//    private val settingResultRequest = registerForActivityResult(
+//        ActivityResultContracts.StartIntentSenderForResult()
+//    ) { activityResult ->
+//        if (activityResult.resultCode == RESULT_OK)
+//            Log.d("appDebug", "Accepted")
+//        else {
+//            Log.d("appDebug", "Denied")
+//        }
+//        isChecking = true
+//    }
 
     override fun onTouchEvent(event: MotionEvent?): Boolean {
         viewModel.resetScreenSaverTimer()
@@ -57,65 +57,68 @@ class MainActivity : ComponentActivity() {
     }
 
     override fun onResume() {
+        Log.e("onResume", "Resumed")
         super.onResume()
-
-        val context = this
-        if(ContextCompat.checkSelfPermission(context, Manifest.permission.BLUETOOTH_SCAN) == PackageManager.PERMISSION_GRANTED
-            && ContextCompat.checkSelfPermission(context, Manifest.permission.BLUETOOTH_CONNECT) == PackageManager.PERMISSION_GRANTED
-            && ContextCompat.checkSelfPermission(context, Manifest.permission.BLUETOOTH) == PackageManager.PERMISSION_GRANTED
-            && ContextCompat.checkSelfPermission(context, Manifest.permission.BLUETOOTH_ADMIN) == PackageManager.PERMISSION_GRANTED
-            && ContextCompat.checkSelfPermission(context, Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED
-            && ContextCompat.checkSelfPermission(context, Manifest.permission.ACCESS_COARSE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
-            viewModel.updateIsBluetoothPermissionsGranted(true)
-        } else {
-            viewModel.updateIsBluetoothPermissionsGranted(false)
-        }
-        if(ContextCompat.checkSelfPermission(context, Manifest.permission.CAMERA) == PackageManager.PERMISSION_GRANTED) {
-            viewModel.updateIsCameraPermissionGranted(true)
-        } else {
-            viewModel.updateIsCameraPermissionGranted(false)
-        }
-        if(Settings.System.canWrite(context)) {
-            viewModel.updateIsWriteSettingsPermissionGranted(true)
-        } else {
-            viewModel.updateIsWriteSettingsPermissionGranted(false)
-        }
-        viewModel.checkIfAllPermissionsGranted()
+        viewModel.updateToResumed()
+        viewModel.resetScreenSaverTimer()
+//        viewModel.startScreenSaverTimer()
+//        val context = this
+//        if(ContextCompat.checkSelfPermission(context, Manifest.permission.BLUETOOTH_SCAN) == PackageManager.PERMISSION_GRANTED
+//            && ContextCompat.checkSelfPermission(context, Manifest.permission.BLUETOOTH_CONNECT) == PackageManager.PERMISSION_GRANTED
+//            && ContextCompat.checkSelfPermission(context, Manifest.permission.BLUETOOTH) == PackageManager.PERMISSION_GRANTED
+//            && ContextCompat.checkSelfPermission(context, Manifest.permission.BLUETOOTH_ADMIN) == PackageManager.PERMISSION_GRANTED
+//            && ContextCompat.checkSelfPermission(context, Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED
+//            && ContextCompat.checkSelfPermission(context, Manifest.permission.ACCESS_COARSE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
+//            viewModel.updateIsBluetoothPermissionsGranted(true)
+//        } else {
+//            viewModel.updateIsBluetoothPermissionsGranted(false)
+//        }
+//        if(ContextCompat.checkSelfPermission(context, Manifest.permission.CAMERA) == PackageManager.PERMISSION_GRANTED) {
+//            viewModel.updateIsCameraPermissionGranted(true)
+//        } else {
+//            viewModel.updateIsCameraPermissionGranted(false)
+//        }
+//        if(Settings.System.canWrite(context)) {
+//            viewModel.updateIsWriteSettingsPermissionGranted(true)
+//        } else {
+//            viewModel.updateIsWriteSettingsPermissionGranted(false)
+//        }
+//        viewModel.checkIfAllPermissionsGranted()
 
         lifecycleScope.launch {
-            while(isChecking) {
-                val locationManager = getSystemService(Context.LOCATION_SERVICE) as LocationManager
-
-                if(!locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER)) {
-//                    Log.e("lifecycleScope", "not enabled")
-//                    startActivity(Intent(Settings.ACTION_LOCATION_SOURCE_SETTINGS))
-
-                    val locationRequest: LocationRequest = LocationRequest.Builder(10000).build()
-                    val client: SettingsClient = LocationServices.getSettingsClient(context)
-                    val builder: LocationSettingsRequest.Builder = LocationSettingsRequest
-                        .Builder()
-                        .addLocationRequest(locationRequest)
-                    val gpsSettingTask: Task<LocationSettingsResponse> = client.checkLocationSettings(builder.build())
-
-                    gpsSettingTask.addOnSuccessListener {  }
-                    gpsSettingTask.addOnFailureListener {
-                        if(it is ResolvableApiException) {
-                            try {
-                                val intentSenderRequest = IntentSenderRequest
-                                    .Builder(it.resolution)
-                                    .build()
-                                isChecking = false
-                                settingResultRequest.launch(intentSenderRequest)
-                            } catch(sendEx: IntentSender.SendIntentException) {
-
-                            }
-                        }
-                    }
-                } else {
-//                    Log.e("lifecycleScope", "enabled")
-                }
-                delay(1000)
-            }
+//            while(isChecking) {
+//                val locationManager = getSystemService(Context.LOCATION_SERVICE) as LocationManager
+//
+//                if(!locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER)) {
+////                    Log.e("lifecycleScope", "not enabled")
+////                    startActivity(Intent(Settings.ACTION_LOCATION_SOURCE_SETTINGS))
+//
+//                    val locationRequest: LocationRequest = LocationRequest.Builder(10000).build()
+//                    val client: SettingsClient = LocationServices.getSettingsClient(context)
+//                    val builder: LocationSettingsRequest.Builder = LocationSettingsRequest
+//                        .Builder()
+//                        .addLocationRequest(locationRequest)
+//                    val gpsSettingTask: Task<LocationSettingsResponse> = client.checkLocationSettings(builder.build())
+//
+//                    gpsSettingTask.addOnSuccessListener {  }
+//                    gpsSettingTask.addOnFailureListener {
+//                        if(it is ResolvableApiException) {
+//                            try {
+//                                val intentSenderRequest = IntentSenderRequest
+//                                    .Builder(it.resolution)
+//                                    .build()
+//                                isChecking = false
+//                                settingResultRequest.launch(intentSenderRequest)
+//                            } catch(sendEx: IntentSender.SendIntentException) {
+//
+//                            }
+//                        }
+//                    }
+//                } else {
+////                    Log.e("lifecycleScope", "enabled")
+//                }
+//                delay(1000)
+//            }
         }
     }
 
@@ -127,12 +130,10 @@ class MainActivity : ComponentActivity() {
 //            WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS
 //        )
         window.addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON)
-        val exoPlayer = ExoPlayer.Builder(this).build()
 
 
         setContent {
             NenoonKioskTheme {
-                // A surface container using the 'background' color from the theme
                 Surface(
                     modifier = Modifier.fillMaxSize(),
                     color = MaterialTheme.colors.background
@@ -151,6 +152,12 @@ class MainActivity : ComponentActivity() {
                 }
             }
         }
+    }
+
+    override fun onPause() {
+        Log.e("Paused", "Paused")
+        super.onPause()
+        viewModel.updateToPaused()
     }
 }
 

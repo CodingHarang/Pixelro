@@ -24,8 +24,8 @@ class MyFaceAnalyzer(
             .setMinFaceSize(0.1f)
             .enableTracking()
             .build()
-    var lastAnalysisTime = -1L
-    val detector = com.google.mlkit.vision.face.FaceDetection.getClient(realTimeOpts)
+    private var lastAnalysisTime = -1L
+    private val detector = com.google.mlkit.vision.face.FaceDetection.getClient(realTimeOpts)
 
     @SuppressLint("UnsafeOptInUsageError")
     override fun analyze(imageProxy: ImageProxy) {

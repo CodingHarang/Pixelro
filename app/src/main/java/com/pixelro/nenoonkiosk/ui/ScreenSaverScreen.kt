@@ -16,12 +16,14 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.viewinterop.AndroidView
 import androidx.media3.exoplayer.ExoPlayer
 import androidx.media3.ui.PlayerView
+import com.pixelro.nenoonkiosk.NenoonViewModel
 
 @Composable
 fun ScreenSaverScreen(
-    exoPlayer: ExoPlayer
+    viewModel: NenoonViewModel
 ) {
     val context = LocalContext.current
+    val exoPlayer = viewModel.exoPlayer
     Box(
         modifier = Modifier
             .fillMaxSize()
@@ -37,7 +39,7 @@ fun ScreenSaverScreen(
                 .fillMaxSize()
                 .height(600.dp)
                 .background(
-                    color = Color(0xff888888)
+                    color = Color(0xff000000)
                 ),
             factory = {
                 PlayerView(context).apply {
