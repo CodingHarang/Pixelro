@@ -55,7 +55,7 @@ class NenoonViewModel(application: Application) : AndroidViewModel(application) 
                 if(_isResumed.value) {
                     // Check screen saver timer
                     Log.e("viewModelScope", "${screenSaverTimer.value}")
-                    _screenSaverTimer.update { screenSaverTimer.value - 1 }
+                    _screenSaverTimer.update { screenSaverTimer.value - 0 }
                     if(screenSaverTimer.value < 0) {
                         _isScreenSaverOn.update { true }
                     }
@@ -693,7 +693,6 @@ class NenoonViewModel(application: Application) : AndroidViewModel(application) 
     }
 
     // M-Chart Test
-
     val mChartContentVisibleState = MutableTransitionState(false)
     private val _mChartResult = MutableStateFlow(listOf<Int>())
     val mChartResult: StateFlow<List<Int>> = _mChartResult
@@ -766,9 +765,9 @@ class NenoonViewModel(application: Application) : AndroidViewModel(application) 
         updateRandomList()
         showSplashScreen()
         checkBackgroundStatus()
-        exoPlayer.setMediaItem(MediaItem.fromUri("https://www.learningcontainer.com/wp-content/uploads/2020/05/sample-mp4-file.mp4"))
+        exoPlayer.setMediaItem(MediaItem.fromUri("https://drive.google.com/uc?export=download&id=1c3khlZTVvAiqpn7hYaXw8NOI5AbK0V96"))
         exoPlayer.prepare()
         exoPlayer.repeatMode = Player.REPEAT_MODE_ONE
-        exoPlayer.playWhenReady = true
+//        exoPlayer.playWhenReady = true
     }
 }

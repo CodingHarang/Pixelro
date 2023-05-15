@@ -14,6 +14,7 @@ import androidx.core.content.ContextCompat
 import com.google.accompanist.permissions.ExperimentalPermissionsApi
 import com.google.accompanist.permissions.rememberMultiplePermissionsState
 import com.google.accompanist.permissions.rememberPermissionState
+import com.google.accompanist.systemuicontroller.rememberSystemUiController
 import com.pixelro.nenoonkiosk.NenoonViewModel
 
 @OptIn(ExperimentalPermissionsApi::class)
@@ -21,7 +22,6 @@ import com.pixelro.nenoonkiosk.NenoonViewModel
 fun FaceDetection(
     viewModel: NenoonViewModel
 ) {
-    val cameraPermissionState = rememberPermissionState(Manifest.permission.CAMERA)
 
     val permissionState = rememberMultiplePermissionsState(
         permissions = listOf(
@@ -46,7 +46,8 @@ fun FaceDetectionScreenContent(
     val context = LocalContext.current
     val cameraProviderFuture = remember { ProcessCameraProvider.getInstance(context) }
     Box() {
-
+        val systemUiController = rememberSystemUiController()
+        systemUiController.isSystemBarsVisible = false
         val executor = ContextCompat.getMainExecutor(context)
         cameraProviderFuture.addListener({
             val cameraProvider = cameraProviderFuture.get()
@@ -73,6 +74,8 @@ fun FaceDetectionScreenContent(
             )
 
         }, executor)
+
+        systemUiController.isSystemBarsVisible = false
     }
 //    Scaffold {
 //        Box(modifier = Modifier

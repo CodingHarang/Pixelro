@@ -29,7 +29,7 @@ fun ShortDistanceVisualAcuityTestResultContent(
     viewModel.updateSightTestResult()
     Column(
         modifier = Modifier
-            .fillMaxSize(),
+            .fillMaxWidth(),
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
         Spacer(
@@ -158,28 +158,28 @@ fun ShortDistanceVisualAcuityTestResultContent(
                 }
             }
         }
-        Box(
-            modifier = Modifier
-                .fillMaxWidth()
-                .height(100.dp)
-                .padding(20.dp)
-                .background(
-                    color = Color(0xff0000ff),
-                    shape = RoundedCornerShape(8.dp)
-                )
-                .clickable {
-                    navController.popBackStack(GlobalConstants.ROUTE_TEST_LIST, false)
-                },
-            contentAlignment = Alignment.Center
-        ) {
-            Text(
-                modifier = Modifier
-                    .fillMaxWidth(),
-                text = "돌아가기",
-                fontSize = 30.sp,
-                color = Color(0xffffffff),
-                textAlign = TextAlign.Center
-            )
-        }
+//        Box(
+//            modifier = Modifier
+//                .fillMaxWidth()
+//                .height(100.dp)
+//                .padding(20.dp)
+//                .background(
+//                    color = Color(0xff0000ff),
+//                    shape = RoundedCornerShape(8.dp)
+//                )
+//                .clickable {
+//                    navController.popBackStack(GlobalConstants.ROUTE_TEST_LIST, false)
+//                },
+//            contentAlignment = Alignment.Center
+//        ) {
+//            Text(
+//                modifier = Modifier
+//                    .fillMaxWidth(),
+//                text = "돌아가기",
+//                fontSize = 30.sp,
+//                color = Color(0xffffffff),
+//                textAlign = TextAlign.Center
+//            )
+//        }
     }
 }

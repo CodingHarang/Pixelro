@@ -97,67 +97,67 @@ fun NenoonApp(
                     modifier = Modifier
                         .fillMaxSize()
                 ) {
-                    Box(
-                        modifier = Modifier
-                            .fillMaxWidth()
-                            .height(80.dp)
-                            .background(
-                                color = when (viewModel.selectedTestType.collectAsState().value) {
-                                    TestType.None -> Color(0xff000000)
-                                    else -> Color(0xff000000)
-                                }
-                            )
-                            .statusBarsPadding()
-                    ) {
-                        Box(
-                            modifier = Modifier
-                                .fillMaxSize(),
-                            contentAlignment = Alignment.CenterStart
-                        ) {
-                            Row(
-                                verticalAlignment = Alignment.CenterVertically
-                            ) {
-                                Spacer(
-                                    modifier = Modifier
-                                        .width(12.dp)
-                                )
-                                Image(
-                                    modifier = Modifier
-                                        .height(40.dp),
-                                    painter = painterResource(id = R.drawable.nenoon_logo),
-                                    contentDescription = ""
-                                )
-                                Spacer(
-                                    modifier = Modifier
-                                        .width(12.dp)
-                                )
-                                Text(
-                                    text = "내눈",
-                                    fontWeight = FontWeight.ExtraBold,
-                                    color = Color(0xffffffff),
-                                    fontSize = 30.sp
-                                )
-                            }
-                        }
-                        Box(
-                            modifier = Modifier
-                                .fillMaxSize(),
-                            contentAlignment = Alignment.CenterEnd
-                        ) {
-                            Row() {
-                                Image(
-                                    modifier = Modifier
-                                        .height(40.dp),
-                                    painter = painterResource(id = R.drawable.pixelro_logo),
-                                    contentDescription = ""
-                                )
-                                Spacer(
-                                    modifier = Modifier
-                                        .width(12.dp)
-                                )
-                            }
-                        }
-                    }
+//                    Box(
+//                        modifier = Modifier
+//                            .fillMaxWidth()
+//                            .height(80.dp)
+//                            .background(
+//                                color = when (viewModel.selectedTestType.collectAsState().value) {
+//                                    TestType.None -> Color(0xff000000)
+//                                    else -> Color(0xff000000)
+//                                }
+//                            )
+//                            .statusBarsPadding()
+//                    ) {
+//                        Box(
+//                            modifier = Modifier
+//                                .fillMaxSize(),
+//                            contentAlignment = Alignment.CenterStart
+//                        ) {
+//                            Row(
+//                                verticalAlignment = Alignment.CenterVertically
+//                            ) {
+//                                Spacer(
+//                                    modifier = Modifier
+//                                        .width(12.dp)
+//                                )
+//                                Image(
+//                                    modifier = Modifier
+//                                        .height(40.dp),
+//                                    painter = painterResource(id = R.drawable.nenoon_logo),
+//                                    contentDescription = ""
+//                                )
+//                                Spacer(
+//                                    modifier = Modifier
+//                                        .width(12.dp)
+//                                )
+//                                Text(
+//                                    text = "내눈",
+//                                    fontWeight = FontWeight.ExtraBold,
+//                                    color = Color(0xffffffff),
+//                                    fontSize = 30.sp
+//                                )
+//                            }
+//                        }
+//                        Box(
+//                            modifier = Modifier
+//                                .fillMaxSize(),
+//                            contentAlignment = Alignment.CenterEnd
+//                        ) {
+//                            Row() {
+//                                Image(
+//                                    modifier = Modifier
+//                                        .height(40.dp),
+//                                    painter = painterResource(id = R.drawable.pixelro_logo),
+//                                    contentDescription = ""
+//                                )
+//                                Spacer(
+//                                    modifier = Modifier
+//                                        .width(12.dp)
+//                                )
+//                            }
+//                        }
+//                    }
 
                     AnimatedNavHost(
                         modifier = Modifier
@@ -172,18 +172,18 @@ fun NenoonApp(
                             route = GlobalConstants.ROUTE_TEST_LIST,
                             enterTransition = {
                                 slideIn(
-                                    animationSpec = TweenSpec(durationMillis = 1000),
+                                    animationSpec = TweenSpec(durationMillis = 500),
                                     initialOffset = { IntOffset(100, 0) }
                                 ) + fadeIn(
-                                    animationSpec = TweenSpec(durationMillis = 1000)
+                                    animationSpec = TweenSpec(durationMillis = 500)
                                 )
                             },
                             exitTransition = {
                                 slideOut(
-                                    animationSpec = TweenSpec(durationMillis = 1000),
+                                    animationSpec = TweenSpec(durationMillis = 500),
                                     targetOffset = { IntOffset(-100, 0) }
                                 ) + fadeOut(
-                                    animationSpec = TweenSpec(durationMillis = 1000)
+                                    animationSpec = TweenSpec(durationMillis = 500)
                                 )
                             }
                         ) {
@@ -199,18 +199,18 @@ fun NenoonApp(
                             GlobalConstants.ROUTE_PRESBYOPIA_TEST,
                             enterTransition = {
                                 slideIn(
-                                    animationSpec = TweenSpec(durationMillis = 1000),
+                                    animationSpec = TweenSpec(durationMillis = 500),
                                     initialOffset = { IntOffset(100, 0) }
                                 ) + fadeIn(
-                                    animationSpec = TweenSpec(durationMillis = 1000)
+                                    animationSpec = TweenSpec(durationMillis = 500)
                                 )
                             },
                             exitTransition = {
                                 slideOut(
-                                    animationSpec = TweenSpec(durationMillis = 1000),
+                                    animationSpec = TweenSpec(durationMillis = 500),
                                     targetOffset = { IntOffset(-100, 0) }
                                 ) + fadeOut(
-                                    animationSpec = TweenSpec(durationMillis = 1000)
+                                    animationSpec = TweenSpec(durationMillis = 500)
                                 )
                             }
                         ) {
@@ -225,18 +225,18 @@ fun NenoonApp(
                             GlobalConstants.ROUTE_SHORT_VISUAL_ACUITY_TEST,
                             enterTransition = {
                                 slideIn(
-                                    animationSpec = TweenSpec(durationMillis = 1000),
+                                    animationSpec = TweenSpec(durationMillis = 500),
                                     initialOffset = { IntOffset(100, 0) }
                                 ) + fadeIn(
-                                    animationSpec = TweenSpec(durationMillis = 1000)
+                                    animationSpec = TweenSpec(durationMillis = 500)
                                 )
                             },
                             exitTransition = {
                                 slideOut(
-                                    animationSpec = TweenSpec(durationMillis = 1000),
+                                    animationSpec = TweenSpec(durationMillis = 500),
                                     targetOffset = { IntOffset(-100, 0) }
                                 ) + fadeOut(
-                                    animationSpec = TweenSpec(durationMillis = 1000)
+                                    animationSpec = TweenSpec(durationMillis = 500)
                                 )
                             }
                         ) {
@@ -251,18 +251,18 @@ fun NenoonApp(
                             GlobalConstants.ROUTE_LONG_VISUAL_ACUITY_TEST,
                             enterTransition = {
                                 slideIn(
-                                    animationSpec = TweenSpec(durationMillis = 1000),
+                                    animationSpec = TweenSpec(durationMillis = 500),
                                     initialOffset = { IntOffset(100, 0) }
                                 ) + fadeIn(
-                                    animationSpec = TweenSpec(durationMillis = 1000)
+                                    animationSpec = TweenSpec(durationMillis = 500)
                                 )
                             },
                             exitTransition = {
                                 slideOut(
-                                    animationSpec = TweenSpec(durationMillis = 1000),
+                                    animationSpec = TweenSpec(durationMillis = 500),
                                     targetOffset = { IntOffset(-100, 0) }
                                 ) + fadeOut(
-                                    animationSpec = TweenSpec(durationMillis = 1000)
+                                    animationSpec = TweenSpec(durationMillis = 500)
                                 )
                             }
                         ) {
@@ -276,18 +276,18 @@ fun NenoonApp(
                             GlobalConstants.ROUTE_CHILDREN_VISUAL_ACUITY_TEST,
                             enterTransition = {
                                 slideIn(
-                                    animationSpec = TweenSpec(durationMillis = 1000),
+                                    animationSpec = TweenSpec(durationMillis = 500),
                                     initialOffset = { IntOffset(100, 0) }
                                 ) + fadeIn(
-                                    animationSpec = TweenSpec(durationMillis = 1000)
+                                    animationSpec = TweenSpec(durationMillis = 500)
                                 )
                             },
                             exitTransition = {
                                 slideOut(
-                                    animationSpec = TweenSpec(durationMillis = 1000),
+                                    animationSpec = TweenSpec(durationMillis = 500),
                                     targetOffset = { IntOffset(-100, 0) }
                                 ) + fadeOut(
-                                    animationSpec = TweenSpec(durationMillis = 1000)
+                                    animationSpec = TweenSpec(durationMillis = 500)
                                 )
                             }
                         ) {
@@ -301,18 +301,18 @@ fun NenoonApp(
                             GlobalConstants.ROUTE_AMSLER_GRID_TEST,
                             enterTransition = {
                                 slideIn(
-                                    animationSpec = TweenSpec(durationMillis = 1000),
+                                    animationSpec = TweenSpec(durationMillis = 500),
                                     initialOffset = { IntOffset(100, 0) }
                                 ) + fadeIn(
-                                    animationSpec = TweenSpec(durationMillis = 1000)
+                                    animationSpec = TweenSpec(durationMillis = 500)
                                 )
                             },
                             exitTransition = {
                                 slideOut(
-                                    animationSpec = TweenSpec(durationMillis = 1000),
+                                    animationSpec = TweenSpec(durationMillis = 500),
                                     targetOffset = { IntOffset(-100, 0) }
                                 ) + fadeOut(
-                                    animationSpec = TweenSpec(durationMillis = 1000)
+                                    animationSpec = TweenSpec(durationMillis = 500)
                                 )
                             }
                         ) {
@@ -327,18 +327,18 @@ fun NenoonApp(
                             GlobalConstants.ROUTE_M_CHART_TEST,
                             enterTransition = {
                                 slideIn(
-                                    animationSpec = TweenSpec(durationMillis = 1000),
+                                    animationSpec = TweenSpec(durationMillis = 500),
                                     initialOffset = { IntOffset(100, 0) }
                                 ) + fadeIn(
-                                    animationSpec = TweenSpec(durationMillis = 1000)
+                                    animationSpec = TweenSpec(durationMillis = 500)
                                 )
                             },
                             exitTransition = {
                                 slideOut(
-                                    animationSpec = TweenSpec(durationMillis = 1000),
+                                    animationSpec = TweenSpec(durationMillis = 500),
                                     targetOffset = { IntOffset(-100, 0) }
                                 ) + fadeOut(
-                                    animationSpec = TweenSpec(durationMillis = 1000)
+                                    animationSpec = TweenSpec(durationMillis = 500)
                                 )
                             }
                         ) {
@@ -353,18 +353,18 @@ fun NenoonApp(
                             GlobalConstants.ROUTE_TEST_PRE_DESCRIPTION,
                             enterTransition = {
                                 slideIn(
-                                    animationSpec = TweenSpec(durationMillis = 1000),
+                                    animationSpec = TweenSpec(durationMillis = 500),
                                     initialOffset = { IntOffset(100, 0) }
                                 ) + fadeIn(
-                                    animationSpec = TweenSpec(durationMillis = 1000)
+                                    animationSpec = TweenSpec(durationMillis = 500)
                                 )
                             },
                             exitTransition = {
                                 slideOut(
-                                    animationSpec = TweenSpec(durationMillis = 1000),
+                                    animationSpec = TweenSpec(durationMillis = 500),
                                     targetOffset = { IntOffset(-100, 0) }
                                 ) + fadeOut(
-                                    animationSpec = TweenSpec(durationMillis = 1000)
+                                    animationSpec = TweenSpec(durationMillis = 500)
                                 )
                             }
                         ) {
@@ -379,18 +379,18 @@ fun NenoonApp(
                             route = GlobalConstants.ROUTE_TEST_RESULT,
                             enterTransition = {
                                 slideIn(
-                                    animationSpec = TweenSpec(durationMillis = 1000),
+                                    animationSpec = TweenSpec(durationMillis = 500),
                                     initialOffset = { IntOffset(100, 0) }
                                 ) + fadeIn(
-                                    animationSpec = TweenSpec(durationMillis = 1000)
+                                    animationSpec = TweenSpec(durationMillis = 500)
                                 )
                             },
                             exitTransition = {
                                 slideOut(
-                                    animationSpec = TweenSpec(durationMillis = 1000),
+                                    animationSpec = TweenSpec(durationMillis = 500),
                                     targetOffset = { IntOffset(-100, 0) }
                                 ) + fadeOut(
-                                    animationSpec = TweenSpec(durationMillis = 1000)
+                                    animationSpec = TweenSpec(durationMillis = 500)
                                 )
                             }
                         ) {

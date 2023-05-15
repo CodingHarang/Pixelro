@@ -5,23 +5,31 @@ import android.content.Context
 import android.content.IntentSender
 import android.content.pm.PackageManager
 import android.location.LocationManager
+import android.os.Build
 import android.os.Bundle
 import android.provider.Settings
 import android.util.Log
 import android.view.MotionEvent
+import android.view.WindowInsetsController
 import android.view.WindowManager
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.result.IntentSenderRequest
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.activity.viewModels
+import androidx.annotation.RequiresApi
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Surface
 import androidx.compose.ui.Modifier
 import androidx.core.content.ContextCompat
+import androidx.core.view.WindowCompat
+import androidx.core.view.WindowInsetsCompat
+import androidx.core.view.WindowInsetsControllerCompat
 import androidx.lifecycle.lifecycleScope
 import androidx.media3.exoplayer.ExoPlayer
+import com.google.accompanist.systemuicontroller.SystemUiController
+import com.google.accompanist.systemuicontroller.rememberSystemUiController
 import com.google.android.gms.common.api.ResolvableApiException
 import com.google.android.gms.location.LocationRequest
 import com.google.android.gms.location.LocationServices
@@ -124,13 +132,17 @@ class MainActivity : ComponentActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        WindowCompat.getInsetsController(window, window.decorView).apply {
+            hide(WindowInsetsCompat.Type.statusBars())
+            hide(WindowInsetsCompat.Type.navigationBars())
+            systemBarsBehavior = WindowInsetsControllerCompat.BEHAVIOR_SHOW_TRANSIENT_BARS_BY_SWIPE
+        }
 //        WindowCompat.setDecorFitsSystemWindows(window, false)
 //        window.setFlags(
 //            WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS,
 //            WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS
 //        )
         window.addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON)
-
 
         setContent {
             NenoonKioskTheme {
@@ -139,6 +151,7 @@ class MainActivity : ComponentActivity() {
                     color = MaterialTheme.colors.background
                 ) {
 //                    val systemUiController = rememberSystemUiController()
+//                    systemUiController.isSystemBarsVisible = false
 //                    DisposableEffect(true) {
 //                        systemUiController.setStatusBarColor(
 //                            color = Color(0xff000000),
@@ -158,6 +171,10 @@ class MainActivity : ComponentActivity() {
         Log.e("Paused", "Paused")
         super.onPause()
         viewModel.updateToPaused()
+    }
+
+    override fun onBackPressed() {
+        super.onBackPressed()
     }
 }
 

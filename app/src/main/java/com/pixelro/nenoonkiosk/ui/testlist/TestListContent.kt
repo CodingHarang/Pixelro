@@ -37,18 +37,18 @@ fun TestListContent(
             route = GlobalConstants.ROUTE_MAIN_TEST_LIST,
             enterTransition = {
                 slideIn(
-                    animationSpec = TweenSpec(durationMillis = 1000),
+                    animationSpec = TweenSpec(durationMillis = 500),
                     initialOffset = { IntOffset(100, 0) }
                 ) + fadeIn(
-                    animationSpec = TweenSpec(durationMillis = 1000)
+                    animationSpec = TweenSpec(durationMillis = 500)
                 )
             },
             exitTransition = {
                 slideOut(
-                    animationSpec = TweenSpec(durationMillis = 1000),
+                    animationSpec = TweenSpec(durationMillis = 500),
                     targetOffset = { IntOffset(-100, 0) }
                 ) + fadeOut(
-                    animationSpec = TweenSpec(durationMillis = 1000)
+                    animationSpec = TweenSpec(durationMillis = 500)
                 )
             }
         ) {
@@ -67,18 +67,18 @@ fun TestListContent(
             GlobalConstants.ROUTE_VISUAL_ACUITY_TEST_LIST,
             enterTransition = {
                 slideIn(
-                    animationSpec = TweenSpec(durationMillis = 1000),
+                    animationSpec = TweenSpec(durationMillis = 500),
                     initialOffset = { IntOffset(100, 0) }
                 ) + fadeIn(
-                    animationSpec = TweenSpec(durationMillis = 1000)
+                    animationSpec = TweenSpec(durationMillis = 500)
                 )
             },
             exitTransition = {
                 slideOut(
-                    animationSpec = TweenSpec(durationMillis = 1000),
+                    animationSpec = TweenSpec(durationMillis = 500),
                     targetOffset = { IntOffset(-100, 0) }
                 ) + fadeOut(
-                    animationSpec = TweenSpec(durationMillis = 1000)
+                    animationSpec = TweenSpec(durationMillis = 500)
                 )
             }
         ) {
@@ -101,18 +101,18 @@ fun TestListContent(
             GlobalConstants.ROUTE_MACULAR_DEGENERATION_TEST_LIST,
             enterTransition = {
                 slideIn(
-                    animationSpec = TweenSpec(durationMillis = 1000),
+                    animationSpec = TweenSpec(durationMillis = 500),
                     initialOffset = { IntOffset(100, 0) }
                 ) + fadeIn(
-                    animationSpec = TweenSpec(durationMillis = 1000)
+                    animationSpec = TweenSpec(durationMillis = 500)
                 )
             },
             exitTransition = {
                 slideOut(
-                    animationSpec = TweenSpec(durationMillis = 1000),
+                    animationSpec = TweenSpec(durationMillis = 500),
                     targetOffset = { IntOffset(-100, 0) }
                 ) + fadeOut(
-                    animationSpec = TweenSpec(durationMillis = 1000)
+                    animationSpec = TweenSpec(durationMillis = 500)
                 )
             }
         ) {

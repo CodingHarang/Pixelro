@@ -1,6 +1,8 @@
 package com.pixelro.nenoonkiosk.ui.testscreen
 
+import android.app.Activity
 import android.util.Log
+import android.view.KeyEvent
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
@@ -16,15 +18,18 @@ import androidx.compose.ui.draw.paint
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalConfiguration
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.compose.ui.window.Dialog
+import androidx.compose.ui.window.DialogProperties
 import androidx.navigation.NavHostController
 import com.bumptech.glide.integration.compose.ExperimentalGlideComposeApi
 import com.bumptech.glide.integration.compose.GlideImage
+import com.google.accompanist.systemuicontroller.rememberSystemUiController
 import com.pixelro.nenoonkiosk.NenoonViewModel
 import com.pixelro.nenoonkiosk.R
 import com.pixelro.nenoonkiosk.data.GlobalConstants
@@ -70,17 +75,40 @@ fun TestPreDescriptionScreen(
 
 @Composable
 fun TestPreDescriptionBackground() {
+    val context = LocalContext.current
     val heightDP = LocalConfiguration.current.screenHeightDp / 3
     Box(
         modifier = Modifier
-            .fillMaxSize(),
-        contentAlignment = Alignment.BottomCenter
+            .fillMaxSize()
     ) {
+        Box(
+            modifier = Modifier
+                .fillMaxSize(),
+            contentAlignment = Alignment.BottomCenter
+        ) {
+            Image(
+                modifier = Modifier
+                    .height(heightDP.dp),
+                contentScale = ContentScale.Fit,
+                painter = painterResource(id = R.drawable.img_test),
+                contentDescription = ""
+            )
+        }
         Image(
             modifier = Modifier
-                .height(heightDP.dp),
-            contentScale = ContentScale.Fit,
-            painter = painterResource(id = R.drawable.img_test),
+                .width(70.dp)
+                .height(70.dp)
+                .padding(start = 20.dp, top = 20.dp)
+                .clickable {
+                    (context as Activity).dispatchKeyEvent(
+                        KeyEvent(
+                            KeyEvent.ACTION_DOWN,
+                            KeyEvent.KEYCODE_BACK
+                        )
+                    )
+                    context.dispatchKeyEvent(KeyEvent(KeyEvent.ACTION_UP, KeyEvent.KEYCODE_BACK))
+                },
+            painter = painterResource(id = R.drawable.close_button),
             contentDescription = ""
         )
     }
@@ -103,7 +131,7 @@ fun TestPreDescriptionContent(
         ) {
             Text(
                 modifier = Modifier
-                    .padding(40.dp),
+                    .padding(top = 120.dp, bottom = 40.dp),
                 text = viewModel.selectedTestName.collectAsState().value,
                 fontSize = 60.sp,
                 fontWeight = FontWeight.Bold,
@@ -147,10 +175,16 @@ fun TestPreDescriptionContent(
                         indication = null,
                         interactionSource = remember { MutableInteractionSource() }
                     ) {
-                        when(selectedTest) {
+                        when (selectedTest) {
                             TestType.Presbyopia -> navController.navigate(GlobalConstants.ROUTE_PRESBYOPIA_TEST)
-                            TestType.ShortDistanceVisualAcuity -> navController.navigate(GlobalConstants.ROUTE_SHORT_VISUAL_ACUITY_TEST)
-                            TestType.LongDistanceVisualAcuity -> navController.navigate(GlobalConstants.ROUTE_LONG_VISUAL_ACUITY_TEST)
+                            TestType.ShortDistanceVisualAcuity -> navController.navigate(
+                                GlobalConstants.ROUTE_SHORT_VISUAL_ACUITY_TEST
+                            )
+
+                            TestType.LongDistanceVisualAcuity -> navController.navigate(
+                                GlobalConstants.ROUTE_LONG_VISUAL_ACUITY_TEST
+                            )
+
                             TestType.ChildrenVisualAcuity -> navController.navigate(GlobalConstants.ROUTE_CHILDREN_VISUAL_ACUITY_TEST)
                             TestType.AmslerGrid -> navController.navigate(GlobalConstants.ROUTE_AMSLER_GRID_TEST)
                             else -> navController.navigate(GlobalConstants.ROUTE_M_CHART_TEST)
@@ -171,8 +205,12 @@ fun TestPreDescriptionDialog(
     onDismissRequest: () -> Unit
 ) {
     Dialog(
-        onDismissRequest = onDismissRequest
+        onDismissRequest = onDismissRequest,
+        properties = DialogProperties()
     ) {
+
+        val systemUiController = rememberSystemUiController()
+        systemUiController.isSystemBarsVisible = false
         Surface(
             modifier = Modifier
                 .width(IntrinsicSize.Max)
