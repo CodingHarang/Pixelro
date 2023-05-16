@@ -448,6 +448,10 @@ class NenoonViewModel(application: Application) : AndroidViewModel(application) 
     private val _avgDistance = MutableStateFlow(0f)
     val avgDistance: StateFlow<Float> = _avgDistance
 
+    fun updateIsLeftEye(isLeft: Boolean) {
+        _isLeftEye.update { isLeft }
+    }
+
     fun initializePresbyopiaTest() {
 
     }

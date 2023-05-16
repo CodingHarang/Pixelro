@@ -39,8 +39,6 @@ fun PresbyopiaTestContent(
     val firstVisibleState = viewModel.firstItemVisibleState
     val secondVisibleState = viewModel.secondItemVisibleState
     val thirdVisibleState = viewModel.thirdItemVisibleState
-    val context = LocalContext.current
-
 
     Box(
         contentAlignment = Alignment.Center,
