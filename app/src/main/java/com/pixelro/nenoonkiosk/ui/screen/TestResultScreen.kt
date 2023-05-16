@@ -1,4 +1,4 @@
-package com.pixelro.nenoonkiosk.ui.testscreen
+package com.pixelro.nenoonkiosk.ui.screen
 
 import android.Manifest
 import android.bluetooth.BluetoothDevice
@@ -9,12 +9,12 @@ import android.content.Intent
 import android.content.IntentFilter
 import android.content.pm.PackageManager
 import android.graphics.Bitmap
+import android.graphics.BitmapFactory
 import android.graphics.Canvas
 import android.graphics.Paint
 import android.util.Log
 import android.widget.Toast
 import androidx.activity.compose.BackHandler
-import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -38,6 +38,7 @@ import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat.getSystemService
 import androidx.navigation.NavHostController
 import com.pixelro.nenoonkiosk.NenoonViewModel
+import com.pixelro.nenoonkiosk.R
 import com.pixelro.nenoonkiosk.data.GlobalConstants
 import com.pixelro.nenoonkiosk.data.TestType
 import com.pixelro.nenoonkiosk.ui.testresultcontent.*
@@ -111,7 +112,10 @@ fun TestResultScreen(
         mNemonicWrapper.setContrastLevel(0)
         val nCopies = 1
 
-        val bm = textAsBitmap(testType, printString, 40f, android.graphics.Color.parseColor("#FF000000"))
+        val resources = context.resources
+        val logoImg = Bitmap.createScaledBitmap(BitmapFactory.decodeResource(resources, R.drawable.pixelro_logo_black), 240, 80, false)
+
+        val bm = textAsBitmap(testType, printString, 40f, android.graphics.Color.parseColor("#FF000000"), logoImg)
         val nResult = 0
         val nPrintWidth = 576
         val nPaperHeight = ((bm.height.toFloat() / bm.width.toFloat()) * 576).toInt()
@@ -242,16 +246,17 @@ fun textAsBitmap(
     testType: TestType,
     printString: String,
     textSize: Float,
-    textColor: Int
+    textColor: Int,
+    logoImg: Bitmap
 ): Bitmap {
     val paint = Paint(Paint.ANTI_ALIAS_FLAG)
     paint.textSize = textSize
     paint.color = textColor
     paint.textAlign = Paint.Align.LEFT
     val baseline = -paint.ascent() // ascent() is negative
-    val width = 576
+    val width = 600
     val height = (baseline + paint.descent() + 0.5f).toInt()
-    val image = Bitmap.createBitmap(width, 300, Bitmap.Config.ARGB_8888)
+    val image = Bitmap.createBitmap(width, 400, Bitmap.Config.ARGB_8888)
     val canvas = Canvas(image)
     canvas.drawColor(android.graphics.Color.parseColor("#FFFFFFFF"))
     when(testType) {
@@ -282,5 +287,7 @@ fun textAsBitmap(
 
         }
     }
+//    canvas.drawARGB(255, 50, 50, 50)
+    canvas.drawBitmap(logoImg, 360f, 320f, null)
     return image!!
 }

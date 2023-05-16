@@ -1,8 +1,10 @@
-package com.pixelro.nenoonkiosk.ui
+package com.pixelro.nenoonkiosk.ui.screen
 
 import androidx.compose.animation.*
 import androidx.compose.foundation.ExperimentalFoundationApi
+import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.pager.HorizontalPager
 import androidx.compose.foundation.pager.rememberPagerState
@@ -11,8 +13,10 @@ import androidx.compose.material.Text
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
 import androidx.compose.runtime.Composable
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.SpanStyle
 import androidx.compose.ui.text.buildAnnotatedString
 import androidx.compose.ui.text.font.FontWeight
@@ -21,6 +25,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavHostController
 import com.pixelro.nenoonkiosk.NenoonViewModel
+import com.pixelro.nenoonkiosk.R
 import com.pixelro.nenoonkiosk.ui.testlist.TestListContent
 
 
@@ -28,16 +33,44 @@ import com.pixelro.nenoonkiosk.ui.testlist.TestListContent
 @Composable
 fun TestListScreen(
     toPreDescriptionScreen: () -> Unit,
+    toSettingsScreen: () -> Unit,
     navController: NavHostController,
     viewModel: NenoonViewModel
 ) {
     Column(
-        modifier = Modifier
-            .background(
+        modifier = Modifier.background(
                 color = Color(0xffffffff)
             )
     ) {
-
+        Spacer(
+            modifier = Modifier.height(20.dp)
+        )
+        Row(
+            modifier = Modifier
+                .fillMaxWidth()
+                .height(100.dp)
+                .padding(end = 20.dp),
+            horizontalArrangement = Arrangement.End,
+            verticalAlignment = Alignment.CenterVertically
+        ) {
+            Image(
+                modifier = Modifier
+                    .width(40.dp)
+                    .height(40.dp)
+                    .clickable {
+                        toSettingsScreen()
+                    },
+                painter = painterResource(id = R.drawable.baseline_settings_48),
+                contentDescription = ""
+            )
+            Spacer(
+                modifier = Modifier.width(20.dp)
+            )
+            Text(
+                text = "픽셀로 지점",
+                fontSize = 30.sp
+            )
+        }
         HorizontalPager(
             state = rememberPagerState(
                 initialPage = 500000

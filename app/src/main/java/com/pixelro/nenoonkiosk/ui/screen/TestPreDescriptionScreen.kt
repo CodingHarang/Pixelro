@@ -1,4 +1,4 @@
-package com.pixelro.nenoonkiosk.ui.testscreen
+package com.pixelro.nenoonkiosk.ui.screen
 
 import android.app.Activity
 import android.util.Log
@@ -29,7 +29,6 @@ import androidx.compose.ui.window.DialogProperties
 import androidx.navigation.NavHostController
 import com.bumptech.glide.integration.compose.ExperimentalGlideComposeApi
 import com.bumptech.glide.integration.compose.GlideImage
-import com.google.accompanist.systemuicontroller.rememberSystemUiController
 import com.pixelro.nenoonkiosk.NenoonViewModel
 import com.pixelro.nenoonkiosk.R
 import com.pixelro.nenoonkiosk.data.GlobalConstants
@@ -209,8 +208,8 @@ fun TestPreDescriptionDialog(
         properties = DialogProperties()
     ) {
 
-        val systemUiController = rememberSystemUiController()
-        systemUiController.isSystemBarsVisible = false
+//        val systemUiController = rememberSystemUiController()
+//        systemUiController.isSystemBarsVisible = false
         Surface(
             modifier = Modifier
                 .width(IntrinsicSize.Max)

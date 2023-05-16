@@ -37,12 +37,9 @@ fun VisualAcuityTestCommonContent(
     nextVisibleState: MutableTransitionState<Boolean>
 ) {
     Log.e("VisualAcuityTestCommonContent", "VisualAcuityTestCommonContent")
-    val sightValue = viewModel.sightValue.collectAsState().value
     val randomList = viewModel.randomList.collectAsState().value
     val ansNum = viewModel.ansNum.collectAsState().value
-    val sightHistory = viewModel.sightHistory.collectAsState().value
     val isLeftEye = viewModel.isLeftEye.collectAsState().value
-    val isSightednessTesting = viewModel.isSightednessTesting.collectAsState().value
 
     Box() {
         if(isSightednessTesting) {
@@ -68,7 +65,7 @@ fun VisualAcuityTestCommonContent(
                     horizontalAlignment = Alignment.CenterHorizontally
                 ) {
 //                    Text(
-//                        text = "시력: ${viewModel.sightValue.collectAsState().value.toFloat() / 10}",
+//                        text = "시력: ${viewModel.sightLevel.collectAsState().value.toFloat() / 10}",
 //                        color = Color(0xffffffff),
 //                        fontSize = 40.sp
 //                    )
@@ -85,7 +82,7 @@ fun VisualAcuityTestCommonContent(
                         Image(
                             imageVector = ImageVector.vectorResource(id =
                                 when(ansNum) {
-                                    2 -> when(sightValue) {
+                                    2 -> when(sightLevel) {
                                         1 -> R.drawable._50cm_2_1
                                         2 -> R.drawable._50cm_2_2
                                         3 -> R.drawable._50cm_2_3
@@ -97,7 +94,7 @@ fun VisualAcuityTestCommonContent(
                                         9 -> R.drawable._50cm_2_9
                                         else -> R.drawable._50cm_2_10
                                     }
-                                    3 -> when(sightValue) {
+                                    3 -> when(sightLevel) {
                                         1 -> R.drawable._50cm_3_1
                                         2 -> R.drawable._50cm_3_2
                                         3 -> R.drawable._50cm_3_3
@@ -109,7 +106,7 @@ fun VisualAcuityTestCommonContent(
                                         9 -> R.drawable._50cm_3_9
                                         else -> R.drawable._50cm_3_10
                                     }
-                                    4 -> when(sightValue) {
+                                    4 -> when(sightLevel) {
                                         1 -> R.drawable._50cm_4_1
                                         2 -> R.drawable._50cm_4_2
                                         3 -> R.drawable._50cm_4_3
@@ -121,7 +118,7 @@ fun VisualAcuityTestCommonContent(
                                         9 -> R.drawable._50cm_4_9
                                         else -> R.drawable._50cm_4_10
                                     }
-                                    5 -> when(sightValue) {
+                                    5 -> when(sightLevel) {
                                         1 -> R.drawable._50cm_5_1
                                         2 -> R.drawable._50cm_5_2
                                         3 -> R.drawable._50cm_5_3
@@ -133,7 +130,7 @@ fun VisualAcuityTestCommonContent(
                                         9 -> R.drawable._50cm_5_9
                                         else -> R.drawable._50cm_5_10
                                     }
-                                    6 -> when(sightValue) {
+                                    6 -> when(sightLevel) {
                                         1 -> R.drawable._50cm_6_1
                                         2 -> R.drawable._50cm_6_2
                                         3 -> R.drawable._50cm_6_3
@@ -145,7 +142,7 @@ fun VisualAcuityTestCommonContent(
                                         9 -> R.drawable._50cm_6_9
                                         else -> R.drawable._50cm_6_10
                                     }
-                                    else -> when(sightValue) {
+                                    else -> when(sightLevel) {
                                         1 -> R.drawable._50cm_7_1
                                         2 -> R.drawable._50cm_7_2
                                         3 -> R.drawable._50cm_7_3
@@ -206,245 +203,7 @@ fun VisualAcuityTestCommonContent(
                                         shape = RoundedCornerShape(16.dp)
                                     )
                                     .clickable {
-                                        // 맞았을 때
-                                        if (ansNum == randomList[0]) {
-                                            viewModel.updateSightHistory(
-                                                sightValue,
-                                                sightHistory[sightValue]!!.first + 1,
-                                                sightHistory[sightValue]!!.second
-                                            )
-                                            // 현재 단계에서 첫 검사일 때
-                                            if (sightHistory[sightValue]!!.first == 1 && sightHistory[sightValue]!!.second == 0) {
-                                                // 시력 검사 단계가 1.0일 때
-                                                if (sightValue == 10) {
-                                                    // 오른쪽 눈의 시력 검사일 때
-                                                    if (!isLeftEye) {
-                                                        // 시력 검사를 초기화하고 왼쪽 눈 검사로 넘어간다.
-                                                        viewModel.updateRightEyeSightValue(
-                                                            sightValue
-                                                        )
-                                                        viewModel.initializeRightTest()
-                                                        viewModel.updateIsSightednessTesting(true)
-                                                    } // 왼쪽 눈의 시력 검사일 때
-                                                    else {
-                                                        // 검사를 끝낸다.
-                                                        viewModel.updateLeftEyeSightValue(sightValue)
-                                                        viewModel.updateIsSightednessTesting(true)
-                                                    }
-                                                } // 시력 검사 단계가 1.0일 아닐 때
-                                                else {
-                                                    // 시력 검사 단계를 한단계 높인다.
-                                                    viewModel.updateSightValue(sightValue + 1)
-                                                }
-                                            } // 현재 단계에서 첫 검사가 아닐 때
-                                            else {
-                                                // 5번 중 5번째 검사일 때
-                                                if (sightHistory[sightValue]!!.first + sightHistory[sightValue]!!.second >= 5) {
-                                                    // 5번 중 4번 이상 맞췄을 때
-                                                    if (sightHistory[sightValue]!!.first >= 4) {
-                                                        // 다음 단계를 이미 5번 진행했을 때
-                                                        if (sightHistory[sightValue + 1]!!.first + sightHistory[sightValue + 1]!!.second >= 5) {
-                                                            if (!isLeftEye) {
-                                                                // 시력 검사를 초기화하고 왼쪽 눈 검사로 넘어간다.
-                                                                viewModel.updateRightEyeSightValue(
-                                                                    sightValue
-                                                                )
-                                                                viewModel.initializeRightTest()
-                                                                viewModel.updateIsSightednessTesting(
-                                                                    true
-                                                                )
-                                                            } // 왼쪽 눈의 시력 검사일 때
-                                                            else {
-                                                                // 검사를 끝낸다.
-                                                                viewModel.updateLeftEyeSightValue(
-                                                                    sightValue
-                                                                )
-                                                                viewModel.updateIsSightednessTesting(
-                                                                    true
-                                                                )
-                                                            }
-                                                        }
-                                                        // 다음 단계로 넘어간다.
-                                                        viewModel.updateSightValue(sightValue + 1)
-                                                    } // 5번 중 3번 맞췄을 때
-                                                    else if (sightHistory[sightValue]!!.first == 3) {
-                                                        // 오른쪽 눈의 시력 검사일 때
-                                                        if (!isLeftEye) {
-                                                            // 시력 검사를 초기화하고 왼쪽 눈 검사로 넘어간다.
-                                                            viewModel.updateRightEyeSightValue(
-                                                                sightValue
-                                                            )
-                                                            viewModel.initializeRightTest()
-                                                            viewModel.updateIsSightednessTesting(
-                                                                true
-                                                            )
-                                                        } // 왼쪽 눈의 시력 검사일 때
-                                                        else {
-                                                            // 검사를 끝낸다.
-                                                            viewModel.updateLeftEyeSightValue(
-                                                                sightValue
-                                                            )
-                                                            viewModel.updateIsSightednessTesting(
-                                                                true
-                                                            )
-                                                        }
-                                                    } // 5번중 2번 이하 맞췄을 때
-                                                    else {
-                                                        // 0.1단계일 때
-                                                        if (sightValue == 1) {
-                                                            // 오른쪽 눈의 시력 검사일 때
-                                                            if (!isLeftEye) {
-                                                                // 시력 검사를 초기화하고 왼쪽 눈 검사로 넘어간다.
-                                                                viewModel.updateRightEyeSightValue(
-                                                                    sightValue
-                                                                )
-                                                                viewModel.initializeRightTest()
-                                                                viewModel.updateIsSightednessTesting(
-                                                                    true
-                                                                )
-                                                            } // 왼쪽 눈의 시력 검사일 때
-                                                            else {
-                                                                // 검사를 끝낸다.
-                                                                viewModel.updateLeftEyeSightValue(
-                                                                    sightValue
-                                                                )
-                                                                viewModel.updateIsSightednessTesting(
-                                                                    true
-                                                                )
-                                                            }
-                                                        } // 0.1단계가 아닐 때
-                                                        else {
-                                                            // 이전 단계를 5번 모두 완료했을 때
-                                                            if (sightHistory[sightValue - 1]!!.first + sightHistory[sightValue - 1]!!.second >= 5) {
-                                                                // 오른쪽 눈의 시력 검사일 때
-                                                                if (isLeftEye) {
-                                                                    // 시력 검사를 초기화하고 왼쪽 눈 검사로 넘어간다.
-                                                                    viewModel.updateRightEyeSightValue(
-                                                                        sightValue
-                                                                    )
-                                                                    viewModel.initializeRightTest()
-                                                                    viewModel.updateIsSightednessTesting(
-                                                                        true
-                                                                    )
-                                                                } // 오른쪽 눈의 시력 검사일 때
-                                                                else {
-                                                                    // 검사를 끝낸다.
-                                                                    viewModel.updateLeftEyeSightValue(
-                                                                        sightValue
-                                                                    )
-                                                                    viewModel.updateIsSightednessTesting(
-                                                                        true
-                                                                    )
-                                                                }
-                                                            } // 이전 단계를 5번 모두 완료하지 않았을 때
-                                                            else {
-                                                                viewModel.updateSightValue(
-                                                                    sightValue - 1
-                                                                )
-                                                            }
-                                                        }
-                                                    }
-                                                }
-                                            }
-                                        } // 틀렸을 때
-                                        else {
-                                            viewModel.updateSightHistory(
-                                                sightValue,
-                                                sightHistory[sightValue]!!.first,
-                                                sightHistory[sightValue]!!.second + 1
-                                            )
-                                            // 5번 중 5번째 검사일 때
-                                            if (sightHistory[sightValue]!!.first + sightHistory[sightValue]!!.second >= 5) {
-                                                // 5번 중 4번 이상 맞췄을 때
-                                                if (sightHistory[sightValue]!!.first >= 4) {
-                                                    // 다음 단계로 넘어간다.
-                                                    viewModel.updateSightValue(sightValue + 1)
-                                                } // 5번 중 3번 맞췄을 때
-                                                else if (sightHistory[sightValue]!!.first == 3) {
-                                                    // 오른쪽 눈의 시력 검사일 때
-                                                    if (!isLeftEye) {
-                                                        // 시력 검사를 초기화하고 왼쪽 눈 검사로 넘어간다.
-                                                        viewModel.updateRightEyeSightValue(
-                                                            sightValue
-                                                        )
-                                                        viewModel.initializeRightTest()
-                                                        viewModel.updateIsSightednessTesting(true)
-                                                    } // 왼쪽 눈의 시력 검사일 때
-                                                    else {
-                                                        // 검사를 끝낸다.
-                                                        viewModel.updateLeftEyeSightValue(sightValue)
-                                                        viewModel.updateIsSightednessTesting(true)
-                                                    }
-                                                } // 5번중 2번 이하 맞췄을 때
-                                                else {
-                                                    // 0.1단계일 때
-                                                    if (sightValue == 1) {
-                                                        // 오른쪽 눈의 시력 검사일 때
-                                                        if (!isLeftEye) {
-                                                            // 시력 검사를 초기화하고 왼쪽 눈 검사로 넘어간다.
-                                                            viewModel.updateRightEyeSightValue(
-                                                                sightValue
-                                                            )
-                                                            viewModel.initializeRightTest()
-                                                            viewModel.updateIsSightednessTesting(
-                                                                true
-                                                            )
-                                                        } // 왼쪽쪽 눈의 시력 검사일 때
-                                                        else {
-                                                            // 검사를 끝낸다.
-                                                            viewModel.updateLeftEyeSightValue(
-                                                                sightValue
-                                                            )
-                                                            viewModel.updateIsSightednessTesting(
-                                                                true
-                                                            )
-                                                        }
-                                                    } // 0.1단계가 아닐 때
-                                                    else {
-                                                        // 이전 단계를 5번 모두 완료했을 때
-                                                        if (sightHistory[sightValue - 1]!!.first + sightHistory[sightValue - 1]!!.second >= 5) {
-                                                            // 오른쪽 눈의 시력 검사일 때
-                                                            if (!isLeftEye) {
-                                                                // 시력 검사를 초기화하고 오른쪽 눈 검사로 넘어간다.
-                                                                viewModel.updateRightEyeSightValue(
-                                                                    sightValue
-                                                                )
-                                                                viewModel.initializeRightTest()
-                                                                viewModel.updateIsSightednessTesting(
-                                                                    true
-                                                                )
-                                                            } // 왼쪽 눈의 시력 검사일 때
-                                                            else {
-                                                                // 검사를 끝낸다.
-                                                                viewModel.updateLeftEyeSightValue(
-                                                                    sightValue
-                                                                )
-                                                                viewModel.updateIsSightednessTesting(
-                                                                    true
-                                                                )
-                                                            }
-                                                        } // 이전 단계를 5번 모두 완료하지 않았을 때
-                                                        else {
-                                                            viewModel.updateSightValue(sightValue - 1)
-                                                        }
-                                                    }
-                                                }
-                                            }
-                                        }
-                                        viewModel.updateRandomList()
-                                        Log.e(
-                                            "",
-                                            "${sightHistory[1]!!.first}, ${sightHistory[1]!!.second}\n" +
-                                                    "${sightHistory[2]!!.first}, ${sightHistory[2]!!.second}\n" +
-                                                    "${sightHistory[3]!!.first}, ${sightHistory[3]!!.second}\n" +
-                                                    "${sightHistory[4]!!.first}, ${sightHistory[4]!!.second}\n" +
-                                                    "${sightHistory[5]!!.first}, ${sightHistory[5]!!.second}\n" +
-                                                    "${sightHistory[6]!!.first}, ${sightHistory[6]!!.second}\n" +
-                                                    "${sightHistory[7]!!.first}, ${sightHistory[7]!!.second}\n" +
-                                                    "${sightHistory[8]!!.first}, ${sightHistory[8]!!.second}\n" +
-                                                    "${sightHistory[9]!!.first}, ${sightHistory[9]!!.second}\n" +
-                                                    "${sightHistory[10]!!.first}, ${sightHistory[10]!!.second}\n"
-                                        )
+                                        viewModel.processAnswerSelected(0)
                                     },
                                 contentAlignment = Alignment.Center
                             ) {
@@ -480,245 +239,7 @@ fun VisualAcuityTestCommonContent(
                                         shape = RoundedCornerShape(16.dp)
                                     )
                                     .clickable {
-                                        // 맞았을 때
-                                        if (ansNum == randomList[1]) {
-                                            viewModel.updateSightHistory(
-                                                sightValue,
-                                                sightHistory[sightValue]!!.first + 1,
-                                                sightHistory[sightValue]!!.second
-                                            )
-                                            // 현재 단계에서 첫 검사일 때
-                                            if (sightHistory[sightValue]!!.first == 1 && sightHistory[sightValue]!!.second == 0) {
-                                                // 시력 검사 단계가 1.0일 때
-                                                if (sightValue == 10) {
-                                                    // 오른쪽 눈의 시력 검사일 때
-                                                    if (!isLeftEye) {
-                                                        // 시력 검사를 초기화하고 왼쪽 눈 검사로 넘어간다.
-                                                        viewModel.updateRightEyeSightValue(
-                                                            sightValue
-                                                        )
-                                                        viewModel.initializeRightTest()
-                                                        viewModel.updateIsSightednessTesting(true)
-                                                    } // 왼쪽 눈의 시력 검사일 때
-                                                    else {
-                                                        // 검사를 끝낸다.
-                                                        viewModel.updateLeftEyeSightValue(sightValue)
-                                                        viewModel.updateIsSightednessTesting(true)
-                                                    }
-                                                } // 시력 검사 단계가 1.0일 아닐 때
-                                                else {
-                                                    // 시력 검사 단계를 한단계 높인다.
-                                                    viewModel.updateSightValue(sightValue + 1)
-                                                }
-                                            } // 현재 단계에서 첫 검사가 아닐 때
-                                            else {
-                                                // 5번 중 5번째 검사일 때
-                                                if (sightHistory[sightValue]!!.first + sightHistory[sightValue]!!.second >= 5) {
-                                                    // 5번 중 4번 이상 맞췄을 때
-                                                    if (sightHistory[sightValue]!!.first >= 4) {
-                                                        // 다음 단계를 이미 5번 진행했을 때
-                                                        if (sightHistory[sightValue + 1]!!.first + sightHistory[sightValue + 1]!!.second >= 5) {
-                                                            if (!isLeftEye) {
-                                                                // 시력 검사를 초기화하고 왼쪽 눈 검사로 넘어간다.
-                                                                viewModel.updateRightEyeSightValue(
-                                                                    sightValue
-                                                                )
-                                                                viewModel.initializeRightTest()
-                                                                viewModel.updateIsSightednessTesting(
-                                                                    true
-                                                                )
-                                                            } // 왼쪽 눈의 시력 검사일 때
-                                                            else {
-                                                                // 검사를 끝낸다.
-                                                                viewModel.updateLeftEyeSightValue(
-                                                                    sightValue
-                                                                )
-                                                                viewModel.updateIsSightednessTesting(
-                                                                    true
-                                                                )
-                                                            }
-                                                        }
-                                                        // 다음 단계로 넘어간다.
-                                                        viewModel.updateSightValue(sightValue + 1)
-                                                    } // 5번 중 3번 맞췄을 때
-                                                    else if (sightHistory[sightValue]!!.first == 3) {
-                                                        // 오른쪽 눈의 시력 검사일 때
-                                                        if (!isLeftEye) {
-                                                            // 시력 검사를 초기화하고 왼쪽 눈 검사로 넘어간다.
-                                                            viewModel.updateRightEyeSightValue(
-                                                                sightValue
-                                                            )
-                                                            viewModel.initializeRightTest()
-                                                            viewModel.updateIsSightednessTesting(
-                                                                true
-                                                            )
-                                                        } // 왼쪽 눈의 시력 검사일 때
-                                                        else {
-                                                            // 검사를 끝낸다.
-                                                            viewModel.updateLeftEyeSightValue(
-                                                                sightValue
-                                                            )
-                                                            viewModel.updateIsSightednessTesting(
-                                                                true
-                                                            )
-                                                        }
-                                                    } // 5번중 2번 이하 맞췄을 때
-                                                    else {
-                                                        // 0.1단계일 때
-                                                        if (sightValue == 1) {
-                                                            // 오른쪽 눈의 시력 검사일 때
-                                                            if (!isLeftEye) {
-                                                                // 시력 검사를 초기화하고 왼쪽 눈 검사로 넘어간다.
-                                                                viewModel.updateRightEyeSightValue(
-                                                                    sightValue
-                                                                )
-                                                                viewModel.initializeRightTest()
-                                                                viewModel.updateIsSightednessTesting(
-                                                                    true
-                                                                )
-                                                            } // 왼쪽 눈의 시력 검사일 때
-                                                            else {
-                                                                // 검사를 끝낸다.
-                                                                viewModel.updateLeftEyeSightValue(
-                                                                    sightValue
-                                                                )
-                                                                viewModel.updateIsSightednessTesting(
-                                                                    true
-                                                                )
-                                                            }
-                                                        } // 0.1단계가 아닐 때
-                                                        else {
-                                                            // 이전 단계를 5번 모두 완료했을 때
-                                                            if (sightHistory[sightValue - 1]!!.first + sightHistory[sightValue - 1]!!.second >= 5) {
-                                                                // 오른쪽 눈의 시력 검사일 때
-                                                                if (isLeftEye) {
-                                                                    // 시력 검사를 초기화하고 왼쪽 눈 검사로 넘어간다.
-                                                                    viewModel.updateRightEyeSightValue(
-                                                                        sightValue
-                                                                    )
-                                                                    viewModel.initializeRightTest()
-                                                                    viewModel.updateIsSightednessTesting(
-                                                                        true
-                                                                    )
-                                                                } // 오른쪽 눈의 시력 검사일 때
-                                                                else {
-                                                                    // 검사를 끝낸다.
-                                                                    viewModel.updateLeftEyeSightValue(
-                                                                        sightValue
-                                                                    )
-                                                                    viewModel.updateIsSightednessTesting(
-                                                                        true
-                                                                    )
-                                                                }
-                                                            } // 이전 단계를 5번 모두 완료하지 않았을 때
-                                                            else {
-                                                                viewModel.updateSightValue(
-                                                                    sightValue - 1
-                                                                )
-                                                            }
-                                                        }
-                                                    }
-                                                }
-                                            }
-                                        } // 틀렸을 때
-                                        else {
-                                            viewModel.updateSightHistory(
-                                                sightValue,
-                                                sightHistory[sightValue]!!.first,
-                                                sightHistory[sightValue]!!.second + 1
-                                            )
-                                            // 5번 중 5번째 검사일 때
-                                            if (sightHistory[sightValue]!!.first + sightHistory[sightValue]!!.second >= 5) {
-                                                // 5번 중 4번 이상 맞췄을 때
-                                                if (sightHistory[sightValue]!!.first >= 4) {
-                                                    // 다음 단계로 넘어간다.
-                                                    viewModel.updateSightValue(sightValue + 1)
-                                                } // 5번 중 3번 맞췄을 때
-                                                else if (sightHistory[sightValue]!!.first == 3) {
-                                                    // 오른쪽 눈의 시력 검사일 때
-                                                    if (!isLeftEye) {
-                                                        // 시력 검사를 초기화하고 왼쪽 눈 검사로 넘어간다.
-                                                        viewModel.updateRightEyeSightValue(
-                                                            sightValue
-                                                        )
-                                                        viewModel.initializeRightTest()
-                                                        viewModel.updateIsSightednessTesting(true)
-                                                    } // 왼쪽 눈의 시력 검사일 때
-                                                    else {
-                                                        // 검사를 끝낸다.
-                                                        viewModel.updateLeftEyeSightValue(sightValue)
-                                                        viewModel.updateIsSightednessTesting(true)
-                                                    }
-                                                } // 5번중 2번 이하 맞췄을 때
-                                                else {
-                                                    // 0.1단계일 때
-                                                    if (sightValue == 1) {
-                                                        // 오른쪽 눈의 시력 검사일 때
-                                                        if (!isLeftEye) {
-                                                            // 시력 검사를 초기화하고 왼쪽 눈 검사로 넘어간다.
-                                                            viewModel.updateRightEyeSightValue(
-                                                                sightValue
-                                                            )
-                                                            viewModel.initializeRightTest()
-                                                            viewModel.updateIsSightednessTesting(
-                                                                true
-                                                            )
-                                                        } // 왼쪽쪽 눈의 시력 검사일 때
-                                                        else {
-                                                            // 검사를 끝낸다.
-                                                            viewModel.updateLeftEyeSightValue(
-                                                                sightValue
-                                                            )
-                                                            viewModel.updateIsSightednessTesting(
-                                                                true
-                                                            )
-                                                        }
-                                                    } // 0.1단계가 아닐 때
-                                                    else {
-                                                        // 이전 단계를 5번 모두 완료했을 때
-                                                        if (sightHistory[sightValue - 1]!!.first + sightHistory[sightValue - 1]!!.second >= 5) {
-                                                            // 오른쪽 눈의 시력 검사일 때
-                                                            if (!isLeftEye) {
-                                                                // 시력 검사를 초기화하고 오른쪽 눈 검사로 넘어간다.
-                                                                viewModel.updateRightEyeSightValue(
-                                                                    sightValue
-                                                                )
-                                                                viewModel.initializeRightTest()
-                                                                viewModel.updateIsSightednessTesting(
-                                                                    true
-                                                                )
-                                                            } // 왼쪽 눈의 시력 검사일 때
-                                                            else {
-                                                                // 검사를 끝낸다.
-                                                                viewModel.updateLeftEyeSightValue(
-                                                                    sightValue
-                                                                )
-                                                                viewModel.updateIsSightednessTesting(
-                                                                    true
-                                                                )
-                                                            }
-                                                        } // 이전 단계를 5번 모두 완료하지 않았을 때
-                                                        else {
-                                                            viewModel.updateSightValue(sightValue - 1)
-                                                        }
-                                                    }
-                                                }
-                                            }
-                                        }
-                                        viewModel.updateRandomList()
-                                        Log.e(
-                                            "",
-                                            "${sightHistory[1]!!.first}, ${sightHistory[1]!!.second}\n" +
-                                                    "${sightHistory[2]!!.first}, ${sightHistory[2]!!.second}\n" +
-                                                    "${sightHistory[3]!!.first}, ${sightHistory[3]!!.second}\n" +
-                                                    "${sightHistory[4]!!.first}, ${sightHistory[4]!!.second}\n" +
-                                                    "${sightHistory[5]!!.first}, ${sightHistory[5]!!.second}\n" +
-                                                    "${sightHistory[6]!!.first}, ${sightHistory[6]!!.second}\n" +
-                                                    "${sightHistory[7]!!.first}, ${sightHistory[7]!!.second}\n" +
-                                                    "${sightHistory[8]!!.first}, ${sightHistory[8]!!.second}\n" +
-                                                    "${sightHistory[9]!!.first}, ${sightHistory[9]!!.second}\n" +
-                                                    "${sightHistory[10]!!.first}, ${sightHistory[10]!!.second}\n"
-                                        )
+                                        viewModel.processAnswerSelected(1)
                                     },
                                 contentAlignment = Alignment.Center
                             ) {
@@ -754,245 +275,7 @@ fun VisualAcuityTestCommonContent(
                                         shape = RoundedCornerShape(16.dp)
                                     )
                                     .clickable {
-                                        // 맞았을 때
-                                        if (ansNum == randomList[2]) {
-                                            viewModel.updateSightHistory(
-                                                sightValue,
-                                                sightHistory[sightValue]!!.first + 1,
-                                                sightHistory[sightValue]!!.second
-                                            )
-                                            // 현재 단계에서 첫 검사일 때
-                                            if (sightHistory[sightValue]!!.first == 1 && sightHistory[sightValue]!!.second == 0) {
-                                                // 시력 검사 단계가 1.0일 때
-                                                if (sightValue == 10) {
-                                                    // 오른쪽 눈의 시력 검사일 때
-                                                    if (!isLeftEye) {
-                                                        // 시력 검사를 초기화하고 왼쪽 눈 검사로 넘어간다.
-                                                        viewModel.updateRightEyeSightValue(
-                                                            sightValue
-                                                        )
-                                                        viewModel.initializeRightTest()
-                                                        viewModel.updateIsSightednessTesting(true)
-                                                    } // 왼쪽 눈의 시력 검사일 때
-                                                    else {
-                                                        // 검사를 끝낸다.
-                                                        viewModel.updateLeftEyeSightValue(sightValue)
-                                                        viewModel.updateIsSightednessTesting(true)
-                                                    }
-                                                } // 시력 검사 단계가 1.0일 아닐 때
-                                                else {
-                                                    // 시력 검사 단계를 한단계 높인다.
-                                                    viewModel.updateSightValue(sightValue + 1)
-                                                }
-                                            } // 현재 단계에서 첫 검사가 아닐 때
-                                            else {
-                                                // 5번 중 5번째 검사일 때
-                                                if (sightHistory[sightValue]!!.first + sightHistory[sightValue]!!.second >= 5) {
-                                                    // 5번 중 4번 이상 맞췄을 때
-                                                    if (sightHistory[sightValue]!!.first >= 4) {
-                                                        // 다음 단계를 이미 5번 진행했을 때
-                                                        if (sightHistory[sightValue + 1]!!.first + sightHistory[sightValue + 1]!!.second >= 5) {
-                                                            if (!isLeftEye) {
-                                                                // 시력 검사를 초기화하고 왼쪽 눈 검사로 넘어간다.
-                                                                viewModel.updateRightEyeSightValue(
-                                                                    sightValue
-                                                                )
-                                                                viewModel.initializeRightTest()
-                                                                viewModel.updateIsSightednessTesting(
-                                                                    true
-                                                                )
-                                                            } // 왼쪽 눈의 시력 검사일 때
-                                                            else {
-                                                                // 검사를 끝낸다.
-                                                                viewModel.updateLeftEyeSightValue(
-                                                                    sightValue
-                                                                )
-                                                                viewModel.updateIsSightednessTesting(
-                                                                    true
-                                                                )
-                                                            }
-                                                        }
-                                                        // 다음 단계로 넘어간다.
-                                                        viewModel.updateSightValue(sightValue + 1)
-                                                    } // 5번 중 3번 맞췄을 때
-                                                    else if (sightHistory[sightValue]!!.first == 3) {
-                                                        // 오른쪽 눈의 시력 검사일 때
-                                                        if (!isLeftEye) {
-                                                            // 시력 검사를 초기화하고 왼쪽 눈 검사로 넘어간다.
-                                                            viewModel.updateRightEyeSightValue(
-                                                                sightValue
-                                                            )
-                                                            viewModel.initializeRightTest()
-                                                            viewModel.updateIsSightednessTesting(
-                                                                true
-                                                            )
-                                                        } // 왼쪽 눈의 시력 검사일 때
-                                                        else {
-                                                            // 검사를 끝낸다.
-                                                            viewModel.updateLeftEyeSightValue(
-                                                                sightValue
-                                                            )
-                                                            viewModel.updateIsSightednessTesting(
-                                                                true
-                                                            )
-                                                        }
-                                                    } // 5번중 2번 이하 맞췄을 때
-                                                    else {
-                                                        // 0.1단계일 때
-                                                        if (sightValue == 1) {
-                                                            // 오른쪽 눈의 시력 검사일 때
-                                                            if (!isLeftEye) {
-                                                                // 시력 검사를 초기화하고 왼쪽 눈 검사로 넘어간다.
-                                                                viewModel.updateRightEyeSightValue(
-                                                                    sightValue
-                                                                )
-                                                                viewModel.initializeRightTest()
-                                                                viewModel.updateIsSightednessTesting(
-                                                                    true
-                                                                )
-                                                            } // 왼쪽 눈의 시력 검사일 때
-                                                            else {
-                                                                // 검사를 끝낸다.
-                                                                viewModel.updateLeftEyeSightValue(
-                                                                    sightValue
-                                                                )
-                                                                viewModel.updateIsSightednessTesting(
-                                                                    true
-                                                                )
-                                                            }
-                                                        } // 0.1단계가 아닐 때
-                                                        else {
-                                                            // 이전 단계를 5번 모두 완료했을 때
-                                                            if (sightHistory[sightValue - 1]!!.first + sightHistory[sightValue - 1]!!.second >= 5) {
-                                                                // 오른쪽 눈의 시력 검사일 때
-                                                                if (isLeftEye) {
-                                                                    // 시력 검사를 초기화하고 왼쪽 눈 검사로 넘어간다.
-                                                                    viewModel.updateRightEyeSightValue(
-                                                                        sightValue
-                                                                    )
-                                                                    viewModel.initializeRightTest()
-                                                                    viewModel.updateIsSightednessTesting(
-                                                                        true
-                                                                    )
-                                                                } // 오른쪽 눈의 시력 검사일 때
-                                                                else {
-                                                                    // 검사를 끝낸다.
-                                                                    viewModel.updateLeftEyeSightValue(
-                                                                        sightValue
-                                                                    )
-                                                                    viewModel.updateIsSightednessTesting(
-                                                                        true
-                                                                    )
-                                                                }
-                                                            } // 이전 단계를 5번 모두 완료하지 않았을 때
-                                                            else {
-                                                                viewModel.updateSightValue(
-                                                                    sightValue - 1
-                                                                )
-                                                            }
-                                                        }
-                                                    }
-                                                }
-                                            }
-                                        } // 틀렸을 때
-                                        else {
-                                            viewModel.updateSightHistory(
-                                                sightValue,
-                                                sightHistory[sightValue]!!.first,
-                                                sightHistory[sightValue]!!.second + 1
-                                            )
-                                            // 5번 중 5번째 검사일 때
-                                            if (sightHistory[sightValue]!!.first + sightHistory[sightValue]!!.second >= 5) {
-                                                // 5번 중 4번 이상 맞췄을 때
-                                                if (sightHistory[sightValue]!!.first >= 4) {
-                                                    // 다음 단계로 넘어간다.
-                                                    viewModel.updateSightValue(sightValue + 1)
-                                                } // 5번 중 3번 맞췄을 때
-                                                else if (sightHistory[sightValue]!!.first == 3) {
-                                                    // 오른쪽 눈의 시력 검사일 때
-                                                    if (!isLeftEye) {
-                                                        // 시력 검사를 초기화하고 왼쪽 눈 검사로 넘어간다.
-                                                        viewModel.updateRightEyeSightValue(
-                                                            sightValue
-                                                        )
-                                                        viewModel.initializeRightTest()
-                                                        viewModel.updateIsSightednessTesting(true)
-                                                    } // 왼쪽 눈의 시력 검사일 때
-                                                    else {
-                                                        // 검사를 끝낸다.
-                                                        viewModel.updateLeftEyeSightValue(sightValue)
-                                                        viewModel.updateIsSightednessTesting(true)
-                                                    }
-                                                } // 5번중 2번 이하 맞췄을 때
-                                                else {
-                                                    // 0.1단계일 때
-                                                    if (sightValue == 1) {
-                                                        // 오른쪽 눈의 시력 검사일 때
-                                                        if (!isLeftEye) {
-                                                            // 시력 검사를 초기화하고 왼쪽 눈 검사로 넘어간다.
-                                                            viewModel.updateRightEyeSightValue(
-                                                                sightValue
-                                                            )
-                                                            viewModel.initializeRightTest()
-                                                            viewModel.updateIsSightednessTesting(
-                                                                true
-                                                            )
-                                                        } // 왼쪽쪽 눈의 시력 검사일 때
-                                                        else {
-                                                            // 검사를 끝낸다.
-                                                            viewModel.updateLeftEyeSightValue(
-                                                                sightValue
-                                                            )
-                                                            viewModel.updateIsSightednessTesting(
-                                                                true
-                                                            )
-                                                        }
-                                                    } // 0.1단계가 아닐 때
-                                                    else {
-                                                        // 이전 단계를 5번 모두 완료했을 때
-                                                        if (sightHistory[sightValue - 1]!!.first + sightHistory[sightValue - 1]!!.second >= 5) {
-                                                            // 오른쪽 눈의 시력 검사일 때
-                                                            if (!isLeftEye) {
-                                                                // 시력 검사를 초기화하고 오른쪽 눈 검사로 넘어간다.
-                                                                viewModel.updateRightEyeSightValue(
-                                                                    sightValue
-                                                                )
-                                                                viewModel.initializeRightTest()
-                                                                viewModel.updateIsSightednessTesting(
-                                                                    true
-                                                                )
-                                                            } // 왼쪽 눈의 시력 검사일 때
-                                                            else {
-                                                                // 검사를 끝낸다.
-                                                                viewModel.updateLeftEyeSightValue(
-                                                                    sightValue
-                                                                )
-                                                                viewModel.updateIsSightednessTesting(
-                                                                    true
-                                                                )
-                                                            }
-                                                        } // 이전 단계를 5번 모두 완료하지 않았을 때
-                                                        else {
-                                                            viewModel.updateSightValue(sightValue - 1)
-                                                        }
-                                                    }
-                                                }
-                                            }
-                                        }
-                                        viewModel.updateRandomList()
-                                        Log.e(
-                                            "",
-                                            "${sightHistory[1]!!.first}, ${sightHistory[1]!!.second}\n" +
-                                                    "${sightHistory[2]!!.first}, ${sightHistory[2]!!.second}\n" +
-                                                    "${sightHistory[3]!!.first}, ${sightHistory[3]!!.second}\n" +
-                                                    "${sightHistory[4]!!.first}, ${sightHistory[4]!!.second}\n" +
-                                                    "${sightHistory[5]!!.first}, ${sightHistory[5]!!.second}\n" +
-                                                    "${sightHistory[6]!!.first}, ${sightHistory[6]!!.second}\n" +
-                                                    "${sightHistory[7]!!.first}, ${sightHistory[7]!!.second}\n" +
-                                                    "${sightHistory[8]!!.first}, ${sightHistory[8]!!.second}\n" +
-                                                    "${sightHistory[9]!!.first}, ${sightHistory[9]!!.second}\n" +
-                                                    "${sightHistory[10]!!.first}, ${sightHistory[10]!!.second}\n"
-                                        )
+                                        viewModel.processAnswerSelected(2)
                                     },
                                 contentAlignment = Alignment.Center
                             ) {
@@ -1028,89 +311,7 @@ fun VisualAcuityTestCommonContent(
                                         shape = RoundedCornerShape(16.dp)
                                     )
                                     .clickable {
-                                        viewModel.updateSightHistory(
-                                            sightValue,
-                                            sightHistory[sightValue]!!.first,
-                                            sightHistory[sightValue]!!.second + 1
-                                        )
-                                        // 5번 중 5번째 검사일 때
-                                        if (sightHistory[sightValue]!!.first + sightHistory[sightValue]!!.second >= 5) {
-                                            // 5번 중 4번 이상 맞췄을 때
-                                            if (sightHistory[sightValue]!!.first >= 4) {
-                                                // 다음 단계로 넘어간다.
-                                                viewModel.updateSightValue(sightValue + 1)
-                                            } // 5번 중 3번 맞췄을 때
-                                            else if (sightHistory[sightValue]!!.first == 3) {
-                                                // 오른쪽 눈의 시력 검사일 때
-                                                if (!isLeftEye) {
-                                                    // 시력 검사를 초기화하고 왼쪽 눈 검사로 넘어간다.
-                                                    viewModel.updateRightEyeSightValue(
-                                                        sightValue
-                                                    )
-                                                    viewModel.initializeRightTest()
-                                                    viewModel.updateIsSightednessTesting(true)
-                                                } // 왼쪽 눈의 시력 검사일 때
-                                                else {
-                                                    // 검사를 끝낸다.
-                                                    viewModel.updateLeftEyeSightValue(sightValue)
-                                                    viewModel.updateIsSightednessTesting(true)
-                                                }
-                                            } // 5번중 2번 이하 맞췄을 때
-                                            else {
-                                                // 0.1단계일 때
-                                                if (sightValue == 1) {
-                                                    // 오른쪽 눈의 시력 검사일 때
-                                                    if (!isLeftEye) {
-                                                        // 시력 검사를 초기화하고 왼쪽 눈 검사로 넘어간다.
-                                                        viewModel.updateRightEyeSightValue(
-                                                            sightValue
-                                                        )
-                                                        viewModel.initializeRightTest()
-                                                        viewModel.updateIsSightednessTesting(
-                                                            true
-                                                        )
-                                                    } // 왼쪽쪽 눈의 시력 검사일 때
-                                                    else {
-                                                        // 검사를 끝낸다.
-                                                        viewModel.updateLeftEyeSightValue(
-                                                            sightValue
-                                                        )
-                                                        viewModel.updateIsSightednessTesting(
-                                                            true
-                                                        )
-                                                    }
-                                                } // 0.1단계가 아닐 때
-                                                else {
-                                                    // 이전 단계를 5번 모두 완료했을 때
-                                                    if (sightHistory[sightValue - 1]!!.first + sightHistory[sightValue - 1]!!.second >= 5) {
-                                                        // 오른쪽 눈의 시력 검사일 때
-                                                        if (!isLeftEye) {
-                                                            // 시력 검사를 초기화하고 오른쪽 눈 검사로 넘어간다.
-                                                            viewModel.updateRightEyeSightValue(
-                                                                sightValue
-                                                            )
-                                                            viewModel.initializeRightTest()
-                                                            viewModel.updateIsSightednessTesting(
-                                                                true
-                                                            )
-                                                        } // 왼쪽 눈의 시력 검사일 때
-                                                        else {
-                                                            // 검사를 끝낸다.
-                                                            viewModel.updateLeftEyeSightValue(
-                                                                sightValue
-                                                            )
-                                                            viewModel.updateIsSightednessTesting(
-                                                                true
-                                                            )
-                                                        }
-                                                    } // 이전 단계를 5번 모두 완료하지 않았을 때
-                                                    else {
-                                                        viewModel.updateSightValue(sightValue - 1)
-                                                    }
-                                                }
-                                            }
-                                        }
-                                        viewModel.updateRandomList()
+                                        viewModel.processAnswerSelected(3)
                                     },
                                 contentAlignment = Alignment.Center
                             ) {
@@ -1139,6 +340,19 @@ fun SightednessTestContent(
 ) {
     val isSightednessTesting = viewModel.isSightednessTesting.collectAsState().value
     val isLeftEye = viewModel.isLeftEye.collectAsState().value
+    AnimatedVisibility(
+        visibleState = visibleState,
+        enter = slideIn(
+            animationSpec = tween(durationMillis = 500),
+            initialOffset = { IntOffset(100, 0) }
+        ) + fadeIn(),
+        exit = slideOut(
+            animationSpec = tween(durationMillis = 500),
+            targetOffset = { IntOffset(-100, 0) }
+        ) + fadeOut()
+    ) {
+
+    }
     Column(
         horizontalAlignment = Alignment.CenterHorizontally
     ) {

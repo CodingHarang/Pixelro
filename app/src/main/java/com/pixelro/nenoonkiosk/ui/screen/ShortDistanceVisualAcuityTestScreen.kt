@@ -1,4 +1,4 @@
-package com.pixelro.nenoonkiosk.ui.testscreen
+package com.pixelro.nenoonkiosk.ui.screen
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.DisposableEffect
 import com.pixelro.nenoonkiosk.NenoonViewModel

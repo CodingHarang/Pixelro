@@ -4,11 +4,14 @@ import android.Manifest
 import android.content.Context
 import android.content.IntentSender
 import android.content.pm.PackageManager
+import android.hardware.camera2.CameraCharacteristics
+import android.hardware.camera2.CameraManager
 import android.location.LocationManager
 import android.os.Build
 import android.os.Bundle
 import android.provider.Settings
 import android.util.Log
+import android.util.SizeF
 import android.view.MotionEvent
 import android.view.WindowInsetsController
 import android.view.WindowManager
@@ -19,9 +22,14 @@ import androidx.activity.result.contract.ActivityResultContracts
 import androidx.activity.viewModels
 import androidx.annotation.RequiresApi
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.navigationBarsPadding
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Surface
+import androidx.compose.runtime.DisposableEffect
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalConfiguration
+import androidx.compose.ui.platform.LocalContext
 import androidx.core.content.ContextCompat
 import androidx.core.view.WindowCompat
 import androidx.core.view.WindowInsetsCompat
@@ -132,31 +140,54 @@ class MainActivity : ComponentActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        WindowCompat.getInsetsController(window, window.decorView).apply {
-            hide(WindowInsetsCompat.Type.statusBars())
-            hide(WindowInsetsCompat.Type.navigationBars())
-            systemBarsBehavior = WindowInsetsControllerCompat.BEHAVIOR_SHOW_TRANSIENT_BARS_BY_SWIPE
-        }
+//        window.navigationBarColor = 0x00000000
+
+        WindowCompat.setDecorFitsSystemWindows(window, false)
+
+        WindowCompat.getInsetsController(window, window.decorView).isAppearanceLightNavigationBars = true
+
+
+//        WindowCompat.getInsetsController(window, window.decorView).apply {
+//            hide(WindowInsetsCompat.Type.statusBars())
+//            hide(WindowInsetsCompat.Type.navigationBars())
+//            systemBarsBehavior = WindowInsetsControllerCompat.BEHAVIOR_SHOW_TRANSIENT_BARS_BY_SWIPE
+//        }
 //        WindowCompat.setDecorFitsSystemWindows(window, false)
 //        window.setFlags(
 //            WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS,
 //            WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS
 //        )
         window.addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON)
-
+        applicationContext
         setContent {
             NenoonKioskTheme {
                 Surface(
-                    modifier = Modifier.fillMaxSize(),
+                    modifier = Modifier.fillMaxSize()
+                        .navigationBarsPadding(),
                     color = MaterialTheme.colors.background
                 ) {
-//                    val systemUiController = rememberSystemUiController()
+                    val systemUiController = rememberSystemUiController()
+                    systemUiController.setStatusBarColor(
+                        color = Color(0x00000000),
+                        darkIcons = true
+                    )
+                    val context = LocalContext.current
+                    val configuration = LocalConfiguration.current
+                    DisposableEffect(true) {
+                        val cameraManager = context.getSystemService(CAMERA_SERVICE) as CameraManager
+                        val cameraCharacteristics =
+                            (context.getSystemService(CAMERA_SERVICE) as CameraManager).getCameraCharacteristics(cameraManager.cameraIdList[1])
+                        viewModel.updateLocalConfigurationValues(
+                            pixelDensity = context.resources.displayMetrics.density,
+                            screenWidthDp = configuration.screenWidthDp,
+                            screenHeightDp = configuration.screenHeightDp,
+                            focalLength = cameraCharacteristics.get(CameraCharacteristics.LENS_INFO_AVAILABLE_FOCAL_LENGTHS)?.get(0) ?: 0f,
+                            lensSize = cameraCharacteristics.get(CameraCharacteristics.SENSOR_INFO_PHYSICAL_SIZE) ?: SizeF(0f, 0f)
+                        )
+                        onDispose {}
+                    }
 //                    systemUiController.isSystemBarsVisible = false
 //                    DisposableEffect(true) {
-//                        systemUiController.setStatusBarColor(
-//                            color = Color(0xff000000),
-//                            darkIcons = false
-//                        )
 //                        onDispose {}
 //                    }
                     NenoonApp(
@@ -171,10 +202,6 @@ class MainActivity : ComponentActivity() {
         Log.e("Paused", "Paused")
         super.onPause()
         viewModel.updateToPaused()
-    }
-
-    override fun onBackPressed() {
-        super.onBackPressed()
     }
 }
 

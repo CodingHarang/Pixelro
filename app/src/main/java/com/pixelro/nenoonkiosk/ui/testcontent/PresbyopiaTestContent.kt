@@ -36,88 +36,56 @@ fun PresbyopiaTestContent(
     toResultScreen: () -> Unit,
     viewModel: NenoonViewModel
 ) {
-//    Log.e("PresbyopiaTestContent", "PresbyopiaTestContent")
-    val firstVisibleState = remember { MutableTransitionState(true) }
-    val secondVisibleState = remember { MutableTransitionState(false) }
-    val thirdVisibleState = remember { MutableTransitionState(false) }
+    val firstVisibleState = viewModel.firstItemVisibleState
+    val secondVisibleState = viewModel.secondItemVisibleState
+    val thirdVisibleState = viewModel.thirdItemVisibleState
     val context = LocalContext.current
 
-    Box(
-        modifier = Modifier
-            .fillMaxSize()
-    ) {
-        Column(
-            modifier = Modifier
-                .fillMaxSize()
-                .background(color = Color(0xff000000)),
-            horizontalAlignment = Alignment.CenterHorizontally
-        ) {
-            Text(
-                modifier = Modifier
-                    .padding(top = 40.dp, bottom = 40.dp),
-                text = "조절력 검사(안구 나이 검사)",
-                color = Color(0xffffffff),
-                fontSize = 40.sp,
-                fontWeight = FontWeight.ExtraBold
-            )
-            Box(
-                contentAlignment = Alignment.Center,
-                modifier = Modifier
-                    .height(400.dp)
-                    .width(400.dp)
-                    .background(
-                        color = Color(0xffffffff),
-                        shape = RoundedCornerShape(16.dp)
-                    )
-            ) {
-                PresbyopiaFirstPage(visibleState = firstVisibleState)
-                PresbyopiaSecondPage(visibleState = secondVisibleState)
-                PresbyopiaThirdPage(visibleState = thirdVisibleState)
-            }
-            Text(
-                modifier = Modifier
-                    .padding(top = 20.dp),
-                text = "현재 거리: ${(viewModel.screenToFaceDistance.collectAsState().value / 10).roundToInt()}cm",
-                fontSize = 30.sp,
-                color = Color(0xffffffff)
-            )
-            Image(
-                modifier = Modifier
-                    .height(256.dp)
-                    .clickable {
-                        if (firstVisibleState.currentState) {
-                            viewModel.updateFirstDistance()
-                            firstVisibleState.targetState = false
-                            secondVisibleState.targetState = true
-                            thirdVisibleState.targetState = false
 
-                        } else if (secondVisibleState.currentState) {
-                            viewModel.updateSecondDistance()
-                            firstVisibleState.targetState = false
-                            secondVisibleState.targetState = false
-                            thirdVisibleState.targetState = true
-                        } else {
-                            viewModel.updateThirdDistance()
-                            toResultScreen()
-                        }
-                    },
-                painter = painterResource(id = R.drawable.baseline_check_circle_48),
-                contentDescription = ""
+    Box(
+        contentAlignment = Alignment.Center,
+        modifier = Modifier
+            .height(400.dp)
+            .width(400.dp)
+            .background(
+                color = Color(0xffffffff),
+                shape = RoundedCornerShape(16.dp)
             )
-        }
-        Image(
-            modifier = Modifier
-                .width(70.dp)
-                .height(70.dp)
-                .padding(start = 20.dp, top = 20.dp)
-                .clickable {
-                    (context as Activity).dispatchKeyEvent(KeyEvent(KeyEvent.ACTION_DOWN, KeyEvent.KEYCODE_BACK))
-                    context.dispatchKeyEvent(KeyEvent(KeyEvent.ACTION_UP, KeyEvent.KEYCODE_BACK))
-                },
-            painter = painterResource(id = R.drawable.close_button),
-            contentDescription = ""
-        )
+    ) {
+        PresbyopiaFirstPage(visibleState = firstVisibleState)
+        PresbyopiaSecondPage(visibleState = secondVisibleState)
+        PresbyopiaThirdPage(visibleState = thirdVisibleState)
     }
+    Text(
+        modifier = Modifier
+            .padding(top = 20.dp),
+        text = "현재 거리: ${(viewModel.screenToFaceDistance.collectAsState().value / 10).roundToInt()}cm",
+        fontSize = 30.sp,
+        color = Color(0xffffffff)
+    )
+    Image(
+        modifier = Modifier
+            .height(256.dp)
+            .clickable {
+                if (firstVisibleState.currentState) {
+                    viewModel.updateFirstDistance()
+                    firstVisibleState.targetState = false
+                    secondVisibleState.targetState = true
+                    thirdVisibleState.targetState = false
+
+                } else if (secondVisibleState.currentState) {
+                    viewModel.updateSecondDistance()
+                    firstVisibleState.targetState = false
+                    secondVisibleState.targetState = false
+                    thirdVisibleState.targetState = true
+                } else {
+                    viewModel.updateThirdDistance()
+                    toResultScreen()
+                }
+            },
+        painter = painterResource(id = R.drawable.baseline_check_circle_48),
+        contentDescription = ""
+    )
 }
 
 @Composable

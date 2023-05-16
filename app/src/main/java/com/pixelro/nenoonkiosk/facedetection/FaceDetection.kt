@@ -46,8 +46,8 @@ fun FaceDetectionScreenContent(
     val context = LocalContext.current
     val cameraProviderFuture = remember { ProcessCameraProvider.getInstance(context) }
     Box() {
-        val systemUiController = rememberSystemUiController()
-        systemUiController.isSystemBarsVisible = false
+//        val systemUiController = rememberSystemUiController()
+//        systemUiController.isSystemBarsVisible = false
         val executor = ContextCompat.getMainExecutor(context)
         cameraProviderFuture.addListener({
             val cameraProvider = cameraProviderFuture.get()
@@ -75,7 +75,7 @@ fun FaceDetectionScreenContent(
 
         }, executor)
 
-        systemUiController.isSystemBarsVisible = false
+//        systemUiController.isSystemBarsVisible = false
     }
 //    Scaffold {
 //        Box(modifier = Modifier

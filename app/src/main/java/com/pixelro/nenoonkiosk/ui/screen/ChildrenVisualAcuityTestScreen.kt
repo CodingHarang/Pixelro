@@ -1,8 +1,7 @@
-package com.pixelro.nenoonkiosk.ui.testscreen
+package com.pixelro.nenoonkiosk.ui.screen
 
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
-import androidx.navigation.NavHostController
 import com.pixelro.nenoonkiosk.NenoonViewModel
 
 @Composable
