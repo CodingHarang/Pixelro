@@ -146,14 +146,14 @@ fun MChartContent(
                     .clickable {
                         viewModel.updateMChartResult(currentLevel)
                         viewModel.updateCurrentLevel(0)
-                        if(isVertical && !isLeftEye) {
+                        if(isVertical && isLeftEye) {
                             viewModel.updateIsVertical(false)
-                        } else if(!isVertical && !isLeftEye) {
+                        } else if(!isVertical && isLeftEye) {
                             viewModel.updateIsVertical(true)
-                            viewModel.updateIsLeftEye(true)
-                            nextVisibleState.targetState = true
+                            viewModel.updateIsLeftEye(false)
                             mChartContentVisibleState.targetState = false
-                        } else if(isVertical && isLeftEye) {
+                            nextVisibleState.targetState = true
+                        } else if(isVertical) {
                             viewModel.updateIsVertical(false)
                         } else {
                             viewModel.updateSavedResult()
@@ -182,15 +182,18 @@ fun MChartContent(
                         if(currentLevel >= 20) {
                             viewModel.updateMChartResult(currentLevel)
                             viewModel.updateCurrentLevel(0)
-                            if(isVertical && !isLeftEye) {
+                            if(isVertical && isLeftEye) {
                                 viewModel.updateIsVertical(false)
-                            } else if(!isVertical && !isLeftEye) {
+                            } else if(!isVertical && isLeftEye) {
                                 viewModel.updateIsVertical(true)
-                                viewModel.updateIsLeftEye(true)
-                            } else if(isVertical && isLeftEye) {
+                                viewModel.updateIsLeftEye(false)
+                                mChartContentVisibleState.targetState = false
+                                nextVisibleState.targetState = true
+                            } else if(isVertical) {
                                 viewModel.updateIsVertical(false)
                             } else {
-                                viewModel.updateIsVertical(true)
+                                viewModel.updateSavedResult()
+                                toResultScreen()
                             }
                         } else {
                             viewModel.updateCurrentLevel(currentLevel + 1)

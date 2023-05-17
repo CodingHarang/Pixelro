@@ -198,14 +198,14 @@ fun AmslerGridContent(
                         )
                         .clickable {
                             if (isLeft) {
+                                viewModel.updateIsLeftEye(false)
                                 viewModel.updateLeftSelectedArea()
-                                toResultScreen()
-                            } else {
-                                viewModel.updateIsLeftEye(true)
-                                viewModel.updateRightSelectedArea()
-//                                viewModel.updateIsCoveredEyeCheckingDone(false)
                                 amslerGridContentVisibleState.targetState = false
                                 nextVisibleState.targetState = true
+                            } else {
+                                viewModel.updateRightSelectedArea()
+//                                viewModel.updateIsCoveredEyeCheckingDone(false)
+                                toResultScreen()
                             }
                         },
                     contentAlignment = Alignment.Center

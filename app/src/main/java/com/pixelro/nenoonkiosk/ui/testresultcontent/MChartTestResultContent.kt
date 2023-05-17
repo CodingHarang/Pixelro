@@ -50,66 +50,6 @@ fun MChartTestResultContent(
                             fontSize = 30.sp
                         )
                         Text(
-                            text = "${String.format("%.1f", result[2].toFloat() / 10)}°",
-                            fontSize = 30.sp,
-                            fontWeight = FontWeight.Bold
-                        )
-                    }
-                    Spacer(
-                        modifier = Modifier
-                            .width(60.dp)
-                    )
-                    Spacer(
-                        modifier = Modifier
-                            .width(2.dp)
-                            .height(40.dp)
-                            .background(
-                                color = Color(0xff000000)
-                            )
-                    )
-                    Spacer(
-                        modifier = Modifier
-                            .width(60.dp)
-                    )
-                    Column(
-                        horizontalAlignment = Alignment.CenterHorizontally
-                    ) {
-                        Text(
-                            text = "수평검사",
-                            fontSize = 30.sp
-                        )
-                        Text(
-                            text = "${String.format("%.1f", result[3].toFloat() / 10)}°",
-                            fontSize = 30.sp,
-                            fontWeight = FontWeight.Bold
-                        )
-                    }
-                }
-            }
-        }
-        Spacer(
-            modifier = Modifier
-                .height(40.dp)
-        )
-        Row() {
-            Column(
-                horizontalAlignment = Alignment.CenterHorizontally
-            ) {
-                Text(
-                    text = "우안",
-                    fontSize = 30.sp
-                )
-                Row(
-                    verticalAlignment = Alignment.CenterVertically
-                ) {
-                    Column(
-                        horizontalAlignment = Alignment.CenterHorizontally
-                    ) {
-                        Text(
-                            text = "수직검사",
-                            fontSize = 30.sp
-                        )
-                        Text(
                             text = "${String.format("%.1f", result[0].toFloat() / 10)}°",
                             fontSize = 30.sp,
                             fontWeight = FontWeight.Bold
@@ -140,6 +80,66 @@ fun MChartTestResultContent(
                         )
                         Text(
                             text = "${String.format("%.1f", result[1].toFloat() / 10)}°",
+                            fontSize = 30.sp,
+                            fontWeight = FontWeight.Bold
+                        )
+                    }
+                }
+            }
+        }
+        Spacer(
+            modifier = Modifier
+                .height(40.dp)
+        )
+        Row() {
+            Column(
+                horizontalAlignment = Alignment.CenterHorizontally
+            ) {
+                Text(
+                    text = "우안",
+                    fontSize = 30.sp
+                )
+                Row(
+                    verticalAlignment = Alignment.CenterVertically
+                ) {
+                    Column(
+                        horizontalAlignment = Alignment.CenterHorizontally
+                    ) {
+                        Text(
+                            text = "수직검사",
+                            fontSize = 30.sp
+                        )
+                        Text(
+                            text = "${String.format("%.1f", result[2].toFloat() / 10)}°",
+                            fontSize = 30.sp,
+                            fontWeight = FontWeight.Bold
+                        )
+                    }
+                    Spacer(
+                        modifier = Modifier
+                            .width(60.dp)
+                    )
+                    Spacer(
+                        modifier = Modifier
+                            .width(2.dp)
+                            .height(40.dp)
+                            .background(
+                                color = Color(0xff000000)
+                            )
+                    )
+                    Spacer(
+                        modifier = Modifier
+                            .width(60.dp)
+                    )
+                    Column(
+                        horizontalAlignment = Alignment.CenterHorizontally
+                    ) {
+                        Text(
+                            text = "수평검사",
+                            fontSize = 30.sp
+                        )
+                        Text(
+                            text = "${String.format("%.1f", result[3].toFloat() / 10)}°",
                             fontSize = 30.sp,
                             fontWeight = FontWeight.Bold
                         )

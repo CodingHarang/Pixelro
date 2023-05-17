@@ -706,7 +706,7 @@ class NenoonViewModel(application: Application) : AndroidViewModel(application) 
         measuringDistanceContentVisibleState.targetState = true
         coveredEyeCheckingContentVisibleState.targetState = false
         amslerGridContentVisibleState.targetState = false
-        _isLeftEye.update { false }
+        _isLeftEye.update { true }
     }
 
     fun updateCurrentSelectedArea(position: Offset) {
