@@ -16,10 +16,16 @@ import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.IntentSenderRequest
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.animation.core.MutableTransitionState
+import androidx.compose.animation.core.TweenSpec
+import androidx.compose.animation.fadeIn
+import androidx.compose.animation.fadeOut
+import androidx.compose.animation.slideIn
+import androidx.compose.animation.slideOut
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.currentCompositionLocalContext
 import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.unit.IntOffset
 import androidx.core.content.ContextCompat
 import androidx.core.content.ContextCompat.getSystemService
 import androidx.lifecycle.AndroidViewModel
@@ -28,6 +34,8 @@ import androidx.lifecycle.viewModelScope
 import androidx.media3.common.MediaItem
 import androidx.media3.common.Player
 import androidx.media3.exoplayer.ExoPlayer
+import androidx.navigation.NavHostController
+import com.google.accompanist.navigation.animation.AnimatedComposeNavigator
 import com.google.android.gms.common.api.ResolvableApiException
 import com.google.android.gms.common.api.Status
 import com.google.android.gms.location.LocationRequest
@@ -48,6 +56,19 @@ import kotlin.math.roundToInt
 import kotlin.math.tan
 
 class NenoonViewModel(application: Application) : AndroidViewModel(application) {
+
+    val enterTransition = slideIn(
+        animationSpec = TweenSpec(durationMillis = 500),
+        initialOffset = { IntOffset(100, 0) }
+    ) + fadeIn(
+        animationSpec = TweenSpec(durationMillis = 500)
+    )
+    val exitTransition = slideOut(
+        animationSpec = TweenSpec(durationMillis = 500),
+        targetOffset = { IntOffset(-100, 0) }
+    ) + fadeOut(
+        animationSpec = TweenSpec(durationMillis = 500)
+    )
 
     private fun checkBackgroundStatus() {
         viewModelScope.launch {
@@ -234,9 +255,7 @@ class NenoonViewModel(application: Application) : AndroidViewModel(application) 
 //        _isCoveredEyeCheckingDone.update { isDone }
 //    }
 
-    fun checkCoveredEye(
-        nextVisibleState: MutableTransitionState<Boolean>
-    ) {
+    fun checkCoveredEye() {
         viewModelScope.launch {
             var count = 0
             _leftTime.update { 3f }
@@ -264,7 +283,13 @@ class NenoonViewModel(application: Application) : AndroidViewModel(application) 
                 }
             }
             coveredEyeCheckingContentVisibleState.targetState = false
-            nextVisibleState.targetState = true
+            if(_selectedTestType.value == TestType.ShortDistanceVisualAcuity) {
+                visualAcuityTestCommonContentVisibleState.targetState = true
+            } else if(_selectedTestType.value == TestType.AmslerGrid) {
+                amslerGridContentVisibleState.targetState = true
+            } else if(_selectedTestType.value == TestType.MChart) {
+                mChartContentVisibleState.targetState = true
+            }
         }
     }
 
@@ -288,10 +313,7 @@ class NenoonViewModel(application: Application) : AndroidViewModel(application) 
     }
 
     // UI
-//    private val _backgroundColor = MutableStateFlow(Color(0xffffffff))
-//    val backgroundColor: StateFlow<Color> = _backgroundColor
-//
-//
+
 
     // Checking permission, location, bluetooth
     private val _isWriteSettingsPermissionGranted = MutableStateFlow(false)
@@ -479,18 +501,34 @@ class NenoonViewModel(application: Application) : AndroidViewModel(application) 
 
     // Visual acuity test
     val visualAcuityTestCommonContentVisibleState = MutableTransitionState(false)
+    val visualAcuityTestContentVisibleState = MutableTransitionState(true)
     val visualAcuityTestSightednessTestContentVisibleState = MutableTransitionState(false)
-    private var sightHistory = mutableMapOf<Int, Pair<Int, Int>>()
-    private var sightLevel = 1
-    private var leftEyeSightValue = 1
-    private var rightEyeSightValue = 1
-    private var leftEyeSightedValue = VisionDisorderType.Normal
-    private var rightEyeSightedValue = VisionDisorderType.Normal
+    private var sightHistory = mutableMapOf(
+        1 to Pair(0, 0),
+        2 to Pair(0, 0),
+        3 to Pair(0, 0),
+        4 to Pair(0, 0),
+        5 to Pair(0, 0),
+        6 to Pair(0, 0),
+        7 to Pair(0, 0),
+        8 to Pair(0, 0),
+        9 to Pair(0, 0),
+        10 to Pair(0, 0)
+    )
+    private val _sightLevel = MutableStateFlow(1)
+    val sightLevel: StateFlow<Int> = _sightLevel
+    private val _leftEyeSightValue = MutableStateFlow(1)
+    val leftEyeSightValue: StateFlow<Int> = _leftEyeSightValue
+    private val _rightEyeSightValue = MutableStateFlow(1)
+    val rightEyeSightValue: StateFlow<Int> = _rightEyeSightValue
+    private val _leftEyeSightedValue = MutableStateFlow(VisionDisorderType.Normal)
+    val leftEyeSightedValue: StateFlow<VisionDisorderType> = _leftEyeSightedValue
+    private val _rightEyeSightedValue = MutableStateFlow(VisionDisorderType.Normal)
+    val rightEyeSightedValue: StateFlow<VisionDisorderType> = _rightEyeSightedValue
     private var _randomList = MutableStateFlow(mutableListOf(0))
     val randomList: StateFlow<MutableList<Int>> = _randomList
     private var _ansNum = MutableStateFlow(0)
     val ansNum: StateFlow<Int> = _ansNum
-    private val _isSightednessTesting = false
 
 //    fun processCorrectAnswerSelected() {
 //        _sightHistory = Pair(_sightHistory[_sightLevel]!!.first, _sightHistory[_sightLevel]!!.second)
@@ -501,50 +539,50 @@ class NenoonViewModel(application: Application) : AndroidViewModel(application) 
         if(idx != 3) {
             // if correct
             if(ansNum.value == _randomList.value[idx]) {
-                sightHistory[sightLevel] = Pair(sightHistory[sightLevel]!!.first + 1, sightHistory[sightLevel]!!.second)
+                sightHistory[_sightLevel.value] = Pair(sightHistory[_sightLevel.value]!!.first + 1, sightHistory[_sightLevel.value]!!.second)
                 // if first trial
-                if(sightHistory[sightLevel]!!.first == 1 && sightHistory[sightLevel]!!.second == 0) {
+                if(sightHistory[_sightLevel.value]!!.first == 1 && sightHistory[_sightLevel.value]!!.second == 0) {
                     // if level == 10
-                    if(sightLevel == 10) {
+                    if(_sightLevel.value == 10) {
                         moveToSightednessTestContent()
                     } else {
-                        sightLevel++
+                        _sightLevel.update { it + 1 }
                     }
                 }
             } // if wrong
             else {
-                sightHistory[sightLevel] = Pair(sightHistory[sightLevel]!!.first, sightHistory[sightLevel]!!.second + 1)
+                sightHistory[_sightLevel.value] = Pair(sightHistory[_sightLevel.value]!!.first, sightHistory[_sightLevel.value]!!.second + 1)
             }
         } else {
-            sightHistory[sightLevel] = Pair(sightHistory[sightLevel]!!.first, sightHistory[sightLevel]!!.second + 1)
+            sightHistory[_sightLevel.value] = Pair(sightHistory[_sightLevel.value]!!.first, sightHistory[_sightLevel.value]!!.second + 1)
         }
 
         // if 5th trial
-        if(sightHistory[sightLevel]!!.first + sightHistory[sightLevel]!!.second >= 5) {
+        if(sightHistory[_sightLevel.value]!!.first + sightHistory[_sightLevel.value]!!.second >= 5) {
             // if correct >= 4
-            if(sightHistory[sightLevel]!!.first >= 4) {
+            if(sightHistory[_sightLevel.value]!!.first >= 4) {
                 // if next level trial >= 5
-                if(sightHistory[sightLevel + 1]!!.first + sightHistory[sightLevel + 1]!!.second >= 5) {
+                if(sightHistory[_sightLevel.value + 1]!!.first + sightHistory[_sightLevel.value + 1]!!.second >= 5) {
                     moveToSightednessTestContent()
                 } // to next level
                 else {
-                    sightLevel++
+                    _sightLevel.update { it + 1 }
                 }
             } // if correct == 3
-            else if(sightHistory[sightLevel]!!.first == 3) {
+            else if(sightHistory[_sightLevel.value]!!.first == 3) {
                 moveToSightednessTestContent()
             } // if correct <= 2
             else {
                 // if level == 1
-                if(sightLevel == 1) {
+                if(_sightLevel.value == 1) {
                     moveToSightednessTestContent()
                 } // level--
                 else {
                     // if prev level trial >= 5
-                    if(sightHistory[sightLevel - 1]!!.first + sightHistory[sightLevel - 1]!!.second >= 5) {
+                    if(sightHistory[_sightLevel.value - 1]!!.first + sightHistory[_sightLevel.value - 1]!!.second >= 5) {
                         moveToSightednessTestContent()
                     } else {
-                        sightLevel--
+                        _sightLevel.update { it - 1 }
                     }
                 }
             }
@@ -552,7 +590,7 @@ class NenoonViewModel(application: Application) : AndroidViewModel(application) 
         updateRandomList()
     }
 
-    fun moveToSightednessTestContent() {
+    private fun moveToSightednessTestContent() {
         if(_isLeftEye.value) {
             sightHistory = mutableMapOf(
                 1 to Pair(0, 0),
@@ -566,14 +604,26 @@ class NenoonViewModel(application: Application) : AndroidViewModel(application) 
                 9 to Pair(0, 0),
                 10 to Pair(0, 0)
             )
+            _leftEyeSightValue.update { _sightLevel.value }
+        } else {
+            _rightEyeSightValue.update { _sightLevel.value }
         }
-        leftEyeSightValue = sightLevel
-        _isLeftEye.update { false }
         viewModelScope.launch {
             delay(500)
-            visualAcuityTestCommonContentVisibleState.targetState = false
+            visualAcuityTestContentVisibleState.targetState = false
             visualAcuityTestSightednessTestContentVisibleState.targetState = true
         }
+    }
+
+    fun updateLeftEyeSightedValue(type: VisionDisorderType) {
+        _leftEyeSightedValue.update { type }
+        visualAcuityTestContentVisibleState.targetState = true
+        visualAcuityTestSightednessTestContentVisibleState.targetState = false
+        _isLeftEye.update { false }
+    }
+
+    fun updateRightEyeSightedValue(type: VisionDisorderType) {
+        _rightEyeSightedValue.update { type }
     }
 
     fun initializeVisualAcuityTest() {
@@ -581,71 +631,32 @@ class NenoonViewModel(application: Application) : AndroidViewModel(application) 
         measuringDistanceContentVisibleState.targetState = true
         coveredEyeCheckingContentVisibleState.targetState = false
         visualAcuityTestCommonContentVisibleState.targetState = false
+        visualAcuityTestContentVisibleState.targetState = true
+        visualAcuityTestSightednessTestContentVisibleState.targetState = false
+
     }
-
-
-
 
     fun updateSightTestResult() {
         _printString.update {
-            val leftEyeSighted = when(leftEyeSightedValue.value) {
+            val leftEyeSighted = when(_leftEyeSightedValue.value) {
                 VisionDisorderType.Normal -> "정상"
                 VisionDisorderType.Myopia -> "근시"
                 VisionDisorderType.Hyperopia -> "원시"
                 else -> "난시"
             }
 
-            val rightEyeSighted = when(rightEyeSightedValue.value) {
+            val rightEyeSighted = when(_rightEyeSightedValue.value) {
                 VisionDisorderType.Normal -> "정상"
                 VisionDisorderType.Myopia -> "근시"
                 VisionDisorderType.Hyperopia -> "원시"
                 else -> "난시"
             }
-            "좌안 시력: ${leftEyeSightValue.value.toFloat() / 10} $leftEyeSighted," +
-            "우안 시력: ${rightEyeSightValue.value.toFloat() / 10} $rightEyeSighted"
+            "좌안 시력: ${_leftEyeSightValue.value.toFloat() / 10} $leftEyeSighted," +
+            "우안 시력: ${_rightEyeSightValue.value.toFloat() / 10} $rightEyeSighted"
         }
     }
 
-    fun initializeSightTest() {
-        _sightHistory.update {
-            mutableMapOf(
-                1 to Pair(0, 0),
-                2 to Pair(0, 0),
-                3 to Pair(0, 0),
-                4 to Pair(0, 0),
-                5 to Pair(0, 0),
-                6 to Pair(0, 0),
-                7 to Pair(0, 0),
-                8 to Pair(0, 0),
-                9 to Pair(0, 0),
-                10 to Pair(0, 0)
-            )
-        }
-        _sightLevel.update { 1 }
-        _isSightednessTesting.update { false }
-        _isLeftEye.update { true }
-    }
-
-    fun initializeLeftTest() {
-        _sightHistory.update {
-            mutableMapOf(
-                1 to Pair(0, 0),
-                2 to Pair(0, 0),
-                3 to Pair(0, 0),
-                4 to Pair(0, 0),
-                5 to Pair(0, 0),
-                6 to Pair(0, 0),
-                7 to Pair(0, 0),
-                8 to Pair(0, 0),
-                9 to Pair(0, 0),
-                10 to Pair(0, 0)
-            )
-        }
-        _sightLevel.update { 1 }
-    }
-
-
-    fun updateRandomList() {
+    private fun updateRandomList() {
         _randomList.update { mutableListOf() }
         var ranNum = (2..7).random()
         for(i in 1..3) {

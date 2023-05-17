@@ -1,13 +1,11 @@
-package com.pixelro.nenoonkiosk.ui.screen
+package com.pixelro.nenoonkiosk.ui.testcontent
 
-import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import com.pixelro.nenoonkiosk.NenoonViewModel
 
 @Composable
-fun ChildrenVisualAcuityTestScreen(
+fun LongDistanceVisualAcuityTestContent(
     toResultScreen: () -> Unit,
     viewModel: NenoonViewModel
 ) {
-    Text("ChildrenVisualAcuityTestScreen")
 }

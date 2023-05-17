@@ -50,9 +50,21 @@ fun PresbyopiaTestContent(
                 shape = RoundedCornerShape(16.dp)
             )
     ) {
-        PresbyopiaFirstPage(visibleState = firstVisibleState)
-        PresbyopiaSecondPage(visibleState = secondVisibleState)
-        PresbyopiaThirdPage(visibleState = thirdVisibleState)
+        PresbyopiaFirstPage(
+            visibleState = firstVisibleState,
+            enterAnimation = viewModel.enterTransition,
+            exitAnimation = viewModel.exitTransition
+        )
+        PresbyopiaSecondPage(
+            visibleState = secondVisibleState,
+            enterAnimation = viewModel.enterTransition,
+            exitAnimation = viewModel.exitTransition
+        )
+        PresbyopiaThirdPage(
+            visibleState = thirdVisibleState,
+            enterAnimation = viewModel.enterTransition,
+            exitAnimation = viewModel.exitTransition
+        )
     }
     Text(
         modifier = Modifier
@@ -88,18 +100,14 @@ fun PresbyopiaTestContent(
 
 @Composable
 fun PresbyopiaFirstPage(
-    visibleState: MutableTransitionState<Boolean>
+    visibleState: MutableTransitionState<Boolean>,
+    enterAnimation: EnterTransition,
+    exitAnimation: ExitTransition
 ) {
     AnimatedVisibility(
         visibleState = visibleState,
-        enter = slideIn(
-            animationSpec = tween(durationMillis = 500),
-            initialOffset = { IntOffset(100, 0) }
-        ) + fadeIn(),
-        exit = slideOut(
-            animationSpec = tween(durationMillis = 500),
-            targetOffset = { IntOffset(-100, 0) }
-        ) + fadeOut()
+        enter = enterAnimation,
+        exit = exitAnimation
     ) {
         Log.e("PresbyopiaFirstPage", "PresbyopiaFirstPage")
         val context = LocalContext.current
@@ -135,18 +143,14 @@ fun PresbyopiaFirstPage(
 
 @Composable
 fun PresbyopiaSecondPage(
-    visibleState: MutableTransitionState<Boolean>
+    visibleState: MutableTransitionState<Boolean>,
+    enterAnimation: EnterTransition,
+    exitAnimation: ExitTransition
 ) {
     AnimatedVisibility(
         visibleState = visibleState,
-        enter = slideIn(
-            animationSpec = tween(durationMillis = 500),
-            initialOffset = { IntOffset(100, 0) }
-        ) + fadeIn(),
-        exit = slideOut(
-            animationSpec = tween(durationMillis = 500),
-            targetOffset = { IntOffset(-100, 0) }
-        ) + fadeOut()
+        enter = enterAnimation,
+        exit = exitAnimation
     ) {
         Log.e("PresbyopiaSecondPage", "PresbyopiaSecondPage")
         val context = LocalContext.current
@@ -182,18 +186,14 @@ fun PresbyopiaSecondPage(
 
 @Composable
 fun PresbyopiaThirdPage(
-    visibleState: MutableTransitionState<Boolean>
+    visibleState: MutableTransitionState<Boolean>,
+    enterAnimation: EnterTransition,
+    exitAnimation: ExitTransition
 ) {
     AnimatedVisibility(
         visibleState = visibleState,
-        enter = slideIn(
-            animationSpec = tween(durationMillis = 500),
-            initialOffset = { IntOffset(100, 0) }
-        ) + fadeIn(),
-        exit = slideOut(
-            animationSpec = tween(durationMillis = 500),
-            targetOffset = { IntOffset(-100, 0) }
-        ) + fadeOut()
+        enter = enterAnimation,
+        exit = exitAnimation
     ) {
         Log.e("PresbyopiaThirdPage", "PresbyopiaThirdPage")
         val context = LocalContext.current

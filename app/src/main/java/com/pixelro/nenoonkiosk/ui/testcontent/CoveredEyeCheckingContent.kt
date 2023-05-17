@@ -37,18 +37,12 @@ fun CoveredEyeCheckingContent(
 ) {
     AnimatedVisibility(
         visibleState = coveredEyeCheckingContentVisibleState,
-        enter = slideIn(
-            animationSpec = tween(durationMillis = 500),
-            initialOffset = { IntOffset(100, 0) }
-        ) + fadeIn(),
-        exit = slideOut(
-            animationSpec = tween(durationMillis = 500),
-            targetOffset = { IntOffset(-100, 0) }
-        ) + fadeOut()
+        enter = viewModel.enterTransition,
+        exit = viewModel.exitTransition
     ) {
         DisposableEffect(true) {
             Log.e("DisposableEffect", "${viewModel.coveredEyeCheckingContentVisibleState.targetState}")
-            viewModel.checkCoveredEye(nextVisibleState)
+            viewModel.checkCoveredEye()
             onDispose {}
         }
         val isLeftEye = viewModel.isLeftEye.collectAsState().value

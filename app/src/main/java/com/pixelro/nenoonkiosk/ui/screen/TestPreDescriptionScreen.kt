@@ -174,20 +174,7 @@ fun TestPreDescriptionContent(
                         indication = null,
                         interactionSource = remember { MutableInteractionSource() }
                     ) {
-                        when (selectedTest) {
-                            TestType.Presbyopia -> navController.navigate(GlobalConstants.ROUTE_PRESBYOPIA_TEST)
-                            TestType.ShortDistanceVisualAcuity -> navController.navigate(
-                                GlobalConstants.ROUTE_SHORT_VISUAL_ACUITY_TEST
-                            )
-
-                            TestType.LongDistanceVisualAcuity -> navController.navigate(
-                                GlobalConstants.ROUTE_LONG_VISUAL_ACUITY_TEST
-                            )
-
-                            TestType.ChildrenVisualAcuity -> navController.navigate(GlobalConstants.ROUTE_CHILDREN_VISUAL_ACUITY_TEST)
-                            TestType.AmslerGrid -> navController.navigate(GlobalConstants.ROUTE_AMSLER_GRID_TEST)
-                            else -> navController.navigate(GlobalConstants.ROUTE_M_CHART_TEST)
-                        }
+                        navController.navigate(GlobalConstants.ROUTE_TEST_CONTENT)
                     },
                 painter = painterResource(id = R.drawable.btn_start_ko),
                 contentDescription = ""

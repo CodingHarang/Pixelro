@@ -39,41 +39,41 @@ fun VisualAcuityTestCommonContent(
     Log.e("VisualAcuityTestCommonContent", "VisualAcuityTestCommonContent")
     val randomList = viewModel.randomList.collectAsState().value
     val ansNum = viewModel.ansNum.collectAsState().value
-    val isLeftEye = viewModel.isLeftEye.collectAsState().value
+    val sightLevel = viewModel.sightLevel.collectAsState().value
+    val visualAcuityTestContentVisibleState = viewModel.visualAcuityTestContentVisibleState
 
     Box() {
 
         AnimatedVisibility(
             visibleState = visualAcuityTestCommonContentVisibleState,
-            enter = slideIn(
-                animationSpec = tween(durationMillis = 500),
-                initialOffset = { IntOffset(100, 0) }
-            ) + fadeIn(),
-            exit = slideOut(
-                animationSpec = tween(durationMillis = 500),
-                targetOffset = { IntOffset(-100, 0) }
-            ) + fadeOut()
+            enter = viewModel.enterTransition,
+            exit = viewModel.exitTransition
         ) {
-            Column(
-                horizontalAlignment = Alignment.CenterHorizontally
+            AnimatedVisibility(
+                visibleState = visualAcuityTestContentVisibleState,
+                enter = viewModel.enterTransition,
+                exit = viewModel.exitTransition
             ) {
+                Column(
+                    horizontalAlignment = Alignment.CenterHorizontally
+                ) {
 //                    Text(
 //                        text = "시력: ${viewModel.sightLevel.collectAsState().value.toFloat() / 10}",
 //                        color = Color(0xffffffff),
 //                        fontSize = 40.sp
 //                    )
-                Box(
-                    modifier = Modifier
-                        .height(400.dp)
-                        .width(400.dp)
-                        .background(
-                            color = Color(0xffffffff),
-                            shape = RoundedCornerShape(16.dp)
-                        ),
-                    contentAlignment = Alignment.Center
-                ) {
-                    Image(
-                        imageVector = ImageVector.vectorResource(id =
+                    Box(
+                        modifier = Modifier
+                            .height(400.dp)
+                            .width(400.dp)
+                            .background(
+                                color = Color(0xffffffff),
+                                shape = RoundedCornerShape(16.dp)
+                            ),
+                        contentAlignment = Alignment.Center
+                    ) {
+                        Image(
+                            imageVector = ImageVector.vectorResource(id =
                             when(ansNum) {
                                 2 -> when(sightLevel) {
                                     1 -> R.drawable._50cm_2_1
@@ -148,177 +148,183 @@ fun VisualAcuityTestCommonContent(
                                     else -> R.drawable._50cm_7_10
                                 }
                             }
-                        ),
-                        contentDescription = ""
+                            ),
+                            contentDescription = ""
+                        )
+                    }
+                    Spacer(
+                        modifier = Modifier
+                            .height(20.dp)
                     )
-                }
-                Spacer(
-                    modifier = Modifier
-                        .height(20.dp)
-                )
-                Text(
-                    text = "측정 거리: ${viewModel.testDistance.collectAsState().value / 10}cm",
-                    fontSize = 30.sp,
-                    color = Color(0xffffffff)
-                )
-                Spacer(
-                    modifier = Modifier
-                        .height(20.dp)
-                )
-                Text(
-                    text = "현재 거리: ${(viewModel.screenToFaceDistance.collectAsState().value / 10).roundToInt()}cm",
-                    fontSize = 30.sp,
-                    color = Color(0xffffffff),
-                    fontWeight = FontWeight.Bold
-                )
-                Spacer(
-                    modifier = Modifier
-                        .height(20.dp)
-                )
-                Text(
-                    text = "보이는 것을 선택해주세요.",
-                    fontSize = 40.sp,
-                    color = Color(0xffffffff),
-                    fontWeight = FontWeight.Bold
-                )
-                Row() {
-                    // 1
-                    Box(
+                    Text(
+                        text = "측정 거리: ${viewModel.testDistance.collectAsState().value / 10}cm",
+                        fontSize = 30.sp,
+                        color = Color(0xffffffff)
+                    )
+                    Spacer(
                         modifier = Modifier
-                            .padding(10.dp)
-                    ) {
+                            .height(20.dp)
+                    )
+                    Text(
+                        text = "현재 거리: ${(viewModel.screenToFaceDistance.collectAsState().value / 10).roundToInt()}cm",
+                        fontSize = 30.sp,
+                        color = Color(0xffffffff),
+                        fontWeight = FontWeight.Bold
+                    )
+                    Spacer(
+                        modifier = Modifier
+                            .height(20.dp)
+                    )
+                    Text(
+                        text = "보이는 것을 선택해주세요.",
+                        fontSize = 40.sp,
+                        color = Color(0xffffffff),
+                        fontWeight = FontWeight.Bold
+                    )
+                    Row() {
+                        // 1
                         Box(
                             modifier = Modifier
-                                .height(150.dp)
-                                .width(150.dp)
-                                .background(
-                                    color = Color(0xffffffff),
-                                    shape = RoundedCornerShape(16.dp)
-                                )
-                                .clickable {
-                                    viewModel.processAnswerSelected(0)
-                                },
-                            contentAlignment = Alignment.Center
+                                .padding(10.dp)
                         ) {
-                            Image(
+                            Box(
                                 modifier = Modifier
-                                    .padding(10.dp)
-                                    .height(100.dp),
-                                imageVector = ImageVector.vectorResource(id =
-                                when(randomList[0]) {
-                                    2 -> R.drawable.two
-                                    3 -> R.drawable.three
-                                    4 -> R.drawable.four
-                                    5 -> R.drawable.five
-                                    6 -> R.drawable.six
-                                    else -> R.drawable.seven
-                                }
-                                ),
-                                contentDescription = ""
-                            )
+                                    .height(150.dp)
+                                    .width(150.dp)
+                                    .background(
+                                        color = Color(0xffffffff),
+                                        shape = RoundedCornerShape(16.dp)
+                                    )
+                                    .clickable {
+                                        viewModel.processAnswerSelected(0)
+                                    },
+                                contentAlignment = Alignment.Center
+                            ) {
+                                Image(
+                                    modifier = Modifier
+                                        .padding(10.dp)
+                                        .height(100.dp),
+                                    imageVector = ImageVector.vectorResource(id =
+                                    when(randomList[0]) {
+                                        2 -> R.drawable.two
+                                        3 -> R.drawable.three
+                                        4 -> R.drawable.four
+                                        5 -> R.drawable.five
+                                        6 -> R.drawable.six
+                                        else -> R.drawable.seven
+                                    }
+                                    ),
+                                    contentDescription = ""
+                                )
+                            }
                         }
-                    }
-                    // 2
-                    Box(
-                        modifier = Modifier
-                            .padding(10.dp)
-                    ) {
+                        // 2
                         Box(
                             modifier = Modifier
-                                .height(150.dp)
-                                .width(150.dp)
-                                .background(
-                                    color = Color(0xffffffff),
-                                    shape = RoundedCornerShape(16.dp)
-                                )
-                                .clickable {
-                                    viewModel.processAnswerSelected(1)
-                                },
-                            contentAlignment = Alignment.Center
+                                .padding(10.dp)
                         ) {
-                            Image(
+                            Box(
                                 modifier = Modifier
-                                    .padding(10.dp)
-                                    .height(100.dp),
-                                imageVector = ImageVector.vectorResource(id =
-                                when(randomList[1]) {
-                                    2 -> R.drawable.two
-                                    3 -> R.drawable.three
-                                    4 -> R.drawable.four
-                                    5 -> R.drawable.five
-                                    6 -> R.drawable.six
-                                    else -> R.drawable.seven
-                                }
-                                ),
-                                contentDescription = ""
-                            )
+                                    .height(150.dp)
+                                    .width(150.dp)
+                                    .background(
+                                        color = Color(0xffffffff),
+                                        shape = RoundedCornerShape(16.dp)
+                                    )
+                                    .clickable {
+                                        viewModel.processAnswerSelected(1)
+                                    },
+                                contentAlignment = Alignment.Center
+                            ) {
+                                Image(
+                                    modifier = Modifier
+                                        .padding(10.dp)
+                                        .height(100.dp),
+                                    imageVector = ImageVector.vectorResource(id =
+                                    when(randomList[1]) {
+                                        2 -> R.drawable.two
+                                        3 -> R.drawable.three
+                                        4 -> R.drawable.four
+                                        5 -> R.drawable.five
+                                        6 -> R.drawable.six
+                                        else -> R.drawable.seven
+                                    }
+                                    ),
+                                    contentDescription = ""
+                                )
+                            }
                         }
-                    }
-                    // 3
-                    Box(
-                        modifier = Modifier
-                            .padding(10.dp)
-                    ) {
+                        // 3
                         Box(
                             modifier = Modifier
-                                .height(150.dp)
-                                .width(150.dp)
-                                .background(
-                                    color = Color(0xffffffff),
-                                    shape = RoundedCornerShape(16.dp)
-                                )
-                                .clickable {
-                                    viewModel.processAnswerSelected(2)
-                                },
-                            contentAlignment = Alignment.Center
+                                .padding(10.dp)
                         ) {
-                            Image(
+                            Box(
                                 modifier = Modifier
-                                    .padding(10.dp)
-                                    .height(100.dp),
-                                imageVector = ImageVector.vectorResource(id =
-                                when(randomList[2]) {
-                                    2 -> R.drawable.two
-                                    3 -> R.drawable.three
-                                    4 -> R.drawable.four
-                                    5 -> R.drawable.five
-                                    6 -> R.drawable.six
-                                    else -> R.drawable.seven
-                                }
-                                ),
-                                contentDescription = ""
-                            )
+                                    .height(150.dp)
+                                    .width(150.dp)
+                                    .background(
+                                        color = Color(0xffffffff),
+                                        shape = RoundedCornerShape(16.dp)
+                                    )
+                                    .clickable {
+                                        viewModel.processAnswerSelected(2)
+                                    },
+                                contentAlignment = Alignment.Center
+                            ) {
+                                Image(
+                                    modifier = Modifier
+                                        .padding(10.dp)
+                                        .height(100.dp),
+                                    imageVector = ImageVector.vectorResource(id =
+                                    when(randomList[2]) {
+                                        2 -> R.drawable.two
+                                        3 -> R.drawable.three
+                                        4 -> R.drawable.four
+                                        5 -> R.drawable.five
+                                        6 -> R.drawable.six
+                                        else -> R.drawable.seven
+                                    }
+                                    ),
+                                    contentDescription = ""
+                                )
+                            }
                         }
-                    }
-                    // 4
-                    Box(
-                        modifier = Modifier
-                            .padding(10.dp)
-                    ) {
+                        // 4
                         Box(
                             modifier = Modifier
-                                .height(150.dp)
-                                .width(150.dp)
-                                .background(
-                                    color = Color(0xffffffff),
-                                    shape = RoundedCornerShape(16.dp)
-                                )
-                                .clickable {
-                                    viewModel.processAnswerSelected(3)
-                                },
-                            contentAlignment = Alignment.Center
+                                .padding(10.dp)
                         ) {
-                            Image(
+                            Box(
                                 modifier = Modifier
-                                    .padding(10.dp)
-                                    .height(150.dp),
-                                imageVector = ImageVector.vectorResource(id = R.drawable.question_mark),
-                                contentDescription = ""
-                            )
+                                    .height(150.dp)
+                                    .width(150.dp)
+                                    .background(
+                                        color = Color(0xffffffff),
+                                        shape = RoundedCornerShape(16.dp)
+                                    )
+                                    .clickable {
+                                        viewModel.processAnswerSelected(3)
+                                    },
+                                contentAlignment = Alignment.Center
+                            ) {
+                                Image(
+                                    modifier = Modifier
+                                        .padding(10.dp)
+                                        .height(150.dp),
+                                    imageVector = ImageVector.vectorResource(id = R.drawable.question_mark),
+                                    contentDescription = ""
+                                )
+                            }
                         }
                     }
                 }
             }
+            SightednessTestContent(
+                toResultScreen = { toResultScreen() },
+                viewModel = viewModel,
+                visualAcuityTestSightednessTestContentVisibleState = viewModel.visualAcuityTestSightednessTestContentVisibleState
+            )
         }
     }
 }
@@ -327,230 +333,193 @@ fun VisualAcuityTestCommonContent(
 fun SightednessTestContent(
     toResultScreen: () -> Unit,
     viewModel: NenoonViewModel,
-    visualAcuityTestCommonContentVisibleState: MutableTransitionState<Boolean>,
-    nextVisibleState: MutableTransitionState<Boolean>
+    visualAcuityTestSightednessTestContentVisibleState: MutableTransitionState<Boolean>
 ) {
-    val isSightednessTesting = viewModel.isSightednessTesting.collectAsState().value
     val isLeftEye = viewModel.isLeftEye.collectAsState().value
     AnimatedVisibility(
-        visibleState = visibleState,
-        enter = slideIn(
-            animationSpec = tween(durationMillis = 500),
-            initialOffset = { IntOffset(100, 0) }
-        ) + fadeIn(),
-        exit = slideOut(
-            animationSpec = tween(durationMillis = 500),
-            targetOffset = { IntOffset(-100, 0) }
-        ) + fadeOut()
+        visibleState = visualAcuityTestSightednessTestContentVisibleState,
+        enter = viewModel.enterTransition,
+        exit = viewModel.exitTransition
     ) {
-
-    }
-    Column(
-        horizontalAlignment = Alignment.CenterHorizontally
-    ) {
-        Box() {
+        Column(
+            horizontalAlignment = Alignment.CenterHorizontally
+        ) {
+            Box() {
+                Row(
+                    verticalAlignment = Alignment.CenterVertically
+                ) {
+                    Box(
+                        modifier = Modifier
+                            .height(500.dp)
+                            .width(250.dp)
+                            .background(
+                                color = Color(0xff00ff00),
+                                shape = RoundedCornerShape(
+                                    topStart = 20.dp,
+                                    topEnd = 0.dp,
+                                    bottomEnd = 0.dp,
+                                    bottomStart = 20.dp
+                                )
+                            )
+                    ) {
+                        Text(
+                            modifier = Modifier
+                                .fillMaxWidth()
+                                .padding(top = 40.dp),
+                            text = "초록",
+                            fontSize = 48.sp,
+                            fontWeight = FontWeight.ExtraBold,
+                            textAlign = TextAlign.Center
+                        )
+                    }
+                    Box(
+                        modifier = Modifier
+                            .height(500.dp)
+                            .width(250.dp)
+                            .background(
+                                color = Color(0xffff0000),
+                                shape = RoundedCornerShape(
+                                    topStart = 0.dp,
+                                    topEnd = 20.dp,
+                                    bottomEnd = 20.dp,
+                                    bottomStart = 0.dp
+                                )
+                            )
+                    ) {
+                        Text(
+                            modifier = Modifier
+                                .fillMaxWidth()
+                                .padding(top = 40.dp),
+                            text = "빨강",
+                            fontSize = 48.sp,
+                            fontWeight = FontWeight.ExtraBold,
+                            textAlign = TextAlign.Center
+                        )
+                    }
+                }
+            }
+            Spacer(
+                modifier = Modifier
+                    .height(20.dp)
+            )
+            Text(
+                text = "글자가 더 잘 보이는 쪽을 고르세요.",
+                color = Color(0xffffffff),
+                fontSize = 40.sp,
+                fontWeight = FontWeight.Bold
+            )
+            Spacer(
+                modifier = Modifier
+                    .height(20.dp)
+            )
             Row(
                 verticalAlignment = Alignment.CenterVertically
             ) {
                 Box(
                     modifier = Modifier
-                        .height(500.dp)
-                        .width(250.dp)
+                        .padding(8.dp)
+                        .width(200.dp)
+                        .height(80.dp)
                         .background(
                             color = Color(0xff00ff00),
-                            shape = RoundedCornerShape(
-                                topStart = 20.dp,
-                                topEnd = 0.dp,
-                                bottomEnd = 0.dp,
-                                bottomStart = 20.dp
-                            )
+                            shape = RoundedCornerShape(8.dp)
                         )
+                        .clickable {
+                            if (isLeftEye) {
+                                viewModel.updateLeftEyeSightedValue(VisionDisorderType.Hyperopia)
+                            } else {
+                                viewModel.updateRightEyeSightedValue(VisionDisorderType.Hyperopia)
+                                toResultScreen()
+                            }
+                        },
+                    contentAlignment = Alignment.Center
                 ) {
                     Text(
-                        modifier = Modifier
-                            .fillMaxWidth()
-                            .padding(top = 40.dp),
                         text = "초록",
-                        fontSize = 48.sp,
-                        fontWeight = FontWeight.ExtraBold,
-                        textAlign = TextAlign.Center
+                        fontSize = 30.sp,
+                        fontWeight = FontWeight.Bold
+                    )
+                }
+
+                Box(
+                    modifier = Modifier
+                        .padding(8.dp)
+                        .width(200.dp)
+                        .height(80.dp)
+                        .background(
+                            color = Color(0xffff0000),
+                            shape = RoundedCornerShape(8.dp)
+                        )
+                        .clickable {
+                            if (isLeftEye) {
+                                viewModel.updateLeftEyeSightedValue(VisionDisorderType.Myopia)
+                            } else {
+                                viewModel.updateRightEyeSightedValue(VisionDisorderType.Myopia)
+                                toResultScreen()
+                            }
+                        },
+                    contentAlignment = Alignment.Center
+                ) {
+                    Text(
+                        text = "빨강",
+                        fontSize = 30.sp,
+                        fontWeight = FontWeight.Bold
+                    )
+                }
+            }
+            Row(
+                verticalAlignment = Alignment.CenterVertically
+            ) {
+                Box(
+                    modifier = Modifier
+                        .padding(8.dp)
+                        .width(200.dp)
+                        .height(80.dp)
+                        .background(
+                            color = Color(0xffffffff),
+                            shape = RoundedCornerShape(8.dp)
+                        )
+                        .clickable {
+                            if (isLeftEye) {
+                                viewModel.updateLeftEyeSightedValue(VisionDisorderType.Normal)
+                            } else {
+                                viewModel.updateRightEyeSightedValue(VisionDisorderType.Normal)
+                                toResultScreen()
+                            }
+                        },
+                    contentAlignment = Alignment.Center
+                ) {
+                    Text(
+                        text = "둘다 잘 보인다",
+                        fontSize = 30.sp,
+                        fontWeight = FontWeight.Bold
                     )
                 }
                 Box(
                     modifier = Modifier
-                        .height(500.dp)
-                        .width(250.dp)
+                        .padding(8.dp)
+                        .width(200.dp)
+                        .height(80.dp)
                         .background(
-                            color = Color(0xffff0000),
-                            shape = RoundedCornerShape(
-                                topStart = 0.dp,
-                                topEnd = 20.dp,
-                                bottomEnd = 20.dp,
-                                bottomStart = 0.dp
-                            )
+                            color = Color(0xffffffff),
+                            shape = RoundedCornerShape(8.dp)
                         )
+                        .clickable {
+                            if (isLeftEye) {
+                                viewModel.updateLeftEyeSightedValue(VisionDisorderType.Astigmatism)
+                            } else {
+                                viewModel.updateRightEyeSightedValue(VisionDisorderType.Astigmatism)
+                                toResultScreen()
+                            }
+                        },
+                    contentAlignment = Alignment.Center
                 ) {
                     Text(
-                        modifier = Modifier
-                            .fillMaxWidth()
-                            .padding(top = 40.dp),
-                        text = "빨강",
-                        fontSize = 48.sp,
-                        fontWeight = FontWeight.ExtraBold,
-                        textAlign = TextAlign.Center
+                        text = "둘 다 뿌옇다",
+                        fontSize = 30.sp,
+                        fontWeight = FontWeight.Bold
                     )
                 }
-            }
-        }
-        Spacer(
-            modifier = Modifier
-                .height(20.dp)
-        )
-        Text(
-            text = "글자가 더 잘 보이는 쪽을 고르세요.",
-            color = Color(0xffffffff),
-            fontSize = 40.sp,
-            fontWeight = FontWeight.Bold
-        )
-        Spacer(
-            modifier = Modifier
-                .height(20.dp)
-        )
-        Row(
-            verticalAlignment = Alignment.CenterVertically
-        ) {
-            Box(
-                modifier = Modifier
-                    .padding(8.dp)
-                    .width(200.dp)
-                    .height(80.dp)
-                    .background(
-                        color = Color(0xff00ff00),
-                        shape = RoundedCornerShape(8.dp)
-                    )
-                    .clickable {
-                        if (isLeftEye) {
-                            viewModel.updateLeftEyeSightedValue(VisionDisorderType.Hyperopia)
-                            viewModel.updateIsSightednessTesting(false)
-                            viewModel.updateIsLeftEye(false)
-                            visualAcuityTestCommonContentVisibleState.targetState = false
-                            toResultScreen()
-                        } else {
-                            viewModel.updateRightEyeSightedValue(VisionDisorderType.Hyperopia)
-                            viewModel.updateIsSightednessTesting(false)
-                            viewModel.updateIsLeftEye(true)
-                            nextVisibleState.targetState = true
-                            visualAcuityTestCommonContentVisibleState.targetState = false
-                        }
-                    },
-                contentAlignment = Alignment.Center
-            ) {
-                Text(
-                    text = "초록",
-                    fontSize = 30.sp,
-                    fontWeight = FontWeight.Bold
-                )
-            }
-
-            Box(
-                modifier = Modifier
-                    .padding(8.dp)
-                    .width(200.dp)
-                    .height(80.dp)
-                    .background(
-                        color = Color(0xffff0000),
-                        shape = RoundedCornerShape(8.dp)
-                    )
-                    .clickable {
-                        if (isLeftEye) {
-                            viewModel.updateLeftEyeSightedValue(VisionDisorderType.Myopia)
-                            viewModel.updateIsSightednessTesting(false)
-                            viewModel.updateIsLeftEye(false)
-                            visualAcuityTestCommonContentVisibleState.targetState = false
-                            toResultScreen()
-                        } else {
-                            nextVisibleState.targetState = true
-                            viewModel.updateRightEyeSightedValue(VisionDisorderType.Myopia)
-                            viewModel.updateIsSightednessTesting(false)
-                            viewModel.updateIsLeftEye(true)
-                            visualAcuityTestCommonContentVisibleState.targetState = false
-                        }
-                    },
-                contentAlignment = Alignment.Center
-            ) {
-                Text(
-                    text = "빨강",
-                    fontSize = 30.sp,
-                    fontWeight = FontWeight.Bold
-                )
-            }
-        }
-        Row(
-            verticalAlignment = Alignment.CenterVertically
-        ) {
-            Box(
-                modifier = Modifier
-                    .padding(8.dp)
-                    .width(200.dp)
-                    .height(80.dp)
-                    .background(
-                        color = Color(0xffffffff),
-                        shape = RoundedCornerShape(8.dp)
-                    )
-                    .clickable {
-                        if (isLeftEye) {
-                            viewModel.updateLeftEyeSightedValue(VisionDisorderType.Normal)
-                            viewModel.updateIsSightednessTesting(false)
-                            viewModel.updateIsLeftEye(false)
-                            visualAcuityTestCommonContentVisibleState.targetState = false
-                            toResultScreen()
-                        } else {
-                            nextVisibleState.targetState = true
-                            viewModel.updateRightEyeSightedValue(VisionDisorderType.Normal)
-                            viewModel.updateIsSightednessTesting(false)
-                            viewModel.updateIsLeftEye(true)
-                            visualAcuityTestCommonContentVisibleState.targetState = false
-                        }
-                    },
-                contentAlignment = Alignment.Center
-            ) {
-                Text(
-                    text = "둘다 잘 보인다",
-                    fontSize = 30.sp,
-                    fontWeight = FontWeight.Bold
-                )
-            }
-            Box(
-                modifier = Modifier
-                    .padding(8.dp)
-                    .width(200.dp)
-                    .height(80.dp)
-                    .background(
-                        color = Color(0xffffffff),
-                        shape = RoundedCornerShape(8.dp)
-                    )
-                    .clickable {
-                        if (isLeftEye) {
-                            viewModel.updateLeftEyeSightedValue(VisionDisorderType.Astigmatism)
-                            viewModel.updateIsSightednessTesting(false)
-                            viewModel.updateIsLeftEye(false)
-                            visualAcuityTestCommonContentVisibleState.targetState = false
-                            toResultScreen()
-                        } else {
-                            nextVisibleState.targetState = true
-                            viewModel.updateRightEyeSightedValue(VisionDisorderType.Astigmatism)
-                            viewModel.updateIsSightednessTesting(false)
-                            viewModel.updateIsLeftEye(true)
-                            visualAcuityTestCommonContentVisibleState.targetState = false
-                        }
-                    },
-                contentAlignment = Alignment.Center
-            ) {
-                Text(
-                    text = "둘 다 뿌옇다",
-                    fontSize = 30.sp,
-                    fontWeight = FontWeight.Bold
-                )
             }
         }
     }

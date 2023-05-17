@@ -20,7 +20,12 @@ import com.pixelro.nenoonkiosk.NenoonViewModel
 import com.pixelro.nenoonkiosk.data.GlobalConstants
 import com.pixelro.nenoonkiosk.data.TestType
 import com.pixelro.nenoonkiosk.ui.screen.*
+import com.pixelro.nenoonkiosk.ui.testcontent.AmslerGridTestContent
+import com.pixelro.nenoonkiosk.ui.testcontent.ChildrenVisualAcuityTestContent
+import com.pixelro.nenoonkiosk.ui.testcontent.LongDistanceVisualAcuityTestContent
+import com.pixelro.nenoonkiosk.ui.testcontent.MChartTestContent
 import com.pixelro.nenoonkiosk.ui.testcontent.PresbyopiaTestContent
+import com.pixelro.nenoonkiosk.ui.testcontent.ShortDistanceVisualAcuityTestContent
 
 @OptIn(ExperimentalAnimationApi::class)
 @Composable
@@ -30,20 +35,23 @@ fun NenoonApp(
     subNavController: NavHostController = rememberAnimatedNavController()
 ) {
     val selectedTest = viewModel.selectedTestType.collectAsState().value
+    // Splash Screen
     if(viewModel.isShowingSplashScreen.collectAsState().value) {
         SplashScreen(
             viewModel = viewModel
         )
-    }
-    else {
+    } else {
+        // Splash Screen
         if(viewModel.isScreenSaverOn.collectAsState().value) {
             ScreenSaverScreen(viewModel)
         } else {
+            // Permission Request Screen
             if(!viewModel.isAllPermissionsGranted.collectAsState().value) {
                 PermissionRequestScreen(
                     viewModel
                 )
-            } else {
+            } // Main Content
+            else {
 //            DisposableEffect(true) {
 //                Settings.System.putInt(context.contentResolver, Settings.System.SCREEN_OFF_TIMEOUT, 3600_000)
 //                onDispose {  }
@@ -62,22 +70,8 @@ fun NenoonApp(
                         // 검사 선택 화면
                         composable(
                             route = GlobalConstants.ROUTE_TEST_LIST,
-                            enterTransition = {
-                                slideIn(
-                                    animationSpec = TweenSpec(durationMillis = 500),
-                                    initialOffset = { IntOffset(100, 0) }
-                                ) + fadeIn(
-                                    animationSpec = TweenSpec(durationMillis = 500)
-                                )
-                            },
-                            exitTransition = {
-                                slideOut(
-                                    animationSpec = TweenSpec(durationMillis = 500),
-                                    targetOffset = { IntOffset(-100, 0) }
-                                ) + fadeOut(
-                                    animationSpec = TweenSpec(durationMillis = 500)
-                                )
-                            }
+                            enterTransition = { viewModel.enterTransition },
+                            exitTransition = { viewModel.exitTransition }
                         ) {
                             TestListScreen(
                                 toPreDescriptionScreen = { mainNavController.navigate(GlobalConstants.ROUTE_TEST_PRE_DESCRIPTION) },
@@ -89,23 +83,9 @@ fun NenoonApp(
 
                         // 설정 화면
                         composable(
-                            GlobalConstants.ROUTE_SETTINGS,
-                            enterTransition = {
-                                slideIn(
-                                    animationSpec = TweenSpec(durationMillis = 500),
-                                    initialOffset = { IntOffset(100, 0) }
-                                ) + fadeIn(
-                                    animationSpec = TweenSpec(durationMillis = 500)
-                                )
-                            },
-                            exitTransition = {
-                                slideOut(
-                                    animationSpec = TweenSpec(durationMillis = 500),
-                                    targetOffset = { IntOffset(-100, 0) }
-                                ) + fadeOut(
-                                    animationSpec = TweenSpec(durationMillis = 500)
-                                )
-                            }
+                            route = GlobalConstants.ROUTE_SETTINGS,
+                            enterTransition = { viewModel.enterTransition },
+                            exitTransition = { viewModel.exitTransition }
                         ) {
                             SettingsScreen(
                                 viewModel = viewModel
@@ -114,23 +94,9 @@ fun NenoonApp(
 
                         // 검사 사전 설명 화면
                         composable(
-                            GlobalConstants.ROUTE_TEST_PRE_DESCRIPTION,
-                            enterTransition = {
-                                slideIn(
-                                    animationSpec = TweenSpec(durationMillis = 500),
-                                    initialOffset = { IntOffset(100, 0) }
-                                ) + fadeIn(
-                                    animationSpec = TweenSpec(durationMillis = 500)
-                                )
-                            },
-                            exitTransition = {
-                                slideOut(
-                                    animationSpec = TweenSpec(durationMillis = 500),
-                                    targetOffset = { IntOffset(-100, 0) }
-                                ) + fadeOut(
-                                    animationSpec = TweenSpec(durationMillis = 500)
-                                )
-                            }
+                            route = GlobalConstants.ROUTE_TEST_PRE_DESCRIPTION,
+                            enterTransition = { viewModel.enterTransition },
+                            exitTransition = { viewModel.exitTransition }
                         ) {
                             TestPreDescriptionScreen(
                                 viewModel,
@@ -140,52 +106,56 @@ fun NenoonApp(
 
                         // 검사 화면
                         composable(
-                            GlobalConstants.ROUTE_TEST_CONTENT,
-                            enterTransition = {
-                                slideIn(
-                                    animationSpec = TweenSpec(durationMillis = 500),
-                                    initialOffset = { IntOffset(100, 0) }
-                                ) + fadeIn(
-                                    animationSpec = TweenSpec(durationMillis = 500)
-                                )
-                            },
-                            exitTransition = {
-                                slideOut(
-                                    animationSpec = TweenSpec(durationMillis = 500),
-                                    targetOffset = { IntOffset(-100, 0) }
-                                ) + fadeOut(
-                                    animationSpec = TweenSpec(durationMillis = 500)
-                                )
-                            }
+                            route = GlobalConstants.ROUTE_TEST_CONTENT,
+                            enterTransition = { viewModel.enterTransition },
+                            exitTransition = { viewModel.exitTransition }
                         ) {
                             EyeTestScreen(
                                 viewModel = viewModel,
                                 content = {
                                     when(selectedTest) {
-                                        TestType.Presbyopia -> PresbyopiaTestContent(
-                                            toResultScreen = { mainNavController.navigate(GlobalConstants.ROUTE_TEST_RESULT) },
-                                            viewModel = viewModel
-                                        )
-                                        TestType.ShortDistanceVisualAcuity -> ShortDistanceVisualAcuityTestScreen(
-                                            toResultScreen = { mainNavController.navigate(GlobalConstants.ROUTE_TEST_RESULT) },
-                                            viewModel = viewModel
-                                        )
-                                        TestType.LongDistanceVisualAcuity -> LongDistanceVisualAcuityTestScreen(
-                                            toResultScreen = { mainNavController.navigate(GlobalConstants.ROUTE_TEST_RESULT) },
-                                            viewModel = viewModel
-                                        )
-                                        TestType.ChildrenVisualAcuity -> ChildrenVisualAcuityTestScreen(
-                                            toResultScreen = { mainNavController.navigate(GlobalConstants.ROUTE_TEST_RESULT) },
-                                            viewModel = viewModel
-                                        )
-                                        TestType.AmslerGrid -> AmslerGridTestScreen(
-                                            toResultScreen = { mainNavController.navigate(GlobalConstants.ROUTE_TEST_RESULT) },
-                                            viewModel = viewModel
-                                        )
-                                        TestType.MChart -> MChartTestScreen(
-                                            toResultScreen = { mainNavController.navigate(GlobalConstants.ROUTE_TEST_RESULT) },
-                                            viewModel = viewModel
-                                        )
+                                        TestType.Presbyopia -> {
+                                            viewModel.initializePresbyopiaTest()
+                                            PresbyopiaTestContent(
+                                                toResultScreen = { mainNavController.navigate(GlobalConstants.ROUTE_TEST_RESULT) },
+                                                viewModel = viewModel
+                                            )
+                                        }
+                                        TestType.ShortDistanceVisualAcuity -> {
+                                            viewModel.initializeVisualAcuityTest()
+                                            ShortDistanceVisualAcuityTestContent(
+                                                toResultScreen = { mainNavController.navigate(GlobalConstants.ROUTE_TEST_RESULT) },
+                                                viewModel = viewModel
+                                            )
+                                        }
+                                        TestType.LongDistanceVisualAcuity -> {
+                                            viewModel.initializeVisualAcuityTest()
+                                            LongDistanceVisualAcuityTestContent(
+                                                toResultScreen = { mainNavController.navigate(GlobalConstants.ROUTE_TEST_RESULT) },
+                                                viewModel = viewModel
+                                            )
+                                        }
+                                        TestType.ChildrenVisualAcuity -> {
+                                            viewModel.initializeVisualAcuityTest()
+                                            ChildrenVisualAcuityTestContent(
+                                                toResultScreen = { mainNavController.navigate(GlobalConstants.ROUTE_TEST_RESULT) },
+                                                viewModel = viewModel
+                                            )
+                                        }
+                                        TestType.AmslerGrid -> {
+                                            viewModel.initializeAmslerGridTest()
+                                            AmslerGridTestContent(
+                                                toResultScreen = { mainNavController.navigate(GlobalConstants.ROUTE_TEST_RESULT) },
+                                                viewModel = viewModel
+                                            )
+                                        }
+                                        TestType.MChart -> {
+                                            viewModel.initializeMChartTest()
+                                            MChartTestContent(
+                                                toResultScreen = { mainNavController.navigate(GlobalConstants.ROUTE_TEST_RESULT) },
+                                                viewModel = viewModel
+                                            )
+                                        }
                                         else -> {
                                             Box() {
 
@@ -196,26 +166,11 @@ fun NenoonApp(
                             )
                         }
 
-
                         // 검사 결과 화면
                         composable(
                             route = GlobalConstants.ROUTE_TEST_RESULT,
-                            enterTransition = {
-                                slideIn(
-                                    animationSpec = TweenSpec(durationMillis = 500),
-                                    initialOffset = { IntOffset(100, 0) }
-                                ) + fadeIn(
-                                    animationSpec = TweenSpec(durationMillis = 500)
-                                )
-                            },
-                            exitTransition = {
-                                slideOut(
-                                    animationSpec = TweenSpec(durationMillis = 500),
-                                    targetOffset = { IntOffset(-100, 0) }
-                                ) + fadeOut(
-                                    animationSpec = TweenSpec(durationMillis = 500)
-                                )
-                            }
+                            enterTransition = { viewModel.enterTransition },
+                            exitTransition = { viewModel.exitTransition }
                         ) {
                             TestResultScreen(
                                 viewModel = viewModel,

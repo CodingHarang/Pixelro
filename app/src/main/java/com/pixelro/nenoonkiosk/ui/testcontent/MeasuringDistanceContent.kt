@@ -38,14 +38,8 @@ fun MeasuringDistanceContent(
 ) {
     AnimatedVisibility(
         visibleState = measuringDistanceContentVisibleState,
-        enter = slideIn(
-            animationSpec = tween(durationMillis = 500),
-            initialOffset = { IntOffset(100, 0) }
-        ) + fadeIn(),
-        exit = slideOut(
-            animationSpec = tween(durationMillis = 500),
-            targetOffset = { IntOffset(-100, 0) }
-        ) + fadeOut()
+        enter = viewModel.enterTransition,
+        exit = viewModel.exitTransition
     ) {
         Column(
             modifier = Modifier,
