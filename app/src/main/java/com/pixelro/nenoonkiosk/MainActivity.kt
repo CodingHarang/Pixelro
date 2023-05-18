@@ -1,26 +1,19 @@
 package com.pixelro.nenoonkiosk
 
-import android.Manifest
 import android.content.Context
-import android.content.IntentSender
-import android.content.pm.PackageManager
+import android.content.Intent
+import android.content.res.Configuration
+import android.content.res.Resources
 import android.hardware.camera2.CameraCharacteristics
 import android.hardware.camera2.CameraManager
-import android.location.LocationManager
-import android.os.Build
 import android.os.Bundle
-import android.provider.Settings
 import android.util.Log
 import android.util.SizeF
 import android.view.MotionEvent
-import android.view.WindowInsetsController
 import android.view.WindowManager
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
-import androidx.activity.result.IntentSenderRequest
-import androidx.activity.result.contract.ActivityResultContracts
 import androidx.activity.viewModels
-import androidx.annotation.RequiresApi
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.navigationBarsPadding
 import androidx.compose.material.MaterialTheme
@@ -30,32 +23,21 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.platform.LocalContext
-import androidx.core.content.ContextCompat
+import androidx.core.os.LocaleListCompat
 import androidx.core.view.WindowCompat
-import androidx.core.view.WindowInsetsCompat
-import androidx.core.view.WindowInsetsControllerCompat
 import androidx.lifecycle.lifecycleScope
-import androidx.media3.exoplayer.ExoPlayer
-import com.google.accompanist.systemuicontroller.SystemUiController
 import com.google.accompanist.systemuicontroller.rememberSystemUiController
-import com.google.android.gms.common.api.ResolvableApiException
-import com.google.android.gms.location.LocationRequest
-import com.google.android.gms.location.LocationServices
-import com.google.android.gms.location.LocationSettingsRequest
-import com.google.android.gms.location.LocationSettingsResponse
-import com.google.android.gms.location.SettingsClient
-import com.google.android.gms.tasks.Task
+import com.pixelro.nenoonkiosk.data.SharedPreferencesManager
 import com.pixelro.nenoonkiosk.ui.NenoonApp
 import com.pixelro.nenoonkiosk.ui.theme.NenoonKioskTheme
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
+import java.util.Locale
+
 
 class MainActivity : ComponentActivity() {
 
     private val viewModel: NenoonViewModel by viewModels()
-
-    private var isChecking = true
-
 //    private val settingResultRequest = registerForActivityResult(
 //        ActivityResultContracts.StartIntentSenderForResult()
 //    ) { activityResult ->
@@ -138,14 +120,33 @@ class MainActivity : ComponentActivity() {
         }
     }
 
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        if(SharedPreferencesManager.getString("language") == "") {
+            SharedPreferencesManager.putString("language", "en")
+            NenoonKioskApplication.applicationContext().resources.configuration.setLocale(Locale("en"))
+        } else {
+            when(SharedPreferencesManager.getString("language")) {
+                "en" -> NenoonKioskApplication.applicationContext().resources.configuration.setLocale(Locale("en"))
+                else -> NenoonKioskApplication.applicationContext().resources.configuration.setLocale(Locale("ko"))
+            }
+        }
 //        window.navigationBarColor = 0x00000000
-
         WindowCompat.setDecorFitsSystemWindows(window, false)
-
         WindowCompat.getInsetsController(window, window.decorView).isAppearanceLightNavigationBars = true
-
+//        if(resources.configuration.locales.get(0).language != "en") {
+//            resources.configuration.setLocale(locale)
+//            val intent: Intent? = this.packageManager
+//                .getLaunchIntentForPackage(this.packageName)
+//            intent?.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK)
+//            intent?.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
+//            this.finish()
+//            startActivity(intent)
+//        }
+//        Resources(assets, metrics, resources.configuration)
+//        createConfigurationContext(resources.configuration)
+//        Log.e("locale2", "${newResources.getString(R.string.presbyopia_name)}")
 
 //        WindowCompat.getInsetsController(window, window.decorView).apply {
 //            hide(WindowInsetsCompat.Type.statusBars())
@@ -162,7 +163,8 @@ class MainActivity : ComponentActivity() {
         setContent {
             NenoonKioskTheme {
                 Surface(
-                    modifier = Modifier.fillMaxSize()
+                    modifier = Modifier
+                        .fillMaxSize()
                         .navigationBarsPadding(),
                     color = MaterialTheme.colors.background
                 ) {

@@ -1,7 +1,6 @@
 package com.pixelro.nenoonkiosk
 
 import android.Manifest
-import android.app.Activity
 import android.app.Application
 import android.content.Context
 import android.content.IntentSender
@@ -11,31 +10,21 @@ import android.location.LocationManager
 import android.provider.Settings
 import android.util.Log
 import android.util.SizeF
-import android.widget.Toast
-import androidx.activity.compose.rememberLauncherForActivityResult
-import androidx.activity.result.IntentSenderRequest
-import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.animation.core.MutableTransitionState
 import androidx.compose.animation.core.TweenSpec
 import androidx.compose.animation.fadeIn
 import androidx.compose.animation.fadeOut
 import androidx.compose.animation.slideIn
 import androidx.compose.animation.slideOut
-import androidx.compose.runtime.collectAsState
-import androidx.compose.runtime.currentCompositionLocalContext
 import androidx.compose.ui.geometry.Offset
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.IntOffset
 import androidx.core.content.ContextCompat
 import androidx.core.content.ContextCompat.getSystemService
 import androidx.lifecycle.AndroidViewModel
-import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import androidx.media3.common.MediaItem
 import androidx.media3.common.Player
 import androidx.media3.exoplayer.ExoPlayer
-import androidx.navigation.NavHostController
-import com.google.accompanist.navigation.animation.AnimatedComposeNavigator
 import com.google.android.gms.common.api.ResolvableApiException
 import com.google.android.gms.common.api.Status
 import com.google.android.gms.location.LocationRequest
@@ -44,6 +33,7 @@ import com.google.android.gms.location.LocationSettingsRequest
 import com.google.android.gms.location.LocationSettingsResponse
 import com.google.android.gms.location.SettingsClient
 import com.google.android.gms.tasks.Task
+import com.pixelro.nenoonkiosk.data.StringProvider
 import com.pixelro.nenoonkiosk.data.TestType
 import com.pixelro.nenoonkiosk.data.VisionDisorderType
 import kotlinx.coroutines.delay
@@ -51,9 +41,7 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
-import kotlin.math.abs
 import kotlin.math.roundToInt
-import kotlin.math.tan
 
 class NenoonViewModel(application: Application) : AndroidViewModel(application) {
 
@@ -75,7 +63,7 @@ class NenoonViewModel(application: Application) : AndroidViewModel(application) 
             while(true) {
                 if(_isResumed.value) {
                     // Check screen saver timer
-                    Log.e("viewModelScope", "${screenSaverTimer.value}")
+//                    Log.e("viewModelScope", "${screenSaverTimer.value}")
                     _screenSaverTimer.update { screenSaverTimer.value - 0 }
                     if(screenSaverTimer.value < 0) {
                         _isScreenSaverOn.update { true }
@@ -89,8 +77,13 @@ class NenoonViewModel(application: Application) : AndroidViewModel(application) 
         }
     }
 
-    // check location is on
+    // Settings
+    private val _isLanguageSelectDialogShowing = MutableStateFlow(false)
+    val isLanguageSelectDialogShowing: StateFlow<Boolean> = _isLanguageSelectDialogShowing
 
+    fun updateIsLanguageSelectDialogShowing(isShowing: Boolean) {
+        _isLanguageSelectDialogShowing.update { isShowing }
+    }
 
     // Screen Saver
     private val _isResumed = MutableStateFlow(false)
@@ -261,7 +254,7 @@ class NenoonViewModel(application: Application) : AndroidViewModel(application) 
             _leftTime.update { 3f }
             while(count < 6) {
                 delay(500)
-                Log.e("checkCoveredEye", "$count")
+//                Log.e("checkCoveredEye", "$count")
                 if(
 //                    when(isLeftEye.value) {
 //                        true -> leftEyeOpenProbability.value
@@ -330,7 +323,7 @@ class NenoonViewModel(application: Application) : AndroidViewModel(application) 
     val resolvableApiException: StateFlow<ResolvableApiException> = _resolvableApiException
 
     private fun checkPermissions() {
-        Log.e("checkPermission", "checkPermissions")
+//        Log.e("checkPermission", "checkPermissions")
         if(ContextCompat.checkSelfPermission(getApplication(), Manifest.permission.BLUETOOTH_SCAN) == PackageManager.PERMISSION_GRANTED
             && ContextCompat.checkSelfPermission(getApplication(), Manifest.permission.BLUETOOTH_CONNECT) == PackageManager.PERMISSION_GRANTED
             && ContextCompat.checkSelfPermission(getApplication(), Manifest.permission.BLUETOOTH) == PackageManager.PERMISSION_GRANTED
@@ -338,24 +331,24 @@ class NenoonViewModel(application: Application) : AndroidViewModel(application) 
             && ContextCompat.checkSelfPermission(getApplication(), Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED
             && ContextCompat.checkSelfPermission(getApplication(), Manifest.permission.ACCESS_COARSE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
             _isBluetoothPermissionsGranted.update { true }
-            Log.e("checkPermission", "Bluetooth Permission Granted")
+//            Log.e("checkPermission", "Bluetooth Permission Granted")
         } else {
             _isBluetoothPermissionsGranted.update { false }
-            Log.e("checkPermission", "Bluetooth Permission not Granted")
+//            Log.e("checkPermission", "Bluetooth Permission not Granted")
         }
         if(ContextCompat.checkSelfPermission(getApplication(), Manifest.permission.CAMERA) == PackageManager.PERMISSION_GRANTED) {
             _isCameraPermissionGranted.update { true }
-            Log.e("checkPermission", "Camera Permission Granted")
+//            Log.e("checkPermission", "Camera Permission Granted")
         } else {
             _isCameraPermissionGranted.update { false }
-            Log.e("checkPermission", "Camera Permission not Granted")
+//            Log.e("checkPermission", "Camera Permission not Granted")
         }
         if(Settings.System.canWrite(getApplication())) {
             _isWriteSettingsPermissionGranted.update { true }
-            Log.e("checkPermission", "Settings Permission Granted")
+//            Log.e("checkPermission", "Settings Permission Granted")
         } else {
             _isWriteSettingsPermissionGranted.update { false }
-            Log.e("checkPermission", "Settings Permission not Granted")
+//            Log.e("checkPermission", "Settings Permission not Granted")
         }
 
         if(isBluetoothPermissionsGranted.value && isCameraPermissionGranted.value && isWriteSettingsPermissionGranted.value && isLocationOn.value) {
@@ -418,7 +411,7 @@ class NenoonViewModel(application: Application) : AndroidViewModel(application) 
 
     private fun showSplashScreen() {
         viewModelScope.launch {
-            delay(2000)
+            delay(1000)
             _isShowingSplashScreen.update { false }
         }
     }
@@ -437,22 +430,22 @@ class NenoonViewModel(application: Application) : AndroidViewModel(application) 
         _selectedTestType.update { testType }
         _selectedTestName.update {
             when(testType) {
-                TestType.Presbyopia -> "조절력 검사\n(안구 나이 검사)"
-                TestType.ShortDistanceVisualAcuity -> "근거리 시력 검사"
-                TestType.LongDistanceVisualAcuity -> "원거리 시력 검사"
-                TestType.ChildrenVisualAcuity -> "어린이 시력 검사"
-                TestType.AmslerGrid -> "암슬러 차트"
-                else -> "엠식 변형시 검사"
+                TestType.Presbyopia -> StringProvider.getString(R.string.presbyopia_name2)
+                TestType.ShortDistanceVisualAcuity -> StringProvider.getString(R.string.short_visual_acuity_name)
+                TestType.LongDistanceVisualAcuity -> StringProvider.getString(R.string.long_visual_acuity_name)
+                TestType.ChildrenVisualAcuity -> StringProvider.getString(R.string.children_visual_acuity_name)
+                TestType.AmslerGrid -> StringProvider.getString(R.string.amsler_grid_name)
+                else -> StringProvider.getString(R.string.mchart_name)
             }
         }
         _selectedTestDescription.update {
             when(testType) {
-                TestType.Presbyopia -> "나이가 들면서 수정체의 탄성력이 감소되어 조절력이 떨어지는 안질환으로 가까운 곳의 글자가 잘 안보이는 현상을 노안이라고 말합니다."
-                TestType.ShortDistanceVisualAcuity -> "눈이 두 점을 구별할 수 있는 최소의 시각을 최소시각이라고 하며, 시력은 이 최소시각이 어느정도인가를 말하는 것입니다.\n\n정식 검사는 6m 거리에서 시행합니다. 본 검사는 3m 이하에서 측정가능하도록 개발되었습니다."
-                TestType.LongDistanceVisualAcuity -> "눈이 두 점을 구별할 수 있는 최소의 시각을 최소시각이라고 하며, 시력은 이 최소시각이 어느정도인가를 말하는 것입니다.\n\n정식 검사는 6m 거리에서 시행합니다. 본 검사는 3m 이하에서 측정가능하도록 개발되었습니다."
-                TestType.ChildrenVisualAcuity -> "눈이 두 점을 구별할 수 있는 최소의 시각을 최소시각이라고 하며, 시력은 이 최소시각이 어느정도인가를 말하는 것입니다.\n\n정식 검사는 6m 거리에서 시행합니다. 본 검사는 3m 이하에서 측정가능하도록 개발되었습니다."
-                TestType.AmslerGrid -> "망막신경 중에서 초점이 맺히는 부분인 황반에 변성이 생기면 격자 무늬가 휘어져 보이거나 공백 또는 검게 보이는 현상이 발생합니다."
-                else -> "굴절이상은 망막에 초점이 정확하게 맺히지 못할 때 생기며, 근시와 원시로 구별하여 안경으로 교정합니다. 성장기 어린이와 청소년의 경우 6개월, 성인의 경우 1년마다 안경 렌즈를 바꾸는 것이 좋습니다."
+                TestType.Presbyopia -> StringProvider.getString(R.string.presbyopia_long_description)
+                TestType.ShortDistanceVisualAcuity -> StringProvider.getString(R.string.short_visual_acuity_long_description)
+                TestType.LongDistanceVisualAcuity -> StringProvider.getString(R.string.long_visual_acuity_long_description)
+                TestType.ChildrenVisualAcuity -> StringProvider.getString(R.string.children_visual_acuity_long_desciption)
+                TestType.AmslerGrid -> StringProvider.getString(R.string.amsler_grid_long_description)
+                else -> StringProvider.getString(R.string.mchart_long_description)
             }
         }
     }
@@ -475,22 +468,31 @@ class NenoonViewModel(application: Application) : AndroidViewModel(application) 
     }
 
     fun initializePresbyopiaTest() {
-
+        firstItemVisibleState.targetState = true
+        secondItemVisibleState.targetState = false
+        thirdItemVisibleState.targetState = false
     }
 
     fun updateFirstDistance() {
         _firstDistance.update { screenToFaceDistance.value }
+        firstItemVisibleState.targetState = false
+        secondItemVisibleState.targetState = true
+        thirdItemVisibleState.targetState = false
     }
 
     fun updateSecondDistance() {
         _secondDistance.update { screenToFaceDistance.value }
+        firstItemVisibleState.targetState = false
+        secondItemVisibleState.targetState = false
+        thirdItemVisibleState.targetState = true
     }
 
     fun updateThirdDistance() {
         _thirdDistance.update { screenToFaceDistance.value }
+        updateAvgDistance()
     }
 
-    fun updateAvgDistance() {
+    private fun updateAvgDistance() {
         _avgDistance.update {
             (firstDistance.value + secondDistance.value + thirdDistance.value) / 3
         }
@@ -530,12 +532,8 @@ class NenoonViewModel(application: Application) : AndroidViewModel(application) 
     private var _ansNum = MutableStateFlow(0)
     val ansNum: StateFlow<Int> = _ansNum
 
-//    fun processCorrectAnswerSelected() {
-//        _sightHistory = Pair(_sightHistory[_sightLevel]!!.first, _sightHistory[_sightLevel]!!.second)
-//        }
-//    }
-
     fun processAnswerSelected(idx: Int) {
+        Log.e("processAnswerSelected", "${_sightLevel.value}")
         if(idx != 3) {
             // if correct
             if(ansNum.value == _randomList.value[idx]) {
@@ -557,29 +555,26 @@ class NenoonViewModel(application: Application) : AndroidViewModel(application) 
             sightHistory[_sightLevel.value] = Pair(sightHistory[_sightLevel.value]!!.first, sightHistory[_sightLevel.value]!!.second + 1)
         }
 
-        // if 5th trial
-        if(sightHistory[_sightLevel.value]!!.first + sightHistory[_sightLevel.value]!!.second >= 5) {
-            // if correct >= 4
-            if(sightHistory[_sightLevel.value]!!.first >= 4) {
-                // if next level trial >= 5
-                if(sightHistory[_sightLevel.value + 1]!!.first + sightHistory[_sightLevel.value + 1]!!.second >= 5) {
+        // if 3th trial
+        if(sightHistory[_sightLevel.value]!!.first + sightHistory[_sightLevel.value]!!.second >= 3) {
+            // if correct >= 2
+            if(sightHistory[_sightLevel.value]!!.first >= 2) {
+                // if next level trial >= 3
+                if(sightHistory[_sightLevel.value + 1]!!.first + sightHistory[_sightLevel.value + 1]!!.second >= 3) {
                     moveToSightednessTestContent()
                 } // to next level
                 else {
                     _sightLevel.update { it + 1 }
                 }
-            } // if correct == 3
-            else if(sightHistory[_sightLevel.value]!!.first == 3) {
-                moveToSightednessTestContent()
-            } // if correct <= 2
+            } // if correct < 1
             else {
                 // if level == 1
                 if(_sightLevel.value == 1) {
                     moveToSightednessTestContent()
                 } // level--
                 else {
-                    // if prev level trial >= 5
-                    if(sightHistory[_sightLevel.value - 1]!!.first + sightHistory[_sightLevel.value - 1]!!.second >= 5) {
+                    // if prev level trial >= 3
+                    if(sightHistory[_sightLevel.value - 1]!!.first + sightHistory[_sightLevel.value - 1]!!.second >= 3) {
                         moveToSightednessTestContent()
                     } else {
                         _sightLevel.update { it - 1 }
@@ -608,17 +603,21 @@ class NenoonViewModel(application: Application) : AndroidViewModel(application) 
         } else {
             _rightEyeSightValue.update { _sightLevel.value }
         }
-        viewModelScope.launch {
-            delay(500)
-            visualAcuityTestContentVisibleState.targetState = false
-            visualAcuityTestSightednessTestContentVisibleState.targetState = true
-        }
+        _sightLevel.update { 1 }
+        visualAcuityTestContentVisibleState.targetState = false
+        visualAcuityTestSightednessTestContentVisibleState.targetState = true
+
     }
 
     fun updateLeftEyeSightedValue(type: VisionDisorderType) {
+        coveredEyeCheckingContentVisibleState.targetState = true
+        visualAcuityTestCommonContentVisibleState.targetState = false
+        viewModelScope.launch {
+            delay(500)
+            visualAcuityTestContentVisibleState.targetState = true
+            visualAcuityTestSightednessTestContentVisibleState.targetState = false
+        }
         _leftEyeSightedValue.update { type }
-        visualAcuityTestContentVisibleState.targetState = true
-        visualAcuityTestSightednessTestContentVisibleState.targetState = false
         _isLeftEye.update { false }
     }
 
@@ -628,6 +627,18 @@ class NenoonViewModel(application: Application) : AndroidViewModel(application) 
 
     fun initializeVisualAcuityTest() {
         _isLeftEye.update { true }
+        sightHistory = mutableMapOf(
+            1 to Pair(0, 0),
+            2 to Pair(0, 0),
+            3 to Pair(0, 0),
+            4 to Pair(0, 0),
+            5 to Pair(0, 0),
+            6 to Pair(0, 0),
+            7 to Pair(0, 0),
+            8 to Pair(0, 0),
+            9 to Pair(0, 0),
+            10 to Pair(0, 0)
+        )
         measuringDistanceContentVisibleState.targetState = true
         coveredEyeCheckingContentVisibleState.targetState = false
         visualAcuityTestCommonContentVisibleState.targetState = false
@@ -769,8 +780,13 @@ class NenoonViewModel(application: Application) : AndroidViewModel(application) 
 
     fun updateMChartResult(value: Int) {
         _mChartResult.update {
-            val list = it + value
-            list
+            if(value == 0) {
+                val list = it + value
+                list
+            } else {
+                val list = it + (value + 1)
+                list
+            }
         }
         Log.e("updateMChartResult", "${mChartResult.value}")
     }
@@ -788,25 +804,24 @@ class NenoonViewModel(application: Application) : AndroidViewModel(application) 
         _mChartImageId.update {
             when(currentLevel.value) {
                 0 -> R.drawable.mchart_0_0
-                1 -> R.drawable.mchart_0_1
-                2 -> R.drawable.mchart_0_2
-                3 -> R.drawable.mchart_0_3
-                4 -> R.drawable.mchart_0_4
-                5 -> R.drawable.mchart_0_5
-                6 -> R.drawable.mchart_0_6
-                7 -> R.drawable.mchart_0_7
-                8 -> R.drawable.mchart_0_8
-                9 -> R.drawable.mchart_0_9
-                10 -> R.drawable.mchart_1_0
-                11 -> R.drawable.mchart_1_1
-                12 -> R.drawable.mchart_1_2
-                13 -> R.drawable.mchart_1_3
-                14 -> R.drawable.mchart_1_4
-                15 -> R.drawable.mchart_1_5
-                16 -> R.drawable.mchart_1_6
-                17 -> R.drawable.mchart_1_7
-                18 -> R.drawable.mchart_1_8
-                19 -> R.drawable.mchart_1_9
+                1 -> R.drawable.mchart_0_2
+                2 -> R.drawable.mchart_0_3
+                3 -> R.drawable.mchart_0_4
+                4 -> R.drawable.mchart_0_5
+                5 -> R.drawable.mchart_0_6
+                6 -> R.drawable.mchart_0_7
+                7 -> R.drawable.mchart_0_8
+                8 -> R.drawable.mchart_0_9
+                9 -> R.drawable.mchart_1_0
+                10 -> R.drawable.mchart_1_1
+                11 -> R.drawable.mchart_1_2
+                12 -> R.drawable.mchart_1_3
+                13 -> R.drawable.mchart_1_4
+                14 -> R.drawable.mchart_1_5
+                15 -> R.drawable.mchart_1_6
+                16 -> R.drawable.mchart_1_7
+                17 -> R.drawable.mchart_1_8
+                18 -> R.drawable.mchart_1_9
                 else -> R.drawable.mchart_2_0
             }
         }

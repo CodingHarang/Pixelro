@@ -51,14 +51,6 @@ fun MChartTestContent(
             ),
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
-        Text(
-            modifier = Modifier
-                .padding(top = 40.dp, bottom = 40.dp),
-            text = "엠식 변형시 검사",
-            color = Color(0xffffffff),
-            fontSize = 40.sp,
-            fontWeight = FontWeight.ExtraBold
-        )
         Box(
             contentAlignment = Alignment.TopCenter,
             modifier = Modifier
@@ -179,7 +171,7 @@ fun MChartContent(
                         shape = RoundedCornerShape(8.dp)
                     )
                     .clickable {
-                        if(currentLevel >= 20) {
+                        if(currentLevel >= 19) {
                             viewModel.updateMChartResult(currentLevel)
                             viewModel.updateCurrentLevel(0)
                             if(isVertical && isLeftEye) {

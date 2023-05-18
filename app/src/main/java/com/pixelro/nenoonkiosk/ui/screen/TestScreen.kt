@@ -41,18 +41,6 @@ fun EyeTestScreen(
         modifier = Modifier
             .fillMaxSize()
     ) {
-        Image(
-            modifier = Modifier
-                .width(70.dp)
-                .height(70.dp)
-                .padding(start = 20.dp, top = 20.dp)
-                .clickable {
-                    (context as Activity).dispatchKeyEvent(KeyEvent(KeyEvent.ACTION_DOWN, KeyEvent.KEYCODE_BACK))
-                    context.dispatchKeyEvent(KeyEvent(KeyEvent.ACTION_UP, KeyEvent.KEYCODE_BACK))
-                },
-            painter = painterResource(id = R.drawable.close_button),
-            contentDescription = ""
-        )
         Column(
             modifier = Modifier
                 .fillMaxSize()
@@ -63,7 +51,7 @@ fun EyeTestScreen(
         ) {
             Text(
                 modifier = Modifier
-                    .padding(top = 40.dp, bottom = 40.dp),
+                    .padding(top = 80.dp, bottom = 40.dp),
                 text = when(selectedTestType) {
                     TestType.Presbyopia -> "조절력 검사(안구 나이 검사)"
                     TestType.ShortDistanceVisualAcuity -> "근거리 시력 검사"
@@ -79,6 +67,18 @@ fun EyeTestScreen(
             )
             content()
         }
+        Image(
+            modifier = Modifier
+                .width(70.dp)
+                .height(70.dp)
+                .padding(start = 20.dp, top = 20.dp)
+                .clickable {
+                    (context as Activity).dispatchKeyEvent(KeyEvent(KeyEvent.ACTION_DOWN, KeyEvent.KEYCODE_BACK))
+                    context.dispatchKeyEvent(KeyEvent(KeyEvent.ACTION_UP, KeyEvent.KEYCODE_BACK))
+                },
+            painter = painterResource(id = R.drawable.close_button),
+            contentDescription = ""
+        )
     }
 
 }

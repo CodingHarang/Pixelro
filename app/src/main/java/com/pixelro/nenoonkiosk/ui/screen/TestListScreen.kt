@@ -26,6 +26,7 @@ import androidx.compose.ui.unit.sp
 import androidx.navigation.NavHostController
 import com.pixelro.nenoonkiosk.NenoonViewModel
 import com.pixelro.nenoonkiosk.R
+import com.pixelro.nenoonkiosk.data.StringProvider
 import com.pixelro.nenoonkiosk.ui.testlist.TestListContent
 
 
@@ -95,7 +96,7 @@ fun TestListScreen(
                         fontSize = 20.sp
                     )
                 ) {
-                    append("내눈 앱의 모든 눈 검사는 자가 검사로 ")
+                    append(StringProvider.getString(R.string.test_list_screen_warning1))
                 }
                 withStyle(
                     style = SpanStyle(
@@ -104,7 +105,7 @@ fun TestListScreen(
                         fontWeight = FontWeight.Bold
                     )
                 ) {
-                    append("의학적 소견이 아니기에\n")
+                    append(StringProvider.getString(R.string.test_list_screen_warning2))
                 }
                 withStyle(
                         style = SpanStyle(
@@ -112,7 +113,7 @@ fun TestListScreen(
                             fontSize = 20.sp
                         )
                 ) {
-                    append("정확한 진단은 병원을 방문하여 의사와 상담하시길 바랍니다.\n내 눈의 상태와 주변 환경 또는 기기에 따라 검사 결과가 달라질 수 있습니다.")
+                    append(StringProvider.getString(R.string.test_list_screen_warning3))
                 }
             },
             modifier = Modifier

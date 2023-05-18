@@ -55,14 +55,6 @@ fun AmslerGridTestContent(
             ),
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
-        Text(
-            modifier = Modifier
-                .padding(top = 40.dp, bottom = 40.dp),
-            text = "암슬러 차트 검사",
-            color = Color(0xffffffff),
-            fontSize = 40.sp,
-            fontWeight = FontWeight.ExtraBold
-        )
         Box(
             contentAlignment = Alignment.TopCenter,
             modifier = Modifier

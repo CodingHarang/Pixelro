@@ -12,6 +12,8 @@ import android.graphics.Bitmap
 import android.graphics.BitmapFactory
 import android.graphics.Canvas
 import android.graphics.Paint
+import android.graphics.RectF
+import android.graphics.Typeface
 import android.util.Log
 import android.widget.Toast
 import androidx.activity.compose.BackHandler
@@ -29,6 +31,7 @@ import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.asImageBitmap
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
@@ -37,6 +40,7 @@ import androidx.compose.ui.unit.sp
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat.getSystemService
 import androidx.navigation.NavHostController
+import com.github.mikephil.charting.utils.Utils.drawImage
 import com.pixelro.nenoonkiosk.NenoonViewModel
 import com.pixelro.nenoonkiosk.R
 import com.pixelro.nenoonkiosk.data.GlobalConstants
@@ -115,7 +119,7 @@ fun TestResultScreen(
         val resources = context.resources
         val logoImg = Bitmap.createScaledBitmap(BitmapFactory.decodeResource(resources, R.drawable.pixelro_logo_black), 240, 80, false)
 
-        val bm = textAsBitmap(testType, printString, 40f, android.graphics.Color.parseColor("#FF000000"), logoImg)
+        val bm = textAsBitmap(testType, printString, logoImg)
         val nResult = 0
         val nPrintWidth = 576
         val nPaperHeight = ((bm.height.toFloat() / bm.width.toFloat()) * 576).toInt()
@@ -245,49 +249,187 @@ fun TestResultScreen(
 fun textAsBitmap(
     testType: TestType,
     printString: String,
-    textSize: Float,
-    textColor: Int,
     logoImg: Bitmap
 ): Bitmap {
     val paint = Paint(Paint.ANTI_ALIAS_FLAG)
-    paint.textSize = textSize
-    paint.color = textColor
-    paint.textAlign = Paint.Align.LEFT
-    val baseline = -paint.ascent() // ascent() is negative
+    paint.color = 0xff000000.toInt()
+    paint.textSize = 40f
+    paint.textAlign = Paint.Align.CENTER
     val width = 600
-    val height = (baseline + paint.descent() + 0.5f).toInt()
-    val image = Bitmap.createBitmap(width, 400, Bitmap.Config.ARGB_8888)
-    val canvas = Canvas(image)
-    canvas.drawColor(android.graphics.Color.parseColor("#FFFFFFFF"))
+    val baseline = -paint.ascent()
+//    paint.textSize = 40f
+//    paint.color = 0xff000000.toInt()
+//    paint.textAlign = Paint.Align.CENTER
+//    val baseline = -paint.ascent() // ascent() is negative
+//    val width = 600
+//    val image = Bitmap.createBitmap(width, 400, Bitmap.Config.ARGB_8888)
+//    val canvas = Canvas(image)
+//    canvas.drawColor(android.graphics.Color.parseColor("#FFFFFFFF"))
     when(testType) {
         TestType.Presbyopia -> {
-            canvas.drawText("조절력 검사", 0f, baseline, paint)
-            canvas.drawText(printString, 0f, baseline + 40f, paint)
+            val image = Bitmap.createBitmap(width, 400, Bitmap.Config.ARGB_8888)
+            val canvas = Canvas(image)
+            canvas.drawARGB(255, 255, 255, 255)
+
+            canvas.drawBitmap(logoImg, 360f, 320f, null)
+
+            canvas.drawText("조절력 검사", 300f, baseline, paint)
+
+            paint.typeface = Typeface.DEFAULT_BOLD
+            canvas.drawText("조절근점: 30cm", 300f, baseline + 160f, paint)
+            paint.typeface = Typeface.DEFAULT
+
+            paint.textAlign = Paint.Align.LEFT
+            canvas.drawText("분당 서울대 병원", 0f, baseline + 320f, paint)
+            canvas.drawText("☎1588-3369", 0f, baseline + 360f, paint)
+            return image!!
         }
         TestType.ShortDistanceVisualAcuity -> {
-            canvas.drawText("근거리 시력 검사", 0f, baseline, paint)
-            val leftEye = printString.split(",")[0]
-            val rightEye = printString.split(",")[1]
-            canvas.drawText(leftEye, 0f, baseline + 40f, paint)
-            canvas.drawText(rightEye, 0f, baseline + 80f, paint)
+            val image = Bitmap.createBitmap(width, 400, Bitmap.Config.ARGB_8888)
+            val canvas = Canvas(image)
+            canvas.drawARGB(255, 255, 255, 255)
+
+            canvas.drawBitmap(logoImg, 360f, 320f, null)
+
+            canvas.drawText("근거리 시력 검사", 300f, baseline, paint)
+
+            canvas.drawText("좌안", 150f, baseline + 60f, paint)
+            canvas.drawText("우안", 450f, baseline + 60f, paint)
+
+            paint.typeface = Typeface.DEFAULT_BOLD
+            canvas.drawText("0.6 난시", 150f, baseline + 190f, paint)
+            canvas.drawText("1.0 정상", 450f, baseline + 190f, paint)
+            paint.typeface = Typeface.DEFAULT
+
+            paint.textAlign = Paint.Align.LEFT
+            canvas.drawLine(300f, 100f, 300f, 300f, paint)
+            canvas.drawText("분당 서울대 병원", 0f, baseline + 320f, paint)
+            canvas.drawText("☎1588-3369", 0f, baseline + 360f, paint)
+            return image!!
         }
         TestType.LongDistanceVisualAcuity -> {
-            canvas.drawText("원거리 시력 검사", 0f, baseline, paint)
+            val image = Bitmap.createBitmap(width, 400, Bitmap.Config.ARGB_8888)
+            val canvas = Canvas(image)
+            canvas.drawARGB(255, 255, 255, 255)
+
+            canvas.drawBitmap(logoImg, 360f, 320f, null)
+
+            canvas.drawText("근거리 시력 검사", 300f, baseline, paint)
+
+            canvas.drawText("좌안", 150f, baseline + 60f, paint)
+            canvas.drawText("우안", 450f, baseline + 60f, paint)
+
+            paint.typeface = Typeface.DEFAULT_BOLD
+            canvas.drawText("0.6 난시", 150f, baseline + 190f, paint)
+            canvas.drawText("1.0 정상", 450f, baseline + 190f, paint)
+            paint.typeface = Typeface.DEFAULT
+
+            paint.textAlign = Paint.Align.LEFT
+            canvas.drawLine(300f, 100f, 300f, 300f, paint)
+            canvas.drawText("분당 서울대 병원", 0f, baseline + 320f, paint)
+            canvas.drawText("☎1588-3369", 0f, baseline + 360f, paint)
+            return image!!
         }
         TestType.ChildrenVisualAcuity -> {
-            canvas.drawText("어린이 시력 검사", 0f, baseline, paint)
+            val image = Bitmap.createBitmap(width, 400, Bitmap.Config.ARGB_8888)
+            val canvas = Canvas(image)
+            canvas.drawARGB(255, 255, 255, 255)
+
+            canvas.drawBitmap(logoImg, 360f, 320f, null)
+
+            canvas.drawText("근거리 시력 검사", 300f, baseline, paint)
+
+            canvas.drawText("좌안", 150f, baseline + 60f, paint)
+            canvas.drawText("우안", 450f, baseline + 60f, paint)
+
+            paint.typeface = Typeface.DEFAULT_BOLD
+            canvas.drawText("0.6 난시", 150f, baseline + 190f, paint)
+            canvas.drawText("1.0 정상", 450f, baseline + 190f, paint)
+            paint.typeface = Typeface.DEFAULT
+
+            paint.textAlign = Paint.Align.LEFT
+            canvas.drawLine(300f, 100f, 300f, 300f, paint)
+            canvas.drawText("분당 서울대 병원", 0f, baseline + 320f, paint)
+            canvas.drawText("☎1588-3369", 0f, baseline + 360f, paint)
+            return image!!
         }
         TestType.AmslerGrid -> {
-            canvas.drawText("암슬러 차트 검사", 0f, baseline, paint)
+            val image = Bitmap.createBitmap(width, 500, Bitmap.Config.ARGB_8888)
+            val canvas = Canvas(image)
+            canvas.drawARGB(255, 255, 255, 255)
+
+            canvas.drawBitmap(logoImg, 360f, 420f, null)
+
+            canvas.drawText("암슬러 차트 검사", 300f, baseline, paint)
+
+            canvas.drawText("좌안", 150f, baseline + 60f, paint)
+            canvas.drawText("우안", 450f, baseline + 60f, paint)
+
+            paint.style = Paint.Style.STROKE
+            paint.strokeWidth = 4f
+
+            canvas.drawRect(RectF(30f, 140f, 110f, 220f), paint)
+            canvas.drawRect(RectF(110f, 140f, 190f, 220f), paint)
+            canvas.drawRect(RectF(190f, 140f, 270f, 220f), paint)
+            canvas.drawRect(RectF(30f, 220f, 110f, 300f), paint)
+            canvas.drawRect(RectF(110f, 220f, 190f, 300f), paint)
+            canvas.drawRect(RectF(190f, 220f, 270f, 300f), paint)
+            canvas.drawRect(RectF(30f, 300f, 110f, 380f), paint)
+            canvas.drawRect(RectF(110f, 300f, 190f, 380f), paint)
+            canvas.drawRect(RectF(190f, 300f, 270f, 380f), paint)
+
+            canvas.drawRect(RectF(330f, 140f, 410f, 220f), paint)
+            canvas.drawRect(RectF(410f, 140f, 490f, 220f), paint)
+            canvas.drawRect(RectF(490f, 140f, 570f, 220f), paint)
+            canvas.drawRect(RectF(330f, 220f, 410f, 300f), paint)
+            canvas.drawRect(RectF(410f, 220f, 490f, 300f), paint)
+            canvas.drawRect(RectF(490f, 220f, 570f, 300f), paint)
+            canvas.drawRect(RectF(330f, 300f, 410f, 380f), paint)
+            canvas.drawRect(RectF(410f, 300f, 490f, 380f), paint)
+            canvas.drawRect(RectF(490f, 300f, 570f, 380f), paint)
+
+            paint.style = Paint.Style.FILL
+            paint.typeface = Typeface.DEFAULT_BOLD
+            canvas.drawText("이상", 70f, baseline + 160f, paint)
+            canvas.drawText("이상", 450f, baseline + 320f, paint)
+            paint.typeface = Typeface.DEFAULT
+
+            paint.textAlign = Paint.Align.LEFT
+            paint.strokeWidth = 1f
+            canvas.drawLine(300f, 100f, 300f, 400f, paint)
+            canvas.drawText("분당 서울대 병원", 0f, baseline + 420f, paint)
+            canvas.drawText("☎1588-3369", 0f, baseline + 460f, paint)
+            return image!!
         }
         TestType.MChart -> {
-            canvas.drawText("엠식 변형시 검사", 0f, baseline, paint)
+            val image = Bitmap.createBitmap(width, 400, Bitmap.Config.ARGB_8888)
+            val canvas = Canvas(image)
+            canvas.drawARGB(255, 255, 255, 255)
+
+            canvas.drawBitmap(logoImg, 360f, 320f, null)
+
+            canvas.drawText("엠식 변형시 검사", 300f, baseline, paint)
+
+            canvas.drawText("좌안", 150f, baseline + 60f, paint)
+            canvas.drawText("우안", 450f, baseline + 60f, paint)
+
+            paint.typeface = Typeface.DEFAULT_BOLD
+            canvas.drawText("수직: 정상", 150f, baseline + 170f, paint)
+            canvas.drawText("수평: 정상", 150f, baseline + 210f, paint)
+            canvas.drawText("수직: 이상", 450f, baseline + 170f, paint)
+            canvas.drawText("수평: 정상", 450f, baseline + 210f, paint)
+            paint.typeface = Typeface.DEFAULT
+
+            paint.textAlign = Paint.Align.LEFT
+            canvas.drawLine(300f, 100f, 300f, 300f, paint)
+            canvas.drawText("분당 서울대 병원", 0f, baseline + 320f, paint)
+            canvas.drawText("☎1588-3369", 0f, baseline + 360f, paint)
+            return image!!
         }
         else -> {
-
+            val image = Bitmap.createBitmap(width, 400, Bitmap.Config.ARGB_8888)
+            val canvas = Canvas(image)
+            return image!!
         }
     }
-//    canvas.drawARGB(255, 50, 50, 50)
-    canvas.drawBitmap(logoImg, 360f, 320f, null)
-    return image!!
 }

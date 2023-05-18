@@ -42,12 +42,13 @@ fun CoveredEyeCheckingContent(
     ) {
         DisposableEffect(true) {
             Log.e("DisposableEffect", "${viewModel.coveredEyeCheckingContentVisibleState.targetState}")
+            viewModel.initializeCoveredEyeChecking()
             viewModel.checkCoveredEye()
             onDispose {}
         }
         val isLeftEye = viewModel.isLeftEye.collectAsState().value
 //        val isCoveredEyeCheckingDone = viewModel.isCoveredEyeCheckingDone.collectAsState().value
-        Log.e("CoveredEyeCheckingContent", "insideAnimatedVisibility")
+//        Log.e("CoveredEyeCheckingContent", "insideAnimatedVisibility")
         Column(
             modifier = Modifier,
             horizontalAlignment = Alignment.CenterHorizontally

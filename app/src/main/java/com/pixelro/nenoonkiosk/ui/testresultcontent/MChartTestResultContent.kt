@@ -148,8 +148,4 @@ fun MChartTestResultContent(
             }
         }
     }
-
-    Text(
-        text = "${result[2]}, ${result[3]}, ${result[0]}, ${result[1]}"
-    )
 }

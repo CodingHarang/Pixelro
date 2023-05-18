@@ -28,19 +28,10 @@ fun ShortDistanceVisualAcuityTestContent(
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
         viewModel.initializeVisualAcuityTest()
-        viewModel.initializeCoveredEyeChecking()
         val measuringDistanceContentVisibleState = viewModel.measuringDistanceContentVisibleState
         val coveredEyeCheckingContentVisibleState = viewModel.coveredEyeCheckingContentVisibleState
         val visualAcuityTestCommonContentVisibleState = viewModel.visualAcuityTestCommonContentVisibleState
 
-        Text(
-            modifier = Modifier
-                .padding(top = 40.dp, bottom = 40.dp),
-            text = "근거리 시력 검사",
-            color = Color(0xffffffff),
-            fontSize = 40.sp,
-            fontWeight = FontWeight.ExtraBold
-        )
         Box(
             contentAlignment = Alignment.TopCenter
         ) {

@@ -33,7 +33,6 @@ fun PresbyopiaTestResultContent(
     viewModel: NenoonViewModel,
     navController: NavHostController
 ) {
-    viewModel.updateAvgDistance()
     Column() {
         Box(
         ) {

@@ -19,11 +19,13 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.pixelro.nenoonkiosk.NenoonViewModel
 import com.pixelro.nenoonkiosk.R
+import com.pixelro.nenoonkiosk.data.StringProvider
 
 @Composable
 fun MacularTestListContent(
@@ -44,7 +46,12 @@ fun MacularTestListContent(
                 )
                 .padding(start = 20.dp, end = 20.dp, bottom = 20.dp)
                 .clickable {
-                    (context as Activity).dispatchKeyEvent(KeyEvent(KeyEvent.ACTION_DOWN, KeyEvent.KEYCODE_BACK))
+                    (context as Activity).dispatchKeyEvent(
+                        KeyEvent(
+                            KeyEvent.ACTION_DOWN,
+                            KeyEvent.KEYCODE_BACK
+                        )
+                    )
                     context.dispatchKeyEvent(KeyEvent(KeyEvent.ACTION_UP, KeyEvent.KEYCODE_BACK))
                 },
             verticalAlignment = Alignment.CenterVertically
@@ -67,8 +74,8 @@ fun MacularTestListContent(
             )
         }
         EyeTestSelectableBox(
-            title = "암슬러 차트",
-            description = "암슬러 차트를 이용하여 이상이 있는 곳의 범위를 알아냅니다.",
+            title = StringProvider.getString(R.string.amsler_grid_name),
+            description = StringProvider.getString(R.string.amsler_grid_short_description),
             onClickMethod = {
                 toAmslerGridTest()
                 toPreDescriptionScreen()
@@ -79,8 +86,8 @@ fun MacularTestListContent(
                 .height(20.dp)
         )
         EyeTestSelectableBox(
-            title = "엠식 변형시 검사",
-            description = "수직 및 수평선의 도트 간격을 이용하여 시각 왜곡 정도를 측정합니다.",
+            title = StringProvider.getString(R.string.mchart_name),
+            description = StringProvider.getString(R.string.mchart_short_description),
             onClickMethod = {
                 toMChartTest()
                 toPreDescriptionScreen()

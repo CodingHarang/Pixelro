@@ -37,9 +37,9 @@
       android:pathData="M106.3,248.54m-0.74,0a0.74,0.74 0,1 1,1.48 0a0.74,0.74 0,1 1,-1.48 0"
       android:fillColor="#231815"/>
   <path
-      android:pathData="M93.03,140.03l0,3.4l3.4,-1.7l-3.4,-1.7z"
+      android:pathData="M93.26,140.03l0,3.4l3.4,-1.7l-3.4,-1.7z"
       android:fillColor="#231815"/>
   <path
-      android:pathData="M119.57,140.03l0,3.4l-3.4,-1.7l3.4,-1.7z"
+      android:pathData="M119.34,140.03l0,3.4l-3.4,-1.7l3.4,-1.7z"
       android:fillColor="#231815"/>
 </vector>

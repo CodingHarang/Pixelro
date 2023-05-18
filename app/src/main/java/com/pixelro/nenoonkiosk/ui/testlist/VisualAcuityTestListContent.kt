@@ -19,11 +19,13 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.pixelro.nenoonkiosk.NenoonViewModel
 import com.pixelro.nenoonkiosk.R
+import com.pixelro.nenoonkiosk.data.StringProvider
 
 @Composable
 fun VisualAcuityTestListContent(
@@ -45,7 +47,12 @@ fun VisualAcuityTestListContent(
                 )
                 .padding(start = 20.dp, end = 20.dp, bottom = 20.dp)
                 .clickable {
-                    (context as Activity).dispatchKeyEvent(KeyEvent(KeyEvent.ACTION_DOWN, KeyEvent.KEYCODE_BACK))
+                    (context as Activity).dispatchKeyEvent(
+                        KeyEvent(
+                            KeyEvent.ACTION_DOWN,
+                            KeyEvent.KEYCODE_BACK
+                        )
+                    )
                     context.dispatchKeyEvent(KeyEvent(KeyEvent.ACTION_UP, KeyEvent.KEYCODE_BACK))
                 },
             verticalAlignment = Alignment.CenterVertically
@@ -68,8 +75,8 @@ fun VisualAcuityTestListContent(
             )
         }
         EyeTestSelectableBox(
-            title = "근거리 시력 검사",
-            description = "내 눈의 시력이 어느정도인지 알아볼 수 있어요.",
+            title = StringProvider.getString(R.string.short_visual_acuity_name),
+            description = StringProvider.getString(R.string.short_visual_acuity_short_description),
             onClickMethod = {
                 toShortDistanceVisualAcuityTest()
                 toPreDescriptionScreen()
@@ -80,8 +87,8 @@ fun VisualAcuityTestListContent(
                 .height(20.dp)
         )
         EyeTestSelectableBox(
-            title = "원거리 시력 검사",
-            description = "내 눈의 시력이 어느정도인지 알아볼 수 있어요.",
+            title = StringProvider.getString(R.string.long_visual_acuity_name),
+            description = StringProvider.getString(R.string.long_visual_acuity_short_description),
             onClickMethod = {
                 toLongDistanceVisualAcuityTest()
                 toPreDescriptionScreen()
@@ -92,8 +99,8 @@ fun VisualAcuityTestListContent(
                 .height(20.dp)
         )
         EyeTestSelectableBox(
-            title = "어린이 시력 검사",
-            description = "내 눈의 시력이 어느정도인지 알아볼 수 있어요.",
+            title = StringProvider.getString(R.string.children_visual_acuity_name),
+            description = StringProvider.getString(R.string.children_visual_acuity_short_description),
             onClickMethod = {
                 toChildrenVisualAcuityTest()
                 toPreDescriptionScreen()

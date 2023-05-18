@@ -1,4 +1,30 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="app_name">Nenoon Kiosk</string>
+    <string name="app_name">내눈 키오스크</string>
+    <string name="presbyopia_name1">조절력 검사(안구 나이 검사)</string>
+    <string name="visual_acuity_name">시력 검사</string>
+    <string name="short_visual_acuity_name">근거리 시력 검사</string>
+    <string name="long_visual_acuity_name">원거리 시력 검사</string>
+    <string name="children_visual_acuity_name">어린이 시력 검사</string>
+    <string name="macular_degeneration_name">황반 변성 검사</string>
+    <string name="amsler_grid_name">암슬러 차트 검사</string>
+    <string name="mchart_name">엠식 변형시 검사</string>
+    <string name="presbyopia_short_description">수정체의 탄력이 어느 정도인지 알아볼 수 있어요</string>
+    <string name="visual_acuity_short_description">시력이 어느 정도인지 알아볼 수 있어요</string>
+    <string name="short_visual_acuity_short_description">근거리 시표를 통해 시력을 확인할 수 있어요</string>
+    <string name="long_visual_acuity_short_description">원거리 시표를 통해 시력을 확인할 수 있어요</string>
+    <string name="children_visual_acuity_short_description">글자를 모르는 어린이들도 시력 검사를 할 수 있어요</string>
+    <string name="amsler_grid_short_description">암슬러 차트를 통해 황반에 이상이 있는지 알아볼 수 있어요</string>
+    <string name="mchart_short_description">엠차트를 사용해 황반에 이상이 있는지 알아볼 수 있어요</string>
+    <string name="macular_degeneration_short_script">황반 변성 관련 검사를 진행할 수 있어요</string>
+    <string name="test_list_screen_warning1">"내눈 앱의 모든 눈 검사는 자가 검사로 "</string>
+    <string name="test_list_screen_warning2">의학적 소견이 아니기에\n</string>
+    <string name="test_list_screen_warning3">정확한 진단은 병원을 방문하여 의사와 상담하시길 바랍니다.\n내 눈의 상태와 주변 환경 또는 기기에 따라 검사 결과가 달라질 수 있습니다.</string>
+    <string name="presbyopia_name2">조절력 검사\n(안구 나이 검사)</string>
+    <string name="presbyopia_long_description">나이가 들면서 수정체의 탄성력이 감소되어 조절력이 떨어지는 안질환으로 가까운 곳의 글자가 잘 안보이는 현상을 노안이라고 말합니다.</string>
+    <string name="short_visual_acuity_long_description">눈이 두 점을 구별할 수 있는 가작 작은 시각을 최소시각이라고 하며, 시력은 이 최소시각이 어느정도인가를 말합니다.\n\n정식 시력 검사는 5m 거리에서 시행합니다. 본 검사는 3m 이하에서 측정 가능합니다.</string>
+    <string name="long_visual_acuity_long_description">눈이 두 점을 구별할 수 있는 가작 작은 시각을 최소시각이라고 하며, 시력은 이 최소시각이 어느정도인가를 말합니다.\\n\\n정식 시력 검사는 5m 거리에서 시행합니다. 본 검사는 3m 이하에서 측정 가능합니다.</string>
+    <string name="children_visual_acuity_long_desciption">눈이 두 점을 구별할 수 있는 가작 작은 시각을 최소시각이라고 하며, 시력은 이 최소시각이 어느정도인가를 말합니다.\\n\\n정식 시력 검사는 5m 거리에서 시행합니다. 본 검사는 3m 이하에서 측정 가능합니다.</string>
+    <string name="amsler_grid_long_description">망막신경 중에서 초점이 맺히는 부분인 황반에 변성이 생기면 격자 무늬가 휘어져 보이거나 공백 또는 검게 보이는 현상이 발생합니다.</string>
+    <string name="mchart_long_description">굴절이상은 망막에 초점이 정확하게 맺히지 못할 때 생기며, 근시와 원시로 구별하여 안경으로 교정합니다. 성장기 어린이와 청소년의 경우 6개월, 성인의 경우 1년마다 안경 렌즈를 바꾸는 것이 좋습니다.</string>
 </resources>
