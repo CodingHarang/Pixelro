@@ -107,6 +107,7 @@ dependencies {
     // Exo Player
     implementation 'androidx.media3:media3-exoplayer:1.0.1'
     implementation 'androidx.media3:media3-ui:1.0.1'
+    implementation 'androidx.media3:media3-*:1.1.0-alpha01'
 
     // Gson
     implementation "com.squareup.retrofit2:converter-gson:2.9.0"
