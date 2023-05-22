@@ -3,8 +3,10 @@ package com.pixelro.nenoonkiosk.ui.screen
 import android.app.Activity
 import android.util.Log
 import android.view.KeyEvent
+import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
+import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.*
@@ -14,14 +16,19 @@ import androidx.compose.material.Text
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
 import androidx.compose.ui.draw.paint
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.text.SpanStyle
+import androidx.compose.ui.text.buildAnnotatedString
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.text.style.TextDecoration
+import androidx.compose.ui.text.withStyle
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.compose.ui.window.Dialog
@@ -32,6 +39,7 @@ import com.bumptech.glide.integration.compose.GlideImage
 import com.pixelro.nenoonkiosk.NenoonViewModel
 import com.pixelro.nenoonkiosk.R
 import com.pixelro.nenoonkiosk.data.GlobalConstants
+import com.pixelro.nenoonkiosk.data.StringProvider
 import com.pixelro.nenoonkiosk.data.TestType
 
 @Composable
@@ -154,31 +162,97 @@ fun TestPreDescriptionContent(
         Column(
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
-            Image(
-                modifier = Modifier
-                    .height(100.dp)
-                    .padding(bottom = 16.dp)
-                    .clickable(
-                        indication = null,
-                        interactionSource = remember { MutableInteractionSource() }
-                    ) {
-                        changeDialogVisibility()
+            Box(
+                contentAlignment = Alignment.Center
+            ) {
+                Image(
+                    modifier = Modifier
+                        .height(140.dp)
+                        .padding(bottom = 16.dp)
+                        .clickable(
+                            indication = null,
+                            interactionSource = remember { MutableInteractionSource() }
+                        ) {
+                            changeDialogVisibility()
+                        },
+                    painter = painterResource(id = R.drawable.but_how_box),
+                    contentDescription = ""
+                )
+                Text(
+                    modifier = Modifier
+                        .offset(0.dp, (-20).dp),
+                    text = buildAnnotatedString {
+                        append(StringProvider.getString(R.string.test_predescription_speech_buttle_text1))
+                        withStyle(
+                            style = SpanStyle(
+                                textDecoration = TextDecoration.Underline
+                            )
+                        ) {
+                            append(StringProvider.getString(R.string.test_predescription_speech_buttle_text2))
+                        }
+                        append(StringProvider.getString(R.string.test_predescription_speech_buttle_text3))
                     },
-                painter = painterResource(id = R.drawable.but_how_text),
-                contentDescription = ""
-            )
-            Image(
+                    fontSize = 30.sp,
+                    color = Color(0xff1d71e1),
+                    fontWeight = FontWeight.Bold,
+                    textAlign = TextAlign.Center
+                )
+            }
+
+
+//            Image(
+//                modifier = Modifier
+//                    .height(200.dp)
+//                    .clickable(
+//                        indication = null,
+//                        interactionSource = remember { MutableInteractionSource() }
+//                    ) {
+//                        navController.navigate(GlobalConstants.ROUTE_TEST_CONTENT)
+//                    },
+//                painter = painterResource(id = R.drawable.btn_start_ko),
+//                contentDescription = ""
+//            )
+            Box(
                 modifier = Modifier
+                    .width(200.dp)
                     .height(200.dp)
-                    .clickable(
-                        indication = null,
-                        interactionSource = remember { MutableInteractionSource() }
-                    ) {
+                    .clip(
+                        shape = RoundedCornerShape(50)
+                    )
+                    .border(
+                        border = BorderStroke(2.dp, Color(0xffffffff)),
+                        shape = RoundedCornerShape(50)
+                    )
+                    .background(
+                        color = Color(0x00000000),
+                        shape = RoundedCornerShape(50),
+                    )
+                    .clickable {
                         navController.navigate(GlobalConstants.ROUTE_TEST_CONTENT)
                     },
-                painter = painterResource(id = R.drawable.btn_start_ko),
-                contentDescription = ""
-            )
+                contentAlignment = Alignment.Center
+            ) {
+                Box(
+                    modifier = Modifier
+                        .width(180.dp)
+                        .height(180.dp)
+                        .clip(
+                            shape = RoundedCornerShape(50)
+                        )
+                        .background(
+                            color = Color(0xffffffff),
+                            shape = RoundedCornerShape(50),
+                        ),
+                    contentAlignment = Alignment.Center
+                ) {
+                    Text(
+                        text = StringProvider.getString(R.string.test_predescription_screen_start),
+                        fontSize = 50.sp,
+                        color = Color(0xff1d71e1),
+                        fontWeight = FontWeight.ExtraBold
+                    )
+                }
+            }
         }
     }
 }
@@ -220,10 +294,11 @@ fun TestPreDescriptionDialog(
                         .height(20.dp)
                 )
                 Text(
-                    text = "검사 방법",
+                    text = StringProvider.getString(R.string.test_order_dialog_test_order),
                     modifier = Modifier,
                     fontSize = 25.sp,
                     color = Color(0xff1d71e1),
+                    fontWeight = FontWeight.Bold
                 )
                 GlideImage(
                     modifier = Modifier

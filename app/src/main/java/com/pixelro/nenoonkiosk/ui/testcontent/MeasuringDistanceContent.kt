@@ -28,6 +28,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.pixelro.nenoonkiosk.NenoonViewModel
 import com.pixelro.nenoonkiosk.R
+import com.pixelro.nenoonkiosk.data.StringProvider
 import kotlin.math.roundToInt
 
 @Composable
@@ -78,7 +79,7 @@ fun MeasuringDistanceContent(
                             fontSize = 40.sp
                         )
                     ) {
-                        append("현재 거리: ")
+                        append(StringProvider.getString(R.string.test_screen_current_distance))
                     }
                     withStyle(
                         style = SpanStyle(

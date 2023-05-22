@@ -28,7 +28,9 @@ import androidx.compose.ui.window.Dialog
 import androidx.compose.ui.window.DialogProperties
 import com.pixelro.nenoonkiosk.NenoonKioskApplication
 import com.pixelro.nenoonkiosk.NenoonViewModel
+import com.pixelro.nenoonkiosk.R
 import com.pixelro.nenoonkiosk.data.SharedPreferencesManager
+import com.pixelro.nenoonkiosk.data.StringProvider
 import java.util.Locale
 
 @Composable
@@ -58,7 +60,7 @@ fun SettingsScreen(
                 .fillMaxWidth()
                 .padding(bottom = 20.dp),
             textAlign = TextAlign.Center,
-            text = "설정",
+            text = StringProvider.getString(R.string.settings_title),
             fontSize = 30.sp
         )
         Spacer(
@@ -79,7 +81,7 @@ fun SettingsScreen(
                 modifier = Modifier
                     .fillMaxWidth()
                     .padding(start = 40.dp, top = 10.dp, bottom = 10.dp),
-                text = "언어 설정",
+                text = StringProvider.getString(R.string.settings_language),
                 fontSize = 30.sp
             )
         }

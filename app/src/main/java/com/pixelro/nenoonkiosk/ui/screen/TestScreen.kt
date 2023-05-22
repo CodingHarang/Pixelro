@@ -24,6 +24,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.pixelro.nenoonkiosk.NenoonViewModel
 import com.pixelro.nenoonkiosk.R
+import com.pixelro.nenoonkiosk.data.StringProvider
 import com.pixelro.nenoonkiosk.data.TestType
 import com.pixelro.nenoonkiosk.facedetection.FaceDetection
 
@@ -53,12 +54,12 @@ fun EyeTestScreen(
                 modifier = Modifier
                     .padding(top = 80.dp, bottom = 40.dp),
                 text = when(selectedTestType) {
-                    TestType.Presbyopia -> "조절력 검사(안구 나이 검사)"
-                    TestType.ShortDistanceVisualAcuity -> "근거리 시력 검사"
-                    TestType.LongDistanceVisualAcuity -> "원거리 시력 검사"
-                    TestType.ChildrenVisualAcuity -> "어린이 시력 검사"
-                    TestType.AmslerGrid -> "암슬러 차트 검사"
-                    TestType.MChart -> "엠식 변형시 검사"
+                    TestType.Presbyopia -> StringProvider.getString(R.string.presbyopia_name1)
+                    TestType.ShortDistanceVisualAcuity -> StringProvider.getString(R.string.short_visual_acuity_name)
+                    TestType.LongDistanceVisualAcuity -> StringProvider.getString(R.string.long_visual_acuity_name)
+                    TestType.ChildrenVisualAcuity -> StringProvider.getString(R.string.children_visual_acuity_name)
+                    TestType.AmslerGrid -> StringProvider.getString(R.string.amsler_grid_name)
+                    TestType.MChart -> StringProvider.getString(R.string.mchart_name)
                     else -> ""
                 },
                 color = Color(0xffffffff),
