@@ -26,6 +26,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.pixelro.nenoonkiosk.NenoonViewModel
 import com.pixelro.nenoonkiosk.R
+import com.pixelro.nenoonkiosk.data.StringProvider
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 
@@ -70,8 +71,8 @@ fun CoveredEyeCheckingContent(
             )
             Text(
                 text = when(isLeftEye) {
-                            true -> "오른쪽 눈을 가리고\n왼쪽 눈을 검사하겠습니다."
-                            else -> "왼쪽 눈을 가리고\n오른쪽 눈을 검사하겠습니다."
+                            true -> StringProvider.getString(R.string.covered_eye_checking_left_description)
+                            else -> StringProvider.getString(R.string.covered_eye_checking_right_description)
                         },
                 color = Color(0xffffffff),
                 fontSize = 30.sp,

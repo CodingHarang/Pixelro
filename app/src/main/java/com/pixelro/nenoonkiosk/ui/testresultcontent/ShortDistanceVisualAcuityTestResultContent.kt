@@ -19,7 +19,9 @@ import androidx.compose.ui.unit.sp
 import androidx.navigation.NavHostController
 import com.pixelro.nenoonkiosk.NenoonViewModel
 import com.pixelro.nenoonkiosk.data.GlobalConstants
+import com.pixelro.nenoonkiosk.data.StringProvider
 import com.pixelro.nenoonkiosk.data.VisionDisorderType
+import com.pixelro.nenoonkiosk.R
 
 @Composable
 fun ShortDistanceVisualAcuityTestResultContent(
@@ -37,7 +39,7 @@ fun ShortDistanceVisualAcuityTestResultContent(
                 .height(20.dp)
         )
         Text(
-            text = "시력 검사 결과",
+            text = StringProvider.getString(R.string.short_distance_visual_acuity_test_result_content_result),
             fontSize = 30.sp,
         )
         Spacer(
@@ -45,7 +47,7 @@ fun ShortDistanceVisualAcuityTestResultContent(
                 .height(20.dp)
         )
         Text(
-            text = "측정 거리:",
+            text = StringProvider.getString(R.string.short_distance_visual_acuity_test_result_distance) + ":",
             fontSize = 30.sp
         )
         Spacer(

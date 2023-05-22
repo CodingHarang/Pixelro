@@ -57,7 +57,7 @@ fun MeasuringDistanceContent(
                     .height(20.dp)
             )
             Text(
-                text = "시작하기를 누른 다음에는\n기기와 사용자의 거리를 고정해주세요.",
+                text = StringProvider.getString(R.string.measuring_distance_content_description1),
                 color = Color(0xffffffff),
                 fontSize = 30.sp,
                 textAlign = TextAlign.Center
@@ -67,7 +67,7 @@ fun MeasuringDistanceContent(
                     .height(20.dp)
             )
             Text(
-                text = "테스트 도중 측정 거리가 달라지면 시력 검사 값이 달라질 수 있습니다.",
+                text = StringProvider.getString(R.string.measuring_distance_content_description2),
                 color = Color(0xffffffff),
                 fontSize = 20.sp
             )

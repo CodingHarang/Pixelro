@@ -46,4 +46,15 @@
     <string name="test_predescription_speech_buttle_text3">befor start eye test.</string>
     <string name="result_screen_print">Print result</string>
     <string name="result_screen_go_back">Go back</string>
+    <string name="covered_eye_checking_right_description">Cover your left eye\nand test your right eye</string>
+    <string name="covered_eye_checking_left_description">Cover your right eye\nand test your left eye</string>
+    <string name="result_screen_distance">distance</string>
+    <string name="result_screen_age">age</string>
+    <string name="presbyopia_result_accommodation_amplitude">Accommodation Amplitude</string>
+    <string name="measuring_distance_content_description1">Press Start and then\nfix the distance between the device and the user.</string>
+    <string name="measuring_distance_content_description2">If the measurement distance changes during the test, the value of the eye examination may change.</string>
+    <string name="visual_acuity_test_common_content_distance">measure distance</string>
+    <string name="short_distance_visual_acuity_test_result_content_result">Visual acuity test result</string>
+    <string name="short_distance_visual_acuity_test_result_distance">measured distance</string>
+    <string name="visual_acuity_test_common_content_description">Please choose what you see</string>
 </resources>

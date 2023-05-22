@@ -28,6 +28,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.pixelro.nenoonkiosk.NenoonViewModel
 import com.pixelro.nenoonkiosk.R
+import com.pixelro.nenoonkiosk.data.StringProvider
 import java.util.*
 import kotlin.math.roundToInt
 
@@ -69,7 +70,7 @@ fun PresbyopiaTestContent(
     Text(
         modifier = Modifier
             .padding(top = 20.dp),
-        text = "현재 거리: ${(viewModel.screenToFaceDistance.collectAsState().value / 10).roundToInt()}cm",
+        text = StringProvider.getString(R.string.test_screen_current_distance) + "${(viewModel.screenToFaceDistance.collectAsState().value / 10).roundToInt()}cm",
         fontSize = 30.sp,
         color = Color(0xffffffff)
     )

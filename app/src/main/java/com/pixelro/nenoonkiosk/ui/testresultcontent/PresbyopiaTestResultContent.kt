@@ -25,7 +25,9 @@ import com.github.mikephil.charting.data.Entry
 import com.github.mikephil.charting.data.LineData
 import com.github.mikephil.charting.data.LineDataSet
 import com.pixelro.nenoonkiosk.NenoonViewModel
+import com.pixelro.nenoonkiosk.R
 import com.pixelro.nenoonkiosk.data.AccommodationData
+import com.pixelro.nenoonkiosk.data.StringProvider
 import kotlin.math.roundToInt
 
 @Composable
@@ -154,13 +156,13 @@ fun PresbyopiaTestResultContent(
             Text(
                 modifier = Modifier
                     .padding(start = 40.dp, top = 230.dp),
-                text = "나이",
+                text = StringProvider.getString(R.string.result_screen_age),
                 fontSize = 20.sp
             )
             Text(
                 modifier = Modifier
                     .padding(start = 380.dp, top = 430.dp),
-                text = "거리(cm)",
+                text = StringProvider.getString(R.string.result_screen_distance) + "(cm)",
                 fontSize = 20.sp
             )
         }
@@ -178,7 +180,8 @@ fun PresbyopiaTestResultContent(
             Text(
                 modifier = Modifier
                     .fillMaxWidth(),
-                text = "조절력: ${(viewModel.avgDistance.collectAsState().value).roundToInt().toFloat() / 10}cm",
+                text = StringProvider.getString(R.string.presbyopia_result_accommodation_amplitude)
+                        + ": ${(viewModel.avgDistance.collectAsState().value).roundToInt().toFloat() / 10}cm",
                 fontSize = 30.sp,
                 fontWeight = FontWeight.Bold,
                 textAlign = TextAlign.Center,

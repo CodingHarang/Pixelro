@@ -46,6 +46,17 @@
     <string name="test_predescription_speech_buttle_text3">str</string>
     <string name="result_screen_print">Print result</string>
     <string name="result_screen_go_back">Go back</string>
+    <string name="covered_eye_checking_right_description">str</string>
+    <string name="covered_eye_checking_left_description">str</string>
+    <string name="result_screen_distance">distance</string>
+    <string name="result_screen_age">age</string>
+    <string name="presbyopia_result_accommodation_amplitude">accommodation amplitude</string>
+    <string name="measuring_distance_content_description1">str</string>
+    <string name="measuring_distance_content_description2">str</string>
+    <string name="visual_acuity_test_common_content_distance">measure distance</string>
+    <string name="short_distance_visual_acuity_test_result_content_result">Visual acuity test result</string>
+    <string name="short_distance_visual_acuity_test_result_distance">measured distance</string>
+    <string name="visual_acuity_test_common_content_description">str</string>
     <!--    <string name=""></string>-->
     <!--    <string name=""></string>-->
 </resources>

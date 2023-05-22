@@ -44,6 +44,7 @@ import com.github.mikephil.charting.utils.Utils.drawImage
 import com.pixelro.nenoonkiosk.NenoonViewModel
 import com.pixelro.nenoonkiosk.R
 import com.pixelro.nenoonkiosk.data.GlobalConstants
+import com.pixelro.nenoonkiosk.data.StringProvider
 import com.pixelro.nenoonkiosk.data.TestType
 import com.pixelro.nenoonkiosk.ui.testresultcontent.*
 import kotlinx.coroutines.launch
@@ -143,12 +144,12 @@ fun TestResultScreen(
                 .fillMaxWidth()
                 .padding(top = 40.dp),
             text = when(testType) {
-                TestType.Presbyopia -> "조절력 검사 결과"
-                TestType.ShortDistanceVisualAcuity -> "근거리 시력 검사 결과"
-                TestType.LongDistanceVisualAcuity -> "원거리 시력 검사 결과"
-                TestType.ChildrenVisualAcuity -> "어린이 시력 검사 결과"
-                TestType.AmslerGrid -> "암슬러 차트 검사 결과"
-                TestType.MChart -> "엠식 변형시 검사 결과"
+                TestType.Presbyopia -> StringProvider.getString(R.string.presbyopia_result_title)
+                TestType.ShortDistanceVisualAcuity -> StringProvider.getString(R.string.short_visual_acuity_result_title)
+                TestType.LongDistanceVisualAcuity -> StringProvider.getString(R.string.long_visual_acuity_result_title)
+                TestType.ChildrenVisualAcuity -> StringProvider.getString(R.string.children_visual_acuity_result_title)
+                TestType.AmslerGrid -> StringProvider.getString(R.string.amsler_grid_result_title)
+                TestType.MChart -> StringProvider.getString(R.string.mchart_result_title)
                 else -> {
                     "None TestResultScreen"
                 }
@@ -220,7 +221,7 @@ fun TestResultScreen(
             }
         ) {
             Text(
-                text = "결과 프린트하기",
+                text = StringProvider.getString(R.string.result_screen_print),
                 color = Color(0xffffffff),
                 fontSize = 30.sp
             )
@@ -238,7 +239,7 @@ fun TestResultScreen(
             }
         ) {
             Text(
-                text = "돌아가기",
+                text = StringProvider.getString(R.string.result_screen_go_back),
                 color = Color(0xffffffff),
                 fontSize = 30.sp
             )
