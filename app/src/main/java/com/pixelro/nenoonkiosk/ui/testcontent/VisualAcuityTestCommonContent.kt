@@ -368,9 +368,9 @@ fun SightednessTestContent(
                             modifier = Modifier
                                 .fillMaxWidth()
                                 .padding(top = 40.dp),
-                            text = "초록",
+                            text = StringProvider.getString(R.string.visual_acuity_test_common_content_green),
                             fontSize = 48.sp,
-                            fontWeight = FontWeight.ExtraBold,
+                            fontWeight = FontWeight.Bold,
                             textAlign = TextAlign.Center
                         )
                     }
@@ -392,9 +392,9 @@ fun SightednessTestContent(
                             modifier = Modifier
                                 .fillMaxWidth()
                                 .padding(top = 40.dp),
-                            text = "빨강",
+                            text = StringProvider.getString(R.string.visual_acuity_test_common_content_red),
                             fontSize = 48.sp,
-                            fontWeight = FontWeight.ExtraBold,
+                            fontWeight = FontWeight.Bold,
                             textAlign = TextAlign.Center
                         )
                     }
@@ -405,7 +405,7 @@ fun SightednessTestContent(
                     .height(20.dp)
             )
             Text(
-                text = "글자가 더 잘 보이는 쪽을 고르세요.",
+                text = StringProvider.getString(R.string.visual_acuity_test_common_content_signtedness_description),
                 color = Color(0xffffffff),
                 fontSize = 40.sp,
                 fontWeight = FontWeight.Bold
@@ -437,7 +437,7 @@ fun SightednessTestContent(
                     contentAlignment = Alignment.Center
                 ) {
                     Text(
-                        text = "초록",
+                        text = StringProvider.getString(R.string.visual_acuity_test_common_content_green),
                         fontSize = 30.sp,
                         fontWeight = FontWeight.Bold
                     )
@@ -463,7 +463,7 @@ fun SightednessTestContent(
                     contentAlignment = Alignment.Center
                 ) {
                     Text(
-                        text = "빨강",
+                        text = StringProvider.getString(R.string.visual_acuity_test_common_content_red),
                         fontSize = 30.sp,
                         fontWeight = FontWeight.Bold
                     )
@@ -492,7 +492,7 @@ fun SightednessTestContent(
                     contentAlignment = Alignment.Center
                 ) {
                     Text(
-                        text = "둘다 잘 보인다",
+                        text = StringProvider.getString(R.string.visual_acuity_test_common_content_both_positive),
                         fontSize = 30.sp,
                         fontWeight = FontWeight.Bold
                     )
@@ -517,7 +517,7 @@ fun SightednessTestContent(
                     contentAlignment = Alignment.Center
                 ) {
                     Text(
-                        text = "둘 다 뿌옇다",
+                        text = StringProvider.getString(R.string.visual_acuity_test_common_content_both_negative),
                         fontSize = 30.sp,
                         fontWeight = FontWeight.Bold
                     )

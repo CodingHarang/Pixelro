@@ -411,7 +411,7 @@ class NenoonViewModel(application: Application) : AndroidViewModel(application) 
 
     private fun showSplashScreen() {
         viewModelScope.launch {
-            delay(1000)
+            delay(3000)
             _isShowingSplashScreen.update { false }
         }
     }

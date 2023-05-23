@@ -19,6 +19,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.draw.paint
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.RectangleShape
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.platform.LocalContext
@@ -143,7 +144,8 @@ fun TestPreDescriptionContent(
                 fontSize = 60.sp,
                 fontWeight = FontWeight.Bold,
                 color = Color(0xffffffff),
-                textAlign = TextAlign.Center
+                textAlign = TextAlign.Center,
+                lineHeight = 70.sp
             )
             Text(
                 modifier = Modifier
@@ -249,7 +251,7 @@ fun TestPreDescriptionContent(
                         text = StringProvider.getString(R.string.test_predescription_screen_start),
                         fontSize = 50.sp,
                         color = Color(0xff1d71e1),
-                        fontWeight = FontWeight.ExtraBold
+                        fontWeight = FontWeight.Bold
                     )
                 }
             }
@@ -268,87 +270,241 @@ fun TestPreDescriptionDialog(
         onDismissRequest = onDismissRequest,
         properties = DialogProperties()
     ) {
-
+        Column(
+            modifier = Modifier
+                .fillMaxWidth(60f)
+                .height(IntrinsicSize.Max)
+                .background(
+                    color = Color(0xffffffff),
+                    shape = RoundedCornerShape(16.dp)
+                ),
+            horizontalAlignment = Alignment.CenterHorizontally
+        ) {
+            Text(
+                text = viewModel.selectedTestName.collectAsState().value,
+                modifier = Modifier
+                    .padding(top = 20.dp),
+                fontSize = 40.sp,
+                fontWeight = FontWeight.Bold,
+                color = Color(0xff1d71e1),
+                textAlign = TextAlign.Center,
+                lineHeight = 50.sp
+            )
+            Spacer(
+                modifier = Modifier
+                    .height(20.dp)
+            )
+            Text(
+                text = StringProvider.getString(R.string.test_order_dialog_test_order),
+                modifier = Modifier,
+                fontSize = 25.sp,
+                color = Color(0xff1d71e1),
+                fontWeight = FontWeight.Bold
+            )
+            GlideImage(
+                modifier = Modifier
+                    .width(700.dp)
+                    .height(350.dp)
+                    .padding(start = 20.dp, end = 20.dp),
+                model = R.raw.img_start_presbyopia,
+                contentScale = ContentScale.Fit,
+                contentDescription = ""
+            )
+            DialogDescriptionText(
+                title = "STEP1",
+                body = StringProvider.getString(R.string.presbyopia_test_order_step1)
+            )
+            DialogDescriptionText(
+                title = "STEP2",
+                body = StringProvider.getString(R.string.presbyopia_test_order_step2)
+            )
+            DialogDescriptionText(
+                title = "STEP3",
+                body = StringProvider.getString(R.string.presbyopia_test_order_step3)
+            )
+            DialogDescriptionText(
+                title = "STEP4",
+                body = StringProvider.getString(R.string.presbyopia_test_order_step4)
+            )
+            LastDialogDescriptionText(
+                title = "STEP4",
+                body = StringProvider.getString(R.string.presbyopia_test_order_step4)
+            )
+            Spacer(
+                modifier = Modifier
+                    .background(Color(0xffcccccc))
+                    .height(1.dp)
+                    .fillMaxWidth()
+            )
+            Text(
+                text = "확인",
+                fontSize = 30.sp,
+                color = Color(0xff1d71e1),
+                fontWeight = FontWeight.Bold,
+                textAlign = TextAlign.Center,
+                modifier = Modifier
+                    .padding(top = 12.dp, bottom = 12.dp)
+                    .fillMaxWidth()
+                    .clickable(
+                        indication = null,
+                        interactionSource = remember { MutableInteractionSource() }
+                    ) {
+                        onDismissRequest()
+                    }
+            )
+        }
 //        val systemUiController = rememberSystemUiController()
 //        systemUiController.isSystemBarsVisible = false
-        Surface(
-            modifier = Modifier
-                .width(IntrinsicSize.Max)
-                .wrapContentHeight(),
-            shape = RoundedCornerShape(16.dp)
-        ) {
-            Column(
-                horizontalAlignment = Alignment.CenterHorizontally
-            ) {
-                Text(
-                    text = viewModel.selectedTestName.collectAsState().value,
-                    modifier = Modifier
-                        .padding(top = 20.dp),
-                    fontSize = 40.sp,
-                    fontWeight = FontWeight.ExtraBold,
-                    color = Color(0xff1d71e1),
-                    textAlign = TextAlign.Center
-                )
-                Spacer(
-                    modifier = Modifier
-                        .height(20.dp)
-                )
-                Text(
-                    text = StringProvider.getString(R.string.test_order_dialog_test_order),
-                    modifier = Modifier,
-                    fontSize = 25.sp,
-                    color = Color(0xff1d71e1),
-                    fontWeight = FontWeight.Bold
-                )
-                GlideImage(
-                    modifier = Modifier
-                        .width(700.dp)
-                        .height(350.dp)
-                        .padding(start = 20.dp, end = 20.dp),
-                    model = R.raw.img_start_presbyopia,
-                    contentScale = ContentScale.Fit,
-                    contentDescription = ""
-                )
-                Image(
-                    modifier = Modifier
-                        .wrapContentSize()
-                        .padding(start = 20.dp, end = 20.dp, bottom = 20.dp),
-                    painter = painterResource(
-                        id = when(selectedTest) {
-                                TestType.Presbyopia -> R.drawable.text_popup_ko_presbyopia
-                                TestType.ShortDistanceVisualAcuity -> R.drawable.text_popup_ko_near
-                                TestType.LongDistanceVisualAcuity -> R.drawable.text_popup_ko_long
-                                TestType.ChildrenVisualAcuity -> R.drawable.text_popup_ko_child
-                                TestType.AmslerGrid -> R.drawable.text_popup_ko_amsler
-                                else -> R.drawable.text_popup_ko_m_chart
-                            }
-                        ),
-                    contentDescription = "",
-                    contentScale = ContentScale.FillWidth
-                )
-                Spacer(
-                    modifier = Modifier
-                        .background(Color(0xffcccccc))
-                        .height(1.dp)
-                        .fillMaxWidth()
-                )
-                Text(
-                    text = "확인",
-                    fontSize = 30.sp,
-                    color = Color(0xff1d71e1),
-                    fontWeight = FontWeight.Bold,
-                    textAlign = TextAlign.Center,
-                    modifier = Modifier
-                        .padding(top = 12.dp, bottom = 12.dp)
-                        .fillMaxWidth()
-                        .clickable(
-                            indication = null,
-                            interactionSource = remember { MutableInteractionSource() }
-                        ) {
-                            onDismissRequest()
-                        }
-                )
-            }
-        }
+//        Surface(
+//            modifier = Modifier
+//                .width(IntrinsicSize.Max)
+//                .wrapContentHeight(),
+//            shape = RoundedCornerShape(16.dp)
+//        ) {
+//            Column(
+//                horizontalAlignment = Alignment.CenterHorizontally
+//            ) {
+//                Text(
+//                    text = viewModel.selectedTestName.collectAsState().value,
+//                    modifier = Modifier
+//                        .padding(top = 20.dp),
+//                    fontSize = 40.sp,
+//                    fontWeight = FontWeight.ExtraBold,
+//                    color = Color(0xff1d71e1),
+//                    textAlign = TextAlign.Center
+//                )
+//                Spacer(
+//                    modifier = Modifier
+//                        .height(20.dp)
+//                )
+//                Text(
+//                    text = StringProvider.getString(R.string.test_order_dialog_test_order),
+//                    modifier = Modifier,
+//                    fontSize = 25.sp,
+//                    color = Color(0xff1d71e1),
+//                    fontWeight = FontWeight.Bold
+//                )
+//                GlideImage(
+//                    modifier = Modifier
+//                        .width(700.dp)
+//                        .height(350.dp)
+//                        .padding(start = 20.dp, end = 20.dp),
+//                    model = R.raw.img_start_presbyopia,
+//                    contentScale = ContentScale.Fit,
+//                    contentDescription = ""
+//                )
+//                Image(
+//                    modifier = Modifier
+//                        .wrapContentSize()
+//                        .padding(start = 20.dp, end = 20.dp, bottom = 20.dp),
+//                    painter = painterResource(
+//                        id = when(selectedTest) {
+//                                TestType.Presbyopia -> R.drawable.text_popup_ko_presbyopia
+//                                TestType.ShortDistanceVisualAcuity -> R.drawable.text_popup_ko_near
+//                                TestType.LongDistanceVisualAcuity -> R.drawable.text_popup_ko_long
+//                                TestType.ChildrenVisualAcuity -> R.drawable.text_popup_ko_child
+//                                TestType.AmslerGrid -> R.drawable.text_popup_ko_amsler
+//                                else -> R.drawable.text_popup_ko_m_chart
+//                            }
+//                        ),
+//                    contentDescription = "",
+//                    contentScale = ContentScale.FillWidth
+//                )
+//                Spacer(
+//                    modifier = Modifier
+//                        .background(Color(0xffcccccc))
+//                        .height(1.dp)
+//                        .fillMaxWidth()
+//                )
+//                Text(
+//                    text = "확인",
+//                    fontSize = 30.sp,
+//                    color = Color(0xff1d71e1),
+//                    fontWeight = FontWeight.Bold,
+//                    textAlign = TextAlign.Center,
+//                    modifier = Modifier
+//                        .padding(top = 12.dp, bottom = 12.dp)
+//                        .fillMaxWidth()
+//                        .clickable(
+//                            indication = null,
+//                            interactionSource = remember { MutableInteractionSource() }
+//                        ) {
+//                            onDismissRequest()
+//                        }
+//                )
+//            }
+//        }
+//    }
     }
+}
+
+@Composable
+fun DialogDescriptionText(
+    title: String,
+    body: String
+) {
+    Text(
+        modifier = Modifier
+            .fillMaxWidth()
+            .padding(start = 20.dp, end = 20.dp, bottom = 4.dp)
+            .border(
+                border = BorderStroke(2.dp, Color(0xff1d71e1)),
+                shape = RectangleShape
+            )
+            .padding(4.dp),
+        text = buildAnnotatedString {
+            withStyle(
+                style = SpanStyle(
+                    color = Color(0xff1d71e1)
+                )
+            ) {
+                append(title + "\n")
+            }
+            append(body)
+        },
+        fontSize = 20.sp,
+        fontWeight = FontWeight.Medium,
+        textAlign = TextAlign.Center,
+        lineHeight = 24.sp
+    )
+}
+
+@Composable
+fun LastDialogDescriptionText(
+    title: String,
+    body: String
+) {
+    Text(
+        modifier = Modifier
+            .fillMaxWidth()
+            .padding(start = 20.dp, end = 20.dp, bottom = 4.dp)
+            .border(
+                border = BorderStroke(2.dp, Color(0xff1d71e1)),
+                shape = RectangleShape
+            )
+            .background(
+                color = Color(0xff1d71e1)
+            )
+            .padding(4.dp),
+        text = buildAnnotatedString {
+            withStyle(
+                style = SpanStyle(
+                    color = Color(0xfffff177)
+                )
+            ) {
+                append(title + "\n")
+            }
+            withStyle(
+                style = SpanStyle(
+                    color = Color(0xffffffff)
+                )
+            ) {
+                append(body)
+            }
+        },
+        fontSize = 20.sp,
+        fontWeight = FontWeight.Medium,
+        textAlign = TextAlign.Center,
+        lineHeight = 24.sp
+    )
 }

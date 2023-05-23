@@ -68,7 +68,7 @@ fun TestListScreen(
                 modifier = Modifier.width(20.dp)
             )
             Text(
-                text = "픽셀로 지점",
+                text = "Pixelro",
                 fontSize = 30.sp
             )
         }

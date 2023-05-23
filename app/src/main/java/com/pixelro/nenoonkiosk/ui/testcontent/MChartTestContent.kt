@@ -33,6 +33,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.pixelro.nenoonkiosk.NenoonViewModel
 import com.pixelro.nenoonkiosk.R
+import com.pixelro.nenoonkiosk.data.StringProvider
 
 @Composable
 fun MChartTestContent(
@@ -156,7 +157,7 @@ fun MChartContent(
                 contentAlignment = Alignment.Center
             ) {
                 Text(
-                    text = "곧은 선",
+                    text = StringProvider.getString(R.string.mchart_test_content_straight),
                     fontSize = 30.sp
                 )
             }
@@ -196,7 +197,7 @@ fun MChartContent(
             ) {
 
                 Text(
-                    text = "휘어진 선",
+                    text = StringProvider.getString(R.string.mchart_test_content_bent),
                     fontSize = 30.sp
                 )
             }

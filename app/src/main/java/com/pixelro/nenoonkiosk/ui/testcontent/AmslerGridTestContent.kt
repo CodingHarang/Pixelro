@@ -33,6 +33,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.pixelro.nenoonkiosk.NenoonViewModel
 import com.pixelro.nenoonkiosk.R
+import com.pixelro.nenoonkiosk.data.StringProvider
 import kotlin.math.tan
 
 @Composable
@@ -203,7 +204,7 @@ fun AmslerGridContent(
                     contentAlignment = Alignment.Center
                 ) {
                     Text(
-                        text = "완료",
+                        text = StringProvider.getString(R.string.amsler_grid_test_content_done),
                         fontSize = 30.sp
                     )
                 }

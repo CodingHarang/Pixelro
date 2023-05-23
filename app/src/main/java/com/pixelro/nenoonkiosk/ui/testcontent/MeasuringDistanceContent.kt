@@ -85,7 +85,7 @@ fun MeasuringDistanceContent(
                         style = SpanStyle(
                             color = Color(0xff0055ff),
                             fontSize = 50.sp,
-                            fontWeight = FontWeight.ExtraBold
+                            fontWeight = FontWeight.Bold
                         )
                     ) {
                         append("${(viewModel.screenToFaceDistance.collectAsState().value / 10).roundToInt()}cm")

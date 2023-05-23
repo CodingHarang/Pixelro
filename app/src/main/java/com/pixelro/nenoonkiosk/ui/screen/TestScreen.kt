@@ -64,7 +64,7 @@ fun EyeTestScreen(
                 },
                 color = Color(0xffffffff),
                 fontSize = 40.sp,
-                fontWeight = FontWeight.ExtraBold
+                fontWeight = FontWeight.Bold
             )
             content()
         }
