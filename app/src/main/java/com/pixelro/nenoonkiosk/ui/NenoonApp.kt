@@ -17,6 +17,7 @@ import com.google.accompanist.navigation.animation.AnimatedNavHost
 import com.google.accompanist.navigation.animation.composable
 import com.google.accompanist.navigation.animation.rememberAnimatedNavController
 import com.pixelro.nenoonkiosk.NenoonViewModel
+import com.pixelro.nenoonkiosk.data.AnimationProvider
 import com.pixelro.nenoonkiosk.data.GlobalConstants
 import com.pixelro.nenoonkiosk.data.TestType
 import com.pixelro.nenoonkiosk.ui.screen.*
@@ -70,8 +71,8 @@ fun NenoonApp(
                         // 검사 선택 화면
                         composable(
                             route = GlobalConstants.ROUTE_TEST_LIST,
-                            enterTransition = { viewModel.enterTransition },
-                            exitTransition = { viewModel.exitTransition }
+                            enterTransition = { AnimationProvider.enterTransition },
+                            exitTransition = { AnimationProvider.exitTransition }
                         ) {
                             TestListScreen(
                                 toPreDescriptionScreen = { mainNavController.navigate(GlobalConstants.ROUTE_TEST_PRE_DESCRIPTION) },
@@ -84,8 +85,8 @@ fun NenoonApp(
                         // 설정 화면
                         composable(
                             route = GlobalConstants.ROUTE_SETTINGS,
-                            enterTransition = { viewModel.enterTransition },
-                            exitTransition = { viewModel.exitTransition }
+                            enterTransition = { AnimationProvider.enterTransition },
+                            exitTransition = { AnimationProvider.exitTransition }
                         ) {
                             SettingsScreen(
                                 viewModel = viewModel
@@ -95,8 +96,8 @@ fun NenoonApp(
                         // 검사 사전 설명 화면
                         composable(
                             route = GlobalConstants.ROUTE_TEST_PRE_DESCRIPTION,
-                            enterTransition = { viewModel.enterTransition },
-                            exitTransition = { viewModel.exitTransition }
+                            enterTransition = { AnimationProvider.enterTransition },
+                            exitTransition = { AnimationProvider.exitTransition }
                         ) {
                             TestPreDescriptionScreen(
                                 viewModel,
@@ -107,8 +108,8 @@ fun NenoonApp(
                         // 검사 화면
                         composable(
                             route = GlobalConstants.ROUTE_TEST_CONTENT,
-                            enterTransition = { viewModel.enterTransition },
-                            exitTransition = { viewModel.exitTransition }
+                            enterTransition = { AnimationProvider.enterTransition },
+                            exitTransition = { AnimationProvider.exitTransition }
                         ) {
                             EyeTestScreen(
                                 viewModel = viewModel,
@@ -169,8 +170,8 @@ fun NenoonApp(
                         // 검사 결과 화면
                         composable(
                             route = GlobalConstants.ROUTE_TEST_RESULT,
-                            enterTransition = { viewModel.enterTransition },
-                            exitTransition = { viewModel.exitTransition }
+                            enterTransition = { AnimationProvider.enterTransition },
+                            exitTransition = { AnimationProvider.exitTransition }
                         ) {
                             TestResultScreen(
                                 viewModel = viewModel,

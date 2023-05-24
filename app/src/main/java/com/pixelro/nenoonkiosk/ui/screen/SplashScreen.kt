@@ -25,7 +25,7 @@ fun SplashScreen(
             .background(
                 color = Color(0xff1d71e1)
             ),
-        contentAlignment = Alignment.Center
+        contentAlignment = Alignment.TopCenter
     ) {
         Box(
             modifier = Modifier
@@ -34,7 +34,7 @@ fun SplashScreen(
         ) {
             Image(
                 modifier = Modifier
-                    .height(100.dp)
+                    .height(150.dp)
                     .padding(bottom = 40.dp),
                 painter = painterResource(id = R.drawable.pixelro_logo),
                 contentDescription = ""
@@ -43,21 +43,36 @@ fun SplashScreen(
         Column(
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
+            Spacer(
+                modifier = Modifier
+                    .height(200.dp)
+            )
+            Text(
+                text = "Vision Test and Eye care Solution",
+                color = Color(0xffffffff),
+                fontSize = 40.sp,
+                fontWeight = FontWeight.Normal
+            )
+            Spacer(
+                modifier = Modifier
+                    .height(80.dp)
+            )
             Image(
                 modifier = Modifier
-                    .height(300.dp),
+                    .width(350.dp)
+                    .height(350.dp),
                 painter = painterResource(id = R.drawable.nenoon_logo),
                 contentDescription = ""
             )
             Spacer(
                 modifier = Modifier
-                    .height(40.dp)
+                    .height(20.dp)
             )
             Text(
-                text = "내눈",
+                text = "NENOON",
                 color = Color(0xffffffff),
                 fontSize = 96.sp,
-                fontWeight = FontWeight.Bold
+                fontWeight = FontWeight.Medium
             )
         }
     }

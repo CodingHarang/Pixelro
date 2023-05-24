@@ -89,6 +89,18 @@
     <string name="mchart_test_order_step2">str</string>
     <string name="mchart_test_order_step3">str</string>
     <string name="mchart_test_order_step4">str</string>
+    <string name="test_dialog_step1">str</string>
+    <string name="test_dialog_step2">str</string>
+    <string name="test_dialog_step3">str</string>
+    <string name="test_dialog_step4">str</string>
+    <string name="test_dialog_step5">str</string>
+    <string name="test_dialog_result">str</string>
+    <string name="presbyopia_test_order_result">str</string>
+    <string name="short_visual_acuity_test_order_result">str</string>
+    <string name="long_visual_acuity_test_order_result">str</string>
+    <string name="children_visual_acuity_test_order_result">str</string>
+    <string name="amsler_grid_test_order_result">str</string>
+    <string name="mchart_test_order_result">str</string>
     <!--    <string name=""></string>-->
     <!--    <string name=""></string>-->
 </resources>

@@ -45,18 +45,7 @@ import kotlin.math.roundToInt
 
 class NenoonViewModel(application: Application) : AndroidViewModel(application) {
 
-    val enterTransition = slideIn(
-        animationSpec = TweenSpec(durationMillis = 500),
-        initialOffset = { IntOffset(100, 0) }
-    ) + fadeIn(
-        animationSpec = TweenSpec(durationMillis = 500)
-    )
-    val exitTransition = slideOut(
-        animationSpec = TweenSpec(durationMillis = 500),
-        targetOffset = { IntOffset(-100, 0) }
-    ) + fadeOut(
-        animationSpec = TweenSpec(durationMillis = 500)
-    )
+
 
     private fun checkBackgroundStatus() {
         viewModelScope.launch {

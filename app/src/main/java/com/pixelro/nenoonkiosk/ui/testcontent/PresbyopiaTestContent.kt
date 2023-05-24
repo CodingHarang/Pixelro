@@ -28,6 +28,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.pixelro.nenoonkiosk.NenoonViewModel
 import com.pixelro.nenoonkiosk.R
+import com.pixelro.nenoonkiosk.data.AnimationProvider
 import com.pixelro.nenoonkiosk.data.StringProvider
 import java.util.*
 import kotlin.math.roundToInt
@@ -53,18 +54,18 @@ fun PresbyopiaTestContent(
     ) {
         PresbyopiaFirstPage(
             visibleState = firstVisibleState,
-            enterAnimation = viewModel.enterTransition,
-            exitAnimation = viewModel.exitTransition
+            enterAnimation = AnimationProvider.enterTransition,
+            exitAnimation = AnimationProvider.exitTransition
         )
         PresbyopiaSecondPage(
             visibleState = secondVisibleState,
-            enterAnimation = viewModel.enterTransition,
-            exitAnimation = viewModel.exitTransition
+            enterAnimation = AnimationProvider.enterTransition,
+            exitAnimation = AnimationProvider.exitTransition
         )
         PresbyopiaThirdPage(
             visibleState = thirdVisibleState,
-            enterAnimation = viewModel.enterTransition,
-            exitAnimation = viewModel.exitTransition
+            enterAnimation = AnimationProvider.enterTransition,
+            exitAnimation = AnimationProvider.exitTransition
         )
     }
     Text(

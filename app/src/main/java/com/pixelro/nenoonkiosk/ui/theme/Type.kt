@@ -7,6 +7,7 @@ import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.Font
 import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.style.LineHeightStyle
 import androidx.compose.ui.unit.sp
 import com.pixelro.nenoonkiosk.R
 
@@ -22,7 +23,11 @@ val Typography = Typography(
     ),
     body1 = TextStyle(
         platformStyle = PlatformTextStyle(
-            includeFontPadding = false
+            includeFontPadding = false,
+        ),
+        lineHeightStyle = LineHeightStyle(
+            alignment = LineHeightStyle.Alignment.Center,
+            trim = LineHeightStyle.Trim.None
         )
     )
 )

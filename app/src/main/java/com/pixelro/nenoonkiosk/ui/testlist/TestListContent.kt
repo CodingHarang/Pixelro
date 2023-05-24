@@ -17,6 +17,7 @@ import androidx.navigation.NavHostController
 import com.google.accompanist.navigation.animation.AnimatedNavHost
 import com.google.accompanist.navigation.animation.composable
 import com.pixelro.nenoonkiosk.NenoonViewModel
+import com.pixelro.nenoonkiosk.data.AnimationProvider
 import com.pixelro.nenoonkiosk.data.GlobalConstants
 import com.pixelro.nenoonkiosk.data.TestType
 
@@ -35,22 +36,8 @@ fun TestListContent(
         // 메인 검사 리스트
         composable(
             route = GlobalConstants.ROUTE_MAIN_TEST_LIST,
-            enterTransition = {
-                slideIn(
-                    animationSpec = TweenSpec(durationMillis = 500),
-                    initialOffset = { IntOffset(100, 0) }
-                ) + fadeIn(
-                    animationSpec = TweenSpec(durationMillis = 500)
-                )
-            },
-            exitTransition = {
-                slideOut(
-                    animationSpec = TweenSpec(durationMillis = 500),
-                    targetOffset = { IntOffset(-100, 0) }
-                ) + fadeOut(
-                    animationSpec = TweenSpec(durationMillis = 500)
-                )
-            }
+            enterTransition = { AnimationProvider.enterTransition },
+            exitTransition = { AnimationProvider.exitTransition }
         ) {
             MainTestListContent(
                 toPreDescriptionScreen = {
@@ -65,22 +52,8 @@ fun TestListContent(
         // 시력 검사 리스트
         composable(
             GlobalConstants.ROUTE_VISUAL_ACUITY_TEST_LIST,
-            enterTransition = {
-                slideIn(
-                    animationSpec = TweenSpec(durationMillis = 500),
-                    initialOffset = { IntOffset(100, 0) }
-                ) + fadeIn(
-                    animationSpec = TweenSpec(durationMillis = 500)
-                )
-            },
-            exitTransition = {
-                slideOut(
-                    animationSpec = TweenSpec(durationMillis = 500),
-                    targetOffset = { IntOffset(-100, 0) }
-                ) + fadeOut(
-                    animationSpec = TweenSpec(durationMillis = 500)
-                )
-            }
+            enterTransition = { AnimationProvider.enterTransition },
+            exitTransition = { AnimationProvider.exitTransition }
         ) {
             VisualAcuityTestListContent(
                 toShortDistanceVisualAcuityTest = {
@@ -99,22 +72,8 @@ fun TestListContent(
         // 황반 변성 검사 리스트
         composable(
             GlobalConstants.ROUTE_MACULAR_DEGENERATION_TEST_LIST,
-            enterTransition = {
-                slideIn(
-                    animationSpec = TweenSpec(durationMillis = 500),
-                    initialOffset = { IntOffset(100, 0) }
-                ) + fadeIn(
-                    animationSpec = TweenSpec(durationMillis = 500)
-                )
-            },
-            exitTransition = {
-                slideOut(
-                    animationSpec = TweenSpec(durationMillis = 500),
-                    targetOffset = { IntOffset(-100, 0) }
-                ) + fadeOut(
-                    animationSpec = TweenSpec(durationMillis = 500)
-                )
-            }
+            enterTransition = { AnimationProvider.enterTransition },
+            exitTransition = { AnimationProvider.exitTransition }
         ) {
             MacularTestListContent(
                 toAmslerGridTest = {

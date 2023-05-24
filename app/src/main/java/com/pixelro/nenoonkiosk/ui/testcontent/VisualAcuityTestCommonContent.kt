@@ -25,6 +25,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.pixelro.nenoonkiosk.NenoonViewModel
 import com.pixelro.nenoonkiosk.R
+import com.pixelro.nenoonkiosk.data.AnimationProvider
 import com.pixelro.nenoonkiosk.data.StringProvider
 import com.pixelro.nenoonkiosk.data.VisionDisorderType
 import java.util.*
@@ -47,13 +48,13 @@ fun VisualAcuityTestCommonContent(
 
         AnimatedVisibility(
             visibleState = visualAcuityTestCommonContentVisibleState,
-            enter = viewModel.enterTransition,
-            exit = viewModel.exitTransition
+            enter = AnimationProvider.enterTransition,
+            exit = AnimationProvider.exitTransition
         ) {
             AnimatedVisibility(
                 visibleState = visualAcuityTestContentVisibleState,
-                enter = viewModel.enterTransition,
-                exit = viewModel.exitTransition
+                enter = AnimationProvider.enterTransition,
+                exit = AnimationProvider.exitTransition
             ) {
                 Column(
                     horizontalAlignment = Alignment.CenterHorizontally
@@ -340,8 +341,8 @@ fun SightednessTestContent(
     val isLeftEye = viewModel.isLeftEye.collectAsState().value
     AnimatedVisibility(
         visibleState = visualAcuityTestSightednessTestContentVisibleState,
-        enter = viewModel.enterTransition,
-        exit = viewModel.exitTransition
+        enter = AnimationProvider.enterTransition,
+        exit = AnimationProvider.exitTransition
     ) {
         Column(
             horizontalAlignment = Alignment.CenterHorizontally
