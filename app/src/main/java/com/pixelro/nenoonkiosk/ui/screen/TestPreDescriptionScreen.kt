@@ -11,7 +11,6 @@ import androidx.compose.foundation.clickable
 import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material.Surface
 import androidx.compose.material.Text
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
@@ -89,19 +88,19 @@ fun TestPreDescriptionBackground() {
         modifier = Modifier
             .fillMaxSize()
     ) {
-        Box(
-            modifier = Modifier
-                .fillMaxSize(),
-            contentAlignment = Alignment.BottomCenter
-        ) {
-            Image(
-                modifier = Modifier
-                    .height(heightDP.dp),
-                contentScale = ContentScale.Fit,
-                painter = painterResource(id = R.drawable.img_test),
-                contentDescription = ""
-            )
-        }
+//        Box(
+//            modifier = Modifier
+//                .fillMaxSize(),
+//            contentAlignment = Alignment.BottomCenter
+//        ) {
+//            Image(
+//                modifier = Modifier
+//                    .height(heightDP.dp),
+//                contentScale = ContentScale.Fit,
+//                painter = painterResource(id = R.drawable.img_test),
+//                contentDescription = ""
+//            )
+//        }
         Image(
             modifier = Modifier
                 .width(70.dp)
@@ -141,24 +140,26 @@ fun TestPreDescriptionContent(
                 modifier = Modifier
                     .padding(top = 120.dp, bottom = 40.dp),
                 text = viewModel.selectedTestName.collectAsState().value,
-                fontSize = 60.sp,
+                fontSize = 50.sp,
                 fontWeight = FontWeight.Bold,
                 color = Color(0xffffffff),
                 textAlign = TextAlign.Center,
-                lineHeight = 70.sp
+                lineHeight = 60.sp
             )
             Text(
                 modifier = Modifier
                     .padding(start = 60.dp, end = 60.dp),
                 text = viewModel.selectedTestDescription.collectAsState().value,
                 fontSize = 30.sp,
-                color = Color(0xffffffff)
+                color = Color(0xffffffff),
+                lineHeight = 35.sp
             )
         }
     }
     Box(
         modifier = Modifier
-            .fillMaxSize(),
+            .fillMaxSize()
+            .padding(top = 300.dp),
         contentAlignment = Alignment.Center
     ) {
         Column(
@@ -301,34 +302,169 @@ fun TestPreDescriptionDialog(
                 color = Color(0xff1d71e1),
                 fontWeight = FontWeight.Bold
             )
-            GlideImage(
-                modifier = Modifier
-                    .width(700.dp)
-                    .height(350.dp)
-                    .padding(start = 20.dp, end = 20.dp),
-                model = R.raw.img_start_presbyopia,
-                contentScale = ContentScale.Fit,
-                contentDescription = ""
-            )
-            DialogDescriptionText(
-                title = "STEP1",
-                body = StringProvider.getString(R.string.presbyopia_test_order_step1)
-            )
-            DialogDescriptionText(
-                title = "STEP2",
-                body = StringProvider.getString(R.string.presbyopia_test_order_step2)
-            )
-            DialogDescriptionText(
-                title = "STEP3",
-                body = StringProvider.getString(R.string.presbyopia_test_order_step3)
-            )
-            DialogDescriptionText(
-                title = "STEP4",
-                body = StringProvider.getString(R.string.presbyopia_test_order_step4)
-            )
+            when(selectedTest) {
+                TestType.Presbyopia -> {
+                    GlideImage(
+                        modifier = Modifier
+                            .width(700.dp)
+                            .height(350.dp)
+                            .padding(start = 20.dp, end = 20.dp),
+                        model = R.raw.img_start_presbyopia,
+                        contentScale = ContentScale.Fit,
+                        contentDescription = ""
+                    )
+                    DialogDescriptionText(
+                        title = "STEP1",
+                        body = StringProvider.getString(R.string.presbyopia_test_order_step1)
+                    )
+                    DialogDescriptionText(
+                        title = "STEP2",
+                        body = StringProvider.getString(R.string.presbyopia_test_order_step2)
+                    )
+                    DialogDescriptionText(
+                        title = "STEP3",
+                        body = StringProvider.getString(R.string.presbyopia_test_order_step3)
+                    )
+                    DialogDescriptionText(
+                        title = "STEP4",
+                        body = StringProvider.getString(R.string.presbyopia_test_order_step4)
+                    )
+                }
+                TestType.ShortDistanceVisualAcuity -> {
+                    GlideImage(
+                        modifier = Modifier
+                            .width(700.dp)
+                            .height(350.dp)
+                            .padding(start = 20.dp, end = 20.dp),
+                        model = R.raw.img_start_sight,
+                        contentScale = ContentScale.Fit,
+                        contentDescription = ""
+                    )
+                    DialogDescriptionText(
+                        title = "STEP1",
+                        body = StringProvider.getString(R.string.short_visual_acuity_test_order_step1)
+                    )
+                    DialogDescriptionText(
+                        title = "STEP2",
+                        body = StringProvider.getString(R.string.short_visual_acuity_test_order_step2)
+                    )
+                    DialogDescriptionText(
+                        title = "STEP3",
+                        body = StringProvider.getString(R.string.short_visual_acuity_test_order_step3)
+                    )
+                    DialogDescriptionText(
+                        title = "STEP4",
+                        body = StringProvider.getString(R.string.short_visual_acuity_test_order_step4)
+                    )
+                }
+                TestType.LongDistanceVisualAcuity -> {
+                    GlideImage(
+                        modifier = Modifier
+                            .width(700.dp)
+                            .height(350.dp)
+                            .padding(start = 20.dp, end = 20.dp),
+                        model = R.raw.img_start_sight,
+                        contentScale = ContentScale.Fit,
+                        contentDescription = ""
+                    )
+                    DialogDescriptionText(
+                        title = "STEP1",
+                        body = StringProvider.getString(R.string.long_visual_acuity_test_order_step1)
+                    )
+                    DialogDescriptionText(
+                        title = "STEP2",
+                        body = StringProvider.getString(R.string.long_visual_acuity_test_order_step2)
+                    )
+                    DialogDescriptionText(
+                        title = "STEP3",
+                        body = StringProvider.getString(R.string.long_visual_acuity_test_order_step3)
+                    )
+                    DialogDescriptionText(
+                        title = "STEP4",
+                        body = StringProvider.getString(R.string.long_visual_acuity_test_order_step4)
+                    )
+                }
+                TestType.ChildrenVisualAcuity -> {
+                    GlideImage(
+                        modifier = Modifier
+                            .width(700.dp)
+                            .height(350.dp)
+                            .padding(start = 20.dp, end = 20.dp),
+                        model = R.raw.img_start_sight,
+                        contentScale = ContentScale.Fit,
+                        contentDescription = ""
+                    )
+                    DialogDescriptionText(
+                        title = "STEP1",
+                        body = StringProvider.getString(R.string.children_visual_acuity_test_order_step1)
+                    )
+                    DialogDescriptionText(
+                        title = "STEP2",
+                        body = StringProvider.getString(R.string.children_visual_acuity_test_order_step2)
+                    )
+                    DialogDescriptionText(
+                        title = "STEP3",
+                        body = StringProvider.getString(R.string.children_visual_acuity_test_order_step3)
+                    )
+                    DialogDescriptionText(
+                        title = "STEP4",
+                        body = StringProvider.getString(R.string.children_visual_acuity_test_order_step4)
+                    )
+                }
+                TestType.AmslerGrid -> {
+                    GlideImage(
+                        modifier = Modifier
+                            .width(700.dp)
+                            .height(350.dp)
+                            .padding(start = 20.dp, end = 20.dp),
+                        model = R.raw.img_start_amsler_grid,
+                        contentScale = ContentScale.Fit,
+                        contentDescription = ""
+                    )
+                    DialogDescriptionText(
+                        title = "STEP1",
+                        body = StringProvider.getString(R.string.amsler_grid_test_order_step1)
+                    )
+                    DialogDescriptionText(
+                        title = "STEP2",
+                        body = StringProvider.getString(R.string.amsler_grid_test_order_step2)
+                    )
+                    DialogDescriptionText(
+                        title = "STEP3",
+                        body = StringProvider.getString(R.string.amsler_grid_test_order_step3)
+                    )
+                }
+                else -> {
+                    GlideImage(
+                        modifier = Modifier
+                            .width(700.dp)
+                            .height(350.dp)
+                            .padding(start = 20.dp, end = 20.dp),
+                        model = R.raw.img_start_m_chart,
+                        contentScale = ContentScale.Fit,
+                        contentDescription = ""
+                    )
+                    DialogDescriptionText(
+                        title = "STEP1",
+                        body = StringProvider.getString(R.string.mchart_test_order_step1)
+                    )
+                    DialogDescriptionText(
+                        title = "STEP2",
+                        body = StringProvider.getString(R.string.mchart_test_order_step2)
+                    )
+                    DialogDescriptionText(
+                        title = "STEP3",
+                        body = StringProvider.getString(R.string.mchart_test_order_step3)
+                    )
+                    DialogDescriptionText(
+                        title = "STEP4",
+                        body = StringProvider.getString(R.string.mchart_test_order_step4)
+                    )
+                }
+            }
             LastDialogDescriptionText(
-                title = "STEP4",
-                body = StringProvider.getString(R.string.presbyopia_test_order_step4)
+                title = "STEP5",
+                body = StringProvider.getString(R.string.test_order_final_step)
             )
             Spacer(
                 modifier = Modifier
