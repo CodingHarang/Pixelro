@@ -14,6 +14,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.pixelro.nenoonkiosk.NenoonViewModel
 import com.pixelro.nenoonkiosk.R
+import com.pixelro.nenoonkiosk.data.StringProvider
 
 @Composable
 fun SplashScreen(
@@ -48,7 +49,7 @@ fun SplashScreen(
                     .height(200.dp)
             )
             Text(
-                text = "Vision Test and Eye care Solution",
+                text = StringProvider.getString(R.string.splash_description),
                 color = Color(0xffffffff),
                 fontSize = 40.sp,
                 fontWeight = FontWeight.Normal
@@ -69,7 +70,7 @@ fun SplashScreen(
                     .height(20.dp)
             )
             Text(
-                text = "NENOON",
+                text = StringProvider.getString(R.string.splash_app_name),
                 color = Color(0xffffffff),
                 fontSize = 96.sp,
                 fontWeight = FontWeight.Medium

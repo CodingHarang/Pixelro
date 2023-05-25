@@ -34,7 +34,8 @@ fun AmslerGridTestResultContent(
     Row(
         modifier = Modifier
             .width(650.dp)
-            .height(300.dp),
+            .height(380.dp)
+            .padding(top = 80.dp),
         verticalAlignment = Alignment.CenterVertically
     ) {
         Column(

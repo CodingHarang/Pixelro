@@ -1,7 +1,11 @@
 package com.pixelro.nenoonkiosk.ui.screen
 
 import android.Manifest
+import android.bluetooth.BluetoothAdapter
+import android.bluetooth.BluetoothManager
+import android.content.Context
 import android.content.Intent
+import android.content.pm.PackageManager
 import android.net.Uri
 import android.provider.Settings
 import android.util.Log
@@ -33,6 +37,7 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.core.app.ActivityCompat
 import com.pixelro.nenoonkiosk.NenoonViewModel
 import com.pixelro.nenoonkiosk.R
 
@@ -97,6 +102,28 @@ fun PermissionRequestScreen(
             Log.d("locationServiceRequest", "location service accepted")
         else {
             Log.d("locationServiceRequest", "location service denied")
+        }
+    }
+
+    val bluetoothServiceRequestLauncher = rememberLauncherForActivityResult(
+        ActivityResultContracts.StartActivityForResult()
+    ) {
+        activityResult ->
+        if (activityResult.resultCode == ComponentActivity.RESULT_OK)
+            Log.d("bluetoothServiceRequest", "bluetooth service accepted")
+        else {
+            Log.d("bluetoothServiceRequest", "bluetooth service denied")
+        }
+    }
+
+    val manuallySetupLauncher = rememberLauncherForActivityResult(
+        ActivityResultContracts.StartActivityForResult()
+    ) {
+        result ->
+        if (result.resultCode == ComponentActivity.RESULT_OK)
+            Log.d("ok", "ok")
+        else {
+            Log.d("not ok", "not ok")
         }
     }
 
@@ -291,7 +318,18 @@ fun PermissionRequestScreen(
                         .width(400.dp)
                         .height(80.dp)
                         .clickable {
-                            permissionRequestLauncher.launch(cameraPermissions)
+                            val bluetoothAdapter =
+                                (context.getSystemService(Context.BLUETOOTH_SERVICE) as BluetoothManager).adapter
+                            if (ActivityCompat.checkSelfPermission(
+                                    context,
+                                    Manifest.permission.BLUETOOTH_SCAN
+                                ) != PackageManager.PERMISSION_GRANTED
+                            ) {
+                                permissionRequestLauncher.launch(bluetoothPermissions)
+                                return@clickable
+                            }
+//                            bluetoothAdapter.startDiscovery()
+                            bluetoothServiceRequestLauncher.launch(Intent(BluetoothAdapter.ACTION_REQUEST_ENABLE))
                         },
                     contentAlignment = Alignment.Center
                 ) {
@@ -306,13 +344,27 @@ fun PermissionRequestScreen(
                     modifier = Modifier
                         .width(80.dp)
                         .height(80.dp),
-                    painter = when(viewModel.isCameraPermissionGranted.collectAsState().value) {
+                    painter = when(viewModel.isBlueToothOn.collectAsState().value) {
                         true -> painterResource(id = R.drawable.baseline_check_96_green)
                         else -> painterResource(id = R.drawable.close_96_red)
                     },
                     contentDescription = ""
                 )
             }
+            Spacer(
+                modifier = Modifier
+                    .height(20.dp)
+            )
+            Text(
+                modifier = Modifier
+                    .clickable {
+                        manuallySetupLauncher.launch(Intent(Settings.ACTION_APPLICATION_DETAILS_SETTINGS,
+                            Uri.parse("package:" + context.packageName)))
+                    },
+                text = "권한 직접 설정하기",
+                color = Color(0xffffffff),
+                fontSize = 30.sp
+            )
         }
     }
 }

@@ -199,7 +199,8 @@ fun TestPreDescriptionContent(
                     fontSize = 30.sp,
                     color = Color(0xff1d71e1),
                     fontWeight = FontWeight.Bold,
-                    textAlign = TextAlign.Center
+                    textAlign = TextAlign.Center,
+                    lineHeight = 35.sp
                 )
             }
 

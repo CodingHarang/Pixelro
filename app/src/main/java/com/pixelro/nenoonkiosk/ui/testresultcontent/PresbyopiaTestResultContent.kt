@@ -42,7 +42,7 @@ fun PresbyopiaTestResultContent(
                 modifier = Modifier
                     .fillMaxWidth()
                     .height(500.dp)
-                    .padding(80.dp),
+                    .padding(start = 100.dp, top = 80.dp, end = 40.dp, bottom = 80.dp),
                 factory = { context ->
                     val lineChart = LineChart(context)
                     val allEntries = AccommodationData.allEntries
@@ -101,34 +101,34 @@ fun PresbyopiaTestResultContent(
                     dataset2.fillColor = 0xff0000ff.toInt()
                     dataset2.lineWidth = 6f
 
-                    val dataset3 = LineDataSet(startEntry, "Label3")
-                    dataset3.valueTextSize = 20f
-                    dataset3.circleRadius = 8f
-                    dataset3.setCircleColor(0xff0000ff.toInt())
-                    dataset3.setDrawCircleHole(false)
-                    val dataset4 = LineDataSet(midEntry, "Label4")
-                    dataset4.valueTextSize = 20f
-                    dataset4.circleRadius = 8f
-                    dataset4.setCircleColor(0xff0000ff.toInt())
-                    dataset4.setDrawCircleHole(false)
-                    val dataset5 = LineDataSet(endEntry, "Label5")
-                    dataset5.valueTextSize = 20f
-                    dataset5.circleRadius = 8f
-                    dataset5.setCircleColor(0xff0000ff.toInt())
-                    dataset5.setDrawCircleHole(false)
+//                    val dataset3 = LineDataSet(startEntry, "Label3")
+//                    dataset3.valueTextSize = 20f
+//                    dataset3.circleRadius = 8f
+//                    dataset3.setCircleColor(0xff0000ff.toInt())
+//                    dataset3.setDrawCircleHole(false)
+//                    val dataset4 = LineDataSet(midEntry, "Label4")
+//                    dataset4.valueTextSize = 20f
+//                    dataset4.circleRadius = 8f
+//                    dataset4.setCircleColor(0xff0000ff.toInt())
+//                    dataset4.setDrawCircleHole(false)
+//                    val dataset5 = LineDataSet(endEntry, "Label5")
+//                    dataset5.valueTextSize = 20f
+//                    dataset5.circleRadius = 8f
+//                    dataset5.setCircleColor(0xff0000ff.toInt())
+//                    dataset5.setDrawCircleHole(false)
 
                     val xAxis = lineChart.xAxis
                     xAxis.setDrawGridLines(false)
                     xAxis.position = XAxis.XAxisPosition.BOTTOM
                     xAxis.axisMinimum = 0f
-                    xAxis.axisMaximum = 60f
+                    xAxis.axisMaximum = 100f
                     xAxis.textSize = 20f
 
                     val leftAxis = lineChart.axisLeft
                     leftAxis.setDrawGridLines(true)
                     leftAxis.enableGridDashedLine(10f, 5f, 1f)
                     leftAxis.axisMinimum = 0f
-                    leftAxis.axisMaximum = 100f
+                    leftAxis.axisMaximum = 60f
                     leftAxis.textSize = 20f
 //            leftAxis.setGridDashedLine(DashPathEffect(floatArrayOf(2f), 2f))
 
@@ -139,10 +139,10 @@ fun PresbyopiaTestResultContent(
 //            rightAxis.enableGridDashedLine(10f, 4f, 1f)
 
                     val lineData = LineData(dataset1)
-                    lineData.addDataSet(dataset2)
-                    lineData.addDataSet(dataset3)
-                    lineData.addDataSet(dataset4)
-                    lineData.addDataSet(dataset5)
+//                    lineData.addDataSet(dataset2)
+//                    lineData.addDataSet(dataset3)
+//                    lineData.addDataSet(dataset4)
+//                    lineData.addDataSet(dataset5)
                     lineChart.data = lineData
                     lineChart.setTouchEnabled(false)
                     lineChart.legend.isEnabled = false
@@ -156,14 +156,16 @@ fun PresbyopiaTestResultContent(
             Text(
                 modifier = Modifier
                     .padding(start = 40.dp, top = 230.dp),
-                text = StringProvider.getString(R.string.result_screen_age),
-                fontSize = 20.sp
+                text = StringProvider.getString(R.string.result_screen_distance) + "\n(cm)",
+                fontSize = 20.sp,
+                textAlign = TextAlign.Center
             )
             Text(
                 modifier = Modifier
                     .padding(start = 380.dp, top = 430.dp),
-                text = StringProvider.getString(R.string.result_screen_distance) + "(cm)",
-                fontSize = 20.sp
+                text = StringProvider.getString(R.string.result_screen_age),
+                fontSize = 20.sp,
+                textAlign = TextAlign.Center
             )
         }
         Box(

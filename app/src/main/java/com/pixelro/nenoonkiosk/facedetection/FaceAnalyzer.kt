@@ -48,15 +48,15 @@ class MyFaceAnalyzer(
         }
 
         // resized image
-        val bitmap = imageProxy.toBitmap()
-        val resizedBitmap = Bitmap.createScaledBitmap(bitmap, bitmap.width * 2, bitmap.height * 2, false)
-        val croppedBitmap = Bitmap.createBitmap(resizedBitmap, resizedBitmap.width / 4, resizedBitmap.height / 4, resizedBitmap.width / 2, resizedBitmap.height / 2)
+//        val bitmap = imageProxy.toBitmap()
+//        val resizedBitmap = Bitmap.createScaledBitmap(bitmap, bitmap.width * 2, bitmap.height * 2, false)
+//        val croppedBitmap = Bitmap.createBitmap(resizedBitmap, resizedBitmap.width / 4, resizedBitmap.height / 4, resizedBitmap.width / 2, resizedBitmap.height / 2)
 //        val imageReader = ImageReader.newInstance(resizedBitmap.width, resizedBitmap.height, ImageFormat.YUV_420_888, 1)
 //        val resizedImage = imageReader.acquireLatestImage()
-        val inputResizedImage = InputImage.fromBitmap(croppedBitmap, imageProxy.imageInfo.rotationDegrees)
-        Log.e("analyze", "analyze")
+//        val inputResizedImage = InputImage.fromBitmap(croppedBitmap, imageProxy.imageInfo.rotationDegrees)
+//        Log.e("analyze", "analyze")
         if (image != null) {
-            detector.process(inputResizedImage).addOnSuccessListener { faces ->
+            detector.process(image).addOnSuccessListener { faces ->
                 for (face in faces) {
 //                        val bounds = face.boundingBox
                     val rotX = face.headEulerAngleX

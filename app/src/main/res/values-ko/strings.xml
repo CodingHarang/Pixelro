@@ -60,8 +60,8 @@
     <string name="visual_acuity_test_common_content_green">초록</string>
     <string name="visual_acuity_test_common_content_red">빨강</string>
     <string name="visual_acuity_test_common_content_signtedness_description">글자가 더 잘 보이는 쪽을 고르세요.</string>
-    <string name="visual_acuity_test_common_content_both_negative">둘 다 안보인다</string>
-    <string name="visual_acuity_test_common_content_both_positive">둘 다 잘 보인다</string>
+    <string name="visual_acuity_test_common_content_both_negative">모두 안보인다</string>
+    <string name="visual_acuity_test_common_content_both_positive">모두 잘 보인다</string>
     <string name="amsler_grid_test_content_done">완료</string>
     <string name="mchart_test_content_straight">곧은 선</string>
     <string name="mchart_test_content_bent">휘어진 선</string>
@@ -101,4 +101,6 @@
     <string name="children_visual_acuity_test_order_result">왼쪽, 오른쪽 눈의 시력을 확인할 수 있습니다.</string>
     <string name="amsler_grid_test_order_result">왼쪽, 오른쪽 눈에 이상이 있는지 확인할 수 있습니다.</string>
     <string name="mchart_test_order_result">왼쪽, 오른쪽 눈에 이상이 있는지 확인할 수 있습니다.</string>
+    <string name="splash_description">시력 검사 및 눈 관리 솔루션</string>
+    <string name="splash_app_name">내눈</string>
 </resources>

@@ -2,6 +2,8 @@ package com.pixelro.nenoonkiosk
 
 import android.Manifest
 import android.app.Application
+import android.bluetooth.BluetoothAdapter
+import android.bluetooth.BluetoothManager
 import android.content.Context
 import android.content.IntentSender
 import android.content.pm.PackageManager
@@ -46,7 +48,6 @@ import kotlin.math.roundToInt
 class NenoonViewModel(application: Application) : AndroidViewModel(application) {
 
 
-
     private fun checkBackgroundStatus() {
         viewModelScope.launch {
             while(true) {
@@ -60,6 +61,7 @@ class NenoonViewModel(application: Application) : AndroidViewModel(application) 
                     // Check permissions
                     checkPermissions()
                     checkIsLocationOn()
+                    checkIsBluetoothOn()
                 }
                 delay(1000)
             }
@@ -308,6 +310,8 @@ class NenoonViewModel(application: Application) : AndroidViewModel(application) 
     val isAllPermissionsGranted: StateFlow<Boolean> = _isAllPermissionsGranted
     private val _isLocationOn = MutableStateFlow(false)
     val isLocationOn: StateFlow<Boolean> = _isLocationOn
+    private val _isBluetoothOn = MutableStateFlow(false)
+    val isBlueToothOn: StateFlow<Boolean> = _isBluetoothOn
     private val _resolvableApiException = MutableStateFlow(ResolvableApiException(Status.RESULT_CANCELED))
     val resolvableApiException: StateFlow<ResolvableApiException> = _resolvableApiException
 
@@ -340,7 +344,7 @@ class NenoonViewModel(application: Application) : AndroidViewModel(application) 
 //            Log.e("checkPermission", "Settings Permission not Granted")
         }
 
-        if(isBluetoothPermissionsGranted.value && isCameraPermissionGranted.value && isWriteSettingsPermissionGranted.value && isLocationOn.value) {
+        if(_isBluetoothPermissionsGranted.value && _isCameraPermissionGranted.value && _isWriteSettingsPermissionGranted.value && _isLocationOn.value && _isBluetoothOn.value) {
             _isAllPermissionsGranted.update { true }
         } else {
             _isAllPermissionsGranted.update { false }
@@ -384,6 +388,15 @@ class NenoonViewModel(application: Application) : AndroidViewModel(application) 
         }
     }
 
+    private fun checkIsBluetoothOn() {
+        val bluetoothAdapter = (getApplication<Application>().getSystemService(Context.BLUETOOTH_SERVICE) as BluetoothManager).adapter
+        if(bluetoothAdapter.isEnabled) {
+            _isBluetoothOn.update { true }
+        } else {
+            _isBluetoothOn.update { false }
+        }
+    }
+
     // Global
     private val _isShowingSplashScreen = MutableStateFlow(true)
     val isShowingSplashScreen: StateFlow<Boolean> = _isShowingSplashScreen
@@ -400,7 +413,7 @@ class NenoonViewModel(application: Application) : AndroidViewModel(application) 
 
     private fun showSplashScreen() {
         viewModelScope.launch {
-            delay(3000)
+            delay(5000)
             _isShowingSplashScreen.update { false }
         }
     }
@@ -486,7 +499,7 @@ class NenoonViewModel(application: Application) : AndroidViewModel(application) 
             (firstDistance.value + secondDistance.value + thirdDistance.value) / 3
         }
         _printString.update {
-            "조절력: ${(avgDistance.value).roundToInt().toFloat() / 10}cm"
+            "조절근점: ${(avgDistance.value).roundToInt().toFloat() / 10}cm"
         }
     }
 
@@ -651,8 +664,8 @@ class NenoonViewModel(application: Application) : AndroidViewModel(application) 
                 VisionDisorderType.Hyperopia -> "원시"
                 else -> "난시"
             }
-            "좌안 시력: ${_leftEyeSightValue.value.toFloat() / 10} $leftEyeSighted," +
-            "우안 시력: ${_rightEyeSightValue.value.toFloat() / 10} $rightEyeSighted"
+            "${_leftEyeSightValue.value.toFloat() / 10} $leftEyeSighted," +
+            "${_rightEyeSightValue.value.toFloat() / 10} $rightEyeSighted"
         }
     }
 
@@ -695,11 +708,19 @@ class NenoonViewModel(application: Application) : AndroidViewModel(application) 
     fun updateLeftSelectedArea() {
         _leftSelectedArea.update { currentSelectedArea.value }
         _currentSelectedArea.update { listOf(false, false, false, false, false, false, false, false, false) }
+        _printString.update {
+            _leftSelectedArea.value.toString()
+        }
+        Log.e("updateLeftSelectedArea", "${_printString.value}")
     }
 
     fun updateRightSelectedArea() {
         _rightSelectedArea.update { currentSelectedArea.value }
         _currentSelectedArea.update { listOf(false, false, false, false, false, false, false, false, false) }
+        _printString.update {
+            (it + _rightSelectedArea.value.toString()).replace("][", ",").replace("[", "").replace("]", "").replace(" ", "")
+        }
+        Log.e("updateLeftSelectedArea", "${_printString.value}")
     }
 
     fun initializeAmslerGridTest() {
@@ -777,7 +798,12 @@ class NenoonViewModel(application: Application) : AndroidViewModel(application) 
                 list
             }
         }
-        Log.e("updateMChartResult", "${mChartResult.value}")
+        if(_mChartResult.value.size == 4) {
+            _printString.update {
+                _mChartResult.value.toString().replace("[", "").replace("]", "").replace(" ", "")
+            }
+        }
+        Log.e("updateMChartResult", "${_printString.value}")
     }
 
     fun updateIsVertical(isVertical: Boolean) {

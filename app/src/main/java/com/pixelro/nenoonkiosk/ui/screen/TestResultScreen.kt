@@ -17,12 +17,16 @@ import android.graphics.Typeface
 import android.util.Log
 import android.widget.Toast
 import androidx.activity.compose.BackHandler
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material.Button
+import androidx.compose.material.ButtonColors
+import androidx.compose.material.ButtonDefaults
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.DisposableEffect
@@ -136,6 +140,8 @@ fun TestResultScreen(
     }
 
     Column(
+        modifier = Modifier
+            .fillMaxSize(),
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
         val printString = viewModel.printString.collectAsState().value
@@ -205,44 +211,66 @@ fun TestResultScreen(
             modifier = Modifier
                 .height(20.dp)
         )
-        Button(
+        Box(
             modifier = Modifier
-                .fillMaxWidth()
-                .padding(start = 80.dp, end = 80.dp),
-            onClick = {
-                composableScope.launch {
-                    bluetoothAdapter.startDiscovery()
-                    Log.e("onClick", "${bluetoothAdapter.hashCode()}, ${bluetoothAdapter.isEnabled} ${bluetoothAdapter.isDiscovering} ${bluetoothAdapter.state}")
-                    printResult(
-                        testType = testType,
-                        printString = printString
+                .fillMaxSize(),
+            contentAlignment = Alignment.BottomCenter
+        ) {
+            Column(
+                modifier = Modifier
+                    .fillMaxWidth(),
+                horizontalAlignment = Alignment.CenterHorizontally
+            ) {
+                Button(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(start = 80.dp, end = 80.dp),
+                    onClick = {
+                        composableScope.launch {
+                            bluetoothAdapter.startDiscovery()
+                            Log.e("onClick", "${bluetoothAdapter.hashCode()}, ${bluetoothAdapter.isEnabled} ${bluetoothAdapter.isDiscovering} ${bluetoothAdapter.state}")
+                            printResult(
+                                testType = testType,
+                                printString = printString
+                            )
+                        }
+                    },
+                    colors = ButtonDefaults.buttonColors(
+                        backgroundColor = Color(0xff1d71e1)
+                    )
+                ) {
+                    Text(
+                        text = StringProvider.getString(R.string.result_screen_print),
+                        color = Color(0xffffffff),
+                        fontSize = 30.sp
                     )
                 }
+                Spacer(
+                    modifier = Modifier
+                        .height(20.dp)
+                )
+                Button(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(start = 80.dp, end = 80.dp),
+                    onClick = {
+                        navController.popBackStack(GlobalConstants.ROUTE_TEST_LIST, false)
+                    },
+                    colors = ButtonDefaults.buttonColors(
+                        backgroundColor = Color(0xff1d71e1)
+                    )
+                ) {
+                    Text(
+                        text = StringProvider.getString(R.string.result_screen_go_back),
+                        color = Color(0xffffffff),
+                        fontSize = 30.sp
+                    )
+                }
+                Spacer(
+                    modifier = Modifier
+                        .height(40.dp)
+                )
             }
-        ) {
-            Text(
-                text = StringProvider.getString(R.string.result_screen_print),
-                color = Color(0xffffffff),
-                fontSize = 30.sp
-            )
-        }
-        Spacer(
-            modifier = Modifier
-                .height(20.dp)
-        )
-        Button(
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(start = 80.dp, end = 80.dp),
-            onClick = {
-                navController.popBackStack(GlobalConstants.ROUTE_TEST_LIST, false)
-            }
-        ) {
-            Text(
-                text = StringProvider.getString(R.string.result_screen_go_back),
-                color = Color(0xffffffff),
-                fontSize = 30.sp
-            )
         }
     }
 }
@@ -277,7 +305,7 @@ fun textAsBitmap(
             canvas.drawText("조절력 검사", 300f, baseline, paint)
 
             paint.typeface = Typeface.DEFAULT_BOLD
-            canvas.drawText("조절근점: 30cm", 300f, baseline + 160f, paint)
+            canvas.drawText(printString, 300f, baseline + 160f, paint)
             paint.typeface = Typeface.DEFAULT
 
             paint.textAlign = Paint.Align.LEFT
@@ -298,8 +326,8 @@ fun textAsBitmap(
             canvas.drawText("우안", 450f, baseline + 60f, paint)
 
             paint.typeface = Typeface.DEFAULT_BOLD
-            canvas.drawText("0.6 난시", 150f, baseline + 190f, paint)
-            canvas.drawText("1.0 정상", 450f, baseline + 190f, paint)
+            canvas.drawText(printString.split(",")[0], 150f, baseline + 190f, paint)
+            canvas.drawText(printString.split(",")[1], 450f, baseline + 190f, paint)
             paint.typeface = Typeface.DEFAULT
 
             paint.textAlign = Paint.Align.LEFT
@@ -391,8 +419,62 @@ fun textAsBitmap(
 
             paint.style = Paint.Style.FILL
             paint.typeface = Typeface.DEFAULT_BOLD
-            canvas.drawText("이상", 70f, baseline + 160f, paint)
-            canvas.drawText("이상", 450f, baseline + 320f, paint)
+            if(printString.split(",")[0] == "true") {
+                canvas.drawText("이상", 70f, baseline + 160f, paint)
+            }
+            if(printString.split(",")[1] == "true") {
+                canvas.drawText("이상", 150f, baseline + 160f, paint)
+            }
+            if(printString.split(",")[2] == "true") {
+                canvas.drawText("이상", 230f, baseline + 160f, paint)
+            }
+            if(printString.split(",")[3] == "true") {
+                canvas.drawText("이상", 70f, baseline + 240f, paint)
+            }
+            if(printString.split(",")[4] == "true") {
+                canvas.drawText("이상", 150f, baseline + 240f, paint)
+            }
+            if(printString.split(",")[5] == "true") {
+                canvas.drawText("이상", 230f, baseline + 240f, paint)
+            }
+            if(printString.split(",")[6] == "true") {
+                canvas.drawText("이상", 70f, baseline + 320f, paint)
+            }
+            if(printString.split(",")[7] == "true") {
+                canvas.drawText("이상", 150f, baseline + 320f, paint)
+            }
+            if(printString.split(",")[8] == "true") {
+                canvas.drawText("이상", 230f, baseline + 320f, paint)
+            }
+
+            if(printString.split(",")[9] == "true") {
+                canvas.drawText("이상", 370f, baseline + 160f, paint)
+            }
+            if(printString.split(",")[10] == "true") {
+                canvas.drawText("이상", 450f, baseline + 160f, paint)
+            }
+            if(printString.split(",")[11] == "true") {
+                canvas.drawText("이상", 530f, baseline + 160f, paint)
+            }
+            if(printString.split(",")[12] == "true") {
+                canvas.drawText("이상", 370f, baseline + 240f, paint)
+            }
+            if(printString.split(",")[13] == "true") {
+                canvas.drawText("이상", 450f, baseline + 240f, paint)
+            }
+            if(printString.split(",")[14] == "true") {
+                canvas.drawText("이상", 530f, baseline + 240f, paint)
+            }
+            if(printString.split(",")[15] == "true") {
+                canvas.drawText("이상", 370f, baseline + 320f, paint)
+            }
+            if(printString.split(",")[16] == "true") {
+                canvas.drawText("이상", 450f, baseline + 320f, paint)
+            }
+            if(printString.split(",")[17] == "true") {
+                canvas.drawText("이상", 530f, baseline + 320f, paint)
+            }
+//            canvas.drawText("이상", 450f, baseline + 320f, paint)
             paint.typeface = Typeface.DEFAULT
 
             paint.textAlign = Paint.Align.LEFT
@@ -415,10 +497,22 @@ fun textAsBitmap(
             canvas.drawText("우안", 450f, baseline + 60f, paint)
 
             paint.typeface = Typeface.DEFAULT_BOLD
-            canvas.drawText("수직: 정상", 150f, baseline + 170f, paint)
-            canvas.drawText("수평: 정상", 150f, baseline + 210f, paint)
-            canvas.drawText("수직: 이상", 450f, baseline + 170f, paint)
-            canvas.drawText("수평: 정상", 450f, baseline + 210f, paint)
+            canvas.drawText(when(printString.split(",")[0]) {
+                                "0" -> "수평: 정상"
+                                else -> "수평: 이상"
+                            }, 150f, baseline + 170f, paint)
+            canvas.drawText(when(printString.split(",")[1]) {
+                                "0" -> "수평: 정상"
+                                else -> "수평: 이상"
+                            }, 150f, baseline + 210f, paint)
+            canvas.drawText(when(printString.split(",")[2]) {
+                                "0" -> "수평: 정상"
+                                else -> "수평: 이상"
+                            }, 450f, baseline + 170f, paint)
+            canvas.drawText(when(printString.split(",")[3]) {
+                                "0" -> "수평: 정상"
+                                else -> "수평: 이상"
+                            }, 450f, baseline + 210f, paint)
             paint.typeface = Typeface.DEFAULT
 
             paint.textAlign = Paint.Align.LEFT
