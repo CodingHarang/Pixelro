@@ -55,7 +55,7 @@ class MainActivity : ComponentActivity() {
     }
 
     override fun onResume() {
-        Log.e("onResume", "Resumed")
+//        Log.e("onResume", "Resumed")
         super.onResume()
         viewModel.updateToResumed()
         viewModel.resetScreenSaverTimer()

@@ -57,127 +57,122 @@ fun NenoonApp(
 //                Settings.System.putInt(context.contentResolver, Settings.System.SCREEN_OFF_TIMEOUT, 3600_000)
 //                onDispose {  }
 //            }
-                Column(
+                AnimatedNavHost(
                     modifier = Modifier
-                        .fillMaxSize()
+                        .fillMaxSize(),
+                    navController = mainNavController,
+                    startDestination = GlobalConstants.ROUTE_TEST_LIST,
+                    contentAlignment = Alignment.TopCenter
                 ) {
-                    AnimatedNavHost(
-                        modifier = Modifier
-                            .fillMaxSize(),
-                        navController = mainNavController,
-                        startDestination = GlobalConstants.ROUTE_TEST_LIST,
-                        contentAlignment = Alignment.TopCenter
+                    // 검사 선택 화면
+                    composable(
+                        route = GlobalConstants.ROUTE_TEST_LIST,
+                        enterTransition = { AnimationProvider.enterTransition },
+                        exitTransition = { AnimationProvider.exitTransition }
                     ) {
-                        // 검사 선택 화면
-                        composable(
-                            route = GlobalConstants.ROUTE_TEST_LIST,
-                            enterTransition = { AnimationProvider.enterTransition },
-                            exitTransition = { AnimationProvider.exitTransition }
-                        ) {
-                            TestListScreen(
-                                toPreDescriptionScreen = { mainNavController.navigate(GlobalConstants.ROUTE_TEST_PRE_DESCRIPTION) },
-                                toSettingsScreen = { mainNavController.navigate(GlobalConstants.ROUTE_SETTINGS) },
-                                navController = subNavController,
-                                viewModel = viewModel
-                            )
-                        }
+                        TestListScreen(
+                            toPreDescriptionScreen = { mainNavController.navigate(GlobalConstants.ROUTE_TEST_PRE_DESCRIPTION) },
+                            toSettingsScreen = { mainNavController.navigate(GlobalConstants.ROUTE_SETTINGS) },
+                            navController = subNavController,
+                            viewModel = viewModel
+                        )
+                    }
 
-                        // 설정 화면
-                        composable(
-                            route = GlobalConstants.ROUTE_SETTINGS,
-                            enterTransition = { AnimationProvider.enterTransition },
-                            exitTransition = { AnimationProvider.exitTransition }
-                        ) {
-                            SettingsScreen(
-                                viewModel = viewModel
-                            )
-                        }
+                    // 설정 화면
+                    composable(
+                        route = GlobalConstants.ROUTE_SETTINGS,
+                        enterTransition = { AnimationProvider.enterTransition },
+                        exitTransition = { AnimationProvider.exitTransition }
+                    ) {
+                        SettingsScreen(
+                            viewModel = viewModel
+                        )
+                    }
 
-                        // 검사 사전 설명 화면
-                        composable(
-                            route = GlobalConstants.ROUTE_TEST_PRE_DESCRIPTION,
-                            enterTransition = { AnimationProvider.enterTransition },
-                            exitTransition = { AnimationProvider.exitTransition }
-                        ) {
-                            TestPreDescriptionScreen(
-                                viewModel,
-                                mainNavController
-                            )
-                        }
+                    // 검사 사전 설명 화면
+                    composable(
+                        route = GlobalConstants.ROUTE_TEST_PRE_DESCRIPTION,
+                        enterTransition = { AnimationProvider.enterTransition },
+                        exitTransition = { AnimationProvider.exitTransition }
+                    ) {
+                        TestPreDescriptionScreen(
+                            viewModel,
+                            mainNavController
+                        )
+                    }
 
-                        // 검사 화면
-                        composable(
-                            route = GlobalConstants.ROUTE_TEST_CONTENT,
-                            enterTransition = { AnimationProvider.enterTransition },
-                            exitTransition = { AnimationProvider.exitTransition }
-                        ) {
-                            EyeTestScreen(
-                                viewModel = viewModel,
-                                content = {
-                                    when(selectedTest) {
-                                        TestType.Presbyopia -> {
-                                            viewModel.initializePresbyopiaTest()
-                                            PresbyopiaTestContent(
-                                                toResultScreen = { mainNavController.navigate(GlobalConstants.ROUTE_TEST_RESULT) },
-                                                viewModel = viewModel
-                                            )
-                                        }
-                                        TestType.ShortDistanceVisualAcuity -> {
-                                            viewModel.initializeVisualAcuityTest()
-                                            ShortDistanceVisualAcuityTestContent(
-                                                toResultScreen = { mainNavController.navigate(GlobalConstants.ROUTE_TEST_RESULT) },
-                                                viewModel = viewModel
-                                            )
-                                        }
-                                        TestType.LongDistanceVisualAcuity -> {
-                                            viewModel.initializeVisualAcuityTest()
-                                            LongDistanceVisualAcuityTestContent(
-                                                toResultScreen = { mainNavController.navigate(GlobalConstants.ROUTE_TEST_RESULT) },
-                                                viewModel = viewModel
-                                            )
-                                        }
-                                        TestType.ChildrenVisualAcuity -> {
-                                            viewModel.initializeVisualAcuityTest()
-                                            ChildrenVisualAcuityTestContent(
-                                                toResultScreen = { mainNavController.navigate(GlobalConstants.ROUTE_TEST_RESULT) },
-                                                viewModel = viewModel
-                                            )
-                                        }
-                                        TestType.AmslerGrid -> {
-                                            viewModel.initializeAmslerGridTest()
-                                            AmslerGridTestContent(
-                                                toResultScreen = { mainNavController.navigate(GlobalConstants.ROUTE_TEST_RESULT) },
-                                                viewModel = viewModel
-                                            )
-                                        }
-                                        TestType.MChart -> {
-                                            viewModel.initializeMChartTest()
-                                            MChartTestContent(
-                                                toResultScreen = { mainNavController.navigate(GlobalConstants.ROUTE_TEST_RESULT) },
-                                                viewModel = viewModel
-                                            )
-                                        }
-                                        else -> {
-                                            Box() {
+                    // 검사 화면
+                    composable(
+                        route = GlobalConstants.ROUTE_TEST_CONTENT,
+                        enterTransition = { AnimationProvider.enterTransition },
+                        exitTransition = { AnimationProvider.exitTransition }
+                    ) {
+                        EyeTestScreen(
+                            viewModel = viewModel,
+                            content = {
+                                when(selectedTest) {
+                                    TestType.Presbyopia -> {
+                                        viewModel.initializePresbyopiaTest()
+                                        PresbyopiaTestContent(
+                                            toResultScreen = { mainNavController.navigate(GlobalConstants.ROUTE_TEST_RESULT) },
+                                            viewModel = viewModel
+                                        )
+                                    }
+                                    TestType.ShortDistanceVisualAcuity -> {
+                                        viewModel.initializeVisualAcuityTest()
+                                        ShortDistanceVisualAcuityTestContent(
+                                            toResultScreen = { mainNavController.navigate(GlobalConstants.ROUTE_TEST_RESULT) },
+                                            viewModel = viewModel
+                                        )
+                                    }
+                                    TestType.LongDistanceVisualAcuity -> {
+                                        viewModel.initializeVisualAcuityTest()
+                                        LongDistanceVisualAcuityTestContent(
+                                            toResultScreen = { mainNavController.navigate(GlobalConstants.ROUTE_TEST_RESULT) },
+                                            viewModel = viewModel
+                                        )
+                                    }
+                                    TestType.ChildrenVisualAcuity -> {
+                                        viewModel.initializeVisualAcuityTest()
+                                        ChildrenVisualAcuityTestContent(
+                                            toResultScreen = { mainNavController.navigate(GlobalConstants.ROUTE_TEST_RESULT) },
+                                            viewModel = viewModel
+                                        )
+                                    }
+                                    TestType.AmslerGrid -> {
+                                        viewModel.initializeAmslerGridTest()
+                                        AmslerGridTestContent(
+                                            toResultScreen = { mainNavController.navigate(GlobalConstants.ROUTE_TEST_RESULT) },
+                                            viewModel = viewModel
+                                        )
+                                    }
+                                    TestType.MChart -> {
+                                        viewModel.initializeMChartTest()
+                                        MChartTestContent(
+                                            toResultScreen = { mainNavController.navigate(GlobalConstants.ROUTE_TEST_RESULT) },
+                                            viewModel = viewModel
+                                        )
+                                    }
+                                    else -> {
+                                        Box() {
 
-                                            }
                                         }
                                     }
                                 }
-                            )
-                        }
+                            }
+                        )
+                    }
 
-                        // 검사 결과 화면
-                        composable(
-                            route = GlobalConstants.ROUTE_TEST_RESULT,
-                            enterTransition = { AnimationProvider.enterTransition },
-                            exitTransition = { AnimationProvider.exitTransition }
-                        ) {
-                            TestResultScreen(
-                                viewModel = viewModel,
-                                navController = mainNavController
-                            )
-                        }
+                    // 검사 결과 화면
+                    composable(
+                        route = GlobalConstants.ROUTE_TEST_RESULT,
+                        enterTransition = { AnimationProvider.enterTransition },
+                        exitTransition = { AnimationProvider.exitTransition }
+                    ) {
+                        TestResultScreen(
+                            viewModel = viewModel,
+                            navController = mainNavController
+                        )
                     }
                 }
             }

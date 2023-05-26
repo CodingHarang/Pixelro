@@ -1,6 +1,7 @@
 package com.pixelro.nenoonkiosk.ui.screen
 
 import androidx.compose.animation.*
+import androidx.compose.animation.core.tween
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
@@ -13,6 +14,7 @@ import androidx.compose.material.Text
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -28,6 +30,8 @@ import com.pixelro.nenoonkiosk.NenoonViewModel
 import com.pixelro.nenoonkiosk.R
 import com.pixelro.nenoonkiosk.data.StringProvider
 import com.pixelro.nenoonkiosk.ui.testlist.TestListContent
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.yield
 
 
 @OptIn(ExperimentalFoundationApi::class)
@@ -38,8 +42,22 @@ fun TestListScreen(
     navController: NavHostController,
     viewModel: NenoonViewModel
 ) {
+    val pagerState = rememberPagerState(
+        initialPage = 50000
+    )
+    LaunchedEffect(true) {
+        while(true) {
+//            yield()
+            delay(2000)
+            pagerState.animateScrollToPage(
+                page = (pagerState.currentPage + 1),
+                animationSpec = tween(600)
+            )
+        }
+    }
     Column(
-        modifier = Modifier.background(
+        modifier = Modifier
+            .background(
                 color = Color(0xffffffff)
             )
     ) {
@@ -49,8 +67,7 @@ fun TestListScreen(
         Row(
             modifier = Modifier
                 .fillMaxWidth()
-                .height(100.dp)
-                .padding(end = 20.dp),
+                .height(100.dp),
             horizontalArrangement = Arrangement.End,
             verticalAlignment = Alignment.CenterVertically
         ) {
@@ -68,15 +85,19 @@ fun TestListScreen(
                 modifier = Modifier.width(20.dp)
             )
             Text(
+                modifier = Modifier
+                    .padding(end = 20.dp),
                 text = "Pixelro",
                 fontSize = 30.sp
             )
         }
         HorizontalPager(
-            state = rememberPagerState(
-                initialPage = 500000
-            ),
-            pageCount = 1000000,
+            contentPadding = PaddingValues(20.dp),
+//            modifier = Modifier
+//                .padding(20.dp),
+            pageSpacing = 20.dp,
+            state = pagerState,
+            pageCount = 100000,
         ) {
             Advertisement()
         }
@@ -117,7 +138,8 @@ fun TestListScreen(
                 }
             },
             modifier = Modifier
-                .padding(20.dp)
+                .fillMaxWidth()
+                .padding(start = 20.dp, end = 20.dp)
         )
     }
 }
@@ -125,11 +147,11 @@ fun TestListScreen(
 @Composable
 fun Advertisement() {
     Card(
-        elevation = CardDefaults.cardElevation(16.dp),
         modifier = Modifier
             .fillMaxWidth()
-            .height(300.dp)
-            .padding(20.dp),
+            .height(300.dp),
+//            .padding(20.dp),
+        elevation = CardDefaults.cardElevation(16.dp),
         colors = CardDefaults.cardColors(
             containerColor = Color(0xffffffff)
         ),

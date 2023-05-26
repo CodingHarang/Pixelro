@@ -35,6 +35,7 @@ import com.google.android.gms.location.LocationSettingsRequest
 import com.google.android.gms.location.LocationSettingsResponse
 import com.google.android.gms.location.SettingsClient
 import com.google.android.gms.tasks.Task
+import com.pixelro.nenoonkiosk.data.SharedPreferencesManager
 import com.pixelro.nenoonkiosk.data.StringProvider
 import com.pixelro.nenoonkiosk.data.TestType
 import com.pixelro.nenoonkiosk.data.VisionDisorderType
@@ -43,19 +44,18 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
+import java.util.Locale
 import kotlin.math.roundToInt
 
 class NenoonViewModel(application: Application) : AndroidViewModel(application) {
-
 
     private fun checkBackgroundStatus() {
         viewModelScope.launch {
             while(true) {
                 if(_isResumed.value) {
                     // Check screen saver timer
-//                    Log.e("viewModelScope", "${screenSaverTimer.value}")
-                    _screenSaverTimer.update { screenSaverTimer.value - 0 }
-                    if(screenSaverTimer.value < 0) {
+                    _screenSaverTimer.update { _screenSaverTimer.value - 0 }
+                    if(_screenSaverTimer.value < 0) {
                         _isScreenSaverOn.update { true }
                     }
                     // Check permissions
@@ -72,8 +72,15 @@ class NenoonViewModel(application: Application) : AndroidViewModel(application) 
     private val _isLanguageSelectDialogShowing = MutableStateFlow(false)
     val isLanguageSelectDialogShowing: StateFlow<Boolean> = _isLanguageSelectDialogShowing
 
+
     fun updateIsLanguageSelectDialogShowing(isShowing: Boolean) {
         _isLanguageSelectDialogShowing.update { isShowing }
+    }
+
+    fun updateLanguage(language: String) {
+        SharedPreferencesManager.putString("language", language)
+        getApplication<Application>().applicationContext.resources.configuration.setLocale(Locale(language))
+        _isLanguageSelectDialogShowing.update { false }
     }
 
     // Screen Saver
@@ -81,7 +88,7 @@ class NenoonViewModel(application: Application) : AndroidViewModel(application) 
     private val _isPaused = MutableStateFlow(false)
     val exoPlayer = ExoPlayer.Builder(application.applicationContext).build()
     private val _screenSaverTimer = MutableStateFlow(10)
-    val screenSaverTimer: StateFlow<Int> = _screenSaverTimer
+//    val screenSaverTimer: StateFlow<Int> = _screenSaverTimer
     private val _isScreenSaverOn = MutableStateFlow(false)
     val isScreenSaverOn: StateFlow<Boolean> = _isScreenSaverOn
 
@@ -413,7 +420,7 @@ class NenoonViewModel(application: Application) : AndroidViewModel(application) 
 
     private fun showSplashScreen() {
         viewModelScope.launch {
-            delay(5000)
+            delay(1000)
             _isShowingSplashScreen.update { false }
         }
     }

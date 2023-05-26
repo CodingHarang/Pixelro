@@ -40,8 +40,8 @@ fun SettingsScreen(
     val isLanguageSelectDialogShowing = viewModel.isLanguageSelectDialogShowing
     if(isLanguageSelectDialogShowing.collectAsState().value) {
         LanguageSelectDialog(
-            isLanguageSelectDialogShowing = {
-                viewModel.updateIsLanguageSelectDialogShowing(it)
+            updateLanguage = {
+                viewModel.updateLanguage(it)
             }
         ) {
             viewModel.updateIsLanguageSelectDialogShowing(false)
@@ -66,9 +66,9 @@ fun SettingsScreen(
         Spacer(
             modifier = Modifier
                 .fillMaxWidth()
-                .height(1.dp)
+                .height(2.dp)
                 .background(
-                    color = Color(0xffcccccc)
+                    color = Color(0xffdddddd)
                 )
         )
         Box(
@@ -90,7 +90,7 @@ fun SettingsScreen(
                 .fillMaxWidth()
                 .height(1.dp)
                 .background(
-                    color = Color(0xffcccccc)
+                    color = Color(0xffdddddd)
                 )
         )
         Box(
@@ -112,7 +112,7 @@ fun SettingsScreen(
                 .fillMaxWidth()
                 .height(1.dp)
                 .background(
-                    color = Color(0xffcccccc)
+                    color = Color(0xffdddddd)
                 )
         )
     }
@@ -120,7 +120,7 @@ fun SettingsScreen(
 
 @Composable
 fun LanguageSelectDialog(
-    isLanguageSelectDialogShowing: (Boolean) -> Unit,
+    updateLanguage: (String) -> Unit,
     onDismissRequest: () -> Unit
 ) {
     Dialog(
@@ -147,17 +147,15 @@ fun LanguageSelectDialog(
             Spacer(
                 modifier = Modifier
                     .fillMaxWidth()
-                    .height(1.dp)
+                    .height(2.dp)
                     .background(
-                        color = Color(0xffcccccc)
+                        color = Color(0xffdddddd)
                     )
             )
             Box(
                 modifier = Modifier
                     .clickable {
-                        SharedPreferencesManager.putString("language", "ko")
-                        NenoonKioskApplication.applicationContext().resources.configuration.setLocale(Locale("ko"))
-                        isLanguageSelectDialogShowing(false)
+                        updateLanguage("ko")
                     }
             ) {
                 Text(
@@ -173,15 +171,13 @@ fun LanguageSelectDialog(
                     .fillMaxWidth()
                     .height(1.dp)
                     .background(
-                        color = Color(0xffcccccc)
+                        color = Color(0xffdddddd)
                     )
             )
             Box(
                 modifier = Modifier
                     .clickable {
-                        SharedPreferencesManager.putString("language", "en")
-                        NenoonKioskApplication.applicationContext().resources.configuration.setLocale(Locale("en"))
-                        isLanguageSelectDialogShowing(false)
+                        updateLanguage("en")
                     }
             ) {
                 Text(
@@ -197,7 +193,7 @@ fun LanguageSelectDialog(
                     .fillMaxWidth()
                     .height(1.dp)
                     .background(
-                        color = Color(0xffcccccc)
+                        color = Color(0xffdddddd)
                     )
             )
         }
