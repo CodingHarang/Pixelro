@@ -23,6 +23,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.IntOffset
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
@@ -30,6 +31,7 @@ import com.pixelro.nenoonkiosk.NenoonViewModel
 import com.pixelro.nenoonkiosk.R
 import com.pixelro.nenoonkiosk.data.AnimationProvider
 import com.pixelro.nenoonkiosk.data.StringProvider
+import com.pixelro.nenoonkiosk.ui.screen.textAsBitmap
 import java.util.*
 import kotlin.math.roundToInt
 
@@ -41,15 +43,23 @@ fun PresbyopiaTestContent(
     val firstVisibleState = viewModel.firstItemVisibleState
     val secondVisibleState = viewModel.secondItemVisibleState
     val thirdVisibleState = viewModel.thirdItemVisibleState
-
+    Text(
+        modifier = Modifier
+            .padding(top = 100.dp),
+        text = "멀리서 점점 가까이 오다가 시표가\n흐릿해지는 지점에서 멈추고 버튼을 누르세요",
+        color = Color(0xffffffff),
+        fontSize = 28.sp,
+        textAlign = TextAlign.Center
+    )
     Box(
         contentAlignment = Alignment.Center,
         modifier = Modifier
+            .padding(top = 120.dp)
             .height(400.dp)
             .width(400.dp)
             .background(
                 color = Color(0xffffffff),
-                shape = RoundedCornerShape(16.dp)
+                shape = RoundedCornerShape(8.dp)
             )
     ) {
         PresbyopiaFirstPage(
@@ -70,28 +80,51 @@ fun PresbyopiaTestContent(
     }
     Text(
         modifier = Modifier
-            .padding(top = 20.dp),
-        text = StringProvider.getString(R.string.test_screen_current_distance) + "${(viewModel.screenToFaceDistance.collectAsState().value / 10).roundToInt()}cm",
-        fontSize = 30.sp,
+            .padding(top = 80.dp),
+        text = StringProvider.getString(R.string.test_screen_current_distance),
+        fontSize = 20.sp,
         color = Color(0xffffffff)
     )
-    Image(
-        modifier = Modifier
-            .height(256.dp)
-            .clickable {
-                if (firstVisibleState.currentState) {
-                    viewModel.updateFirstDistance()
-
-                } else if (secondVisibleState.currentState) {
-                    viewModel.updateSecondDistance()
-                } else {
-                    viewModel.updateThirdDistance()
-                    toResultScreen()
-                }
-            },
-        painter = painterResource(id = R.drawable.baseline_check_circle_48),
-        contentDescription = ""
+    Text(
+        text = "${(viewModel.screenToFaceDistance.collectAsState().value / 10).roundToInt()}cm",
+        fontSize = 60.sp,
+        fontWeight = FontWeight.Medium,
+        color = Color(0xffffffff)
     )
+    Box(
+        modifier = Modifier.fillMaxSize(),
+        contentAlignment = Alignment.BottomCenter
+    ) {
+        Text(
+            modifier = Modifier
+                .padding(
+                    start = 40.dp,
+                    end = 40.dp,
+                    bottom = (viewModel.navigationBarPadding.collectAsState().value).dp
+                )
+                .fillMaxWidth()
+                .background(
+                    color = Color(0xff1d71e1),
+                    shape = RoundedCornerShape(8.dp)
+                )
+                .clickable {
+                    if (firstVisibleState.currentState) {
+                        viewModel.updateFirstDistance()
+
+                    } else if (secondVisibleState.currentState) {
+                        viewModel.updateSecondDistance()
+                    } else {
+                        viewModel.updateThirdDistance()
+                        toResultScreen()
+                    }
+                }
+                .padding(20.dp),
+            text = "다음",
+            textAlign = TextAlign.Center,
+            fontSize = 24.sp,
+            color = Color(0xffffffff)
+        )
+    }
 }
 
 @Composable
@@ -114,7 +147,7 @@ fun PresbyopiaFirstPage(
                     tts.stop()
                     tts.language = Locale.KOREAN
                     tts.setSpeechRate(1.0f)
-                    tts.speak("안구 나이 검사를 시작하겠습니다. 기기를 눈과 평행하도록 놓고, 시표가 선명하게 보이는 지점에서 멈추세요. 다음으로, 조금씩 가까이 오다가 시표가 흐릿해지는 지점에서 멈추고, 버튼을 누르세요. 각, 시표에 대해 같은 과정을 반복합니다.", TextToSpeech.QUEUE_FLUSH, null, null)
+                    tts.speak("조절력 검사를 시작하겠습니다. 화면을 눈과 평행하게 놓고, 50cm 지점에서 멈추세요. 다음으로, 조금씩 가까이 오다가 시표가 흐릿해지는 지점에서 멈추고, 아래의 다음 버튼을 누르세요. 각 3개의 시표에 대해 같은 과정을 반복하세요.", TextToSpeech.QUEUE_FLUSH, null, null)
                 }
             }
         }

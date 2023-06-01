@@ -1,6 +1,7 @@
 package com.pixelro.nenoonkiosk.ui.screen
 
 import android.Manifest
+import android.app.Activity
 import android.bluetooth.BluetoothDevice
 import android.bluetooth.BluetoothManager
 import android.content.BroadcastReceiver
@@ -15,8 +16,14 @@ import android.graphics.Paint
 import android.graphics.RectF
 import android.graphics.Typeface
 import android.util.Log
+import android.view.KeyEvent
 import android.widget.Toast
 import androidx.activity.compose.BackHandler
+import androidx.compose.foundation.BorderStroke
+import androidx.compose.foundation.Image
+import androidx.compose.foundation.background
+import androidx.compose.foundation.border
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
@@ -24,6 +31,8 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.Button
 import androidx.compose.material.ButtonColors
 import androidx.compose.material.ButtonDefaults
@@ -34,9 +43,11 @@ import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.asImageBitmap
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
@@ -145,26 +156,56 @@ fun TestResultScreen(
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
         val printString = viewModel.printString.collectAsState().value
-        Text(
+        Box(
+            modifier = Modifier
+                .padding(start = 40.dp, top = (viewModel.statusBarPadding.collectAsState().value + 20).dp, end = 40.dp, bottom = 20.dp)
+                .fillMaxWidth()
+                .height(40.dp),
+            contentAlignment = Alignment.Center
+        ) {
+            Text(
+                text = when(testType) {
+                    TestType.Presbyopia -> StringProvider.getString(R.string.presbyopia_result_title)
+                    TestType.ShortDistanceVisualAcuity -> StringProvider.getString(R.string.short_visual_acuity_result_title)
+                    TestType.LongDistanceVisualAcuity -> StringProvider.getString(R.string.long_visual_acuity_result_title)
+                    TestType.ChildrenVisualAcuity -> StringProvider.getString(R.string.children_visual_acuity_result_title)
+                    TestType.AmslerGrid -> StringProvider.getString(R.string.amsler_grid_result_title)
+                    TestType.MChart -> StringProvider.getString(R.string.mchart_result_title)
+                    else -> {
+                        "None TestResultScreen"
+                    }
+                },
+                fontSize = 24.sp,
+                fontWeight = FontWeight.Medium
+            )
+        }
+        Spacer(
             modifier = Modifier
                 .fillMaxWidth()
-                .padding(top = 40.dp),
-            text = when(testType) {
-                TestType.Presbyopia -> StringProvider.getString(R.string.presbyopia_result_title)
-                TestType.ShortDistanceVisualAcuity -> StringProvider.getString(R.string.short_visual_acuity_result_title)
-                TestType.LongDistanceVisualAcuity -> StringProvider.getString(R.string.long_visual_acuity_result_title)
-                TestType.ChildrenVisualAcuity -> StringProvider.getString(R.string.children_visual_acuity_result_title)
-                TestType.AmslerGrid -> StringProvider.getString(R.string.amsler_grid_result_title)
-                TestType.MChart -> StringProvider.getString(R.string.mchart_result_title)
-                else -> {
-                    "None TestResultScreen"
-                }
-            },
-            fontSize = 40.sp,
-            fontWeight = FontWeight.Bold,
-            textAlign = TextAlign.Center
+                .height(1.dp)
+                .background(
+                    color = Color(0xffebebeb)
+                )
         )
-
+//        Text(
+//            modifier = Modifier
+//                .fillMaxWidth()
+//                .padding(top = 40.dp),
+//            text = when(testType) {
+//                TestType.Presbyopia -> StringProvider.getString(R.string.presbyopia_result_title)
+//                TestType.ShortDistanceVisualAcuity -> StringProvider.getString(R.string.short_visual_acuity_result_title)
+//                TestType.LongDistanceVisualAcuity -> StringProvider.getString(R.string.long_visual_acuity_result_title)
+//                TestType.ChildrenVisualAcuity -> StringProvider.getString(R.string.children_visual_acuity_result_title)
+//                TestType.AmslerGrid -> StringProvider.getString(R.string.amsler_grid_result_title)
+//                TestType.MChart -> StringProvider.getString(R.string.mchart_result_title)
+//                else -> {
+//                    "None TestResultScreen"
+//                }
+//            },
+//            fontSize = 40.sp,
+//            fontWeight = FontWeight.Bold,
+//            textAlign = TextAlign.Center
+//        )
         when (testType) {
             TestType.Presbyopia -> {
                 PresbyopiaTestResultContent(
@@ -221,55 +262,105 @@ fun TestResultScreen(
                     .fillMaxWidth(),
                 horizontalAlignment = Alignment.CenterHorizontally
             ) {
-                Button(
+                Box(
                     modifier = Modifier
+                        .padding(start = 40.dp, end = 40.dp, bottom = 20.dp)
                         .fillMaxWidth()
-                        .padding(start = 80.dp, end = 80.dp),
-                    onClick = {
-                        composableScope.launch {
-                            bluetoothAdapter.startDiscovery()
-                            Log.e("onClick", "${bluetoothAdapter.hashCode()}, ${bluetoothAdapter.isEnabled} ${bluetoothAdapter.isDiscovering} ${bluetoothAdapter.state}")
-                            printResult(
-                                testType = testType,
-                                printString = printString
-                            )
-                        }
-                    },
-                    colors = ButtonDefaults.buttonColors(
-                        backgroundColor = Color(0xff1d71e1)
-                    )
+                        .clip(
+                            shape = RoundedCornerShape(8.dp)
+                        )
+                        .border(
+                            border = BorderStroke(1.dp, Color(0xffc3c3c3)),
+                            shape = RoundedCornerShape(8.dp)
+                        )
+                        .clickable {
+                            composableScope.launch {
+                                bluetoothAdapter.startDiscovery()
+                                Log.e("onClick", "${bluetoothAdapter.hashCode()}, ${bluetoothAdapter.isEnabled} ${bluetoothAdapter.isDiscovering} ${bluetoothAdapter.state}")
+                                printResult(
+                                    testType = testType,
+                                    printString = printString
+                                )
+                            }
+                        },
+                    contentAlignment = Alignment.Center
                 ) {
                     Text(
+                        modifier = Modifier
+                            .padding(20.dp),
                         text = StringProvider.getString(R.string.result_screen_print),
-                        color = Color(0xffffffff),
-                        fontSize = 30.sp
+                        fontSize = 24.sp
                     )
                 }
-                Spacer(
+//                Button(
+//                    modifier = Modifier
+//                        .fillMaxWidth()
+//                        .padding(start = 80.dp, end = 80.dp),
+//                    onClick = {
+//                        composableScope.launch {
+//                            bluetoothAdapter.startDiscovery()
+//                            Log.e("onClick", "${bluetoothAdapter.hashCode()}, ${bluetoothAdapter.isEnabled} ${bluetoothAdapter.isDiscovering} ${bluetoothAdapter.state}")
+//                            printResult(
+//                                testType = testType,
+//                                printString = printString
+//                            )
+//                        }
+//                    },
+//                    colors = ButtonDefaults.buttonColors(
+//                        backgroundColor = Color(0xff1d71e1)
+//                    )
+//                ) {
+//                    Text(
+//                        text = StringProvider.getString(R.string.result_screen_print),
+//                        color = Color(0xffffffff),
+//                        fontSize = 30.sp
+//                    )
+//                }
+//                Spacer(
+//                    modifier = Modifier
+//                        .height(20.dp)
+//                )
+                Box(
                     modifier = Modifier
-                        .height(20.dp)
-                )
-                Button(
-                    modifier = Modifier
+                        .padding(start = 40.dp, end = 40.dp, bottom = (viewModel.navigationBarPadding.collectAsState().value).dp)
                         .fillMaxWidth()
-                        .padding(start = 80.dp, end = 80.dp),
-                    onClick = {
-                        navController.popBackStack(GlobalConstants.ROUTE_TEST_LIST, false)
-                    },
-                    colors = ButtonDefaults.buttonColors(
-                        backgroundColor = Color(0xff1d71e1)
-                    )
+                        .border(
+                            border = BorderStroke(1.dp, Color(0xffc3c3c3)),
+                            shape = RoundedCornerShape(8.dp)
+                        )
+                        .clickable {
+                            navController.popBackStack(GlobalConstants.ROUTE_TEST_LIST, false)
+                        },
+                    contentAlignment = Alignment.Center
                 ) {
-                    Text(
-                        text = StringProvider.getString(R.string.result_screen_go_back),
-                        color = Color(0xffffffff),
-                        fontSize = 30.sp
-                    )
-                }
-                Spacer(
+                Text(
                     modifier = Modifier
-                        .height(40.dp)
+                        .padding(20.dp),
+                    text = StringProvider.getString(R.string.result_screen_go_back),
+                    fontSize = 24.sp
                 )
+            }
+//                Button(
+//                    modifier = Modifier
+//                        .fillMaxWidth()
+//                        .padding(start = 80.dp, end = 80.dp),
+//                    onClick = {
+//                        navController.popBackStack(GlobalConstants.ROUTE_TEST_LIST, false)
+//                    },
+//                    colors = ButtonDefaults.buttonColors(
+//                        backgroundColor = Color(0xff1d71e1)
+//                    )
+//                ) {
+//                    Text(
+//                        text = StringProvider.getString(R.string.result_screen_go_back),
+//                        color = Color(0xffffffff),
+//                        fontSize = 30.sp
+//                    )
+//                }
+//                Spacer(
+//                    modifier = Modifier
+//                        .height(40.dp)
+//                )
             }
         }
     }

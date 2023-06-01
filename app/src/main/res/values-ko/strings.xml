@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="app_name">내눈 키오스크</string>
-    <string name="presbyopia_name1">조절력 검사(안구 나이 검사)</string>
+    <string name="presbyopia_name1">조절력 검사 (안구 나이 검사)</string>
     <string name="visual_acuity_name">시력 검사</string>
     <string name="short_visual_acuity_name">근거리 시력 검사</string>
     <string name="long_visual_acuity_name">원거리 시력 검사</string>
@@ -18,8 +18,8 @@
     <string name="mchart_short_description">엠차트를 사용해 황반에 이상이 있는지 알아볼 수 있어요</string>
     <string name="macular_degeneration_short_script">황반 변성 관련 검사를 진행할 수 있어요</string>
     <string name="test_list_screen_warning1">"내눈 앱의 모든 눈 검사는 자가 검사로 "</string>
-    <string name="test_list_screen_warning2">의학적 소견이 아니기에\n</string>
-    <string name="test_list_screen_warning3">정확한 진단은 병원을 방문하여 의사와 상담하시길 바랍니다.\n내 눈의 상태와 주변 환경 또는 기기에 따라 검사 결과가 달라질 수 있습니다.</string>
+    <string name="test_list_screen_warning2">"의학적 소견이 아니기에 "</string>
+    <string name="test_list_screen_warning3">정확한 진단은 병원을 방문하시길 바랍니다. 눈의 상태와 주변 환경 또는 기기에 따라 검사 결과가 달라질 수 있습니다.</string>
     <string name="presbyopia_name2">조절력 검사\n(안구 나이 검사)</string>
     <string name="presbyopia_long_description">나이가 들면서 수정체의 탄성력이 감소되어 조절력이 떨어지는 안질환으로 가까운 곳의 글자가 잘 안보이는 현상을 노안이라고 말합니다.</string>
     <string name="short_visual_acuity_long_description">눈이 두 점을 구별할 수 있는 가장 작은 시각을 최소시각이라고 하며, 시력은 이 최소시각이 어느정도인가를 말합니다.\n정식 시력 검사는 5m 거리에서 시행합니다. 본 검사는 3m 이하에서 측정 가능합니다.</string>
@@ -30,7 +30,7 @@
     <string name="test_list_go_back">뒤로가기</string>
     <string name="test_order_dialog_test_order">검사 방법</string>
     <string name="test_predescription_screen_check_test_order">검사 방법을 확인 후 진행바랍니다.</string>
-    <string name="test_predescription_screen_start">시작</string>
+    <string name="test_predescription_screen_start">검사 시작</string>
     <string name="screen_saver_description">화면을 터치하면 검사를 시작할 수 있습니다.</string>
     <string name="test_screen_current_distance">"현재 거리: "</string>
     <string name="presbyopia_result_title">조절력 검사 결과</string>
@@ -65,29 +65,29 @@
     <string name="amsler_grid_test_content_done">완료</string>
     <string name="mchart_test_content_straight">곧은 선</string>
     <string name="mchart_test_content_bent">휘어진 선</string>
-    <string name="presbyopia_test_order_step1">화면을 눈과 평행하게 놓고\n시표가 선명하게 보이는 지점에서 멈추세요.</string>
-    <string name="presbyopia_test_order_step2">조금씩 가까이 오며 시표가 흐릿해지는 지점에서 멈추세요.</string>
+    <string name="presbyopia_test_order_step1">화면을 눈과 평행하게 놓고 시표가 선명하게\n보이는 지점에서 멈추세요.</string>
+    <string name="presbyopia_test_order_step2">조금씩 가까이 오며 시표가 흐릿해지는\n지점에서 멈추세요.</string>
     <string name="presbyopia_test_order_step3">멈춘 상태로 확인 버튼을 누르세요.</string>
     <string name="presbyopia_test_order_step4">각 시표에 대해 같은 과정을 반복하세요.</string>
     <string name="test_order_final_step">주기적으로 검사하여 눈 건강을 지키세요.</string>
-    <string name="short_visual_acuity_test_order_step1">화면을 눈과 평행하게 놓고\n눈과 화면 사이의 거리를 40~50cm로 유지하세요.</string>
-    <string name="short_visual_acuity_test_order_step2">화면에 나타나는 각 그림이 어떤 그림으로 보이는지\n아래의 보기 중에서 선택하세요.</string>
-    <string name="short_visual_acuity_test_order_step3">적색과 녹색 중 무엇이 더 잘 보이는지\n아래에서 선택하세요.</string>
+    <string name="short_visual_acuity_test_order_step1">화면을 눈과 평행하게 놓고 눈과 화면 사이의\n거리를 40~50cm로 유지하세요.</string>
+    <string name="short_visual_acuity_test_order_step2">화면에 나타나는 각 그림이 어떤 그림으로\n보이는지 아래의 보기 중에서 선택하세요.</string>
+    <string name="short_visual_acuity_test_order_step3">적색과 녹색 중 무엇이 더 잘 보이는지 아래에서 선택하세요.</string>
     <string name="short_visual_acuity_test_order_step4">화면에 나타나는 시표에 맞는 답을 고르세요.</string>
-    <string name="long_visual_acuity_test_order_step1">화면을 눈과 평행하게 놓고\n눈과 화면 사이의 거리를 3m 정도로 유지하세요.</string>
-    <string name="long_visual_acuity_test_order_step2">화면에 나타나는 각 그림이 어떤 그림으로 보이는지\n아래의 보기 중에서 선택하세요.</string>
-    <string name="long_visual_acuity_test_order_step3">적색과 녹색 중 무엇이 더 잘 보이는지\n아래에서 선택하세요.</string>
+    <string name="long_visual_acuity_test_order_step1">화면을 눈과 평행하게 놓고 눈과 화면 사이의\n거리를 3m 정도로 유지하세요.</string>
+    <string name="long_visual_acuity_test_order_step2">화면에 나타나는 각 그림이 어떤 그림으로\n보이는지 아래의 보기 중에서 선택하세요.</string>
+    <string name="long_visual_acuity_test_order_step3">적색과 녹색 중 무엇이 더 잘 보이는지 아래에서 선택하세요.</string>
     <string name="long_visual_acuity_test_order_step4">화면에 나타나는 시표에 맞는 답을 고르세요.</string>
-    <string name="children_visual_acuity_test_order_step1">화면을 눈과 평행하게 놓고\n눈과 화면 사이의 거리를 3m 정도로 유지하세요.</string>
-    <string name="children_visual_acuity_test_order_step2">화면에 나타나는 각 그림이 어떤 그림으로 보이는지\n아래의 보기 중에서 선택하세요.</string>
-    <string name="children_visual_acuity_test_order_step3">적색과 녹색 중 무엇이 더 잘 보이는지\n아래에서 선택하세요.</string>
+    <string name="children_visual_acuity_test_order_step1">화면을 눈과 평행하게 놓고 눈과 화면 사이의\n거리를 3m 정도로 유지하세요.</string>
+    <string name="children_visual_acuity_test_order_step2">화면에 나타나는 각 그림이 어떤 그림으로\n보이는지 아래의 보기 중에서 선택하세요.</string>
+    <string name="children_visual_acuity_test_order_step3">적색과 녹색 중 무엇이 더 잘 보이는지 아래에서 선택하세요.</string>
     <string name="children_visual_acuity_test_order_step4">화면에 나타나는 시표에 맞는 답을 고르세요.</string>
-    <string name="amsler_grid_test_order_step1">화면을 눈과 평행하게 놓고\n눈과 화면 사이의 거리를 30cm로 유지하세요.</string>
+    <string name="amsler_grid_test_order_step1">화면을 눈과 평행하게 놓고 눈과 화면 사이의\n거리를 30cm로 유지하세요.</string>
     <string name="amsler_grid_test_order_step2">중앙을 집중하여 보았을 때 반점 혹은 왜곡이\n일어나는 부분을 눌러주세요.\n※ 이상이 없다면 표시하지 않고 넘어가세요.</string>
     <string name="amsler_grid_test_order_step3">해당 부분이 어떻게 보이는지 선택하세요.</string>
-    <string name="mchart_test_order_step1">화면을 눈과 평행하게 놓고\n눈과 화면 사이의 거리를 30cm로 유지하세요.</string>
+    <string name="mchart_test_order_step1">화면을 눈과 평행하게 놓고 눈과 화면 사이의\n거리를 30cm로 유지하세요.</string>
     <string name="mchart_test_order_step2">화면에 나오는 선의 중앙을 집중해서 봐주세요.</string>
-    <string name="mchart_test_order_step3">선이 휘어져 보인다면 휘어진 선 버튼을 누르세요.</string>
+    <string name="mchart_test_order_step3">선이 휘어져 보인다면 휘어진 선\n버튼을 누르세요.</string>
     <string name="mchart_test_order_step4">선이 곧게 보인다면 곧은 선 버튼을 누르세요.</string>
     <string name="test_dialog_step1">1 단계</string>
     <string name="test_dialog_step2">2 단계</string>
@@ -101,6 +101,6 @@
     <string name="children_visual_acuity_test_order_result">왼쪽, 오른쪽 눈의 시력을 확인할 수 있습니다.</string>
     <string name="amsler_grid_test_order_result">왼쪽, 오른쪽 눈에 이상이 있는지 확인할 수 있습니다.</string>
     <string name="mchart_test_order_result">왼쪽, 오른쪽 눈에 이상이 있는지 확인할 수 있습니다.</string>
-    <string name="splash_description">시력 검사 및 눈 관리 솔루션</string>
+    <string name="splash_description">시력 검사 · 눈 관리 솔루션</string>
     <string name="splash_app_name">내눈</string>
 </resources>

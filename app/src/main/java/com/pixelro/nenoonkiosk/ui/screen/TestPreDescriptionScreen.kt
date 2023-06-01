@@ -55,12 +55,14 @@ fun TestPreDescriptionScreen(
     Box(
         modifier = Modifier
             .fillMaxSize()
-            .paint(
-                painterResource(id = R.drawable.bg_eyetest_info),
-                contentScale = ContentScale.FillWidth
-            )
+//            .paint(
+//                painterResource(id = R.drawable.bg_eyetest_info),
+//                contentScale = ContentScale.FillWidth
+//            )
     ) {
-        TestPreDescriptionBackground()
+        TestPreDescriptionBackground(
+            viewModel = viewModel
+        )
         TestPreDescriptionContent(
             viewModel = viewModel,
             navController = navController,
@@ -82,12 +84,17 @@ fun TestPreDescriptionScreen(
 }
 
 @Composable
-fun TestPreDescriptionBackground() {
+fun TestPreDescriptionBackground(
+    viewModel: NenoonViewModel
+) {
     val context = LocalContext.current
     val heightDP = LocalConfiguration.current.screenHeightDp / 3
     Box(
         modifier = Modifier
-            .fillMaxSize()
+            .padding(start = 40.dp, top = (viewModel.statusBarPadding.collectAsState().value + 20).dp, end = 40.dp, bottom = 20.dp)
+            .fillMaxWidth()
+            .height(40.dp),
+        contentAlignment = Alignment.CenterStart
     ) {
 //        Box(
 //            modifier = Modifier
@@ -104,19 +111,12 @@ fun TestPreDescriptionBackground() {
 //        }
         Image(
             modifier = Modifier
-                .width(70.dp)
-                .height(70.dp)
-                .padding(start = 20.dp, top = 20.dp)
+                .width(28.dp)
                 .clickable {
-                    (context as Activity).dispatchKeyEvent(
-                        KeyEvent(
-                            KeyEvent.ACTION_DOWN,
-                            KeyEvent.KEYCODE_BACK
-                        )
-                    )
+                    (context as Activity).dispatchKeyEvent(KeyEvent(KeyEvent.ACTION_DOWN, KeyEvent.KEYCODE_BACK))
                     context.dispatchKeyEvent(KeyEvent(KeyEvent.ACTION_UP, KeyEvent.KEYCODE_BACK))
                 },
-            painter = painterResource(id = R.drawable.close_button),
+            painter = painterResource(id = R.drawable.icon_back_black),
             contentDescription = ""
         )
     }
@@ -134,25 +134,22 @@ fun TestPreDescriptionContent(
     ) {
         Column(
             modifier = Modifier
-                .fillMaxSize(),
-            horizontalAlignment = Alignment.CenterHorizontally
+                .fillMaxSize()
         ) {
             Text(
                 modifier = Modifier
-                    .padding(top = 120.dp, bottom = 40.dp),
+                    .padding(start = 40.dp, top = 200.dp, bottom = 40.dp),
                 text = viewModel.selectedTestName.collectAsState().value,
                 fontSize = 50.sp,
                 fontWeight = FontWeight.Bold,
-                color = Color(0xffffffff),
                 textAlign = TextAlign.Center,
                 lineHeight = 60.sp
             )
             Text(
                 modifier = Modifier
-                    .padding(start = 60.dp, end = 60.dp),
+                    .padding(start = 40.dp, end = 120.dp),
                 text = viewModel.selectedTestDescription.collectAsState().value,
-                fontSize = 30.sp,
-                color = Color(0xffffffff),
+                fontSize = 24.sp,
                 lineHeight = 35.sp
             )
         }
@@ -161,7 +158,7 @@ fun TestPreDescriptionContent(
         modifier = Modifier
             .fillMaxSize()
             .padding(top = 300.dp),
-        contentAlignment = Alignment.Center
+        contentAlignment = Alignment.BottomCenter
     ) {
         Column(
             horizontalAlignment = Alignment.CenterHorizontally
@@ -203,8 +200,6 @@ fun TestPreDescriptionContent(
                     lineHeight = 35.sp
                 )
             }
-
-
 //            Image(
 //                modifier = Modifier
 //                    .height(200.dp)
@@ -219,47 +214,30 @@ fun TestPreDescriptionContent(
 //            )
             Box(
                 modifier = Modifier
-                    .width(200.dp)
-                    .height(200.dp)
+                    .fillMaxWidth()
+                    .padding(start = 40.dp, end = 40.dp, bottom = (viewModel.navigationBarPadding.collectAsState().value).dp)
                     .clip(
-                        shape = RoundedCornerShape(50)
-                    )
-                    .border(
-                        border = BorderStroke(2.dp, Color(0xffffffff)),
-                        shape = RoundedCornerShape(50)
+                        shape = RoundedCornerShape(8.dp)
                     )
                     .background(
-                        color = Color(0x00000000),
-                        shape = RoundedCornerShape(50),
+                        color = Color(0xff1d71e1),
+                        shape = RoundedCornerShape(8.dp),
                     )
                     .clickable {
                         navController.navigate(GlobalConstants.ROUTE_TEST_CONTENT)
-                    },
+                    }
+                    .padding(20.dp),
                 contentAlignment = Alignment.Center
             ) {
-                Box(
-                    modifier = Modifier
-                        .width(180.dp)
-                        .height(180.dp)
-                        .clip(
-                            shape = RoundedCornerShape(50)
-                        )
-                        .background(
-                            color = Color(0xffffffff),
-                            shape = RoundedCornerShape(50),
-                        ),
-                    contentAlignment = Alignment.Center
-                ) {
-                    Text(
-                        modifier = Modifier
-                            .offset(0.dp, (-4).dp),
-                        text = StringProvider.getString(R.string.test_predescription_screen_start),
-                        fontSize = 50.sp,
-                        color = Color(0xff1d71e1),
-                        fontWeight = FontWeight.Bold,
-                        textAlign = TextAlign.Center
-                    )
-                }
+                Text(
+//                        modifier = Modifier
+//                            .offset(0.dp, (-4).dp),
+                    text = StringProvider.getString(R.string.test_predescription_screen_start),
+                    fontSize = 24.sp,
+                    color = Color(0xffffffff),
+//                    fontWeight = FontWeight.Bold,
+                    textAlign = TextAlign.Center
+                )
             }
         }
     }
@@ -286,50 +264,60 @@ fun TestPreDescriptionDialog(
                 ),
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
-            Text(
-                text = viewModel.selectedTestName.collectAsState().value,
-                modifier = Modifier
-                    .padding(top = 20.dp),
-                fontSize = 40.sp,
-                fontWeight = FontWeight.Bold,
-                color = Color(0xff1d71e1),
-                textAlign = TextAlign.Center,
-                lineHeight = 50.sp
-            )
-            Spacer(
-                modifier = Modifier
-                    .height(20.dp)
-            )
+//            Text(
+//                text = viewModel.selectedTestName.collectAsState().value,
+//                modifier = Modifier
+//                    .padding(top = 20.dp),
+//                fontSize = 40.sp,
+//                fontWeight = FontWeight.Bold,
+//                color = Color(0xff1d71e1),
+//                textAlign = TextAlign.Center,
+//                lineHeight = 50.sp
+//            )
+//            Spacer(
+//                modifier = Modifier
+//                    .height(20.dp)
+//            )
             Text(
                 text = StringProvider.getString(R.string.test_order_dialog_test_order),
-                modifier = Modifier,
+                modifier = Modifier
+                    .padding(top = 20.dp, bottom = 20.dp),
                 fontSize = 25.sp,
                 color = Color(0xff1d71e1),
                 fontWeight = FontWeight.Bold
             )
             TestPreDescriptionScreenDialogContent(selectedTest)
 
-            Spacer(
-                modifier = Modifier
-                    .background(Color(0xffcccccc))
-                    .height(1.dp)
-                    .fillMaxWidth()
-            )
+//            Spacer(
+//                modifier = Modifier
+//                    .background(Color(0xffcccccc))
+//                    .height(1.dp)
+//                    .fillMaxWidth()
+//            )
             Text(
+                modifier = Modifier
+                    .padding(start = 20.dp, top = 8.dp, end = 20.dp, bottom = 20.dp)
+                    .fillMaxWidth()
+                    .clip(
+                        shape = RoundedCornerShape(8.dp)
+                    )
+                    .border(
+                        border = BorderStroke(1.dp, Color(0xffc3c3c3)),
+                        shape = RoundedCornerShape(8.dp)
+                    )
+                    .clickable
+//                        (
+//                        indication = null,
+//                        interactionSource = remember { MutableInteractionSource() })
+                    {
+                        onDismissRequest()
+                    }
+                    .padding(20.dp),
                 text = "확인",
                 fontSize = 30.sp,
                 color = Color(0xff1d71e1),
-                fontWeight = FontWeight.Bold,
-                textAlign = TextAlign.Center,
-                modifier = Modifier
-                    .padding(top = 12.dp, bottom = 12.dp)
-                    .fillMaxWidth()
-                    .clickable(
-                        indication = null,
-                        interactionSource = remember { MutableInteractionSource() }
-                    ) {
-                        onDismissRequest()
-                    }
+                fontWeight = FontWeight.Medium,
+                textAlign = TextAlign.Center
             )
         }
 //        val systemUiController = rememberSystemUiController()

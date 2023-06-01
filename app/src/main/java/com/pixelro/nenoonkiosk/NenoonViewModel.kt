@@ -304,7 +304,17 @@ class NenoonViewModel(application: Application) : AndroidViewModel(application) 
     }
 
     // UI
+    private val _statusBarPadding = MutableStateFlow(0)
+    val statusBarPadding: StateFlow<Int> = _statusBarPadding
+    private val _navigationBarPadding = MutableStateFlow(0)
+    val navigationBarPadding: StateFlow<Int> = _navigationBarPadding
 
+    fun updateSystemBarsPadding(statusBar: Float, navigationBar: Float) {
+        _statusBarPadding.update { (statusBar / getApplication<Application>().resources.displayMetrics.density).toInt() }
+        if(statusBar > 0) Log.e("statusbar", "${_statusBarPadding.value}")
+        _navigationBarPadding.update { navigationBar.toInt() }
+        if(navigationBar > 0) Log.e("navigationbar", "${_navigationBarPadding.value}")
+    }
 
     // Checking permission, location, bluetooth
     private val _isWriteSettingsPermissionGranted = MutableStateFlow(false)
@@ -420,7 +430,7 @@ class NenoonViewModel(application: Application) : AndroidViewModel(application) 
 
     private fun showSplashScreen() {
         viewModelScope.launch {
-            delay(1000)
+            delay(3000)
             _isShowingSplashScreen.update { false }
         }
     }
@@ -439,7 +449,7 @@ class NenoonViewModel(application: Application) : AndroidViewModel(application) 
         _selectedTestType.update { testType }
         _selectedTestName.update {
             when(testType) {
-                TestType.Presbyopia -> StringProvider.getString(R.string.presbyopia_name2)
+                TestType.Presbyopia -> StringProvider.getString(R.string.presbyopia_name1)
                 TestType.ShortDistanceVisualAcuity -> StringProvider.getString(R.string.short_visual_acuity_name)
                 TestType.LongDistanceVisualAcuity -> StringProvider.getString(R.string.long_visual_acuity_name)
                 TestType.ChildrenVisualAcuity -> StringProvider.getString(R.string.children_visual_acuity_name)

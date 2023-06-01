@@ -1,5 +1,6 @@
 package com.pixelro.nenoonkiosk
 
+import android.annotation.SuppressLint
 import android.content.Context
 import android.content.Intent
 import android.content.res.Configuration
@@ -16,6 +17,7 @@ import androidx.activity.compose.setContent
 import androidx.activity.viewModels
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.navigationBarsPadding
+import androidx.compose.foundation.layout.systemBarsPadding
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Surface
 import androidx.compose.runtime.DisposableEffect
@@ -121,6 +123,7 @@ class MainActivity : ComponentActivity() {
     }
 
 
+    @SuppressLint("InternalInsetResource", "DiscouragedApi")
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         if(SharedPreferencesManager.getString("language") == "") {
@@ -133,8 +136,8 @@ class MainActivity : ComponentActivity() {
             }
         }
 //        window.navigationBarColor = 0x00000000
-        WindowCompat.setDecorFitsSystemWindows(window, false)
-        WindowCompat.getInsetsController(window, window.decorView).isAppearanceLightNavigationBars = true
+//        WindowCompat.setDecorFitsSystemWindows(window, false)
+//        WindowCompat.getInsetsController(window, window.decorView).isAppearanceLightNavigationBars = true
 //        if(resources.configuration.locales.get(0).language != "en") {
 //            resources.configuration.setLocale(locale)
 //            val intent: Intent? = this.packageManager
@@ -153,25 +156,30 @@ class MainActivity : ComponentActivity() {
 //            hide(WindowInsetsCompat.Type.navigationBars())
 //            systemBarsBehavior = WindowInsetsControllerCompat.BEHAVIOR_SHOW_TRANSIENT_BARS_BY_SWIPE
 //        }
-//        WindowCompat.setDecorFitsSystemWindows(window, false)
-//        window.setFlags(
-//            WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS,
-//            WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS
-//        )
+        window.setFlags(
+            WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS,
+            WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS
+        )
+        val statusBarResourceId = resources.getIdentifier("status_bar_height", "dimen", "android")
+        val navigationBarResourceId = resources.getIdentifier("navigation_bar_height", "dimen", "android")
+        viewModel.updateSystemBarsPadding(resources.getDimension(statusBarResourceId), resources.getDimension(navigationBarResourceId))
+
         window.addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON)
         applicationContext
         setContent {
             NenoonKioskTheme {
                 Surface(
                     modifier = Modifier
-                        .fillMaxSize()
-                        .navigationBarsPadding(),
+                        .systemBarsPadding()
+                        .fillMaxSize(),
                     color = MaterialTheme.colors.background
                 ) {
                     val systemUiController = rememberSystemUiController()
                     systemUiController.setStatusBarColor(
-                        color = Color(0x00000000),
-                        darkIcons = true
+                        color = Color(0x00000000)
+                    )
+                    systemUiController.setNavigationBarColor(
+                        color = Color(0x00000000)
                     )
                     val context = LocalContext.current
                     val configuration = LocalConfiguration.current

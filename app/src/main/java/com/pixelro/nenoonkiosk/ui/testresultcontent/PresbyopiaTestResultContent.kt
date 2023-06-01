@@ -172,7 +172,7 @@ fun PresbyopiaTestResultContent(
             modifier = Modifier
                 .fillMaxWidth()
                 .height(200.dp)
-                .padding(start = 80.dp, end = 80.dp)
+                .padding(start = 40.dp, end = 40.dp)
                 .background(
                     color = Color(0xff888888),
                     shape = RoundedCornerShape(8.dp)

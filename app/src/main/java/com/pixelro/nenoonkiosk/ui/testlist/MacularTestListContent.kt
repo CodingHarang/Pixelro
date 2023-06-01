@@ -44,7 +44,7 @@ fun MacularTestListContent(
                     color = Color.Transparent,
                     shape = RoundedCornerShape(4.dp)
                 )
-                .padding(start = 20.dp, end = 20.dp, bottom = 20.dp)
+                .padding(start = 40.dp, end = 20.dp, bottom = 20.dp)
                 .clickable {
                     (context as Activity).dispatchKeyEvent(
                         KeyEvent(

@@ -3,15 +3,21 @@ package com.pixelro.nenoonkiosk.ui.testcontent
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
+import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.Outline
 import androidx.compose.ui.graphics.RectangleShape
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.text.SpanStyle
@@ -36,9 +42,12 @@ fun TestPreDescriptionScreenDialogContent(
         TestType.Presbyopia -> {
             GlideImage(
                 modifier = Modifier
+                    .padding(start = 20.dp, end = 20.dp, bottom = 20.dp)
                     .width(700.dp)
-                    .height(350.dp)
-                    .padding(start = 20.dp, end = 20.dp),
+                    .height(310.dp)
+                    .clip(
+                        shape = RoundedCornerShape(8.dp)
+                    ),
                 model = R.raw.img_start_presbyopia,
                 contentScale = ContentScale.Fit,
                 contentDescription = ""
@@ -192,21 +201,21 @@ fun TestPreDescriptionScreenDialogContent(
             )
         }
     }
-    LastDialogDescriptionText(
-        title = StringProvider.getString(R.string.test_dialog_result),
-        body = when(selectedTestType) {
-            TestType.Presbyopia -> StringProvider.getString(R.string.presbyopia_test_order_result)
-            TestType.ShortDistanceVisualAcuity -> StringProvider.getString(R.string.short_visual_acuity_test_order_result)
-            TestType.LongDistanceVisualAcuity -> StringProvider.getString(R.string.long_visual_acuity_test_order_result)
-            TestType.ChildrenVisualAcuity -> StringProvider.getString(R.string.children_visual_acuity_test_order_result)
-            TestType.AmslerGrid -> StringProvider.getString(R.string.amsler_grid_test_order_result)
-            else -> StringProvider.getString(R.string.mchart_test_order_result)
-        }
-    )
-    Spacer(
-        modifier = Modifier
-            .height(16.dp)
-    )
+//    LastDialogDescriptionText(
+//        title = StringProvider.getString(R.string.test_dialog_result),
+//        body = when(selectedTestType) {
+//            TestType.Presbyopia -> StringProvider.getString(R.string.presbyopia_test_order_result)
+//            TestType.ShortDistanceVisualAcuity -> StringProvider.getString(R.string.short_visual_acuity_test_order_result)
+//            TestType.LongDistanceVisualAcuity -> StringProvider.getString(R.string.long_visual_acuity_test_order_result)
+//            TestType.ChildrenVisualAcuity -> StringProvider.getString(R.string.children_visual_acuity_test_order_result)
+//            TestType.AmslerGrid -> StringProvider.getString(R.string.amsler_grid_test_order_result)
+//            else -> StringProvider.getString(R.string.mchart_test_order_result)
+//        }
+//    )
+//    Spacer(
+//        modifier = Modifier
+//            .height(16.dp)
+//    )
 }
 
 @Composable
@@ -214,30 +223,34 @@ fun DialogDescriptionText(
     title: String,
     body: String
 ) {
-    Text(
+    Row(
         modifier = Modifier
+            .padding(start = 20.dp, end = 20.dp, bottom = 12.dp)
             .fillMaxWidth()
-            .padding(start = 20.dp, end = 20.dp, bottom = 4.dp)
-            .border(
-                border = BorderStroke(2.dp, Color(0xff1d71e1)),
-                shape = RectangleShape
+            .height(120.dp)
+            .background(
+                color = Color(0xfff6f6f6),
+                shape = RoundedCornerShape(8.dp)
             )
-            .padding(4.dp),
-        text = buildAnnotatedString {
-            withStyle(
-                style = SpanStyle(
-                    color = Color(0xff1d71e1)
-                )
-            ) {
-                append(title + "\n")
-            }
-            append(body)
-        },
-        fontSize = 20.sp,
-        fontWeight = FontWeight.Medium,
-        textAlign = TextAlign.Center,
-        lineHeight = 24.sp
-    )
+            .padding(20.dp),
+        verticalAlignment = Alignment.CenterVertically
+    ) {
+        Text(
+            modifier = Modifier
+                .padding(end = 28.dp),
+            text = title,
+            fontSize = 20.sp,
+            fontWeight = FontWeight.Medium,
+            textAlign = TextAlign.Center,
+            color = Color(0xff1d71e1)
+        )
+        Text(
+            text = body,
+            fontSize = 20.sp,
+            fontWeight = FontWeight.Medium,
+            lineHeight = 24.sp
+        )
+    }
 }
 
 
