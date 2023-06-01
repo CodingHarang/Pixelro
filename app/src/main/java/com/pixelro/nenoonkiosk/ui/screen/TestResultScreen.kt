@@ -324,6 +324,9 @@ fun TestResultScreen(
                     modifier = Modifier
                         .padding(start = 40.dp, end = 40.dp, bottom = (viewModel.navigationBarPadding.collectAsState().value).dp)
                         .fillMaxWidth()
+                        .clip(
+                            shape = RoundedCornerShape(8.dp)
+                        )
                         .border(
                             border = BorderStroke(1.dp, Color(0xffc3c3c3)),
                             shape = RoundedCornerShape(8.dp)

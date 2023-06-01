@@ -45,7 +45,7 @@ fun PresbyopiaTestContent(
     val thirdVisibleState = viewModel.thirdItemVisibleState
     Text(
         modifier = Modifier
-            .padding(top = 100.dp),
+            .padding(top = 120.dp),
         text = "멀리서 점점 가까이 오다가 시표가\n흐릿해지는 지점에서 멈추고 버튼을 누르세요",
         color = Color(0xffffffff),
         fontSize = 28.sp,
@@ -82,12 +82,12 @@ fun PresbyopiaTestContent(
         modifier = Modifier
             .padding(top = 80.dp),
         text = StringProvider.getString(R.string.test_screen_current_distance),
-        fontSize = 20.sp,
+        fontSize = 24.sp,
         color = Color(0xffffffff)
     )
     Text(
         text = "${(viewModel.screenToFaceDistance.collectAsState().value / 10).roundToInt()}cm",
-        fontSize = 60.sp,
+        fontSize = 68.sp,
         fontWeight = FontWeight.Medium,
         color = Color(0xffffffff)
     )

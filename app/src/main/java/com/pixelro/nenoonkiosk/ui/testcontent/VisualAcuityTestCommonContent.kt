@@ -64,13 +64,23 @@ fun VisualAcuityTestCommonContent(
 //                        color = Color(0xffffffff),
 //                        fontSize = 40.sp
 //                    )
+                    Text(
+                        modifier = Modifier
+                            .padding(top = 100.dp),
+                        text = StringProvider.getString(R.string.visual_acuity_test_common_content_description),
+                        fontSize = 28.sp,
+                        color = Color(0xffffffff),
+                        fontWeight = FontWeight.Medium,
+                        textAlign = TextAlign.Center
+                    )
                     Box(
                         modifier = Modifier
-                            .height(400.dp)
-                            .width(400.dp)
+                            .padding(top = 40.dp)
+                            .height(500.dp)
+                            .width(500.dp)
                             .background(
                                 color = Color(0xffffffff),
-                                shape = RoundedCornerShape(16.dp)
+                                shape = RoundedCornerShape(8.dp)
                             ),
                         contentAlignment = Alignment.Center
                     ) {
@@ -158,32 +168,27 @@ fun VisualAcuityTestCommonContent(
                         modifier = Modifier
                             .height(20.dp)
                     )
-                    Text(
-                        text = StringProvider.getString(R.string.visual_acuity_test_common_content_distance)
-                                + ": ${viewModel.testDistance.collectAsState().value / 10}cm",
-                        fontSize = 30.sp,
-                        color = Color(0xffffffff)
-                    )
-                    Spacer(
+                    Row(
                         modifier = Modifier
-                            .height(20.dp)
-                    )
-                    Text(
-                        text = StringProvider.getString(R.string.test_screen_current_distance) + "${(viewModel.screenToFaceDistance.collectAsState().value / 10).roundToInt()}cm",
-                        fontSize = 30.sp,
-                        color = Color(0xffffffff),
-                        fontWeight = FontWeight.Bold
-                    )
-                    Spacer(
-                        modifier = Modifier
-                            .height(20.dp)
-                    )
-                    Text(
-                        text = StringProvider.getString(R.string.visual_acuity_test_common_content_description),
-                        fontSize = 40.sp,
-                        color = Color(0xffffffff),
-                        fontWeight = FontWeight.Bold
-                    )
+                            .padding(top = 20.dp, bottom = 20.dp),
+                        horizontalArrangement = Arrangement.Center,
+                        verticalAlignment = Alignment.CenterVertically
+                    ) {
+                        Text(
+                            modifier = Modifier
+                                .padding(end = 20.dp),
+                            text = StringProvider.getString(R.string.visual_acuity_test_common_content_distance)
+                                    + ": ${viewModel.testDistance.collectAsState().value / 10}cm",
+                            fontSize = 30.sp,
+                            color = Color(0xffffffff)
+                        )
+                        Text(
+                            text = StringProvider.getString(R.string.test_screen_current_distance) + "${(viewModel.screenToFaceDistance.collectAsState().value / 10).roundToInt()}cm",
+                            fontSize = 30.sp,
+                            color = Color(0xffffffff),
+                            fontWeight = FontWeight.Bold
+                        )
+                    }
                     Row() {
                         // 1
                         Box(
@@ -345,8 +350,20 @@ fun SightednessTestContent(
         exit = AnimationProvider.exitTransition
     ) {
         Column(
+            modifier = Modifier
+                .padding(top = 100.dp),
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
+            Text(
+                text = StringProvider.getString(R.string.visual_acuity_test_common_content_signtedness_description),
+                color = Color(0xffffffff),
+                fontSize = 40.sp,
+                fontWeight = FontWeight.Bold
+            )
+            Spacer(
+                modifier = Modifier
+                    .height(20.dp)
+            )
             Box() {
                 Row(
                     verticalAlignment = Alignment.CenterVertically
@@ -358,17 +375,17 @@ fun SightednessTestContent(
                             .background(
                                 color = Color(0xff00ff00),
                                 shape = RoundedCornerShape(
-                                    topStart = 20.dp,
+                                    topStart = 8.dp,
                                     topEnd = 0.dp,
                                     bottomEnd = 0.dp,
-                                    bottomStart = 20.dp
+                                    bottomStart = 8.dp
                                 )
-                            )
+                            ),
+                        contentAlignment = Alignment.Center
                     ) {
                         Text(
                             modifier = Modifier
-                                .fillMaxWidth()
-                                .padding(top = 40.dp),
+                                .fillMaxWidth(),
                             text = StringProvider.getString(R.string.visual_acuity_test_common_content_green),
                             fontSize = 48.sp,
                             fontWeight = FontWeight.Bold,
@@ -383,16 +400,16 @@ fun SightednessTestContent(
                                 color = Color(0xffff0000),
                                 shape = RoundedCornerShape(
                                     topStart = 0.dp,
-                                    topEnd = 20.dp,
-                                    bottomEnd = 20.dp,
+                                    topEnd = 8.dp,
+                                    bottomEnd = 8.dp,
                                     bottomStart = 0.dp
                                 )
-                            )
+                            ),
+                        contentAlignment = Alignment.Center
                     ) {
                         Text(
                             modifier = Modifier
-                                .fillMaxWidth()
-                                .padding(top = 40.dp),
+                                .fillMaxWidth(),
                             text = StringProvider.getString(R.string.visual_acuity_test_common_content_red),
                             fontSize = 48.sp,
                             fontWeight = FontWeight.Bold,
@@ -405,23 +422,15 @@ fun SightednessTestContent(
                 modifier = Modifier
                     .height(20.dp)
             )
-            Text(
-                text = StringProvider.getString(R.string.visual_acuity_test_common_content_signtedness_description),
-                color = Color(0xffffffff),
-                fontSize = 40.sp,
-                fontWeight = FontWeight.Bold
-            )
-            Spacer(
-                modifier = Modifier
-                    .height(20.dp)
-            )
             Row(
+                modifier = Modifier
+                    .padding(start = 40.dp, end = 40.dp),
                 verticalAlignment = Alignment.CenterVertically
             ) {
                 Box(
                     modifier = Modifier
                         .padding(8.dp)
-                        .width(200.dp)
+                        .weight(1f)
                         .height(80.dp)
                         .background(
                             color = Color(0xff00ff00),
@@ -447,7 +456,7 @@ fun SightednessTestContent(
                 Box(
                     modifier = Modifier
                         .padding(8.dp)
-                        .width(200.dp)
+                        .weight(1f)
                         .height(80.dp)
                         .background(
                             color = Color(0xffff0000),
@@ -476,7 +485,7 @@ fun SightednessTestContent(
                 Box(
                     modifier = Modifier
                         .padding(8.dp)
-                        .width(200.dp)
+                        .width(350.dp)
                         .height(80.dp)
                         .background(
                             color = Color(0xffffffff),
@@ -501,7 +510,7 @@ fun SightednessTestContent(
                 Box(
                     modifier = Modifier
                         .padding(8.dp)
-                        .width(200.dp)
+                        .width(350.dp)
                         .height(80.dp)
                         .background(
                             color = Color(0xffffffff),

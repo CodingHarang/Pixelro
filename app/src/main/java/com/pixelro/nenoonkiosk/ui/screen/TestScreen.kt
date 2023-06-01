@@ -81,12 +81,12 @@ fun EyeTestScreen(
                 ) {
                     Image(
                         modifier = Modifier
-                            .width(28.dp)
+                            .width(32.dp)
                             .clickable {
                                 (context as Activity).dispatchKeyEvent(KeyEvent(KeyEvent.ACTION_DOWN, KeyEvent.KEYCODE_BACK))
                                 context.dispatchKeyEvent(KeyEvent(KeyEvent.ACTION_UP, KeyEvent.KEYCODE_BACK))
                             },
-                        painter = painterResource(id = R.drawable.icon_back_white),
+                        painter = painterResource(id = R.drawable.close_button),
                         contentDescription = ""
                     )
                 }

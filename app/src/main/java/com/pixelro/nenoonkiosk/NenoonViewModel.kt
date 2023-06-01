@@ -249,7 +249,7 @@ class NenoonViewModel(application: Application) : AndroidViewModel(application) 
     fun checkCoveredEye() {
         viewModelScope.launch {
             var count = 0
-            _leftTime.update { 3f }
+            _leftTime.update { 3.5f }
             while(count < 6) {
                 delay(500)
 //                Log.e("checkCoveredEye", "$count")

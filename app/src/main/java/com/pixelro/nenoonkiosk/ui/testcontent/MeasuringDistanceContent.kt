@@ -5,17 +5,23 @@ import androidx.compose.animation.*
 import androidx.compose.animation.core.MutableTransitionState
 import androidx.compose.animation.core.tween
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.SpanStyle
@@ -29,6 +35,7 @@ import androidx.compose.ui.unit.sp
 import com.pixelro.nenoonkiosk.NenoonViewModel
 import com.pixelro.nenoonkiosk.R
 import com.pixelro.nenoonkiosk.data.AnimationProvider
+import com.pixelro.nenoonkiosk.data.GlobalConstants
 import com.pixelro.nenoonkiosk.data.StringProvider
 import kotlin.math.roundToInt
 
@@ -47,67 +54,86 @@ fun MeasuringDistanceContent(
             modifier = Modifier,
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
-            Image(
-                modifier = Modifier
-                    .padding(start = 40.dp, end = 40.dp),
-                painter = painterResource(id = R.drawable.img_eyetest_maneyes),
-                contentDescription = ""
-            )
-            Spacer(
-                modifier = Modifier
-                    .height(20.dp)
-            )
             Text(
+                modifier = Modifier
+                    .padding(top = 120.dp, bottom = 20.dp),
                 text = StringProvider.getString(R.string.measuring_distance_content_description1),
                 color = Color(0xffffffff),
                 fontSize = 30.sp,
                 textAlign = TextAlign.Center
-            )
-            Spacer(
-                modifier = Modifier
-                    .height(20.dp)
             )
             Text(
                 text = StringProvider.getString(R.string.measuring_distance_content_description2),
                 color = Color(0xffffffff),
                 fontSize = 20.sp
             )
-            Text(
-                text = buildAnnotatedString {
-                    withStyle(
-                        style = SpanStyle(
-                            color = Color(0xffffffff),
-                            fontSize = 40.sp
-                        )
-                    ) {
-                        append(StringProvider.getString(R.string.test_screen_current_distance))
-                    }
-                    withStyle(
-                        style = SpanStyle(
-                            color = Color(0xff0055ff),
-                            fontSize = 50.sp,
-                            fontWeight = FontWeight.Bold
-                        )
-                    ) {
-                        append("${(viewModel.screenToFaceDistance.collectAsState().value / 10).roundToInt()}cm")
-                    }
-                },
+            Image(
                 modifier = Modifier
-                    .padding(20.dp)
+                    .padding(start = 40.dp, top = 60.dp, end = 40.dp, bottom = 20.dp),
+                painter = painterResource(id = R.drawable.img_eyetest_maneyes),
+                contentDescription = ""
+            )
+            Text(
+                modifier = Modifier
+                    .padding(top = 40.dp),
+                text = "현재 거리",
+                color = Color(0xffffffff),
+                fontSize = 24.sp
+            )
+            Text(
+                color = Color(0xffffffff),
+                text = "${(viewModel.screenToFaceDistance.collectAsState().value / 10).roundToInt()}cm",
+                fontSize = 68.sp,
+                fontWeight = FontWeight.Bold
             )
 //            if(viewModel.screenToFaceDistance.collectAsState().value in (400.0..500.0)) {
             if(viewModel.screenToFaceDistance.collectAsState().value in (-500.0..500.0)) {
-                Image(
+//                Image(
+//                    modifier = Modifier
+//                        .height(256.dp)
+//                        .clickable {
+//                            viewModel.updateTestDistance()
+//                            measuringDistanceContentVisibleState.targetState = false
+//                            nextVisibleState.targetState = true
+//                        },
+//                    painter = painterResource(id = R.drawable.baseline_check_circle_48),
+//                    contentDescription = ""
+//                )
+                Box(
                     modifier = Modifier
-                        .height(256.dp)
-                        .clickable {
-                            viewModel.updateTestDistance()
-                            measuringDistanceContentVisibleState.targetState = false
-                            nextVisibleState.targetState = true
-                        },
-                    painter = painterResource(id = R.drawable.baseline_check_circle_48),
-                    contentDescription = ""
-                )
+                        .fillMaxSize(),
+                    contentAlignment = Alignment.BottomCenter
+                ) {
+                    Box(
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .padding(start = 40.dp, end = 40.dp, bottom = (viewModel.navigationBarPadding.collectAsState().value).dp)
+                            .clip(
+                                shape = RoundedCornerShape(8.dp)
+                            )
+                            .background(
+                                color = Color(0xff1d71e1),
+                                shape = RoundedCornerShape(8.dp),
+                            )
+                            .clickable {
+                                viewModel.updateTestDistance()
+                                measuringDistanceContentVisibleState.targetState = false
+                                nextVisibleState.targetState = true
+                            }
+                            .padding(20.dp),
+                        contentAlignment = Alignment.Center
+                    ) {
+                        Text(
+//                        modifier = Modifier
+//                            .offset(0.dp, (-4).dp),
+                            text = StringProvider.getString(R.string.test_predescription_screen_start),
+                            fontSize = 24.sp,
+                            color = Color(0xffffffff),
+//                    fontWeight = FontWeight.Bold,
+                            textAlign = TextAlign.Center
+                        )
+                    }
+                }
             }
         }
     }

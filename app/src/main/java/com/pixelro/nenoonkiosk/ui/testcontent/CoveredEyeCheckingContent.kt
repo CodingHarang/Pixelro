@@ -3,16 +3,14 @@ package com.pixelro.nenoonkiosk.ui.testcontent
 import android.util.Log
 import androidx.compose.animation.*
 import androidx.compose.animation.core.MutableTransitionState
-import androidx.compose.animation.core.tween
 import androidx.compose.foundation.Image
-import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.padding
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.DisposableEffect
-import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -21,15 +19,12 @@ import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
-import androidx.compose.ui.unit.IntOffset
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.pixelro.nenoonkiosk.NenoonViewModel
 import com.pixelro.nenoonkiosk.R
 import com.pixelro.nenoonkiosk.data.AnimationProvider
 import com.pixelro.nenoonkiosk.data.StringProvider
-import kotlinx.coroutines.delay
-import kotlinx.coroutines.launch
 
 @Composable
 fun CoveredEyeCheckingContent(
@@ -55,6 +50,18 @@ fun CoveredEyeCheckingContent(
             modifier = Modifier,
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
+            Text(
+                modifier = Modifier
+                    .padding(top = 100.dp, bottom = 100.dp),
+                text = when(isLeftEye) {
+                    true -> StringProvider.getString(R.string.covered_eye_checking_left_description)
+                    else -> StringProvider.getString(R.string.covered_eye_checking_right_description)
+                },
+                color = Color(0xffffffff),
+                fontSize = 30.sp,
+                fontWeight = FontWeight.Bold,
+                textAlign = TextAlign.Center
+            )
             Image(
                 modifier = Modifier
                 .graphicsLayer {
@@ -62,29 +69,21 @@ fun CoveredEyeCheckingContent(
                         true -> 180f
                         else -> 0f
                     }
-                },
-                painter = painterResource(id = R.drawable.covered_eye_image),
+                }
+                .padding(bottom = 100.dp),
+                painter = painterResource(id = R.drawable.img_right_eye_covered),
                 contentDescription = ""
             )
-            Spacer(
-                modifier = Modifier
-                    .height(20.dp)
-            )
             Text(
-                text = when(isLeftEye) {
-                            true -> StringProvider.getString(R.string.covered_eye_checking_left_description)
-                            else -> StringProvider.getString(R.string.covered_eye_checking_right_description)
-                        },
+                text = "곧 검사가 시작됩니다",
                 color = Color(0xffffffff),
-                fontSize = 30.sp,
-                fontWeight = FontWeight.Bold,
-                textAlign = TextAlign.Center
+                fontSize = 20.sp
             )
             if(viewModel.isTimerShowing.collectAsState().value) {
                 Text(
                     text = "${viewModel.leftTime.collectAsState().value.toInt()}",
                     color = Color(0xffffffff),
-                    fontSize = 30.sp,
+                    fontSize = 60.sp,
                     fontWeight = FontWeight.Bold
                 )
             }
