@@ -42,6 +42,7 @@ fun TestListContent(
             MainTestListContent(
                 toPreDescriptionScreen = {
                     viewModel.updateSelectedTestType(TestType.Presbyopia)
+                    viewModel.initializePresbyopiaTest()
                     toPreDescriptionScreen()
                 },
                 toVisualAcuityTestList = { navController.navigate(GlobalConstants.ROUTE_VISUAL_ACUITY_TEST_LIST) },
@@ -65,7 +66,10 @@ fun TestListContent(
                 toChildrenVisualAcuityTest = {
                     viewModel.updateSelectedTestType(TestType.ChildrenVisualAcuity)
                 },
-                toPreDescriptionScreen = toPreDescriptionScreen
+                toPreDescriptionScreen =  {
+                    viewModel.initializeVisualAcuityTest()
+                    toPreDescriptionScreen()
+                }
             )
         }
 
@@ -77,9 +81,11 @@ fun TestListContent(
         ) {
             MacularTestListContent(
                 toAmslerGridTest = {
+                    viewModel.initializeAmslerGridTest()
                     viewModel.updateSelectedTestType(TestType.AmslerGrid)
                 },
                 toMChartTest = {
+                    viewModel.initializeMChartTest()
                     viewModel.updateSelectedTestType(TestType.MChart)
                 },
                 toPreDescriptionScreen = toPreDescriptionScreen

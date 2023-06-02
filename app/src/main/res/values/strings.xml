@@ -103,6 +103,7 @@
     <string name="mchart_test_order_result">str</string>
     <string name="splash_description">str</string>
     <string name="splash_app_name">str</string>
+    <string name="test_predescription_screen_test_method">str</string>
     <!--    <string name=""></string>-->
     <!--    <string name=""></string>-->
 </resources>

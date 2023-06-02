@@ -65,8 +65,21 @@ fun NenoonApp(
                         exitTransition = { AnimationProvider.exitTransition }
                     ) {
                         TestListScreen(
-                            toPreDescriptionScreen = { mainNavController.navigate(GlobalConstants.ROUTE_TEST_PRE_DESCRIPTION) },
-                            toSettingsScreen = { mainNavController.navigate(GlobalConstants.ROUTE_SETTINGS) },
+                            toPreDescriptionScreen = {
+                                mainNavController.popBackStack(GlobalConstants.ROUTE_TEST_LIST, false)
+                                when(selectedTest) {
+                                    TestType.Presbyopia -> viewModel.initializePresbyopiaTest()
+                                    TestType.ShortDistanceVisualAcuity -> viewModel.initializeVisualAcuityTest()
+                                    TestType.LongDistanceVisualAcuity -> viewModel.initializeVisualAcuityTest()
+                                    TestType.ChildrenVisualAcuity -> viewModel.initializeVisualAcuityTest()
+                                    TestType.AmslerGrid -> viewModel.initializeAmslerGridTest()
+                                    else -> viewModel.initializeMChartTest()
+                                }
+                                mainNavController.navigate(GlobalConstants.ROUTE_TEST_PRE_DESCRIPTION)
+                                },
+                            toSettingsScreen = {
+                                mainNavController.navigate(GlobalConstants.ROUTE_SETTINGS)
+                            },
                             navController = subNavController,
                             viewModel = viewModel
                         )
@@ -103,6 +116,7 @@ fun NenoonApp(
                     ) {
                         EyeTestScreen(
                             viewModel = viewModel,
+                            navController = mainNavController,
                             content = {
                                 when(selectedTest) {
                                     TestType.Presbyopia -> {

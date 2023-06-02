@@ -26,6 +26,7 @@ import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -158,7 +159,12 @@ fun TestResultScreen(
         val printString = viewModel.printString.collectAsState().value
         Box(
             modifier = Modifier
-                .padding(start = 40.dp, top = (viewModel.statusBarPadding.collectAsState().value + 20).dp, end = 40.dp, bottom = 20.dp)
+                .padding(
+                    start = 40.dp,
+                    top = (viewModel.statusBarPadding.collectAsState().value + 20).dp,
+                    end = 40.dp,
+                    bottom = 20.dp
+                )
                 .fillMaxWidth()
                 .height(40.dp),
             contentAlignment = Alignment.Center
@@ -276,7 +282,10 @@ fun TestResultScreen(
                         .clickable {
                             composableScope.launch {
                                 bluetoothAdapter.startDiscovery()
-                                Log.e("onClick", "${bluetoothAdapter.hashCode()}, ${bluetoothAdapter.isEnabled} ${bluetoothAdapter.isDiscovering} ${bluetoothAdapter.state}")
+                                Log.e(
+                                    "onClick",
+                                    "${bluetoothAdapter.hashCode()}, ${bluetoothAdapter.isEnabled} ${bluetoothAdapter.isDiscovering} ${bluetoothAdapter.state}"
+                                )
                                 printResult(
                                     testType = testType,
                                     printString = printString
@@ -285,12 +294,23 @@ fun TestResultScreen(
                         },
                     contentAlignment = Alignment.Center
                 ) {
-                    Text(
-                        modifier = Modifier
-                            .padding(20.dp),
-                        text = StringProvider.getString(R.string.result_screen_print),
-                        fontSize = 24.sp
-                    )
+                    Row(
+                        verticalAlignment = Alignment.CenterVertically
+                    ) {
+                        Image(
+                            modifier = Modifier
+                                .width(28.dp),
+                            painter = painterResource(id = R.drawable.icon_print),
+                            contentDescription = ""
+                        )
+                        Text(
+                            modifier = Modifier
+                                .padding(20.dp),
+                            text = StringProvider.getString(R.string.result_screen_print),
+                            fontSize = 24.sp,
+                            fontWeight = FontWeight.Medium
+                        )
+                    }
                 }
 //                Button(
 //                    modifier = Modifier
@@ -320,28 +340,43 @@ fun TestResultScreen(
 //                    modifier = Modifier
 //                        .height(20.dp)
 //                )
-                Box(
-                    modifier = Modifier
-                        .padding(start = 40.dp, end = 40.dp, bottom = (viewModel.navigationBarPadding.collectAsState().value).dp)
-                        .fillMaxWidth()
-                        .clip(
-                            shape = RoundedCornerShape(8.dp)
-                        )
-                        .border(
-                            border = BorderStroke(1.dp, Color(0xffc3c3c3)),
-                            shape = RoundedCornerShape(8.dp)
-                        )
-                        .clickable {
-                            navController.popBackStack(GlobalConstants.ROUTE_TEST_LIST, false)
-                        },
-                    contentAlignment = Alignment.Center
+            Box(
+                modifier = Modifier
+                    .padding(
+                        start = 40.dp,
+                        end = 40.dp,
+                        bottom = (viewModel.navigationBarPadding.collectAsState().value).dp
+                    )
+                    .fillMaxWidth()
+                    .clip(
+                        shape = RoundedCornerShape(8.dp)
+                    )
+                    .border(
+                        border = BorderStroke(1.dp, Color(0xffc3c3c3)),
+                        shape = RoundedCornerShape(8.dp)
+                    )
+                    .clickable {
+                        navController.popBackStack(GlobalConstants.ROUTE_TEST_LIST, false)
+                    },
+                contentAlignment = Alignment.Center
+            ) {
+                Row(
+                    verticalAlignment = Alignment.CenterVertically
                 ) {
-                Text(
-                    modifier = Modifier
-                        .padding(20.dp),
-                    text = StringProvider.getString(R.string.result_screen_go_back),
-                    fontSize = 24.sp
-                )
+                    Image(
+                        modifier = Modifier
+                            .width(28.dp),
+                        painter = painterResource(id = R.drawable.icon_back2),
+                        contentDescription = ""
+                    )
+                    Text(
+                        modifier = Modifier
+                            .padding(20.dp),
+                        text = StringProvider.getString(R.string.result_screen_go_back),
+                        fontSize = 24.sp,
+                        fontWeight = FontWeight.Medium
+                    )
+                }
             }
 //                Button(
 //                    modifier = Modifier

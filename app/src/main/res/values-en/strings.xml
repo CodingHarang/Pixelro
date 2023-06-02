@@ -3,8 +3,8 @@
     <string name="app_name">Nenoon Kiosk</string>
     <string name="presbyopia_name1">Presbyopia Test</string>
     <string name="visual_acuity_name">Visual Acuity Test</string>
-    <string name="short_visual_acuity_name">Short Visual Acuity Test</string>
-    <string name="long_visual_acuity_name">Long Visual Acuity Test</string>
+    <string name="short_visual_acuity_name">Short Distance Visual Acuity Test</string>
+    <string name="long_visual_acuity_name">Long Distance Visual Acuity Test</string>
     <string name="children_visual_acuity_name">Children Visual Acuity Test</string>
     <string name="macular_degeneration_name">Macular Degeneration Test</string>
     <string name="amsler_grid_name">Amsler Grid Test</string>
@@ -103,4 +103,5 @@
     <string name="mchart_test_order_result">str</string>
     <string name="splash_description">Vision Test · Eye Care Solution</string>
     <string name="splash_app_name">NENOON</string>
+    <string name="test_predescription_screen_test_method">Test Steps</string>
 </resources>

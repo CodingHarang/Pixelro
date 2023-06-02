@@ -163,55 +163,75 @@ fun TestPreDescriptionContent(
         Column(
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
+//            Box(
+//                contentAlignment = Alignment.Center
+//            ) {
+//                Image(
+//                    modifier = Modifier
+//                        .height(140.dp)
+//                        .padding(bottom = 16.dp)
+//                        .clickable(
+//                            indication = null,
+//                            interactionSource = remember { MutableInteractionSource() }
+//                        ) {
+//                            changeDialogVisibility()
+//                        },
+//                    painter = painterResource(id = R.drawable.but_how_box),
+//                    contentDescription = ""
+//                )
+//                Text(
+//                    modifier = Modifier
+//                        .offset(0.dp, (-20).dp),
+//                    text = buildAnnotatedString {
+//                        append(StringProvider.getString(R.string.test_predescription_speech_buttle_text1))
+//                        withStyle(
+//                            style = SpanStyle(
+//                                textDecoration = TextDecoration.Underline
+//                            )
+//                        ) {
+//                            append(StringProvider.getString(R.string.test_predescription_speech_buttle_text2))
+//                        }
+//                        append(StringProvider.getString(R.string.test_predescription_speech_buttle_text3))
+//                    },
+//                    fontSize = 30.sp,
+//                    color = Color(0xff1d71e1),
+//                    fontWeight = FontWeight.Bold,
+//                    textAlign = TextAlign.Center,
+//                    lineHeight = 35.sp
+//                )
+//            }
             Box(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(start = 40.dp, end = 40.dp, bottom = 20.dp)
+                    .clip(
+                        shape = RoundedCornerShape(8.dp)
+                    )
+                    .background(
+                        color = Color(0xfff7f7f7),
+                        shape = RoundedCornerShape(8.dp),
+                    )
+                    .clickable
+//                        (
+//                            indication = null,
+//                            interactionSource = remember { MutableInteractionSource() }
+//                    )
+                    {
+                        changeDialogVisibility()
+                    }
+                    .padding(20.dp),
                 contentAlignment = Alignment.Center
             ) {
-                Image(
-                    modifier = Modifier
-                        .height(140.dp)
-                        .padding(bottom = 16.dp)
-                        .clickable(
-                            indication = null,
-                            interactionSource = remember { MutableInteractionSource() }
-                        ) {
-                            changeDialogVisibility()
-                        },
-                    painter = painterResource(id = R.drawable.but_how_box),
-                    contentDescription = ""
-                )
                 Text(
-                    modifier = Modifier
-                        .offset(0.dp, (-20).dp),
-                    text = buildAnnotatedString {
-                        append(StringProvider.getString(R.string.test_predescription_speech_buttle_text1))
-                        withStyle(
-                            style = SpanStyle(
-                                textDecoration = TextDecoration.Underline
-                            )
-                        ) {
-                            append(StringProvider.getString(R.string.test_predescription_speech_buttle_text2))
-                        }
-                        append(StringProvider.getString(R.string.test_predescription_speech_buttle_text3))
-                    },
-                    fontSize = 30.sp,
+//                        modifier = Modifier
+//                            .offset(0.dp, (-4).dp),
+                    text = StringProvider.getString(R.string.test_predescription_screen_test_method),
+                    fontSize = 24.sp,
                     color = Color(0xff1d71e1),
-                    fontWeight = FontWeight.Bold,
-                    textAlign = TextAlign.Center,
-                    lineHeight = 35.sp
+//                    fontWeight = FontWeight.Bold,
+                    textAlign = TextAlign.Center
                 )
             }
-//            Image(
-//                modifier = Modifier
-//                    .height(200.dp)
-//                    .clickable(
-//                        indication = null,
-//                        interactionSource = remember { MutableInteractionSource() }
-//                    ) {
-//                        navController.navigate(GlobalConstants.ROUTE_TEST_CONTENT)
-//                    },
-//                painter = painterResource(id = R.drawable.btn_start_ko),
-//                contentDescription = ""
-//            )
             Box(
                 modifier = Modifier
                     .fillMaxWidth()

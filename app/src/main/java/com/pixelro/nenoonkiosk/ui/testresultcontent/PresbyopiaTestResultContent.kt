@@ -24,6 +24,7 @@ import com.github.mikephil.charting.components.XAxis
 import com.github.mikephil.charting.data.Entry
 import com.github.mikephil.charting.data.LineData
 import com.github.mikephil.charting.data.LineDataSet
+import com.pixelro.nenoonkiosk.ChartValueFormatter
 import com.pixelro.nenoonkiosk.NenoonViewModel
 import com.pixelro.nenoonkiosk.R
 import com.pixelro.nenoonkiosk.data.AccommodationData
@@ -42,7 +43,7 @@ fun PresbyopiaTestResultContent(
                 modifier = Modifier
                     .fillMaxWidth()
                     .height(500.dp)
-                    .padding(start = 100.dp, top = 80.dp, end = 40.dp, bottom = 80.dp),
+                    .padding(start = 60.dp, top = 80.dp, end = 60.dp, bottom = 80.dp),
                 factory = { context ->
                     val lineChart = LineChart(context)
                     val allEntries = AccommodationData.allEntries
@@ -126,10 +127,11 @@ fun PresbyopiaTestResultContent(
 
                     val leftAxis = lineChart.axisLeft
                     leftAxis.setDrawGridLines(true)
-                    leftAxis.enableGridDashedLine(10f, 5f, 1f)
+                    leftAxis.enableGridDashedLine(5f, 4f, 1f)
                     leftAxis.axisMinimum = 0f
                     leftAxis.axisMaximum = 60f
                     leftAxis.textSize = 20f
+                    leftAxis.valueFormatter = ChartValueFormatter()
 //            leftAxis.setGridDashedLine(DashPathEffect(floatArrayOf(2f), 2f))
 
                     val rightAxis = lineChart.axisRight
@@ -153,13 +155,13 @@ fun PresbyopiaTestResultContent(
                     lineChart
                 }
             )
-            Text(
-                modifier = Modifier
-                    .padding(start = 40.dp, top = 230.dp),
-                text = StringProvider.getString(R.string.result_screen_distance) + "\n(cm)",
-                fontSize = 20.sp,
-                textAlign = TextAlign.Center
-            )
+//            Text(
+//                modifier = Modifier
+//                    .padding(start = 40.dp, top = 230.dp),
+//                text = StringProvider.getString(R.string.result_screen_distance),
+//                fontSize = 20.sp,
+//                textAlign = TextAlign.Center
+//            )
             Text(
                 modifier = Modifier
                     .padding(start = 380.dp, top = 430.dp),

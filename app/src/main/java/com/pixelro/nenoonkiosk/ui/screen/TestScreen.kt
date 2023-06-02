@@ -2,6 +2,7 @@ package com.pixelro.nenoonkiosk.ui.screen
 
 import android.app.Activity
 import android.view.KeyEvent
+import androidx.activity.compose.BackHandler
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
@@ -24,9 +25,12 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.navigation.NavHost
+import androidx.navigation.NavHostController
 import com.google.accompanist.systemuicontroller.rememberSystemUiController
 import com.pixelro.nenoonkiosk.NenoonViewModel
 import com.pixelro.nenoonkiosk.R
+import com.pixelro.nenoonkiosk.data.GlobalConstants
 import com.pixelro.nenoonkiosk.data.StringProvider
 import com.pixelro.nenoonkiosk.data.TestType
 import com.pixelro.nenoonkiosk.facedetection.FaceDetection
@@ -34,8 +38,12 @@ import com.pixelro.nenoonkiosk.facedetection.FaceDetection
 @Composable
 fun EyeTestScreen(
     viewModel: NenoonViewModel,
+    navController: NavHostController,
     content: @Composable () -> Unit
 ) {
+    BackHandler(enabled = true) {
+        navController.popBackStack(GlobalConstants.ROUTE_TEST_LIST, false)
+    }
     val systemUiController = rememberSystemUiController()
     DisposableEffect(true) {
 //        systemUiController.setNavigationBarColor(

@@ -227,7 +227,7 @@ fun DialogDescriptionText(
         modifier = Modifier
             .padding(start = 20.dp, end = 20.dp, bottom = 12.dp)
             .fillMaxWidth()
-            .height(120.dp)
+            .height(130.dp)
             .background(
                 color = Color(0xfff6f6f6),
                 shape = RoundedCornerShape(8.dp)

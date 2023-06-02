@@ -474,11 +474,8 @@ class NenoonViewModel(application: Application) : AndroidViewModel(application) 
     val secondItemVisibleState = MutableTransitionState(false)
     val thirdItemVisibleState = MutableTransitionState(false)
     private val _firstDistance = MutableStateFlow(0f)
-    val firstDistance: StateFlow<Float> = _firstDistance
     private val _secondDistance = MutableStateFlow(0f)
-    val secondDistance: StateFlow<Float> = _secondDistance
     private val _thirdDistance = MutableStateFlow(0f)
-    val thirdDistance: StateFlow<Float> = _thirdDistance
     private val _avgDistance = MutableStateFlow(0f)
     val avgDistance: StateFlow<Float> = _avgDistance
 
@@ -513,7 +510,7 @@ class NenoonViewModel(application: Application) : AndroidViewModel(application) 
 
     private fun updateAvgDistance() {
         _avgDistance.update {
-            (firstDistance.value + secondDistance.value + thirdDistance.value) / 3
+            (_firstDistance.value + _secondDistance.value + _thirdDistance.value) / 3
         }
         _printString.update {
             "조절근점: ${(avgDistance.value).roundToInt().toFloat() / 10}cm"
@@ -632,7 +629,7 @@ class NenoonViewModel(application: Application) : AndroidViewModel(application) 
         coveredEyeCheckingContentVisibleState.targetState = true
         visualAcuityTestCommonContentVisibleState.targetState = false
         viewModelScope.launch {
-            delay(500)
+            delay(1000)
             visualAcuityTestContentVisibleState.targetState = true
             visualAcuityTestSightednessTestContentVisibleState.targetState = false
         }
