@@ -139,10 +139,9 @@ fun TestPreDescriptionContent(
             Text(
                 modifier = Modifier
                     .padding(start = 40.dp, top = 200.dp, bottom = 40.dp),
-                text = viewModel.selectedTestName.collectAsState().value,
+                text = viewModel.predescriptionTitle.collectAsState().value,
                 fontSize = 50.sp,
                 fontWeight = FontWeight.Bold,
-                textAlign = TextAlign.Center,
                 lineHeight = 60.sp
             )
             Text(

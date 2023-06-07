@@ -50,7 +50,7 @@
     <string name="covered_eye_checking_left_description">str</string>
     <string name="result_screen_distance">distance</string>
     <string name="result_screen_age">age</string>
-    <string name="presbyopia_result_accommodation_amplitude">accommodation amplitude</string>
+    <string name="presbyopia_result_hoffstetter1">accommodation amplitude</string>
     <string name="measuring_distance_content_description1">str</string>
     <string name="measuring_distance_content_description2">str</string>
     <string name="visual_acuity_test_common_content_distance">measure distance</string>
@@ -104,6 +104,17 @@
     <string name="splash_description">str</string>
     <string name="splash_app_name">str</string>
     <string name="test_predescription_screen_test_method">str</string>
+    <string name="test_predescription_presbyopia_title">str</string>
+    <string name="test_predescription_short_visual_acuity_title">str</string>
+    <string name="test_predescription_long_visual_acuity_title">str</string>
+    <string name="test_predescription_children_visual_acuity_title">str</string>
+    <string name="test_predescription_amsler_title">str</string>
+    <string name="test_predescription_mchart_title">str</string>
+    <string name="test_list">test_list</string>
+    <string name="presbyopia_test_description">str</string>
+    <string name="next">next</string>
+    <string name="presbyopia_result_near_point_accommodation">npa</string>
+    <string name="presbyopia_result_hoffstetter2">str</string>
     <!--    <string name=""></string>-->
     <!--    <string name=""></string>-->
 </resources>

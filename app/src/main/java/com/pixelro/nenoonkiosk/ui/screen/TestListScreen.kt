@@ -89,7 +89,7 @@ fun TestListScreen(
                 contentAlignment = Alignment.Center
             ) {
                 Text(
-                    text = "검사 목록",
+                    text = StringProvider.getString(R.string.test_list),
                     fontSize = 24.sp,
                     fontWeight = FontWeight.Medium
                 )

@@ -49,8 +49,11 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.asImageBitmap
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.text.SpanStyle
+import androidx.compose.ui.text.buildAnnotatedString
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.text.withStyle
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.core.app.ActivityCompat
@@ -257,6 +260,38 @@ fun TestResultScreen(
         Spacer(
             modifier = Modifier
                 .height(20.dp)
+        )
+        Text(
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(start = 40.dp, end = 40.dp),
+            text = buildAnnotatedString {
+                withStyle(
+                    style = SpanStyle(
+                        color = Color(0xff999999),
+                        fontSize = 16.sp
+                    )
+                ) {
+                    append(StringProvider.getString(R.string.test_list_screen_warning1))
+                }
+                withStyle(
+                    style = SpanStyle(
+                        color = Color(0xffff0000),
+                        fontSize = 16.sp,
+                        fontWeight = FontWeight.Bold
+                    )
+                ) {
+                    append(StringProvider.getString(R.string.test_list_screen_warning2))
+                }
+                withStyle(
+                    style = SpanStyle(
+                        color = Color(0xff999999),
+                        fontSize = 16.sp
+                    )
+                ) {
+                    append(StringProvider.getString(R.string.test_list_screen_warning3))
+                }
+            }
         )
         Box(
             modifier = Modifier

@@ -45,8 +45,8 @@ fun PresbyopiaTestContent(
     val thirdVisibleState = viewModel.thirdItemVisibleState
     Text(
         modifier = Modifier
-            .padding(top = 120.dp),
-        text = "멀리서 점점 가까이 오다가 시표가\n흐릿해지는 지점에서 멈추고 버튼을 누르세요",
+            .padding(start = 40.dp, top = 120.dp, end = 40.dp),
+        text = StringProvider.getString(R.string.presbyopia_test_description),
         color = Color(0xffffffff),
         fontSize = 28.sp,
         textAlign = TextAlign.Center
@@ -119,7 +119,7 @@ fun PresbyopiaTestContent(
                     }
                 }
                 .padding(20.dp),
-            text = "다음",
+            text = StringProvider.getString(R.string.next),
             textAlign = TextAlign.Center,
             fontSize = 24.sp,
             color = Color(0xffffffff)

@@ -427,6 +427,8 @@ class NenoonViewModel(application: Application) : AndroidViewModel(application) 
     val selectedTestMenuDescription: StateFlow<String> = _selectedTestMenuDescription
     private val _isLeftEye = MutableStateFlow(true)
     val isLeftEye: StateFlow<Boolean> = _isLeftEye
+    private val _predescriptionTitle = MutableStateFlow("")
+    val predescriptionTitle: StateFlow<String> = _predescriptionTitle
 
     private fun showSplashScreen() {
         viewModelScope.launch {
@@ -465,6 +467,16 @@ class NenoonViewModel(application: Application) : AndroidViewModel(application) 
                 TestType.ChildrenVisualAcuity -> StringProvider.getString(R.string.children_visual_acuity_long_desciption)
                 TestType.AmslerGrid -> StringProvider.getString(R.string.amsler_grid_long_description)
                 else -> StringProvider.getString(R.string.mchart_long_description)
+            }
+        }
+        _predescriptionTitle.update {
+            when(testType) {
+                TestType.Presbyopia -> StringProvider.getString(R.string.test_predescription_presbyopia_title)
+                TestType.ShortDistanceVisualAcuity -> StringProvider.getString(R.string.test_predescription_short_visual_acuity_title)
+                TestType.LongDistanceVisualAcuity -> StringProvider.getString(R.string.test_predescription_long_visual_acuity_title)
+                TestType.ChildrenVisualAcuity -> StringProvider.getString(R.string.test_predescription_children_visual_acuity_title)
+                TestType.AmslerGrid -> StringProvider.getString(R.string.test_predescription_amsler_title)
+                else -> StringProvider.getString(R.string.test_predescription_mchart_title)
             }
         }
     }

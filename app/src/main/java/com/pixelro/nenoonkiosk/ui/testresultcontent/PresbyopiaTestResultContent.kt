@@ -10,11 +10,13 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
-import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.text.SpanStyle
+import androidx.compose.ui.text.buildAnnotatedString
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.text.withStyle
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.compose.ui.viewinterop.AndroidView
@@ -42,8 +44,8 @@ fun PresbyopiaTestResultContent(
             AndroidView(
                 modifier = Modifier
                     .fillMaxWidth()
-                    .height(500.dp)
-                    .padding(start = 60.dp, top = 80.dp, end = 60.dp, bottom = 80.dp),
+                    .height(400.dp)
+                    .padding(start = 60.dp, top = 40.dp, end = 60.dp, bottom = 40.dp),
                 factory = { context ->
                     val lineChart = LineChart(context)
                     val allEntries = AccommodationData.allEntries
@@ -164,32 +166,35 @@ fun PresbyopiaTestResultContent(
 //            )
             Text(
                 modifier = Modifier
-                    .padding(start = 380.dp, top = 430.dp),
+                    .padding(start = 380.dp, top = 360.dp),
                 text = StringProvider.getString(R.string.result_screen_age),
                 fontSize = 20.sp,
                 textAlign = TextAlign.Center
             )
         }
-        Box(
+        Column(
             modifier = Modifier
                 .fillMaxWidth()
-                .height(200.dp)
-                .padding(start = 40.dp, end = 40.dp)
+                .padding(start = 40.dp, top = 20.dp, end = 40.dp)
                 .background(
-                    color = Color(0xff888888),
+                    color = Color(0xfff7f7f7),
                     shape = RoundedCornerShape(8.dp)
-                ),
-            contentAlignment = Alignment.Center
+                )
         ) {
             Text(
                 modifier = Modifier
-                    .fillMaxWidth(),
-                text = StringProvider.getString(R.string.presbyopia_result_accommodation_amplitude)
+                    .padding(start = 40.dp, top = 40.dp),
+                text = StringProvider.getString(R.string.presbyopia_result_near_point_accommodation) + ": ${(viewModel.avgDistance.collectAsState().value).roundToInt().toFloat() / 10}cm",
+                fontSize = 20.sp,
+                color = Color(0xff878787)
+            )
+            Text(
+                modifier = Modifier
+                    .padding(start = 40.dp, bottom = 40.dp),
+                text = StringProvider.getString(R.string.presbyopia_result_hoffstetter1)
                         + ": ${(viewModel.avgDistance.collectAsState().value).roundToInt().toFloat() / 10}cm",
-                fontSize = 30.sp,
-                fontWeight = FontWeight.Bold,
-                textAlign = TextAlign.Center,
-                color = Color(0xffffffff)
+                fontSize = 24.sp,
+                fontWeight = FontWeight.Medium,
             )
         }
     }
