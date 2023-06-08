@@ -102,6 +102,14 @@ fun NenoonApp(
                         enterTransition = { AnimationProvider.enterTransition },
                         exitTransition = { AnimationProvider.exitTransition }
                     ) {
+                        when(selectedTest) {
+                            TestType.Presbyopia -> viewModel.initializePresbyopiaTest()
+                            TestType.ShortDistanceVisualAcuity -> viewModel.initializeVisualAcuityTest()
+                            TestType.LongDistanceVisualAcuity -> viewModel.initializeVisualAcuityTest()
+                            TestType.ChildrenVisualAcuity -> viewModel.initializeVisualAcuityTest()
+                            TestType.AmslerGrid -> viewModel.initializeAmslerGridTest()
+                            else -> viewModel.initializeMChartTest()
+                        }
                         TestPreDescriptionScreen(
                             viewModel,
                             mainNavController
@@ -120,42 +128,36 @@ fun NenoonApp(
                             content = {
                                 when(selectedTest) {
                                     TestType.Presbyopia -> {
-                                        viewModel.initializePresbyopiaTest()
                                         PresbyopiaTestContent(
                                             toResultScreen = { mainNavController.navigate(GlobalConstants.ROUTE_TEST_RESULT) },
                                             viewModel = viewModel
                                         )
                                     }
                                     TestType.ShortDistanceVisualAcuity -> {
-                                        viewModel.initializeVisualAcuityTest()
                                         ShortDistanceVisualAcuityTestContent(
                                             toResultScreen = { mainNavController.navigate(GlobalConstants.ROUTE_TEST_RESULT) },
                                             viewModel = viewModel
                                         )
                                     }
                                     TestType.LongDistanceVisualAcuity -> {
-                                        viewModel.initializeVisualAcuityTest()
                                         LongDistanceVisualAcuityTestContent(
                                             toResultScreen = { mainNavController.navigate(GlobalConstants.ROUTE_TEST_RESULT) },
                                             viewModel = viewModel
                                         )
                                     }
                                     TestType.ChildrenVisualAcuity -> {
-                                        viewModel.initializeVisualAcuityTest()
                                         ChildrenVisualAcuityTestContent(
                                             toResultScreen = { mainNavController.navigate(GlobalConstants.ROUTE_TEST_RESULT) },
                                             viewModel = viewModel
                                         )
                                     }
                                     TestType.AmslerGrid -> {
-                                        viewModel.initializeAmslerGridTest()
                                         AmslerGridTestContent(
                                             toResultScreen = { mainNavController.navigate(GlobalConstants.ROUTE_TEST_RESULT) },
                                             viewModel = viewModel
                                         )
                                     }
                                     TestType.MChart -> {
-                                        viewModel.initializeMChartTest()
                                         MChartTestContent(
                                             toResultScreen = { mainNavController.navigate(GlobalConstants.ROUTE_TEST_RESULT) },
                                             viewModel = viewModel

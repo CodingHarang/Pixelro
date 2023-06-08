@@ -115,4 +115,5 @@
     <string name="next">다음</string>
     <string name="presbyopia_result_near_point_accommodation">조절근점</string>
     <string name="presbyopia_result_hoffstetter2">세 입니다</string>
+    <string name="covered_eye_checking_description">곧 검사가 시작됩니다</string>
 </resources>

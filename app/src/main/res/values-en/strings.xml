@@ -15,8 +15,8 @@
     <string name="long_visual_acuity_short_description">You can check your visual acuity with a long sight chart</string>
     <string name="children_visual_acuity_short_description">Children who do not know how to read can have a visual acuity test</string>
     <string name="macular_degeneration_short_script">You can check for macular degeneration</string>
-    <string name="amsler_grid_short_description">Use the Amsler chart to check if there are any abnormalities in the macula</string>
-    <string name="mchart_short_description">Use the M-Chart to check if there are any abnormalities in the macula</string>
+    <string name="amsler_grid_short_description">Use the Amsler chart to check if there are any abnormalities in the macular</string>
+    <string name="mchart_short_description">Use the M-Chart to check if there are any abnormalities in the macular</string>
     <string name="test_list_screen_warning1">"Eye examinations in the this application are self-examination and "</string>
     <string name="test_list_screen_warning2">not medical findings,</string>
     <string name="test_list_screen_warning3">" so please visit a hospital and consult a doctor for an accurate diagnosis. Test results may vary depending on the condition of your eyes, surrounding environment, or device."</string>
@@ -51,7 +51,7 @@
     <string name="result_screen_distance">distance</string>
     <string name="result_screen_age">age</string>
     <string name="presbyopia_result_hoffstetter1">"According to Hoffstetter formula,\nage of your eyes are "</string>
-    <string name="measuring_distance_content_description1">Press Start and then\nfix the distance between the device and the user.</string>
+    <string name="measuring_distance_content_description1">Press Start and then fix the\ndistance between the device and the user.</string>
     <string name="measuring_distance_content_description2">If the measurement distance changes during the test, the value of the eye examination may change.</string>
     <string name="visual_acuity_test_common_content_distance">measure distance</string>
     <string name="short_distance_visual_acuity_test_result_content_result">Visual acuity test result</string>
@@ -115,4 +115,5 @@
     <string name="next">Next</string>
     <string name="presbyopia_result_near_point_accommodation">Near Point Accommodation</string>
     <string name="presbyopia_result_hoffstetter2">years old</string>
+    <string name="covered_eye_checking_description">Test will be soon started</string>
 </resources>

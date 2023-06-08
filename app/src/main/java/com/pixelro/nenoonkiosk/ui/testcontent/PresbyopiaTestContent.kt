@@ -45,11 +45,11 @@ fun PresbyopiaTestContent(
     val thirdVisibleState = viewModel.thirdItemVisibleState
     Text(
         modifier = Modifier
-            .padding(start = 40.dp, top = 120.dp, end = 40.dp),
+            .padding(start = 40.dp, top = 120.dp, end = 40.dp)
+            .fillMaxWidth(),
         text = StringProvider.getString(R.string.presbyopia_test_description),
         color = Color(0xffffffff),
-        fontSize = 28.sp,
-        textAlign = TextAlign.Center
+        fontSize = 28.sp
     )
     Box(
         contentAlignment = Alignment.Center,
@@ -97,11 +97,7 @@ fun PresbyopiaTestContent(
     ) {
         Text(
             modifier = Modifier
-                .padding(
-                    start = 40.dp,
-                    end = 40.dp,
-                    bottom = (viewModel.navigationBarPadding.collectAsState().value).dp
-                )
+                .padding(start = 40.dp, end = 40.dp, bottom = (viewModel.navigationBarPadding.collectAsState().value).dp)
                 .fillMaxWidth()
                 .background(
                     color = Color(0xff1d71e1),

@@ -28,6 +28,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.input.pointer.pointerInput
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.IntOffset
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
@@ -42,12 +43,9 @@ fun AmslerGridTestContent(
     toResultScreen: () -> Unit,
     viewModel: NenoonViewModel
 ) {
-    Log.e("AmslerGridTestContent", "AmslerGridTestContent")
     val measuringDistanceContentVisibleState = viewModel.measuringDistanceContentVisibleState
     val coveredEyeCheckingContentVisibleState = viewModel.coveredEyeCheckingContentVisibleState
     val amslerGridContentVisibleState = viewModel.amslerGridContentVisibleState
-
-    Log.e("AmslerGridTestContent", "${measuringDistanceContentVisibleState.currentState}, ${coveredEyeCheckingContentVisibleState.currentState}, ${amslerGridContentVisibleState.currentState}")
 
     Column(
         modifier = Modifier
@@ -60,7 +58,7 @@ fun AmslerGridTestContent(
         Box(
             contentAlignment = Alignment.TopCenter,
             modifier = Modifier
-                .fillMaxWidth()
+                .fillMaxSize()
         ) {
             MeasuringDistanceContent(
                 viewModel = viewModel,
@@ -89,7 +87,6 @@ fun AmslerGridContent(
     nextVisibleState: MutableTransitionState<Boolean>,
     toResultScreen: () -> Unit
 ) {
-    Log.e("AmslerGridContent", "AmslerGridContent")
     AnimatedVisibility(
         visibleState = amslerGridContentVisibleState,
         enter = AnimationProvider.enterTransition,
@@ -101,7 +98,8 @@ fun AmslerGridContent(
         }
         Column(
             modifier = Modifier
-                .width(700.dp)
+                .fillMaxSize(),
+            horizontalAlignment = Alignment.CenterHorizontally
         ) {
             val width = viewModel.widthSize.collectAsState().value
             val height = viewModel.heightSize.collectAsState().value
@@ -117,7 +115,6 @@ fun AmslerGridContent(
                         color = Color(0xffffffff),
                         shape = RoundedCornerShape(12.dp)
                     )
-                    .fillMaxWidth()
                     .width(700.dp)
                     .height(700.dp)
                     .padding(40.dp)
@@ -182,12 +179,19 @@ fun AmslerGridContent(
                     .fillMaxWidth(),
                 horizontalArrangement = Arrangement.Center
             ) {
-                Box(
+
+            }
+            Box(
+                modifier = Modifier
+                    .fillMaxSize(),
+                contentAlignment = Alignment.BottomCenter
+            ) {
+                Text(
                     modifier = Modifier
-                        .width(200.dp)
-                        .height(100.dp)
+                        .padding(start = 40.dp, end = 40.dp, bottom = (viewModel.navigationBarPadding.collectAsState().value).dp)
+                        .fillMaxWidth()
                         .background(
-                            color = Color(0xffffffff),
+                            color = Color(0xff1d71e1),
                             shape = RoundedCornerShape(8.dp)
                         )
                         .clickable {
@@ -201,14 +205,13 @@ fun AmslerGridContent(
 //                                viewModel.updateIsCoveredEyeCheckingDone(false)
                                 toResultScreen()
                             }
-                        },
-                    contentAlignment = Alignment.Center
-                ) {
-                    Text(
-                        text = StringProvider.getString(R.string.amsler_grid_test_content_done),
-                        fontSize = 30.sp
-                    )
-                }
+                        }
+                        .padding(20.dp),
+                    text = StringProvider.getString(R.string.amsler_grid_test_content_done),
+                    fontSize = 24.sp,
+                    color = Color(0xffffffff),
+                    textAlign = TextAlign.Center
+                )
             }
         }
     }

@@ -227,6 +227,14 @@ class NenoonViewModel(application: Application) : AndroidViewModel(application) 
 
     fun updateTestDistance() {
         _testDistance.update { screenToFaceDistance.value.toInt() }
+        measuringDistanceContentVisibleState.targetState = false
+        when(_selectedTestType.value) {
+            TestType.ShortDistanceVisualAcuity -> { coveredEyeCheckingContentVisibleState.targetState = true }
+            TestType.LongDistanceVisualAcuity -> { coveredEyeCheckingContentVisibleState.targetState = true }
+            TestType.ChildrenVisualAcuity -> { coveredEyeCheckingContentVisibleState.targetState = true }
+            TestType.AmslerGrid -> { coveredEyeCheckingContentVisibleState.targetState = true }
+            else -> { coveredEyeCheckingContentVisibleState.targetState = true }
+        }
     }
 
     // Covered Eye Checking
@@ -341,24 +349,18 @@ class NenoonViewModel(application: Application) : AndroidViewModel(application) 
             && ContextCompat.checkSelfPermission(getApplication(), Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED
             && ContextCompat.checkSelfPermission(getApplication(), Manifest.permission.ACCESS_COARSE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
             _isBluetoothPermissionsGranted.update { true }
-//            Log.e("checkPermission", "Bluetooth Permission Granted")
         } else {
             _isBluetoothPermissionsGranted.update { false }
-//            Log.e("checkPermission", "Bluetooth Permission not Granted")
         }
         if(ContextCompat.checkSelfPermission(getApplication(), Manifest.permission.CAMERA) == PackageManager.PERMISSION_GRANTED) {
             _isCameraPermissionGranted.update { true }
-//            Log.e("checkPermission", "Camera Permission Granted")
         } else {
             _isCameraPermissionGranted.update { false }
-//            Log.e("checkPermission", "Camera Permission not Granted")
         }
         if(Settings.System.canWrite(getApplication())) {
             _isWriteSettingsPermissionGranted.update { true }
-//            Log.e("checkPermission", "Settings Permission Granted")
         } else {
             _isWriteSettingsPermissionGranted.update { false }
-//            Log.e("checkPermission", "Settings Permission not Granted")
         }
 
         if(_isBluetoothPermissionsGranted.value && _isCameraPermissionGranted.value && _isWriteSettingsPermissionGranted.value && _isLocationOn.value && _isBluetoothOn.value) {
@@ -561,7 +563,7 @@ class NenoonViewModel(application: Application) : AndroidViewModel(application) 
     val ansNum: StateFlow<Int> = _ansNum
 
     fun processAnswerSelected(idx: Int) {
-        Log.e("processAnswerSelected", "${_sightLevel.value}")
+        var isEnd = false
         if(idx != 3) {
             // if correct
             if(ansNum.value == _randomList.value[idx]) {
@@ -570,6 +572,7 @@ class NenoonViewModel(application: Application) : AndroidViewModel(application) 
                 if(sightHistory[_sightLevel.value]!!.first == 1 && sightHistory[_sightLevel.value]!!.second == 0) {
                     // if level == 10
                     if(_sightLevel.value == 10) {
+                        isEnd = true
                         moveToSightednessTestContent()
                     } else {
                         _sightLevel.update { it + 1 }
@@ -589,6 +592,7 @@ class NenoonViewModel(application: Application) : AndroidViewModel(application) 
             if(sightHistory[_sightLevel.value]!!.first >= 2) {
                 // if next level trial >= 3
                 if(sightHistory[_sightLevel.value + 1]!!.first + sightHistory[_sightLevel.value + 1]!!.second >= 3) {
+                    isEnd = true
                     moveToSightednessTestContent()
                 } // to next level
                 else {
@@ -598,11 +602,13 @@ class NenoonViewModel(application: Application) : AndroidViewModel(application) 
             else {
                 // if level == 1
                 if(_sightLevel.value == 1) {
+                    isEnd = true
                     moveToSightednessTestContent()
                 } // level--
                 else {
                     // if prev level trial >= 3
                     if(sightHistory[_sightLevel.value - 1]!!.first + sightHistory[_sightLevel.value - 1]!!.second >= 3) {
+                        isEnd = true
                         moveToSightednessTestContent()
                     } else {
                         _sightLevel.update { it - 1 }
@@ -610,7 +616,7 @@ class NenoonViewModel(application: Application) : AndroidViewModel(application) 
                 }
             }
         }
-        updateRandomList()
+        if(!isEnd) updateRandomList()
     }
 
     private fun moveToSightednessTestContent() {
@@ -631,7 +637,10 @@ class NenoonViewModel(application: Application) : AndroidViewModel(application) 
         } else {
             _rightEyeSightValue.update { _sightLevel.value }
         }
-        _sightLevel.update { 1 }
+        viewModelScope.launch {
+            delay(1000)
+            _sightLevel.update { 1 }
+        }
         visualAcuityTestContentVisibleState.targetState = false
         visualAcuityTestSightednessTestContentVisibleState.targetState = true
 

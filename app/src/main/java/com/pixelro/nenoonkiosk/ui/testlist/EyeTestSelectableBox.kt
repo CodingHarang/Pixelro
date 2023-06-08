@@ -64,7 +64,7 @@ fun EyeTestSelectableBox(
                 Text(
                     description,
                     modifier = Modifier
-                        .padding(start = 40.dp, end = 20.dp),
+                        .padding(start = 40.dp, end = 80.dp),
                     fontSize = 20.sp,
                     color = Color(0xff919191)
                 )

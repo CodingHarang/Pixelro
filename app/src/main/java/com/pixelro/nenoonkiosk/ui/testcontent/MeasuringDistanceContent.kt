@@ -56,13 +56,16 @@ fun MeasuringDistanceContent(
         ) {
             Text(
                 modifier = Modifier
-                    .padding(top = 120.dp, bottom = 20.dp),
+                    .padding(start = 40.dp, top = 120.dp, end = 40.dp, bottom = 20.dp)
+                    .fillMaxWidth(),
                 text = StringProvider.getString(R.string.measuring_distance_content_description1),
                 color = Color(0xffffffff),
-                fontSize = 30.sp,
-                textAlign = TextAlign.Center
+                fontSize = 30.sp
             )
             Text(
+                modifier = Modifier
+                    .padding(start = 40.dp, end = 40.dp)
+                    .fillMaxWidth(),
                 text = StringProvider.getString(R.string.measuring_distance_content_description2),
                 color = Color(0xffffffff),
                 fontSize = 20.sp
@@ -76,7 +79,7 @@ fun MeasuringDistanceContent(
             Text(
                 modifier = Modifier
                     .padding(top = 40.dp),
-                text = "현재 거리",
+                text = StringProvider.getString(R.string.test_screen_current_distance),
                 color = Color(0xffffffff),
                 fontSize = 24.sp
             )
@@ -86,19 +89,7 @@ fun MeasuringDistanceContent(
                 fontSize = 68.sp,
                 fontWeight = FontWeight.Bold
             )
-//            if(viewModel.screenToFaceDistance.collectAsState().value in (400.0..500.0)) {
             if(viewModel.screenToFaceDistance.collectAsState().value in (-500.0..500.0)) {
-//                Image(
-//                    modifier = Modifier
-//                        .height(256.dp)
-//                        .clickable {
-//                            viewModel.updateTestDistance()
-//                            measuringDistanceContentVisibleState.targetState = false
-//                            nextVisibleState.targetState = true
-//                        },
-//                    painter = painterResource(id = R.drawable.baseline_check_circle_48),
-//                    contentDescription = ""
-//                )
                 Box(
                     modifier = Modifier
                         .fillMaxSize(),
@@ -117,19 +108,14 @@ fun MeasuringDistanceContent(
                             )
                             .clickable {
                                 viewModel.updateTestDistance()
-                                measuringDistanceContentVisibleState.targetState = false
-                                nextVisibleState.targetState = true
                             }
                             .padding(20.dp),
                         contentAlignment = Alignment.Center
                     ) {
                         Text(
-//                        modifier = Modifier
-//                            .offset(0.dp, (-4).dp),
                             text = StringProvider.getString(R.string.test_predescription_screen_start),
                             fontSize = 24.sp,
                             color = Color(0xffffffff),
-//                    fontWeight = FontWeight.Bold,
                             textAlign = TextAlign.Center
                         )
                     }

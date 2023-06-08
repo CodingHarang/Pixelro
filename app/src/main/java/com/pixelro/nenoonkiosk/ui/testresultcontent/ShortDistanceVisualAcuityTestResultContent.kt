@@ -31,131 +31,300 @@ fun ShortDistanceVisualAcuityTestResultContent(
     viewModel.updateSightTestResult()
     Column(
         modifier = Modifier
-            .fillMaxWidth(),
-        horizontalAlignment = Alignment.CenterHorizontally
+            .fillMaxWidth()
     ) {
-        Spacer(
+        Text(
             modifier = Modifier
-                .height(20.dp)
+                .padding(start = 40.dp, top = 40.dp),
+            text = "이상 없을 경우",
+            fontSize = 28.sp,
+            fontWeight = FontWeight.Medium
         )
         Text(
-            text = StringProvider.getString(R.string.short_distance_visual_acuity_test_result_content_result),
-            fontSize = 30.sp,
-        )
-        Spacer(
             modifier = Modifier
-                .height(20.dp)
+                .padding(start = 40.dp),
+            text = "눈에 이상이 없을 경우 아래와 같은 결과가 나옵니다",
+            fontSize = 16.sp,
+            color = Color(0xff878787)
         )
+        Row(
+            modifier = Modifier
+                .padding(start = 40.dp, top = 20.dp, end = 40.dp)
+                .fillMaxWidth()
+                .background(
+                    color = Color(0xfff7f9f9),
+                    shape = RoundedCornerShape(8.dp)
+                )
+                .padding(20.dp),
+            verticalAlignment = Alignment.CenterVertically
+        ) {
+            Text(
+                text = "오른쪽 · 왼쪽 0.7 이상",
+                fontSize = 20.sp,
+                fontWeight = FontWeight.Medium
+            )
+            Text(
+                modifier = Modifier
+                    .padding(start = 12.dp)
+                    .background(
+                        color = Color(0xffffecec),
+                        shape = RoundedCornerShape(4.dp)
+                    )
+                    .padding(start = 12.dp, top = 4.dp, end = 12.dp, bottom = 4.dp),
+                text = "빨강",
+                color = Color(0xffd23d3d),
+                fontSize = 20.sp
+            )
+            Text(
+                modifier = Modifier
+                    .padding(start = 8.dp)
+                    .background(
+                        color = Color(0xffdafcda),
+                        shape = RoundedCornerShape(4.dp)
+                    )
+                    .padding(start = 12.dp, top = 4.dp, end = 12.dp, bottom = 4.dp),
+                text = "초록",
+                color = Color(0xff28bd29),
+                fontSize = 20.sp
+            )
+            Text(
+                modifier = Modifier
+                    .padding(start = 12.dp),
+                text = "바탕의 글이 모두 잘 보임",
+                color = Color(0xff878787),
+                fontSize = 20.sp
+            )
+        }
         Text(
-            text = StringProvider.getString(R.string.short_distance_visual_acuity_test_result_distance) + ":",
-            fontSize = 30.sp
-        )
-        Spacer(
             modifier = Modifier
-                .height(20.dp)
+                .padding(start = 40.dp, top = 40.dp),
+            text = "내 결과",
+            fontSize = 28.sp,
+            fontWeight = FontWeight.Medium
         )
-        Row() {
+        Row(
+            modifier = Modifier
+                .padding(start = 40.dp, top = 20.dp, end = 40.dp)
+                .fillMaxWidth()
+        ) {
             Column(
-                horizontalAlignment = Alignment.CenterHorizontally
+                modifier = Modifier
+                    .weight(1f)
+                    .height(200.dp)
+                    .background(
+                        color = Color(0xfff7f9f9),
+                        shape = RoundedCornerShape(8.dp)
+                    )
+                    .padding(20.dp)
             ) {
                 Text(
                     text = "왼쪽",
-                    color = Color(0xff0000ff),
-                    fontSize = 30.sp,
+                    fontSize = 20.sp,
+                    fontWeight = FontWeight.Medium
+                )
+                Text(
+                    text = "${viewModel.leftEyeSightValue.collectAsState().value.toFloat() / 10}",
+                    fontSize = 32.sp,
                     fontWeight = FontWeight.Bold
                 )
-                Box(
+                Row(
                     modifier = Modifier
-                        .height(200.dp)
-                        .width(300.dp)
-                        .background(
-                            color = Color(0xffdddddd),
-                            shape = RoundedCornerShape(8.dp)
-                        ),
-                    contentAlignment = Alignment.Center
+                        .padding(top = 8.dp),
+                    verticalAlignment = Alignment.CenterVertically
                 ) {
-                    Text(
-                        text = "${viewModel.leftEyeSightValue.collectAsState().value.toFloat() / 10}",
-                        fontSize = 30.sp,
-                    )
-                }
-                Spacer(
-                    modifier = Modifier
-                        .height(12.dp)
-                )
-                Box(
-                    modifier = Modifier
-                        .height(200.dp)
-                        .width(300.dp)
-                        .background(
-                            color = Color(0xffdddddd),
-                            shape = RoundedCornerShape(8.dp)
-                        ),
-                    contentAlignment = Alignment.Center
-                ) {
-                    Text(
-                        text = when(viewModel.leftEyeSightedValue.collectAsState().value) {
-                            VisionDisorderType.Normal -> "정상"
-                            VisionDisorderType.Myopia -> "근시"
-                            VisionDisorderType.Hyperopia -> "원시"
-                            VisionDisorderType.Astigmatism -> "난시"
-                            else -> "오류"
-                        },
-                        fontSize = 30.sp,
-                    )
+                    when(viewModel.leftEyeSightedValue.collectAsState().value) {
+                        VisionDisorderType.Hyperopia -> {
+                            Text(
+                                modifier = Modifier
+                                    .background(
+                                        color = Color(0xffdafcda),
+                                        shape = RoundedCornerShape(4.dp)
+                                    )
+                                    .padding(start = 12.dp, top = 4.dp, end = 12.dp, bottom = 4.dp),
+                                text = "초록",
+                                color = Color(0xff28bd29),
+                                fontSize = 20.sp
+                            )
+                            Text(
+                                modifier = Modifier
+                                    .padding(start = 12.dp),
+                                text = "바탕의 글이 선명하게 보임",
+                                color = Color(0xff878787),
+                                fontSize = 20.sp
+                            )
+                        }
+                        VisionDisorderType.Myopia -> {
+                            Text(
+                                modifier = Modifier
+                                    .background(
+                                        color = Color(0xffffecec),
+                                        shape = RoundedCornerShape(4.dp)
+                                    )
+                                    .padding(start = 12.dp, top = 4.dp, end = 12.dp, bottom = 4.dp),
+                                text = "빨강",
+                                color = Color(0xffd23d3d),
+                                fontSize = 20.sp
+                            )
+                            Text(
+                                modifier = Modifier
+                                    .padding(start = 12.dp),
+                                text = "바탕의 글이 선명하게 보임",
+                                color = Color(0xff878787),
+                                fontSize = 20.sp
+                            )
+                        }
+                        VisionDisorderType.Normal -> {
+                            Text(
+                                modifier = Modifier
+                                    .background(
+                                        color = Color(0xffffecec),
+                                        shape = RoundedCornerShape(4.dp)
+                                    )
+                                    .padding(start = 12.dp, top = 4.dp, end = 12.dp, bottom = 4.dp),
+                                text = "빨강",
+                                color = Color(0xffd23d3d),
+                                fontSize = 20.sp
+                            )
+                            Text(
+                                modifier = Modifier
+                                    .padding(start = 8.dp)
+                                    .background(
+                                        color = Color(0xffdafcda),
+                                        shape = RoundedCornerShape(4.dp)
+                                    )
+                                    .padding(start = 12.dp, top = 4.dp, end = 12.dp, bottom = 4.dp),
+                                text = "초록",
+                                color = Color(0xff28bd29),
+                                fontSize = 20.sp
+                            )
+                            Text(
+                                modifier = Modifier
+                                    .padding(start = 12.dp),
+                                text = "바탕의 글이 모두 선명하게 보임",
+                                color = Color(0xff878787),
+                                fontSize = 20.sp
+                            )
+                        }
+                        VisionDisorderType.Astigmatism -> {
+                            Text(
+                                text = "글이 모두 선명하게 보이지 않음",
+                                color = Color(0xff878787),
+                                fontSize = 20.sp
+                            )
+                        }
+                    }
                 }
             }
             Spacer(
                 modifier = Modifier
-                    .width(12.dp)
+                .width(20.dp)
             )
             Column(
-                horizontalAlignment = Alignment.CenterHorizontally
+                modifier = Modifier
+                    .weight(1f)
+                    .height(200.dp)
+                    .background(
+                        color = Color(0xfff7f9f9),
+                        shape = RoundedCornerShape(8.dp)
+                    )
+                    .padding(20.dp)
             ) {
                 Text(
                     text = "오른쪽",
-                    color = Color(0xff0000ff),
-                    fontSize = 30.sp,
+                    fontSize = 20.sp,
+                    fontWeight = FontWeight.Medium
+                )
+                Text(
+                    text = "${viewModel.rightEyeSightValue.collectAsState().value.toFloat() / 10}",
+                    fontSize = 32.sp,
                     fontWeight = FontWeight.Bold
                 )
-                Box(
+                Row(
                     modifier = Modifier
-                        .height(200.dp)
-                        .width(300.dp)
-                        .background(
-                            color = Color(0xffdddddd),
-                            shape = RoundedCornerShape(8.dp)
-                        ),
-                    contentAlignment = Alignment.Center
+                        .padding(top = 8.dp),
+                    verticalAlignment = Alignment.CenterVertically
                 ) {
-                    Text(
-                        text = "${viewModel.rightEyeSightValue.collectAsState().value.toFloat() / 10}",
-                        fontSize = 30.sp,
-                    )
-                }
-                Spacer(
-                    modifier = Modifier
-                        .height(12.dp)
-                )
-                Box(
-                    modifier = Modifier
-                        .height(200.dp)
-                        .width(300.dp)
-                        .background(
-                            color = Color(0xffdddddd),
-                            shape = RoundedCornerShape(8.dp)
-                        ),
-                    contentAlignment = Alignment.Center
-                ) {
-                    Text(
-                        text = when(viewModel.rightEyeSightedValue.collectAsState().value) {
-                            VisionDisorderType.Normal -> "정상"
-                            VisionDisorderType.Myopia -> "근시"
-                            VisionDisorderType.Hyperopia -> "원시"
-                            VisionDisorderType.Astigmatism -> "난시"
-                        },
-                        fontSize = 30.sp
-                    )
+                    when(viewModel.rightEyeSightedValue.collectAsState().value) {
+                        VisionDisorderType.Hyperopia -> {
+                            Text(
+                                modifier = Modifier
+                                    .background(
+                                        color = Color(0xffdafcda),
+                                        shape = RoundedCornerShape(4.dp)
+                                    )
+                                    .padding(start = 12.dp, top = 4.dp, end = 12.dp, bottom = 4.dp),
+                                text = "초록",
+                                color = Color(0xff28bd29),
+                                fontSize = 20.sp
+                            )
+                            Text(
+                                modifier = Modifier
+                                    .padding(start = 12.dp),
+                                text = "바탕의 글이 선명하게 보임",
+                                color = Color(0xff878787),
+                                fontSize = 20.sp
+                            )
+                        }
+                        VisionDisorderType.Myopia -> {
+                            Text(
+                                modifier = Modifier
+                                    .background(
+                                        color = Color(0xffffecec),
+                                        shape = RoundedCornerShape(4.dp)
+                                    )
+                                    .padding(start = 12.dp, top = 4.dp, end = 12.dp, bottom = 4.dp),
+                                text = "빨강",
+                                color = Color(0xffd23d3d),
+                                fontSize = 20.sp
+                            )
+                            Text(
+                                modifier = Modifier
+                                    .padding(start = 12.dp),
+                                text = "바탕의 글이 선명하게 보임",
+                                color = Color(0xff878787),
+                                fontSize = 20.sp
+                            )
+                        }
+                        VisionDisorderType.Normal -> {
+                            Text(
+                                modifier = Modifier
+                                    .background(
+                                        color = Color(0xffffecec),
+                                        shape = RoundedCornerShape(4.dp)
+                                    )
+                                    .padding(start = 12.dp, top = 4.dp, end = 12.dp, bottom = 4.dp),
+                                text = "빨강",
+                                color = Color(0xffd23d3d),
+                                fontSize = 20.sp
+                            )
+                            Text(
+                                modifier = Modifier
+                                    .padding(start = 8.dp)
+                                    .background(
+                                        color = Color(0xffdafcda),
+                                        shape = RoundedCornerShape(4.dp)
+                                    )
+                                    .padding(start = 12.dp, top = 4.dp, end = 12.dp, bottom = 4.dp),
+                                text = "초록",
+                                color = Color(0xff28bd29),
+                                fontSize = 20.sp
+                            )
+                            Text(
+                                modifier = Modifier
+                                    .padding(start = 12.dp),
+                                text = "바탕의 글이 모두 선명하게 보임",
+                                color = Color(0xff878787),
+                                fontSize = 20.sp
+                            )
+                        }
+                        VisionDisorderType.Astigmatism -> {
+                            Text(
+                                text = "글이 모두 선명하게 보이지 않음",
+                                color = Color(0xff878787),
+                                fontSize = 20.sp
+                            )
+                        }
+                    }
                 }
             }
         }

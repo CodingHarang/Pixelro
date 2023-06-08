@@ -38,14 +38,11 @@ fun CoveredEyeCheckingContent(
         exit = AnimationProvider.exitTransition
     ) {
         DisposableEffect(true) {
-            Log.e("DisposableEffect", "${viewModel.coveredEyeCheckingContentVisibleState.targetState}")
             viewModel.initializeCoveredEyeChecking()
             viewModel.checkCoveredEye()
             onDispose {}
         }
         val isLeftEye = viewModel.isLeftEye.collectAsState().value
-//        val isCoveredEyeCheckingDone = viewModel.isCoveredEyeCheckingDone.collectAsState().value
-//        Log.e("CoveredEyeCheckingContent", "insideAnimatedVisibility")
         Column(
             modifier = Modifier,
             horizontalAlignment = Alignment.CenterHorizontally
@@ -66,8 +63,8 @@ fun CoveredEyeCheckingContent(
                 modifier = Modifier
                 .graphicsLayer {
                     this.rotationY = when(isLeftEye) {
-                        true -> 180f
-                        else -> 0f
+                        true -> 0f
+                        else -> 180f
                     }
                 }
                 .padding(bottom = 100.dp),
@@ -75,7 +72,7 @@ fun CoveredEyeCheckingContent(
                 contentDescription = ""
             )
             Text(
-                text = "곧 검사가 시작됩니다",
+                text = StringProvider.getString(R.string.covered_eye_checking_description),
                 color = Color(0xffffffff),
                 fontSize = 20.sp
             )
@@ -87,20 +84,6 @@ fun CoveredEyeCheckingContent(
                     fontWeight = FontWeight.Bold
                 )
             }
-//            Spacer(
-//                modifier = Modifier
-//                    .height(20.dp)
-//            )
-//            Image(
-//                modifier = Modifier
-//                    .height(256.dp)
-//                    .clickable {
-//                        coveredEyeCheckingContentVisibleState.targetState = false
-//                        nextVisibleState.targetState = true
-//                    },
-//                painter = painterResource(id = R.drawable.baseline_check_circle_48),
-//                contentDescription = ""
-//            )
         }
     }
 }
