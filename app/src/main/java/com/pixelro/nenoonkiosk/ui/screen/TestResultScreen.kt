@@ -347,93 +347,44 @@ fun TestResultScreen(
                         )
                     }
                 }
-//                Button(
-//                    modifier = Modifier
-//                        .fillMaxWidth()
-//                        .padding(start = 80.dp, end = 80.dp),
-//                    onClick = {
-//                        composableScope.launch {
-//                            bluetoothAdapter.startDiscovery()
-//                            Log.e("onClick", "${bluetoothAdapter.hashCode()}, ${bluetoothAdapter.isEnabled} ${bluetoothAdapter.isDiscovering} ${bluetoothAdapter.state}")
-//                            printResult(
-//                                testType = testType,
-//                                printString = printString
-//                            )
-//                        }
-//                    },
-//                    colors = ButtonDefaults.buttonColors(
-//                        backgroundColor = Color(0xff1d71e1)
-//                    )
-//                ) {
-//                    Text(
-//                        text = StringProvider.getString(R.string.result_screen_print),
-//                        color = Color(0xffffffff),
-//                        fontSize = 30.sp
-//                    )
-//                }
-//                Spacer(
-//                    modifier = Modifier
-//                        .height(20.dp)
-//                )
-            Box(
-                modifier = Modifier
-                    .padding(
-                        start = 40.dp,
-                        end = 40.dp,
-                        bottom = (viewModel.navigationBarPadding.collectAsState().value).dp
-                    )
-                    .fillMaxWidth()
-                    .clip(
-                        shape = RoundedCornerShape(8.dp)
-                    )
-                    .border(
-                        border = BorderStroke(1.dp, Color(0xffc3c3c3)),
-                        shape = RoundedCornerShape(8.dp)
-                    )
-                    .clickable {
-                        navController.popBackStack(GlobalConstants.ROUTE_TEST_LIST, false)
-                    },
-                contentAlignment = Alignment.Center
-            ) {
-                Row(
-                    verticalAlignment = Alignment.CenterVertically
+                Box(
+                    modifier = Modifier
+                        .padding(
+                            start = 40.dp,
+                            end = 40.dp,
+                            bottom = (viewModel.navigationBarPadding.collectAsState().value).dp
+                        )
+                        .fillMaxWidth()
+                        .clip(
+                            shape = RoundedCornerShape(8.dp)
+                        )
+                        .border(
+                            border = BorderStroke(1.dp, Color(0xffc3c3c3)),
+                            shape = RoundedCornerShape(8.dp)
+                        )
+                        .clickable {
+                            navController.popBackStack(GlobalConstants.ROUTE_TEST_LIST, false)
+                        },
+                    contentAlignment = Alignment.Center
                 ) {
-                    Image(
-                        modifier = Modifier
-                            .width(28.dp),
-                        painter = painterResource(id = R.drawable.icon_back2),
-                        contentDescription = ""
-                    )
-                    Text(
-                        modifier = Modifier
-                            .padding(20.dp),
-                        text = StringProvider.getString(R.string.result_screen_go_back),
-                        fontSize = 24.sp,
-                        fontWeight = FontWeight.Medium
-                    )
+                    Row(
+                        verticalAlignment = Alignment.CenterVertically
+                    ) {
+                        Image(
+                            modifier = Modifier
+                                .width(28.dp),
+                            painter = painterResource(id = R.drawable.icon_back2),
+                            contentDescription = ""
+                        )
+                        Text(
+                            modifier = Modifier
+                                .padding(20.dp),
+                            text = StringProvider.getString(R.string.result_screen_go_back),
+                            fontSize = 24.sp,
+                            fontWeight = FontWeight.Medium
+                        )
+                    }
                 }
-            }
-//                Button(
-//                    modifier = Modifier
-//                        .fillMaxWidth()
-//                        .padding(start = 80.dp, end = 80.dp),
-//                    onClick = {
-//                        navController.popBackStack(GlobalConstants.ROUTE_TEST_LIST, false)
-//                    },
-//                    colors = ButtonDefaults.buttonColors(
-//                        backgroundColor = Color(0xff1d71e1)
-//                    )
-//                ) {
-//                    Text(
-//                        text = StringProvider.getString(R.string.result_screen_go_back),
-//                        color = Color(0xffffffff),
-//                        fontSize = 30.sp
-//                    )
-//                }
-//                Spacer(
-//                    modifier = Modifier
-//                        .height(40.dp)
-//                )
             }
         }
     }
@@ -450,6 +401,7 @@ fun textAsBitmap(
     paint.textAlign = Paint.Align.CENTER
     val width = 600
     val baseline = -paint.ascent()
+    val printName = "태전그룹"
 //    paint.textSize = 40f
 //    paint.color = 0xff000000.toInt()
 //    paint.textAlign = Paint.Align.CENTER
@@ -473,8 +425,8 @@ fun textAsBitmap(
             paint.typeface = Typeface.DEFAULT
 
             paint.textAlign = Paint.Align.LEFT
-            canvas.drawText("분당 서울대 병원", 0f, baseline + 320f, paint)
-            canvas.drawText("☎1588-3369", 0f, baseline + 360f, paint)
+            canvas.drawText(printName, 0f, baseline + 320f, paint)
+            canvas.drawText("☎0000-0000", 0f, baseline + 360f, paint)
             return image!!
         }
         TestType.ShortDistanceVisualAcuity -> {
@@ -496,8 +448,8 @@ fun textAsBitmap(
 
             paint.textAlign = Paint.Align.LEFT
             canvas.drawLine(300f, 100f, 300f, 300f, paint)
-            canvas.drawText("분당 서울대 병원", 0f, baseline + 320f, paint)
-            canvas.drawText("☎1588-3369", 0f, baseline + 360f, paint)
+            canvas.drawText(printName, 0f, baseline + 320f, paint)
+            canvas.drawText("☎0000-0000", 0f, baseline + 360f, paint)
             return image!!
         }
         TestType.LongDistanceVisualAcuity -> {
@@ -519,8 +471,8 @@ fun textAsBitmap(
 
             paint.textAlign = Paint.Align.LEFT
             canvas.drawLine(300f, 100f, 300f, 300f, paint)
-            canvas.drawText("분당 서울대 병원", 0f, baseline + 320f, paint)
-            canvas.drawText("☎1588-3369", 0f, baseline + 360f, paint)
+            canvas.drawText(printName, 0f, baseline + 320f, paint)
+            canvas.drawText("☎0000-0000", 0f, baseline + 360f, paint)
             return image!!
         }
         TestType.ChildrenVisualAcuity -> {
@@ -542,8 +494,8 @@ fun textAsBitmap(
 
             paint.textAlign = Paint.Align.LEFT
             canvas.drawLine(300f, 100f, 300f, 300f, paint)
-            canvas.drawText("분당 서울대 병원", 0f, baseline + 320f, paint)
-            canvas.drawText("☎1588-3369", 0f, baseline + 360f, paint)
+            canvas.drawText(printName, 0f, baseline + 320f, paint)
+            canvas.drawText("☎0000-0000", 0f, baseline + 360f, paint)
             return image!!
         }
         TestType.AmslerGrid -> {
@@ -644,8 +596,8 @@ fun textAsBitmap(
             paint.textAlign = Paint.Align.LEFT
             paint.strokeWidth = 1f
             canvas.drawLine(300f, 100f, 300f, 400f, paint)
-            canvas.drawText("분당 서울대 병원", 0f, baseline + 420f, paint)
-            canvas.drawText("☎1588-3369", 0f, baseline + 460f, paint)
+            canvas.drawText(printName, 0f, baseline + 420f, paint)
+            canvas.drawText("☎0000-0000", 0f, baseline + 460f, paint)
             return image!!
         }
         TestType.MChart -> {
@@ -681,8 +633,8 @@ fun textAsBitmap(
 
             paint.textAlign = Paint.Align.LEFT
             canvas.drawLine(300f, 100f, 300f, 300f, paint)
-            canvas.drawText("분당 서울대 병원", 0f, baseline + 320f, paint)
-            canvas.drawText("☎1588-3369", 0f, baseline + 360f, paint)
+            canvas.drawText(printName, 0f, baseline + 320f, paint)
+            canvas.drawText("☎0000-0000", 0f, baseline + 360f, paint)
             return image!!
         }
         else -> {

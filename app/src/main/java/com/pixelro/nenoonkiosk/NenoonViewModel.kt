@@ -823,6 +823,14 @@ class NenoonViewModel(application: Application) : AndroidViewModel(application) 
         _isLeftEye.update { true }
     }
 
+    fun toNextMChartTest() {
+        updateIsLeftEye(false)
+        viewModelScope.launch {
+            delay(1500)
+            updateIsVertical(true)
+        }
+    }
+
     fun updateMChartResult(value: Int) {
         _mChartResult.update {
             if(value == 0) {

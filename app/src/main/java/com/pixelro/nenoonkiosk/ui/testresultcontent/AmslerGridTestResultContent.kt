@@ -2,6 +2,7 @@ package com.pixelro.nenoonkiosk.ui.testresultcontent
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -10,6 +11,7 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
@@ -17,8 +19,10 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.drawBehind
 import androidx.compose.ui.geometry.Offset
+import androidx.compose.ui.geometry.Size
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.RectangleShape
+import androidx.compose.ui.graphics.drawscope.Stroke
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
@@ -34,7 +38,8 @@ fun AmslerGridTestResultContent(
     val rightSelectedArea = viewModel.rightSelectedArea.collectAsState().value
     Row(
         modifier = Modifier
-            .fillMaxWidth()
+            .fillMaxWidth(),
+        verticalAlignment = Alignment.CenterVertically
     ) {
         Column() {
             Text(
@@ -72,12 +77,52 @@ fun AmslerGridTestResultContent(
                             color = Color(0xffffffff)
                         )
                         .border(
-                            width = 1.dp,
+                            width = (0.5).dp,
                             color = Color(0xffc3c3c3),
                             shape = RectangleShape
                         )
                         .drawBehind {
-                            val strokeWidth = 3f
+                            val strokeWidth = 1.5f
+                            val y = strokeWidth / 2
+
+                            drawLine(
+                                Color(0xffc3c3c3),
+                                Offset(0f, 0f),
+                                Offset(size.width, 0f),
+                                strokeWidth
+                            )
+                            drawLine(
+                                Color(0xffc3c3c3),
+                                Offset(0f, 0f),
+                                Offset(0f, size.height),
+                                strokeWidth
+                            )
+//                            drawArc(
+//                                color = Color(0xffc3c3c3),
+//                                startAngle = 180f,
+//                                sweepAngle = 90f,
+//                                useCenter = false,
+//                                size = Size(20f, 20f),
+//                                style = Stroke(width = strokeWidth),
+//                            )
+                        }
+                ) {
+
+                }
+                Box(
+                    modifier = Modifier
+                        .weight(1f)
+                        .height(70.dp)
+                        .background(
+                            color = Color(0xffffffff)
+                        )
+                        .border(
+                            width = (0.5).dp,
+                            color = Color(0xffc3c3c3),
+                            shape = RectangleShape
+                        )
+                        .drawBehind {
+                            val strokeWidth = 1.5f
                             val y = strokeWidth / 2
 
                             drawLine(
@@ -98,12 +143,12 @@ fun AmslerGridTestResultContent(
                             color = Color(0xffffffff)
                         )
                         .border(
-                            width = 1.dp,
+                            width = (0.5).dp,
                             color = Color(0xffc3c3c3),
                             shape = RectangleShape
                         )
                         .drawBehind {
-                            val strokeWidth = 3f
+                            val strokeWidth = 1.5f
                             val y = strokeWidth / 2
 
                             drawLine(
@@ -112,30 +157,10 @@ fun AmslerGridTestResultContent(
                                 Offset(size.width, 0f),
                                 strokeWidth
                             )
-                        }
-                ) {
-
-                }
-                Box(
-                    modifier = Modifier
-                        .weight(1f)
-                        .height(70.dp)
-                        .background(
-                            color = Color(0xffffffff)
-                        )
-                        .border(
-                            width = 1.dp,
-                            color = Color(0xffc3c3c3),
-                            shape = RectangleShape
-                        )
-                        .drawBehind {
-                            val strokeWidth = 3f
-                            val y = strokeWidth / 2
-
                             drawLine(
                                 Color(0xffc3c3c3),
-                                Offset(0f, 0f),
-                                Offset(size.width, 0f),
+                                Offset(size.height, 0f),
+                                Offset(size.height, size.height),
                                 strokeWidth
                             )
                         }
@@ -157,7 +182,33 @@ fun AmslerGridTestResultContent(
                             color = Color(0xffffffff)
                         )
                         .border(
-                            width = 1.dp,
+                            width = (0.5).dp,
+                            color = Color(0xffc3c3c3),
+                            shape = RectangleShape
+                        )
+                        .drawBehind {
+                            val strokeWidth = 1.5f
+                            val y = strokeWidth / 2
+
+                            drawLine(
+                                Color(0xffc3c3c3),
+                                Offset(0f, 0f),
+                                Offset(0f, size.height),
+                                strokeWidth
+                            )
+                        }
+                ) {
+
+                }
+                Box(
+                    modifier = Modifier
+                        .weight(1f)
+                        .height(70.dp)
+                        .background(
+                            color = Color(0xffffffff)
+                        )
+                        .border(
+                            width = (0.5).dp,
                             color = Color(0xffc3c3c3),
                             shape = RectangleShape
                         )
@@ -172,25 +223,21 @@ fun AmslerGridTestResultContent(
                             color = Color(0xffffffff)
                         )
                         .border(
-                            width = 1.dp,
+                            width = (0.5).dp,
                             color = Color(0xffc3c3c3),
                             shape = RectangleShape
                         )
-                ) {
+                        .drawBehind {
+                            val strokeWidth = 1.5f
+                            val y = strokeWidth / 2
 
-                }
-                Box(
-                    modifier = Modifier
-                        .weight(1f)
-                        .height(70.dp)
-                        .background(
-                            color = Color(0xffffffff)
-                        )
-                        .border(
-                            width = 1.dp,
-                            color = Color(0xffc3c3c3),
-                            shape = RectangleShape
-                        )
+                            drawLine(
+                                Color(0xffc3c3c3),
+                                Offset(size.height, 0f),
+                                Offset(size.height, size.height),
+                                strokeWidth
+                            )
+                        }
                 ) {
 
                 }
@@ -209,10 +256,27 @@ fun AmslerGridTestResultContent(
                             color = Color(0xffffffff)
                         )
                         .border(
-                            width = 1.dp,
+                            width = (0.5).dp,
                             color = Color(0xffc3c3c3),
                             shape = RectangleShape
                         )
+                        .drawBehind {
+                            val strokeWidth = 1.5f
+                            val y = strokeWidth / 2
+
+                            drawLine(
+                                Color(0xffc3c3c3),
+                                Offset(0f, 0f),
+                                Offset(0f, size.height),
+                                strokeWidth
+                            )
+                            drawLine(
+                                Color(0xffc3c3c3),
+                                Offset(0f, size.height),
+                                Offset(size.height, size.height),
+                                strokeWidth
+                            )
+                        }
                 ) {
 
                 }
@@ -224,10 +288,21 @@ fun AmslerGridTestResultContent(
                             color = Color(0xffffffff)
                         )
                         .border(
-                            width = 1.dp,
+                            width = (0.5).dp,
                             color = Color(0xffc3c3c3),
                             shape = RectangleShape
                         )
+                        .drawBehind {
+                            val strokeWidth = 1.5f
+                            val y = strokeWidth / 2
+
+                            drawLine(
+                                Color(0xffc3c3c3),
+                                Offset(0f, size.height),
+                                Offset(size.height, size.height),
+                                strokeWidth
+                            )
+                        }
                 ) {
 
                 }
@@ -239,85 +314,168 @@ fun AmslerGridTestResultContent(
                             color = Color(0xffffffff)
                         )
                         .border(
-                            width = 1.dp,
+                            width = (0.5).dp,
                             color = Color(0xffc3c3c3),
                             shape = RectangleShape
                         )
+                        .drawBehind {
+                            val strokeWidth = 1.5f
+                            val y = strokeWidth / 2
+
+                            drawLine(
+                                Color(0xffc3c3c3),
+                                Offset(0f, size.height),
+                                Offset(size.height, size.height),
+                                strokeWidth
+                            )
+                            drawLine(
+                                Color(0xffc3c3c3),
+                                Offset(size.height, 0f),
+                                Offset(size.height, size.height),
+                                strokeWidth
+                            )
+                        }
                 ) {
 
                 }
             }
         }
     }
+    Text(
+        modifier = Modifier
+            .padding(start = 40.dp, top = 40.dp)
+            .fillMaxWidth(),
+        text = "내 결과",
+        fontSize = 28.sp,
+        fontWeight = FontWeight.Medium
+    )
     Row(
         modifier = Modifier
-            .width(650.dp)
-            .height(380.dp)
-            .padding(top = 80.dp),
-        verticalAlignment = Alignment.CenterVertically
+            .fillMaxWidth()
+            .padding(top = 20.dp),
+        verticalAlignment = Alignment.CenterVertically,
+        horizontalArrangement = Arrangement.Center
     ) {
         Column(
             modifier = Modifier
-                .width(300.dp)
-                .height(300.dp)
+                .background(
+                    color = Color(0xfff7f7f7),
+                    shape = RoundedCornerShape(8.dp)
+                )
+                .padding(20.dp),
+            horizontalAlignment = Alignment.CenterHorizontally
         ) {
+            Text(
+                modifier = Modifier
+                    .padding(bottom = 12.dp),
+                text = "왼쪽",
+                fontSize = 20.sp,
+                fontWeight = FontWeight.Medium
+            )
             Row(
                 modifier = Modifier
                     .width(300.dp)
-                    .weight(1f)
                     .height(100.dp)
             ) {
                 Box(
                     modifier = Modifier
-                        .weight(1f)
+                        .width(100.dp)
                         .height(100.dp)
                         .background(
                             color = when (leftSelectedArea[0]) {
-                                true -> Color(0xffff0000)
+                                true -> Color(0xb4ea2525)
                                 else -> Color(0xffffffff)
                             }
                         )
                         .border(
-                            width = 2.dp,
-                            color = Color.Black,
+                            width = (0.5).dp,
+                            color =
+                                Color(0xffc3c3c3),
                             shape = RectangleShape
                         )
+                        .drawBehind {
+                            val strokeWidth = 1.5f
+                            val y = strokeWidth / 2
+
+                            drawLine(
+                                Color(0xffc3c3c3),
+                                Offset(0f, 0f),
+                                Offset(size.width, 0f),
+                                strokeWidth
+                            )
+                            drawLine(
+                                Color(0xffc3c3c3),
+                                Offset(0f, 0f),
+                                Offset(0f, size.height),
+                                strokeWidth
+                            )
+                        }
                 ) {
 
                 }
                 Box(
                     modifier = Modifier
-                        .weight(1f)
+                        .width(100.dp)
                         .height(100.dp)
                         .background(
                             color = when (leftSelectedArea[1]) {
-                                true -> Color(0xffff0000)
+                                true -> Color(0xb4ea2525)
                                 else -> Color(0xffffffff)
                             }
                         )
                         .border(
-                            width = 2.dp,
-                            color = Color.Black,
+                            width = (0.5).dp,
+                            color =
+                                Color(0xffc3c3c3),
                             shape = RectangleShape
                         )
+                        .drawBehind {
+                            val strokeWidth = 1.5f
+                            val y = strokeWidth / 2
+
+                            drawLine(
+                                Color(0xffc3c3c3),
+                                Offset(0f, 0f),
+                                Offset(size.width, 0f),
+                                strokeWidth
+                            )
+                        }
                 ) {
 
                 }
                 Box(
                     modifier = Modifier
-                        .weight(1f)
+                        .width(100.dp)
                         .height(100.dp)
                         .background(
                             color = when (leftSelectedArea[2]) {
-                                true -> Color(0xffff0000)
+                                true -> Color(0xb4ea2525)
                                 else -> Color(0xffffffff)
                             }
                         )
                         .border(
-                            width = 2.dp,
-                            color = Color.Black,
+                            width = (0.5).dp,
+                            color =
+                                Color(0xffc3c3c3),
                             shape = RectangleShape
                         )
+                        .drawBehind {
+                            val strokeWidth = 1.5f
+                            val y = strokeWidth / 2
+
+                            drawLine(
+                                Color(0xffc3c3c3),
+                                Offset(0f, 0f),
+                                Offset(size.width, 0f),
+                                strokeWidth
+                            )
+                            drawLine(
+                                Color(0xffc3c3c3),
+                                Offset(size.height, 0f),
+                                Offset(size.height, size.height),
+                                strokeWidth
+                            )
+                        }
                 ) {
 
                 }
@@ -325,40 +483,52 @@ fun AmslerGridTestResultContent(
             Row(
                 modifier = Modifier
                     .width(300.dp)
-                    .weight(1f)
                     .height(100.dp)
             ) {
                 Box(
                     modifier = Modifier
-                        .weight(1f)
+                        .width(100.dp)
                         .height(100.dp)
                         .background(
                             color = when (leftSelectedArea[3]) {
-                                true -> Color(0xffff0000)
+                                true -> Color(0xb4ea2525)
                                 else -> Color(0xffffffff)
                             }
                         )
                         .border(
-                            width = 2.dp,
-                            color = Color.Black,
+                            width = (0.5).dp,
+                            color =
+                                Color(0xffc3c3c3),
                             shape = RectangleShape
                         )
+                        .drawBehind {
+                            val strokeWidth = 1.5f
+                            val y = strokeWidth / 2
+
+                            drawLine(
+                                Color(0xffc3c3c3),
+                                Offset(0f, 0f),
+                                Offset(0f, size.height),
+                                strokeWidth
+                            )
+                        }
                 ) {
 
                 }
                 Box(
                     modifier = Modifier
-                        .weight(1f)
+                        .width(100.dp)
                         .height(100.dp)
                         .background(
                             color = when (leftSelectedArea[4]) {
-                                true -> Color(0xffff0000)
+                                true -> Color(0xb4ea2525)
                                 else -> Color(0xffffffff)
                             }
                         )
                         .border(
-                            width = 2.dp,
-                            color = Color.Black,
+                            width = (0.5).dp,
+                            color =
+                                Color(0xffc3c3c3),
                             shape = RectangleShape
                         )
                 ) {
@@ -366,19 +536,31 @@ fun AmslerGridTestResultContent(
                 }
                 Box(
                     modifier = Modifier
-                        .weight(1f)
+                        .width(100.dp)
                         .height(100.dp)
                         .background(
                             color = when (leftSelectedArea[5]) {
-                                true -> Color(0xffff0000)
+                                true -> Color(0xb4ea2525)
                                 else -> Color(0xffffffff)
                             }
                         )
                         .border(
-                            width = 2.dp,
-                            color = Color.Black,
+                            width = (0.5).dp,
+                            color =
+                                Color(0xffc3c3c3),
                             shape = RectangleShape
                         )
+                        .drawBehind {
+                            val strokeWidth = 1.5f
+                            val y = strokeWidth / 2
+
+                            drawLine(
+                                Color(0xffc3c3c3),
+                                Offset(size.height, 0f),
+                                Offset(size.height, size.height),
+                                strokeWidth
+                            )
+                        }
                 ) {
 
                 }
@@ -386,60 +568,107 @@ fun AmslerGridTestResultContent(
             Row(
                 modifier = Modifier
                     .width(300.dp)
-                    .weight(1f)
                     .height(100.dp)
             ) {
                 Box(
                     modifier = Modifier
-                        .weight(1f)
+                        .width(100.dp)
                         .height(100.dp)
                         .background(
                             color = when (leftSelectedArea[6]) {
-                                true -> Color(0xffff0000)
+                                true -> Color(0xb4ea2525)
                                 else -> Color(0xffffffff)
                             }
                         )
                         .border(
-                            width = 2.dp,
-                            color = Color.Black,
+                            width = (0.5).dp,
+                            color =
+                                Color(0xffc3c3c3),
                             shape = RectangleShape
                         )
+                        .drawBehind {
+                            val strokeWidth = 1.5f
+                            val y = strokeWidth / 2
+
+                            drawLine(
+                                Color(0xffc3c3c3),
+                                Offset(0f, 0f),
+                                Offset(0f, size.height),
+                                strokeWidth
+                            )
+                            drawLine(
+                                Color(0xffc3c3c3),
+                                Offset(0f, size.height),
+                                Offset(size.height, size.height),
+                                strokeWidth
+                            )
+                        }
                 ) {
 
                 }
                 Box(
                     modifier = Modifier
-                        .weight(1f)
+                        .width(100.dp)
                         .height(100.dp)
                         .background(
                             color = when (leftSelectedArea[7]) {
-                                true -> Color(0xffff0000)
+                                true -> Color(0xb4ea2525)
                                 else -> Color(0xffffffff)
                             }
                         )
                         .border(
-                            width = 2.dp,
-                            color = Color.Black,
+                            width = (0.5).dp,
+                            color =
+                                Color(0xffc3c3c3),
                             shape = RectangleShape
                         )
+                        .drawBehind {
+                            val strokeWidth = 1.5f
+                            val y = strokeWidth / 2
+
+                            drawLine(
+                                Color(0xffc3c3c3),
+                                Offset(0f, size.height),
+                                Offset(size.height, size.height),
+                                strokeWidth
+                            )
+                        }
                 ) {
 
                 }
                 Box(
                     modifier = Modifier
-                        .weight(1f)
+                        .width(100.dp)
                         .height(100.dp)
                         .background(
                             color = when (leftSelectedArea[8]) {
-                                true -> Color(0xffff0000)
+                                true -> Color(0xb4ea2525)
                                 else -> Color(0xffffffff)
                             }
                         )
                         .border(
-                            width = 2.dp,
-                            color = Color.Black,
+                            width = (0.5).dp,
+                            color =
+                                Color(0xffc3c3c3),
                             shape = RectangleShape
                         )
+                        .drawBehind {
+                            val strokeWidth = 1.5f
+                            val y = strokeWidth / 2
+
+                            drawLine(
+                                Color(0xffc3c3c3),
+                                Offset(0f, size.height),
+                                Offset(size.height, size.height),
+                                strokeWidth
+                            )
+                            drawLine(
+                                Color(0xffc3c3c3),
+                                Offset(size.height, 0f),
+                                Offset(size.height, size.height),
+                                strokeWidth
+                            )
+                        }
                 ) {
 
                 }
@@ -451,66 +680,124 @@ fun AmslerGridTestResultContent(
         )
         Column(
             modifier = Modifier
-                .width(300.dp)
-                .height(300.dp)
+                .background(
+                    color = Color(0xfff7f7f7),
+                    shape = RoundedCornerShape(8.dp)
+                )
+                .padding(20.dp),
+            horizontalAlignment = Alignment.CenterHorizontally
         ) {
+            Text(
+                modifier = Modifier
+                    .padding(bottom = 12.dp),
+                text = "오른쪽",
+                fontSize = 20.sp,
+                fontWeight = FontWeight.Medium
+            )
             Row(
                 modifier = Modifier
                     .width(300.dp)
-                    .weight(1f)
                     .height(100.dp)
             ) {
                 Box(
                     modifier = Modifier
-                        .weight(1f)
+                        .width(100.dp)
                         .height(100.dp)
                         .background(
                             color = when (rightSelectedArea[0]) {
-                                true -> Color(0xffff0000)
+                                true -> Color(0xb4ea2525)
                                 else -> Color(0xffffffff)
                             }
                         )
                         .border(
-                            width = 2.dp,
-                            color = Color.Black,
+                            width = (0.5).dp,
+                            color =
+                                Color(0xffc3c3c3),
                             shape = RectangleShape
                         )
+                        .drawBehind {
+                            val strokeWidth = 1.5f
+                            val y = strokeWidth / 2
+
+                            drawLine(
+                                Color(0xffc3c3c3),
+                                Offset(0f, 0f),
+                                Offset(size.width, 0f),
+                                strokeWidth
+                            )
+                            drawLine(
+                                Color(0xffc3c3c3),
+                                Offset(0f, 0f),
+                                Offset(0f, size.height),
+                                strokeWidth
+                            )
+                        }
                 ) {
 
                 }
                 Box(
                     modifier = Modifier
-                        .weight(1f)
+                        .width(100.dp)
                         .height(100.dp)
                         .background(
                             color = when (rightSelectedArea[1]) {
-                                true -> Color(0xffff0000)
+                                true -> Color(0xb4ea2525)
                                 else -> Color(0xffffffff)
                             }
                         )
                         .border(
-                            width = 2.dp,
-                            color = Color.Black,
+                            width = (0.5).dp,
+                            color =
+                                Color(0xffc3c3c3),
                             shape = RectangleShape
                         )
+                        .drawBehind {
+                            val strokeWidth = 1.5f
+                            val y = strokeWidth / 2
+
+                            drawLine(
+                                Color(0xffc3c3c3),
+                                Offset(0f, 0f),
+                                Offset(size.width, 0f),
+                                strokeWidth
+                            )
+                        }
                 ) {
 
                 }
                 Box(
                     modifier = Modifier
-                        .weight(1f)
+                        .width(100.dp)
                         .height(100.dp)
                         .background(
                             color = when (rightSelectedArea[2]) {
-                                true -> Color(0xffff0000)
+                                true -> Color(0xb4ea2525)
                                 else -> Color(0xffffffff)
                             }
                         )
                         .border(
-                            width = 2.dp,
-                            color = Color.Black,
+                            width = (0.5).dp,
+                            color =
+                                Color(0xffc3c3c3),
                             shape = RectangleShape
                         )
+                        .drawBehind {
+                            val strokeWidth = 1.5f
+                            val y = strokeWidth / 2
+
+                            drawLine(
+                                Color(0xffc3c3c3),
+                                Offset(0f, 0f),
+                                Offset(size.width, 0f),
+                                strokeWidth
+                            )
+                            drawLine(
+                                Color(0xffc3c3c3),
+                                Offset(size.height, 0f),
+                                Offset(size.height, size.height),
+                                strokeWidth
+                            )
+                        }
                 ) {
 
                 }
@@ -518,40 +805,52 @@ fun AmslerGridTestResultContent(
             Row(
                 modifier = Modifier
                     .width(300.dp)
-                    .weight(1f)
                     .height(100.dp)
             ) {
                 Box(
                     modifier = Modifier
-                        .weight(1f)
+                        .width(100.dp)
                         .height(100.dp)
                         .background(
                             color = when (rightSelectedArea[3]) {
-                                true -> Color(0xffff0000)
+                                true -> Color(0xb4ea2525)
                                 else -> Color(0xffffffff)
                             }
                         )
                         .border(
-                            width = 2.dp,
-                            color = Color.Black,
+                            width = (0.5).dp,
+                            color =
+                                Color(0xffc3c3c3),
                             shape = RectangleShape
                         )
+                        .drawBehind {
+                            val strokeWidth = 1.5f
+                            val y = strokeWidth / 2
+
+                            drawLine(
+                                Color(0xffc3c3c3),
+                                Offset(0f, 0f),
+                                Offset(0f, size.height),
+                                strokeWidth
+                            )
+                        }
                 ) {
 
                 }
                 Box(
                     modifier = Modifier
-                        .weight(1f)
+                        .width(100.dp)
                         .height(100.dp)
                         .background(
                             color = when (rightSelectedArea[4]) {
-                                true -> Color(0xffff0000)
+                                true -> Color(0xb4ea2525)
                                 else -> Color(0xffffffff)
                             }
                         )
                         .border(
-                            width = 2.dp,
-                            color = Color.Black,
+                            width = (0.5).dp,
+                            color =
+                                Color(0xffc3c3c3),
                             shape = RectangleShape
                         )
                 ) {
@@ -559,19 +858,31 @@ fun AmslerGridTestResultContent(
                 }
                 Box(
                     modifier = Modifier
-                        .weight(1f)
+                        .width(100.dp)
                         .height(100.dp)
                         .background(
                             color = when (rightSelectedArea[5]) {
-                                true -> Color(0xffff0000)
+                                true -> Color(0xb4ea2525)
                                 else -> Color(0xffffffff)
                             }
                         )
                         .border(
-                            width = 2.dp,
-                            color = Color.Black,
+                            width = (0.5).dp,
+                            color =
+                                Color(0xffc3c3c3),
                             shape = RectangleShape
                         )
+                        .drawBehind {
+                            val strokeWidth = 1.5f
+                            val y = strokeWidth / 2
+
+                            drawLine(
+                                Color(0xffc3c3c3),
+                                Offset(size.height, 0f),
+                                Offset(size.height, size.height),
+                                strokeWidth
+                            )
+                        }
                 ) {
 
                 }
@@ -579,60 +890,107 @@ fun AmslerGridTestResultContent(
             Row(
                 modifier = Modifier
                     .width(300.dp)
-                    .weight(1f)
                     .height(100.dp)
             ) {
                 Box(
                     modifier = Modifier
-                        .weight(1f)
+                        .width(100.dp)
                         .height(100.dp)
                         .background(
                             color = when (rightSelectedArea[6]) {
-                                true -> Color(0xffff0000)
+                                true -> Color(0xb4ea2525)
                                 else -> Color(0xffffffff)
                             }
                         )
                         .border(
-                            width = 2.dp,
-                            color = Color.Black,
+                            width = (0.5).dp,
+                            color =
+                                Color(0xffc3c3c3),
                             shape = RectangleShape
                         )
+                        .drawBehind {
+                            val strokeWidth = 1.5f
+                            val y = strokeWidth / 2
+
+                            drawLine(
+                                Color(0xffc3c3c3),
+                                Offset(0f, 0f),
+                                Offset(0f, size.height),
+                                strokeWidth
+                            )
+                            drawLine(
+                                Color(0xffc3c3c3),
+                                Offset(0f, size.height),
+                                Offset(size.height, size.height),
+                                strokeWidth
+                            )
+                        }
                 ) {
 
                 }
                 Box(
                     modifier = Modifier
-                        .weight(1f)
+                        .width(100.dp)
                         .height(100.dp)
                         .background(
                             color = when (rightSelectedArea[7]) {
-                                true -> Color(0xffff0000)
+                                true -> Color(0xb4ea2525)
                                 else -> Color(0xffffffff)
                             }
                         )
                         .border(
-                            width = 2.dp,
-                            color = Color.Black,
+                            width = (0.5).dp,
+                            color =
+                                Color(0xffc3c3c3),
                             shape = RectangleShape
                         )
+                        .drawBehind {
+                            val strokeWidth = 1.5f
+                            val y = strokeWidth / 2
+
+                            drawLine(
+                                Color(0xffc3c3c3),
+                                Offset(0f, size.height),
+                                Offset(size.height, size.height),
+                                strokeWidth
+                            )
+                        }
                 ) {
 
                 }
                 Box(
                     modifier = Modifier
-                        .weight(1f)
+                        .width(100.dp)
                         .height(100.dp)
                         .background(
                             color = when (rightSelectedArea[8]) {
-                                true -> Color(0xffff0000)
+                                true -> Color(0xb4ea2525)
                                 else -> Color(0xffffffff)
                             }
                         )
                         .border(
-                            width = 2.dp,
-                            color = Color.Black,
+                            width = (0.5).dp,
+                            color =
+                                Color(0xffc3c3c3),
                             shape = RectangleShape
                         )
+                        .drawBehind {
+                            val strokeWidth = 1.5f
+                            val y = strokeWidth / 2
+
+                            drawLine(
+                                Color(0xffc3c3c3),
+                                Offset(0f, size.height),
+                                Offset(size.height, size.height),
+                                strokeWidth
+                            )
+                            drawLine(
+                                Color(0xffc3c3c3),
+                                Offset(size.height, 0f),
+                                Offset(size.height, size.height),
+                                strokeWidth
+                            )
+                        }
                 ) {
 
                 }

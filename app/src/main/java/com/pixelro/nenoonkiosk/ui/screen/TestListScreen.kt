@@ -18,6 +18,7 @@ import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.SpanStyle
@@ -48,10 +49,10 @@ fun TestListScreen(
     LaunchedEffect(true) {
         while(true) {
 //            yield()
-            delay(2000)
+            delay(5000)
             pagerState.animateScrollToPage(
                 page = (pagerState.currentPage + 1),
-                animationSpec = tween(600)
+                animationSpec = tween(1000)
             )
         }
     }
@@ -67,7 +68,12 @@ fun TestListScreen(
 //        )
         Box(
             modifier = Modifier
-                .padding(start = 40.dp, top = (viewModel.statusBarPadding.collectAsState().value + 20).dp, end = 40.dp, bottom = 20.dp)
+                .padding(
+                    start = 40.dp,
+                    top = (viewModel.statusBarPadding.collectAsState().value + 20).dp,
+                    end = 40.dp,
+                    bottom = 20.dp
+                )
                 .fillMaxWidth()
                 .height(40.dp)
         ) {
@@ -144,7 +150,7 @@ fun TestListScreen(
             state = pagerState,
             pageCount = 100000,
         ) {
-            Advertisement()
+            Advertisement(it)
         }
 //        AutoScrollingLazyRow(list = (1..8).take(4)) {
 //            LazyListItem(text = "Item $it")
@@ -161,7 +167,10 @@ fun TestListScreen(
         ) {
             Row(
                 modifier = Modifier
-                    .padding(start = 40.dp, bottom = (viewModel.navigationBarPadding.collectAsState().value + 40).dp)
+                    .padding(
+                        start = 40.dp,
+                        bottom = (viewModel.navigationBarPadding.collectAsState().value + 40).dp
+                    )
                     .fillMaxWidth(),
                 verticalAlignment = Alignment.CenterVertically
             ) {
@@ -210,7 +219,9 @@ fun TestListScreen(
 }
 
 @Composable
-fun Advertisement() {
+fun Advertisement(
+    idx: Int
+) {
     Card(
         modifier = Modifier
             .fillMaxWidth()
@@ -218,11 +229,28 @@ fun Advertisement() {
 //            .padding(20.dp),
         elevation = CardDefaults.cardElevation(0.dp),
         colors = CardDefaults.cardColors(
-            containerColor = Color(0xffeeeeee)
+            containerColor = Color(0xffffffff)
         ),
         shape = RoundedCornerShape(8.dp)
     ) {
-
+        Box(
+            modifier = Modifier
+                .fillMaxSize(),
+            contentAlignment = Alignment.TopCenter
+        ) {
+            Image(
+                modifier = Modifier
+                    .clip(
+                        shape = RoundedCornerShape(8.dp)
+                    ),
+                painter = painterResource(id = when(idx % 3) {
+                    0 -> R.drawable.ad_1
+                    1 -> R.drawable.ad_2
+                    else -> R.drawable.ad_3
+                }),
+                contentDescription = ""
+            )
+        }
     }
 }
 

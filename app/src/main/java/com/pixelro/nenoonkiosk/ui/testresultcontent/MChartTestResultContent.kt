@@ -7,7 +7,9 @@ import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
@@ -31,119 +33,213 @@ fun MChartTestResultContent(
             .fillMaxWidth(),
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
-        Row() {
+        Text(
+            modifier = Modifier
+                .padding(start = 40.dp, top = 40.dp)
+                .fillMaxWidth(),
+            text = "이상 없을 경우",
+            fontSize = 28.sp,
+            fontWeight = FontWeight.Medium
+        )
+        Text(
+            modifier = Modifier
+                .padding(start = 40.dp)
+                .fillMaxWidth(),
+            text = "눈에 이상이 없을 경우 아래와 같은 결과가 나옵니다",
+            fontSize = 16.sp,
+            color = Color(0xff878787)
+        )
+        Row(
+            modifier = Modifier
+                .padding(start = 40.dp, top = 20.dp, end = 40.dp)
+                .fillMaxWidth()
+                .background(
+                    color = Color(0xfff7f9f9),
+                    shape = RoundedCornerShape(8.dp)
+                )
+                .padding(20.dp),
+            verticalAlignment = Alignment.CenterVertically
+        ) {
+            Text(
+                text = "오른쪽 · 왼쪽",
+                fontSize = 20.sp,
+                fontWeight = FontWeight.Medium
+            )
+            Text(
+                modifier = Modifier
+                    .padding(start = 12.dp)
+                    .background(
+                        color = Color(0xffdcebff),
+                        shape = RoundedCornerShape(4.dp)
+                    )
+                    .padding(start = 12.dp, top = 4.dp, end = 12.dp, bottom = 4.dp),
+                text = "수직",
+                color = Color(0xff1d71e1),
+                fontSize = 20.sp
+            )
+            Text(
+                modifier = Modifier
+                    .padding(start = 8.dp)
+                    .background(
+                        color = Color(0xfffff8de),
+                        shape = RoundedCornerShape(4.dp)
+                    )
+                    .padding(start = 12.dp, top = 4.dp, end = 12.dp, bottom = 4.dp),
+                text = "수평",
+                color = Color(0xffffb800),
+                fontSize = 20.sp
+            )
+            Text(
+                modifier = Modifier
+                    .padding(start = 12.dp),
+                text = "0.0°",
+                fontSize = 20.sp,
+                fontWeight = FontWeight.Bold
+            )
+        }
+        Text(
+            modifier = Modifier
+                .padding(start = 40.dp, top = 40.dp)
+                .fillMaxWidth(),
+            text = "내 결과",
+            fontSize = 28.sp,
+            fontWeight = FontWeight.Medium
+        )
+        Row(
+            modifier = Modifier
+                .padding(start = 40.dp, top = 20.dp, end = 40.dp)
+                .fillMaxWidth()
+        ) {
             Column(
-                horizontalAlignment = Alignment.CenterHorizontally
+                modifier = Modifier
+                    .weight(1f)
+                    .height(200.dp)
+                    .background(
+                        color = Color(0xfff7f9f9),
+                        shape = RoundedCornerShape(8.dp)
+                    )
+                    .padding(20.dp)
             ) {
                 Text(
-                    text = "좌안",
-                    fontSize = 30.sp
+                    text = "왼쪽",
+                    fontSize = 20.sp,
+                    fontWeight = FontWeight.Medium
                 )
                 Row(
+                    modifier = Modifier
+                        .padding(top = 20.dp),
                     verticalAlignment = Alignment.CenterVertically
                 ) {
-                    Column(
-                        horizontalAlignment = Alignment.CenterHorizontally
-                    ) {
-                        Text(
-                            text = "수직검사",
-                            fontSize = 30.sp
-                        )
-                        Text(
-                            text = "${String.format("%.1f", result[0].toFloat() / 10)}°",
-                            fontSize = 30.sp,
-                            fontWeight = FontWeight.Bold
-                        )
-                    }
-                    Spacer(
+                    Text(
                         modifier = Modifier
-                            .width(60.dp)
-                    )
-                    Spacer(
-                        modifier = Modifier
-                            .width(2.dp)
-                            .height(40.dp)
                             .background(
-                                color = Color(0xff000000)
+                                color = Color(0xffdcebff),
+                                shape = RoundedCornerShape(4.dp)
                             )
+                            .padding(start = 12.dp, top = 4.dp, end = 12.dp, bottom = 4.dp),
+                        text = "수직",
+                        color = Color(0xff1d71e1),
+                        fontSize = 20.sp
                     )
-                    Spacer(
+                    Text(
                         modifier = Modifier
-                            .width(60.dp)
+                            .padding(start = 100.dp),
+                        text = "${String.format("%.1f", result[0].toFloat() / 10)}°",
+                        fontSize = 30.sp,
+                        fontWeight = FontWeight.Bold
                     )
-                    Column(
-                        horizontalAlignment = Alignment.CenterHorizontally
-                    ) {
-                        Text(
-                            text = "수평검사",
-                            fontSize = 30.sp
-                        )
-                        Text(
-                            text = "${String.format("%.1f", result[1].toFloat() / 10)}°",
-                            fontSize = 30.sp,
-                            fontWeight = FontWeight.Bold
-                        )
-                    }
+                }
+                Row(
+                    modifier = Modifier
+                        .padding(top = 20.dp),
+                    verticalAlignment = Alignment.CenterVertically
+                ) {
+                    Text(
+                        modifier = Modifier
+                            .background(
+                                color = Color(0xfffff8de),
+                                shape = RoundedCornerShape(4.dp)
+                            )
+                            .padding(start = 12.dp, top = 4.dp, end = 12.dp, bottom = 4.dp),
+                        text = "수평",
+                        color = Color(0xffffb800),
+                        fontSize = 20.sp
+                    )
+                    Text(
+                        modifier = Modifier
+                            .padding(start = 100.dp),
+                        text = "${String.format("%.1f", result[1].toFloat() / 10)}°",
+                        fontSize = 30.sp,
+                        fontWeight = FontWeight.Bold
+                    )
                 }
             }
-        }
-        Spacer(
-            modifier = Modifier
-                .height(40.dp)
-        )
-        Row() {
+            Spacer(
+                modifier = Modifier
+                    .width(20.dp)
+            )
             Column(
-                horizontalAlignment = Alignment.CenterHorizontally
+                modifier = Modifier
+                    .weight(1f)
+                    .height(200.dp)
+                    .background(
+                        color = Color(0xfff7f9f9),
+                        shape = RoundedCornerShape(8.dp)
+                    )
+                    .padding(20.dp)
             ) {
                 Text(
-                    text = "우안",
-                    fontSize = 30.sp
+                    text = "오른쪽",
+                    fontSize = 20.sp,
+                    fontWeight = FontWeight.Medium
                 )
                 Row(
+                    modifier = Modifier
+                        .padding(top = 20.dp),
                     verticalAlignment = Alignment.CenterVertically
                 ) {
-                    Column(
-                        horizontalAlignment = Alignment.CenterHorizontally
-                    ) {
-                        Text(
-                            text = "수직검사",
-                            fontSize = 30.sp
-                        )
-                        Text(
-                            text = "${String.format("%.1f", result[2].toFloat() / 10)}°",
-                            fontSize = 30.sp,
-                            fontWeight = FontWeight.Bold
-                        )
-                    }
-                    Spacer(
+                    Text(
                         modifier = Modifier
-                            .width(60.dp)
-                    )
-                    Spacer(
-                        modifier = Modifier
-                            .width(2.dp)
-                            .height(40.dp)
                             .background(
-                                color = Color(0xff000000)
+                                color = Color(0xffdcebff),
+                                shape = RoundedCornerShape(4.dp)
                             )
+                            .padding(start = 12.dp, top = 4.dp, end = 12.dp, bottom = 4.dp),
+                        text = "수직",
+                        color = Color(0xff1d71e1),
+                        fontSize = 20.sp
                     )
-                    Spacer(
+                    Text(
                         modifier = Modifier
-                            .width(60.dp)
+                            .padding(start = 100.dp),
+                        text = "${String.format("%.1f", result[2].toFloat() / 10)}°",
+                        fontSize = 30.sp,
+                        fontWeight = FontWeight.Bold
                     )
-                    Column(
-                        horizontalAlignment = Alignment.CenterHorizontally
-                    ) {
-                        Text(
-                            text = "수평검사",
-                            fontSize = 30.sp
-                        )
-                        Text(
-                            text = "${String.format("%.1f", result[3].toFloat() / 10)}°",
-                            fontSize = 30.sp,
-                            fontWeight = FontWeight.Bold
-                        )
-                    }
+                }
+                Row(
+                    modifier = Modifier
+                        .padding(top = 20.dp),
+                    verticalAlignment = Alignment.CenterVertically
+                ) {
+                    Text(
+                        modifier = Modifier
+                            .background(
+                                color = Color(0xfffff8de),
+                                shape = RoundedCornerShape(4.dp)
+                            )
+                            .padding(start = 12.dp, top = 4.dp, end = 12.dp, bottom = 4.dp),
+                        text = "수평",
+                        color = Color(0xffffb800),
+                        fontSize = 20.sp
+                    )
+                    Text(
+                        modifier = Modifier
+                            .padding(start = 100.dp),
+                        text = "${String.format("%.1f", result[3].toFloat() / 10)}°",
+                        fontSize = 30.sp,
+                        fontWeight = FontWeight.Bold
+                    )
                 }
             }
         }
