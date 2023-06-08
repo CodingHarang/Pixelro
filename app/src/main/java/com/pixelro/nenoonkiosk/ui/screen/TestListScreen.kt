@@ -236,7 +236,7 @@ fun Advertisement(
         Box(
             modifier = Modifier
                 .fillMaxSize(),
-            contentAlignment = Alignment.TopCenter
+            contentAlignment = Alignment.BottomCenter
         ) {
             Image(
                 modifier = Modifier

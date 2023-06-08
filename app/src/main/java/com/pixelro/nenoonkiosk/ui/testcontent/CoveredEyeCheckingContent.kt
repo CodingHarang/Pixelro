@@ -8,6 +8,7 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.width
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.DisposableEffect
@@ -67,7 +68,9 @@ fun CoveredEyeCheckingContent(
                         else -> 180f
                     }
                 }
-                .padding(bottom = 100.dp),
+                .width(600.dp)
+                .height(600.dp)
+                .padding(bottom = 40.dp),
                 painter = painterResource(id = R.drawable.img_right_eye_covered),
                 contentDescription = ""
             )
@@ -80,7 +83,7 @@ fun CoveredEyeCheckingContent(
                 Text(
                     text = "${viewModel.leftTime.collectAsState().value.toInt()}",
                     color = Color(0xffffffff),
-                    fontSize = 60.sp,
+                    fontSize = 80.sp,
                     fontWeight = FontWeight.Bold
                 )
             }

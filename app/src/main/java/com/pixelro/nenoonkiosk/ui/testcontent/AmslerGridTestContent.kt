@@ -101,8 +101,6 @@ fun AmslerGridContent(
                 .fillMaxSize(),
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
-            val width = viewModel.widthSize.collectAsState().value
-            val height = viewModel.heightSize.collectAsState().value
             val rotX = viewModel.rotX.collectAsState().value
             val rotY = viewModel.rotY.collectAsState().value
             val currentSelectedArea = viewModel.currentSelectedArea.collectAsState().value
@@ -134,7 +132,6 @@ fun AmslerGridContent(
                             detectTapGestures(
                                 onPress = {
                                     viewModel.updateCurrentSelectedArea(it)
-                                    Log.e("", "$it")
                                 }
                             )
                         }

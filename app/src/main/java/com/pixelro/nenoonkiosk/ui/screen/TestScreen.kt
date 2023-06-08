@@ -46,12 +46,14 @@ fun EyeTestScreen(
     }
     val systemUiController = rememberSystemUiController()
     DisposableEffect(true) {
+        viewModel.updateScreenSaverTimerValue(60)
 //        systemUiController.setNavigationBarColor(
 //            color = Color(0x00000000),
 //            darkIcons = false
 //        )
     systemUiController.systemBarsDarkContentEnabled = false
     onDispose {
+        viewModel.updateScreenSaverTimerValue(20)
         systemUiController.systemBarsDarkContentEnabled = true
 //            systemUiController.setNavigationBarColor(
 //                color = Color(0x00000000),

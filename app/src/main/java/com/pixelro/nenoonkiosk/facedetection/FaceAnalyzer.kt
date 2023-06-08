@@ -54,7 +54,6 @@ class MyFaceAnalyzer(
 //        val imageReader = ImageReader.newInstance(resizedBitmap.width, resizedBitmap.height, ImageFormat.YUV_420_888, 1)
 //        val resizedImage = imageReader.acquireLatestImage()
 //        val inputResizedImage = InputImage.fromBitmap(croppedBitmap, imageProxy.imageInfo.rotationDegrees)
-//        Log.e("analyze", "analyze")
         if (image != null) {
             detector.process(image).addOnSuccessListener { faces ->
                 for (face in faces) {

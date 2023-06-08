@@ -134,7 +134,6 @@ fun PresbyopiaFirstPage(
         enter = enterAnimation,
         exit = exitAnimation
     ) {
-        Log.e("PresbyopiaFirstPage", "PresbyopiaFirstPage")
         val context = LocalContext.current
         lateinit var tts: TextToSpeech
         tts = remember {
@@ -149,7 +148,6 @@ fun PresbyopiaFirstPage(
         }
         DisposableEffect(true) {
             onDispose {
-                Log.e("first", "onDispose")
                 tts.stop()
                 tts.shutdown()
             }
@@ -177,7 +175,6 @@ fun PresbyopiaSecondPage(
         enter = enterAnimation,
         exit = exitAnimation
     ) {
-        Log.e("PresbyopiaSecondPage", "PresbyopiaSecondPage")
         val context = LocalContext.current
         lateinit var tts: TextToSpeech
         tts = remember {
@@ -192,7 +189,6 @@ fun PresbyopiaSecondPage(
         }
         DisposableEffect(true) {
             onDispose {
-                Log.e("second", "onDispose")
                 tts.stop()
                 tts.shutdown()
             }
@@ -220,7 +216,6 @@ fun PresbyopiaThirdPage(
         enter = enterAnimation,
         exit = exitAnimation
     ) {
-        Log.e("PresbyopiaThirdPage", "PresbyopiaThirdPage")
         val context = LocalContext.current
         lateinit var tts: TextToSpeech
         tts = remember {
@@ -235,7 +230,6 @@ fun PresbyopiaThirdPage(
         }
         DisposableEffect(true) {
             onDispose {
-                Log.e("third", "onDispose")
                 tts.stop()
                 tts.shutdown()
             }

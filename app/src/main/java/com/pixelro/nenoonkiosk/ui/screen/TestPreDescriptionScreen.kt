@@ -48,17 +48,12 @@ fun TestPreDescriptionScreen(
     viewModel: NenoonViewModel,
     navController: NavHostController
 ) {
-    Log.e("TestPreDescriptionScreen", "TestPreDescriptionScreen")
     val selectedTest = viewModel.selectedTestType.collectAsState().value
     var isDescriptionDialogShowing by remember { mutableStateOf(true) }
 
     Box(
         modifier = Modifier
             .fillMaxSize()
-//            .paint(
-//                painterResource(id = R.drawable.bg_eyetest_info),
-//                contentScale = ContentScale.FillWidth
-//            )
     ) {
         TestPreDescriptionBackground(
             viewModel = viewModel

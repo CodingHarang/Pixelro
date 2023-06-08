@@ -38,7 +38,6 @@ fun VisualAcuityTestCommonContent(
     visualAcuityTestCommonContentVisibleState: MutableTransitionState<Boolean>,
     nextVisibleState: MutableTransitionState<Boolean>
 ) {
-    Log.e("VisualAcuityTestCommonContent", "VisualAcuityTestCommonContent")
 
     AnimatedVisibility(
         visibleState = visualAcuityTestCommonContentVisibleState,

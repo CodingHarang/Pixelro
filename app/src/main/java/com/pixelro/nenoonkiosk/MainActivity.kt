@@ -57,71 +57,10 @@ class MainActivity : ComponentActivity() {
     }
 
     override fun onResume() {
-//        Log.e("onResume", "Resumed")
         super.onResume()
         viewModel.updateToResumed()
         viewModel.resetScreenSaverTimer()
-//        viewModel.startScreenSaverTimer()
-//        val context = this
-//        if(ContextCompat.checkSelfPermission(context, Manifest.permission.BLUETOOTH_SCAN) == PackageManager.PERMISSION_GRANTED
-//            && ContextCompat.checkSelfPermission(context, Manifest.permission.BLUETOOTH_CONNECT) == PackageManager.PERMISSION_GRANTED
-//            && ContextCompat.checkSelfPermission(context, Manifest.permission.BLUETOOTH) == PackageManager.PERMISSION_GRANTED
-//            && ContextCompat.checkSelfPermission(context, Manifest.permission.BLUETOOTH_ADMIN) == PackageManager.PERMISSION_GRANTED
-//            && ContextCompat.checkSelfPermission(context, Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED
-//            && ContextCompat.checkSelfPermission(context, Manifest.permission.ACCESS_COARSE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
-//            viewModel.updateIsBluetoothPermissionsGranted(true)
-//        } else {
-//            viewModel.updateIsBluetoothPermissionsGranted(false)
-//        }
-//        if(ContextCompat.checkSelfPermission(context, Manifest.permission.CAMERA) == PackageManager.PERMISSION_GRANTED) {
-//            viewModel.updateIsCameraPermissionGranted(true)
-//        } else {
-//            viewModel.updateIsCameraPermissionGranted(false)
-//        }
-//        if(Settings.System.canWrite(context)) {
-//            viewModel.updateIsWriteSettingsPermissionGranted(true)
-//        } else {
-//            viewModel.updateIsWriteSettingsPermissionGranted(false)
-//        }
-//        viewModel.checkIfAllPermissionsGranted()
-
-        lifecycleScope.launch {
-//            while(isChecking) {
-//                val locationManager = getSystemService(Context.LOCATION_SERVICE) as LocationManager
-//
-//                if(!locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER)) {
-////                    Log.e("lifecycleScope", "not enabled")
-////                    startActivity(Intent(Settings.ACTION_LOCATION_SOURCE_SETTINGS))
-//
-//                    val locationRequest: LocationRequest = LocationRequest.Builder(10000).build()
-//                    val client: SettingsClient = LocationServices.getSettingsClient(context)
-//                    val builder: LocationSettingsRequest.Builder = LocationSettingsRequest
-//                        .Builder()
-//                        .addLocationRequest(locationRequest)
-//                    val gpsSettingTask: Task<LocationSettingsResponse> = client.checkLocationSettings(builder.build())
-//
-//                    gpsSettingTask.addOnSuccessListener {  }
-//                    gpsSettingTask.addOnFailureListener {
-//                        if(it is ResolvableApiException) {
-//                            try {
-//                                val intentSenderRequest = IntentSenderRequest
-//                                    .Builder(it.resolution)
-//                                    .build()
-//                                isChecking = false
-//                                settingResultRequest.launch(intentSenderRequest)
-//                            } catch(sendEx: IntentSender.SendIntentException) {
-//
-//                            }
-//                        }
-//                    }
-//                } else {
-////                    Log.e("lifecycleScope", "enabled")
-//                }
-//                delay(1000)
-//            }
-        }
     }
-
 
     @SuppressLint("InternalInsetResource", "DiscouragedApi")
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -135,27 +74,6 @@ class MainActivity : ComponentActivity() {
                 else -> NenoonKioskApplication.applicationContext().resources.configuration.setLocale(Locale("ko"))
             }
         }
-//        window.navigationBarColor = 0x00000000
-//        WindowCompat.setDecorFitsSystemWindows(window, false)
-//        WindowCompat.getInsetsController(window, window.decorView).isAppearanceLightNavigationBars = true
-//        if(resources.configuration.locales.get(0).language != "en") {
-//            resources.configuration.setLocale(locale)
-//            val intent: Intent? = this.packageManager
-//                .getLaunchIntentForPackage(this.packageName)
-//            intent?.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK)
-//            intent?.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
-//            this.finish()
-//            startActivity(intent)
-//        }
-//        Resources(assets, metrics, resources.configuration)
-//        createConfigurationContext(resources.configuration)
-//        Log.e("locale2", "${newResources.getString(R.string.presbyopia_name)}")
-
-//        WindowCompat.getInsetsController(window, window.decorView).apply {
-//            hide(WindowInsetsCompat.Type.statusBars())
-//            hide(WindowInsetsCompat.Type.navigationBars())
-//            systemBarsBehavior = WindowInsetsControllerCompat.BEHAVIOR_SHOW_TRANSIENT_BARS_BY_SWIPE
-//        }
         window.setFlags(
             WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS,
             WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS
@@ -196,10 +114,6 @@ class MainActivity : ComponentActivity() {
                         )
                         onDispose {}
                     }
-//                    systemUiController.isSystemBarsVisible = false
-//                    DisposableEffect(true) {
-//                        onDispose {}
-//                    }
                     NenoonApp(
                         viewModel = viewModel
                     )
@@ -209,7 +123,6 @@ class MainActivity : ComponentActivity() {
     }
 
     override fun onPause() {
-        Log.e("Paused", "Paused")
         super.onPause()
         viewModel.updateToPaused()
     }

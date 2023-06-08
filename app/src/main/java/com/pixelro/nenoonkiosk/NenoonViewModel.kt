@@ -54,7 +54,8 @@ class NenoonViewModel(application: Application) : AndroidViewModel(application) 
             while(true) {
                 if(_isResumed.value) {
                     // Check screen saver timer
-                    _screenSaverTimer.update { _screenSaverTimer.value - 0 }
+                    _screenSaverTimer.update { _screenSaverTimer.value - 1 }
+                    Log.e("screenSaver", "${_screenSaverTimer.value}")
                     if(_screenSaverTimer.value < 0) {
                         _isScreenSaverOn.update { true }
                     }
@@ -87,14 +88,19 @@ class NenoonViewModel(application: Application) : AndroidViewModel(application) 
     private val _isResumed = MutableStateFlow(false)
     private val _isPaused = MutableStateFlow(false)
     val exoPlayer = ExoPlayer.Builder(application.applicationContext).build()
-    private val _screenSaverTimer = MutableStateFlow(10)
+    private val _screenSaverTimer = MutableStateFlow(20)
+    private val _timeValue = MutableStateFlow(20)
 //    val screenSaverTimer: StateFlow<Int> = _screenSaverTimer
     private val _isScreenSaverOn = MutableStateFlow(false)
     val isScreenSaverOn: StateFlow<Boolean> = _isScreenSaverOn
 
     fun resetScreenSaverTimer() {
-        _screenSaverTimer.update { 10 }
+        _screenSaverTimer.update { _timeValue.value }
         _isScreenSaverOn.update { false }
+    }
+
+    fun updateScreenSaverTimerValue(time: Int) {
+        _timeValue.update { time }
     }
 
     // Face detection
@@ -260,7 +266,6 @@ class NenoonViewModel(application: Application) : AndroidViewModel(application) 
             _leftTime.update { 3.5f }
             while(count < 6) {
                 delay(500)
-//                Log.e("checkCoveredEye", "$count")
                 if(
 //                    when(isLeftEye.value) {
 //                        true -> leftEyeOpenProbability.value
@@ -319,9 +324,7 @@ class NenoonViewModel(application: Application) : AndroidViewModel(application) 
 
     fun updateSystemBarsPadding(statusBar: Float, navigationBar: Float) {
         _statusBarPadding.update { (statusBar / getApplication<Application>().resources.displayMetrics.density).toInt() }
-        if(statusBar > 0) Log.e("statusbar", "${_statusBarPadding.value}")
         _navigationBarPadding.update { navigationBar.toInt() }
-        if(navigationBar > 0) Log.e("navigationbar", "${_navigationBarPadding.value}")
     }
 
     // Checking permission, location, bluetooth
@@ -341,7 +344,6 @@ class NenoonViewModel(application: Application) : AndroidViewModel(application) 
     val resolvableApiException: StateFlow<ResolvableApiException> = _resolvableApiException
 
     private fun checkPermissions() {
-//        Log.e("checkPermission", "checkPermissions")
         if(ContextCompat.checkSelfPermission(getApplication(), Manifest.permission.BLUETOOTH_SCAN) == PackageManager.PERMISSION_GRANTED
             && ContextCompat.checkSelfPermission(getApplication(), Manifest.permission.BLUETOOTH_CONNECT) == PackageManager.PERMISSION_GRANTED
             && ContextCompat.checkSelfPermission(getApplication(), Manifest.permission.BLUETOOTH) == PackageManager.PERMISSION_GRANTED
@@ -374,8 +376,6 @@ class NenoonViewModel(application: Application) : AndroidViewModel(application) 
         val locationManager = getSystemService(getApplication(), LocationManager::class.java) as LocationManager
 
         if(!locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER)) {
-//                    Log.e("lifecycleScope", "not enabled")
-//                    startActivity(Intent(Settings.ACTION_LOCATION_SOURCE_SETTINGS))
 
             val locationRequest: LocationRequest = LocationRequest.Builder(10000).build()
             val client: SettingsClient = LocationServices.getSettingsClient(getApplication() as Context)
@@ -385,16 +385,10 @@ class NenoonViewModel(application: Application) : AndroidViewModel(application) 
             val gpsSettingTask: Task<LocationSettingsResponse> = client.checkLocationSettings(builder.build())
 
             gpsSettingTask.addOnSuccessListener {
-                Log.e("checkIsLocationOn", "success")
             }
             gpsSettingTask.addOnFailureListener { exception ->
-                Log.e("checkIsLocationOn", "failure")
                 if(exception is ResolvableApiException) {
                     try {
-//                        val intentSenderRequest = IntentSenderRequest
-//                            .Builder(exception.resolution)
-//                            .build()
-//                        Log.e("exception", "${exception}, ${exception.resolution}")
                         _resolvableApiException.update { exception }
                         _isLocationOn.update { false }
                     } catch(sendEx: IntentSender.SendIntentException) {
@@ -729,15 +723,11 @@ class NenoonViewModel(application: Application) : AndroidViewModel(application) 
     // Macular degeneration test
     // Amsler Grid Test
     val amslerGridContentVisibleState = MutableTransitionState(false)
-    private val _widthSize = MutableStateFlow(100f)
-    val widthSize: StateFlow<Float> = _widthSize
-    private val _heightSize = MutableStateFlow(100f)
-    val heightSize: StateFlow<Float> = _heightSize
     private val _currentSelectedArea = MutableStateFlow(listOf(false, false, false, false, false, false, false, false, false))
     val currentSelectedArea: StateFlow<List<Boolean>> = _currentSelectedArea
     private val _leftSelectedArea = MutableStateFlow(emptyList<Boolean>())
     val leftSelectedArea: StateFlow<List<Boolean>> = _leftSelectedArea
-    private val _rightSelectedArea = MutableStateFlow(listOf(false, false, false, false, false, false, false, false, false))
+    private val _rightSelectedArea = MutableStateFlow(emptyList<Boolean>())
     val rightSelectedArea: StateFlow<List<Boolean>> = _rightSelectedArea
 
     fun updateLeftSelectedArea() {
@@ -746,7 +736,6 @@ class NenoonViewModel(application: Application) : AndroidViewModel(application) 
         _printString.update {
             _leftSelectedArea.value.toString()
         }
-        Log.e("updateLeftSelectedArea", "${_printString.value}")
     }
 
     fun updateRightSelectedArea() {
@@ -755,10 +744,10 @@ class NenoonViewModel(application: Application) : AndroidViewModel(application) 
         _printString.update {
             (it + _rightSelectedArea.value.toString()).replace("][", ",").replace("[", "").replace("]", "").replace(" ", "")
         }
-        Log.e("updateLeftSelectedArea", "${_printString.value}")
     }
 
     fun initializeAmslerGridTest() {
+        _currentSelectedArea.update { listOf(false, false, false, false, false, false, false, false, false) }
         measuringDistanceContentVisibleState.targetState = true
         coveredEyeCheckingContentVisibleState.targetState = false
         amslerGridContentVisibleState.targetState = false
@@ -791,13 +780,6 @@ class NenoonViewModel(application: Application) : AndroidViewModel(application) 
         }
     }
 
-    fun updateLeftSelectedArea(list: List<Boolean>) {
-        _leftSelectedArea.update { list }
-    }
-
-    fun updateRightSelectedArea(list: List<Boolean>) {
-        _rightSelectedArea.update { list }
-    }
 
     // M-Chart Test
     val mChartContentVisibleState = MutableTransitionState(false)
@@ -813,7 +795,6 @@ class NenoonViewModel(application: Application) : AndroidViewModel(application) 
     val mChartImageId: StateFlow<Int> = _mChartImageId
 
     fun initializeMChartTest() {
-        Log.e("initializeMChart", "initialize")
         _isVertical.update { true }
         _currentLevel.update { 0 }
         _mChartResult.update { listOf() }
@@ -846,7 +827,6 @@ class NenoonViewModel(application: Application) : AndroidViewModel(application) 
                 _mChartResult.value.toString().replace("[", "").replace("]", "").replace(" ", "")
             }
         }
-        Log.e("updateMChartResult", "${_printString.value}")
     }
 
     fun updateIsVertical(isVertical: Boolean) {
@@ -889,7 +869,7 @@ class NenoonViewModel(application: Application) : AndroidViewModel(application) 
         updateRandomList()
         showSplashScreen()
         checkBackgroundStatus()
-        exoPlayer.setMediaItem(MediaItem.fromUri("https://drive.google.com/uc?export=download&id=1c3khlZTVvAiqpn7hYaXw8NOI5AbK0V96"))
+        exoPlayer.setMediaItem(MediaItem.fromUri("https://drive.google.com/uc?export=view&id=1NjKW1gtPEvppUEeXlJhxzak86Tmc63Rs"))
         exoPlayer.prepare()
         exoPlayer.repeatMode = Player.REPEAT_MODE_ONE
 //        exoPlayer.playWhenReady = true

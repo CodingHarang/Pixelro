@@ -83,7 +83,6 @@ fun TestResultScreen(
     val context = LocalContext.current
     val bluetoothManager = getSystemService(context, BluetoothManager::class.java) as BluetoothManager
     val bluetoothAdapter = bluetoothManager.adapter
-    Log.e("bluetoothAdapter", "${bluetoothAdapter.hashCode()}")
     val receiver = object : BroadcastReceiver() {
         override fun onReceive(context: Context, intent: Intent?) {
             when(intent?.action) {
@@ -99,12 +98,10 @@ fun TestResultScreen(
                     ) {
                         return
                     }
-                    Log.e("onReceive", "ActionFound")
 
                     val deviceName = device?.name
                     val deviceHardwareAddress = device?.address // MAC address
                     if (deviceHardwareAddress != null && deviceName != null && deviceHardwareAddress.contains("74:F0:7D")) {
-                        Log.e("onReceive", "$deviceName, $deviceHardwareAddress")
                         viewModel.updatePrinter(deviceName, deviceHardwareAddress)
                     }
                 }
@@ -114,11 +111,9 @@ fun TestResultScreen(
 
     DisposableEffect(true) {
 
-        Log.e("DisposableEffect", "DisposableEffect ${bluetoothAdapter.hashCode()}")
         context.registerReceiver(receiver, IntentFilter(BluetoothDevice.ACTION_FOUND))
         bluetoothAdapter.startDiscovery()
         onDispose {
-            Log.e("DisposableEffect", "onDispose")
             context.unregisterReceiver(receiver)
         }
     }
@@ -143,9 +138,7 @@ fun TestResultScreen(
         val nResult = 0
         val nPrintWidth = 576
         val nPaperHeight = ((bm.height.toFloat() / bm.width.toFloat()) * 576).toInt()
-        Log.e("printResult", "${bm.height}, ${bm.width}, $nPaperHeight, $printerMacAddress")
         if(printerMacAddress != "") {
-            Log.e("printResult", "print, ${bm.height}, ${bm.width}, $nPaperHeight, $printerMacAddress")
             mNemonicWrapper.openPrinter(printerMacAddress)
             mNemonicWrapper.print(bm, nPrintWidth, nPaperHeight, nCopies)
             mNemonicWrapper.closePrinter()
@@ -317,10 +310,6 @@ fun TestResultScreen(
                         .clickable {
                             composableScope.launch {
                                 bluetoothAdapter.startDiscovery()
-                                Log.e(
-                                    "onClick",
-                                    "${bluetoothAdapter.hashCode()}, ${bluetoothAdapter.isEnabled} ${bluetoothAdapter.isDiscovering} ${bluetoothAdapter.state}"
-                                )
                                 printResult(
                                     testType = testType,
                                     printString = printString
