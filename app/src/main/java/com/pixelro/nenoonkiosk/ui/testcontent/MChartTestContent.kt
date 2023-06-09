@@ -112,7 +112,7 @@ fun MChartContent(
             Text(
                 modifier = Modifier
                     .padding(top = 40.dp, bottom = 40.dp),
-                text = "아래의 선이 곧은 선으로 보이는지\n휘어진 선으로 보이는지 선택해주세요",
+                text = StringProvider.getString(R.string.mchart_test_description),
                 fontSize = 32.sp,
                 color = Color(0xffffffff),
                 fontWeight = FontWeight.Medium,
@@ -196,7 +196,7 @@ fun MChartContent(
                         Text(
                             modifier = Modifier
                                 .padding(20.dp),
-                            text = "곧은 선",
+                            text = StringProvider.getString(R.string.mchart_test_content_straight),
                             fontSize = 24.sp,
                             fontWeight = FontWeight.Medium,
                             color = Color(0xffffffff)
@@ -242,7 +242,7 @@ fun MChartContent(
                         Text(
                             modifier = Modifier
                                 .padding(20.dp),
-                            text = "휘어진 선",
+                            text = StringProvider.getString(R.string.mchart_test_content_bent),
                             fontSize = 24.sp,
                             fontWeight = FontWeight.Medium,
                             color = Color(0xffffffff)

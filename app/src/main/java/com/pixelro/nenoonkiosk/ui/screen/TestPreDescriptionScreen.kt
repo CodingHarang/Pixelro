@@ -278,20 +278,6 @@ fun TestPreDescriptionDialog(
                 ),
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
-//            Text(
-//                text = viewModel.selectedTestName.collectAsState().value,
-//                modifier = Modifier
-//                    .padding(top = 20.dp),
-//                fontSize = 40.sp,
-//                fontWeight = FontWeight.Bold,
-//                color = Color(0xff1d71e1),
-//                textAlign = TextAlign.Center,
-//                lineHeight = 50.sp
-//            )
-//            Spacer(
-//                modifier = Modifier
-//                    .height(20.dp)
-//            )
             Text(
                 text = StringProvider.getString(R.string.test_order_dialog_test_order),
                 modifier = Modifier
@@ -301,13 +287,6 @@ fun TestPreDescriptionDialog(
                 fontWeight = FontWeight.Bold
             )
             TestPreDescriptionScreenDialogContent(selectedTest)
-
-//            Spacer(
-//                modifier = Modifier
-//                    .background(Color(0xffcccccc))
-//                    .height(1.dp)
-//                    .fillMaxWidth()
-//            )
             Text(
                 modifier = Modifier
                     .padding(start = 20.dp, top = 8.dp, end = 20.dp, bottom = 20.dp)
@@ -335,87 +314,5 @@ fun TestPreDescriptionDialog(
                 textAlign = TextAlign.Center
             )
         }
-//        val systemUiController = rememberSystemUiController()
-//        systemUiController.isSystemBarsVisible = false
-//        Surface(
-//            modifier = Modifier
-//                .width(IntrinsicSize.Max)
-//                .wrapContentHeight(),
-//            shape = RoundedCornerShape(16.dp)
-//        ) {
-//            Column(
-//                horizontalAlignment = Alignment.CenterHorizontally
-//            ) {
-//                Text(
-//                    text = viewModel.selectedTestName.collectAsState().value,
-//                    modifier = Modifier
-//                        .padding(top = 20.dp),
-//                    fontSize = 40.sp,
-//                    fontWeight = FontWeight.ExtraBold,
-//                    color = Color(0xff1d71e1),
-//                    textAlign = TextAlign.Center
-//                )
-//                Spacer(
-//                    modifier = Modifier
-//                        .height(20.dp)
-//                )
-//                Text(
-//                    text = StringProvider.getString(R.string.test_order_dialog_test_order),
-//                    modifier = Modifier,
-//                    fontSize = 25.sp,
-//                    color = Color(0xff1d71e1),
-//                    fontWeight = FontWeight.Bold
-//                )
-//                GlideImage(
-//                    modifier = Modifier
-//                        .width(700.dp)
-//                        .height(350.dp)
-//                        .padding(start = 20.dp, end = 20.dp),
-//                    model = R.raw.img_start_presbyopia,
-//                    contentScale = ContentScale.Fit,
-//                    contentDescription = ""
-//                )
-//                Image(
-//                    modifier = Modifier
-//                        .wrapContentSize()
-//                        .padding(start = 20.dp, end = 20.dp, bottom = 20.dp),
-//                    painter = painterResource(
-//                        id = when(selectedTest) {
-//                                TestType.Presbyopia -> R.drawable.text_popup_ko_presbyopia
-//                                TestType.ShortDistanceVisualAcuity -> R.drawable.text_popup_ko_near
-//                                TestType.LongDistanceVisualAcuity -> R.drawable.text_popup_ko_long
-//                                TestType.ChildrenVisualAcuity -> R.drawable.text_popup_ko_child
-//                                TestType.AmslerGrid -> R.drawable.text_popup_ko_amsler
-//                                else -> R.drawable.text_popup_ko_m_chart
-//                            }
-//                        ),
-//                    contentDescription = "",
-//                    contentScale = ContentScale.FillWidth
-//                )
-//                Spacer(
-//                    modifier = Modifier
-//                        .background(Color(0xffcccccc))
-//                        .height(1.dp)
-//                        .fillMaxWidth()
-//                )
-//                Text(
-//                    text = "확인",
-//                    fontSize = 30.sp,
-//                    color = Color(0xff1d71e1),
-//                    fontWeight = FontWeight.Bold,
-//                    textAlign = TextAlign.Center,
-//                    modifier = Modifier
-//                        .padding(top = 12.dp, bottom = 12.dp)
-//                        .fillMaxWidth()
-//                        .clickable(
-//                            indication = null,
-//                            interactionSource = remember { MutableInteractionSource() }
-//                        ) {
-//                            onDismissRequest()
-//                        }
-//                )
-//            }
-//        }
-//    }
     }
 }

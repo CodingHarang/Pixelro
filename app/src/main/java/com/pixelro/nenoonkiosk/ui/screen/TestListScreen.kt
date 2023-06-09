@@ -246,9 +246,10 @@ fun Advertisement(
                     .clip(
                         shape = RoundedCornerShape(8.dp)
                     ),
-                painter = painterResource(id = when(idx % 2) {
+                painter = painterResource(id = when(idx % 3) {
                     0 -> R.drawable.ad_1
-                    else -> R.drawable.ad_2
+                    1 -> R.drawable.ad_2
+                    else -> R.drawable.ad_3
                 }),
                 contentDescription = ""
             )

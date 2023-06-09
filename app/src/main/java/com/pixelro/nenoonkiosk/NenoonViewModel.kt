@@ -36,6 +36,7 @@ import com.google.android.gms.location.LocationSettingsRequest
 import com.google.android.gms.location.LocationSettingsResponse
 import com.google.android.gms.location.SettingsClient
 import com.google.android.gms.tasks.Task
+import com.pixelro.nenoonkiosk.data.AccommodationData
 import com.pixelro.nenoonkiosk.data.SharedPreferencesManager
 import com.pixelro.nenoonkiosk.data.StringProvider
 import com.pixelro.nenoonkiosk.data.TestType
@@ -491,6 +492,8 @@ class NenoonViewModel(application: Application) : AndroidViewModel(application) 
     private val _thirdDistance = MutableStateFlow(0f)
     private val _avgDistance = MutableStateFlow(0f)
     val avgDistance: StateFlow<Float> = _avgDistance
+    private val _eyeAge = MutableStateFlow(0)
+    val eyeAge: StateFlow<Int> = _eyeAge
 
     fun updateIsLeftEye(isLeft: Boolean) {
         _isLeftEye.update { isLeft }
@@ -527,6 +530,16 @@ class NenoonViewModel(application: Application) : AndroidViewModel(application) 
         }
         _printString.update {
             "조절근점: ${(avgDistance.value).roundToInt().toFloat() / 10}cm"
+        }
+
+        var max = 100000f
+        for(entry in AccommodationData.allEntries) {
+            var diff = (entry.x * 10) - _avgDistance.value
+            if(diff < 0) diff = -diff
+            if(max > diff) {
+                max = diff
+                _eyeAge.update { entry.y.toInt() - 20 }
+            }
         }
     }
 

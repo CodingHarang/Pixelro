@@ -131,6 +131,11 @@
     <string name="test_result_seems_no_clear">str</string>
     <string name="vertical">vertical</string>
     <string name="horizontal">horizontal</string>
+    <string name="presbyopia_result_years_old">str</string>
+    <string name="adjust_distance_40cm">str</string>
+    <string name="adjust_distance_30cm">str</string>
+    <string name="amsler_grid_test_description">str</string>
+    <string name="mchart_test_description">str</string>
     <!--    <string name=""></string>-->
     <!--    <string name=""></string>-->
 </resources>

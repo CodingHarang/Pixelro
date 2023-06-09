@@ -50,7 +50,7 @@
     <string name="covered_eye_checking_left_description">오른쪽 눈을 가리고\n왼쪽 눈을 검사하겠습니다.</string>
     <string name="result_screen_distance">거리</string>
     <string name="result_screen_age">나이</string>
-    <string name="presbyopia_result_hoffstetter1">"Hofstetter 공식에 따르면 안구 나이는 "</string>
+    <string name="presbyopia_result_hoffstetter1">"안구 나이는 "</string>
     <string name="measuring_distance_content_description1">시작하기를 누른 다음에는\n기기와 사용자의 거리를 고정해주세요.</string>
     <string name="measuring_distance_content_description2">테스트 도중 측정 거리가 달라지면 시력 검사 값이 달라질 수 있습니다.</string>
     <string name="visual_acuity_test_common_content_distance">측정 거리</string>
@@ -131,4 +131,9 @@
     <string name="test_result_seems_no_clear">글이 모두 선명하게 보이지 않음</string>
     <string name="vertical">수직</string>
     <string name="horizontal">수평</string>
+    <string name="presbyopia_result_years_old">세 입니다</string>
+    <string name="adjust_distance_40cm">40cm로 조정해주세요</string>
+    <string name="adjust_distance_30cm">30cm로 조정해주세요</string>
+    <string name="amsler_grid_test_description">가운데 검은 점을 바라보고\n이상이 있거나 왜곡되어 보이는 부분을 선택해주세요</string>
+    <string name="mchart_test_description">아래의 선이 곧은 선으로 보이는지\n휘어진 선으로 보이는지 선택해주세요</string>
 </resources>

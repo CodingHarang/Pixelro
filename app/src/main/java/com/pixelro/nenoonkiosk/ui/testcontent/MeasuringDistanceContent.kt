@@ -59,7 +59,7 @@ fun MeasuringDistanceContent(
         ) {
             Text(
                 modifier = Modifier
-                    .padding(start = 40.dp, top = 120.dp, end = 40.dp, bottom = 20.dp)
+                    .padding(start = 40.dp, top = 80.dp, end = 40.dp, bottom = 20.dp)
                     .fillMaxWidth(),
                 text = StringProvider.getString(R.string.measuring_distance_content_description1),
                 color = Color(0xffffffff),
@@ -152,8 +152,8 @@ fun MeasuringDistanceContent(
                     ) {
                         Text(
                             text = when(viewModel.selectedTestType.collectAsState().value) {
-                                TestType.ShortDistanceVisualAcuity -> "40cm로 조정해주세요"
-                                else -> "30cm로 조정해주세요"
+                                TestType.ShortDistanceVisualAcuity -> StringProvider.getString(R.string.adjust_distance_40cm)
+                                else -> StringProvider.getString(R.string.adjust_distance_30cm)
                             },
                             fontSize = 24.sp,
                             color = Color(0xffffffff),

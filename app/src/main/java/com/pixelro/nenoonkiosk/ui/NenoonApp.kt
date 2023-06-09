@@ -1,7 +1,5 @@
 package com.pixelro.nenoonkiosk.ui
 
-import android.util.Log
-import androidx.activity.compose.BackHandler
 import androidx.compose.animation.ExperimentalAnimationApi
 import androidx.compose.foundation.layout.*
 import androidx.compose.runtime.Composable

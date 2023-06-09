@@ -128,10 +128,11 @@ fun MChartTestResultContent(
                     fontSize = 20.sp,
                     fontWeight = FontWeight.Medium
                 )
-                Row(
+                Box(
                     modifier = Modifier
-                        .padding(top = 20.dp),
-                    verticalAlignment = Alignment.CenterVertically
+                        .padding(top = 20.dp)
+                        .fillMaxWidth(),
+                    contentAlignment = Alignment.CenterStart
                 ) {
                     Text(
                         modifier = Modifier
@@ -144,18 +145,26 @@ fun MChartTestResultContent(
                         color = Color(0xff1d71e1),
                         fontSize = 20.sp
                     )
-                    Text(
+                    Box(
                         modifier = Modifier
-                            .padding(start = 100.dp),
-                        text = "${String.format("%.1f", result[0].toFloat() / 10)}°",
-                        fontSize = 30.sp,
-                        fontWeight = FontWeight.Bold
-                    )
+                            .padding(end = 20.dp)
+                            .fillMaxWidth(),
+                        contentAlignment = Alignment.CenterEnd
+                    ) {
+                        Text(
+                            modifier = Modifier
+                                .padding(start = 100.dp),
+                            text = "${String.format("%.1f", result[0].toFloat() / 10)}°",
+                            fontSize = 30.sp,
+                            fontWeight = FontWeight.Bold
+                        )
+                    }
                 }
-                Row(
+                Box(
                     modifier = Modifier
-                        .padding(top = 20.dp),
-                    verticalAlignment = Alignment.CenterVertically
+                        .padding(top = 20.dp)
+                        .fillMaxWidth(),
+                    contentAlignment = Alignment.CenterStart
                 ) {
                     Text(
                         modifier = Modifier
@@ -168,13 +177,20 @@ fun MChartTestResultContent(
                         color = Color(0xffffb800),
                         fontSize = 20.sp
                     )
-                    Text(
+                    Box(
                         modifier = Modifier
-                            .padding(start = 100.dp),
-                        text = "${String.format("%.1f", result[1].toFloat() / 10)}°",
-                        fontSize = 30.sp,
-                        fontWeight = FontWeight.Bold
-                    )
+                            .padding(end = 20.dp)
+                            .fillMaxWidth(),
+                        contentAlignment = Alignment.CenterEnd
+                    ) {
+                        Text(
+                            modifier = Modifier
+                                .padding(start = 100.dp),
+                            text = "${String.format("%.1f", result[1].toFloat() / 10)}°",
+                            fontSize = 30.sp,
+                            fontWeight = FontWeight.Bold
+                        )
+                    }
                 }
             }
             Spacer(
@@ -196,10 +212,11 @@ fun MChartTestResultContent(
                     fontSize = 20.sp,
                     fontWeight = FontWeight.Medium
                 )
-                Row(
+                Box(
                     modifier = Modifier
-                        .padding(top = 20.dp),
-                    verticalAlignment = Alignment.CenterVertically
+                        .padding(top = 20.dp)
+                        .fillMaxWidth(),
+                    contentAlignment = Alignment.CenterStart
                 ) {
                     Text(
                         modifier = Modifier
@@ -212,18 +229,26 @@ fun MChartTestResultContent(
                         color = Color(0xff1d71e1),
                         fontSize = 20.sp
                     )
-                    Text(
+                    Box(
                         modifier = Modifier
-                            .padding(start = 100.dp),
-                        text = "${String.format("%.1f", result[2].toFloat() / 10)}°",
-                        fontSize = 30.sp,
-                        fontWeight = FontWeight.Bold
-                    )
+                            .padding(end = 20.dp)
+                            .fillMaxWidth(),
+                        contentAlignment = Alignment.CenterEnd
+                    ) {
+                        Text(
+                            modifier = Modifier
+                                .padding(start = 100.dp),
+                            text = "${String.format("%.1f", result[2].toFloat() / 10)}°",
+                            fontSize = 30.sp,
+                            fontWeight = FontWeight.Bold
+                        )
+                    }
                 }
-                Row(
+                Box(
                     modifier = Modifier
-                        .padding(top = 20.dp),
-                    verticalAlignment = Alignment.CenterVertically
+                        .padding(top = 20.dp)
+                        .fillMaxWidth(),
+                    contentAlignment = Alignment.CenterStart
                 ) {
                     Text(
                         modifier = Modifier
@@ -236,13 +261,20 @@ fun MChartTestResultContent(
                         color = Color(0xffffb800),
                         fontSize = 20.sp
                     )
-                    Text(
+                    Box(
                         modifier = Modifier
-                            .padding(start = 100.dp),
-                        text = "${String.format("%.1f", result[3].toFloat() / 10)}°",
-                        fontSize = 30.sp,
-                        fontWeight = FontWeight.Bold
-                    )
+                            .padding(end = 20.dp)
+                            .fillMaxWidth(),
+                        contentAlignment = Alignment.CenterEnd
+                    ) {
+                        Text(
+                            modifier = Modifier
+                                .padding(start = 100.dp),
+                            text = "${String.format("%.1f", result[3].toFloat() / 10)}°",
+                            fontSize = 30.sp,
+                            fontWeight = FontWeight.Bold
+                        )
+                    }
                 }
             }
         }

@@ -51,30 +51,6 @@ fun PresbyopiaTestResultContent(
                     val allEntries = AccommodationData.allEntries
                     val entries2 = mutableListOf(
                         Entry(22f, 8.4f),
-                        Entry(23f, 8.6f),
-                        Entry(24f, 8.8f),
-                        Entry(25f, 9.1f),
-                        Entry(26f, 9.3f),
-                        Entry(27f, 9.6f),
-                        Entry(28f, 9.9f),
-                        Entry(29f, 10.2f),
-                        Entry(30f, 10.5f),
-                        Entry(31f, 10.9f),
-                        Entry(32f, 11.2f),
-                        Entry(33f, 11.6f),
-                        Entry(34f, 12.0f),
-                        Entry(35f, 12.5f),
-                        Entry(36f, 13.0f),
-                        Entry(37f, 13.5f),
-                        Entry(38f, 14.1f),
-                        Entry(39f, 14.7f),
-                        Entry(40f, 15.4f),
-                        Entry(41f, 16.1f),
-                        Entry(42f, 16.9f),
-                        Entry(43f, 17.9f),
-                        Entry(44f, 18.9f),
-                        Entry(45f, 20.0f),
-                        Entry(46f, 21.3f)
                     )
                     val startEntry = mutableListOf(
                         Entry(22f, 8.4f)
@@ -191,7 +167,7 @@ fun PresbyopiaTestResultContent(
             Text(
                 modifier = Modifier
                     .padding(start = 40.dp, bottom = 40.dp),
-                text = StringProvider.getString(R.string.presbyopia_result_hoffstetter1) + "25세 입니다",
+                text = StringProvider.getString(R.string.presbyopia_result_hoffstetter1) + (viewModel.eyeAge.collectAsState().value - 2) + " ~ " + (viewModel.eyeAge.collectAsState().value + 2) + StringProvider.getString(R.string.presbyopia_result_years_old),
 //                        + ": ${(viewModel.avgDistance.collectAsState().value).roundToInt().toFloat() / 10}cm",
                 fontSize = 24.sp,
                 fontWeight = FontWeight.Medium,
