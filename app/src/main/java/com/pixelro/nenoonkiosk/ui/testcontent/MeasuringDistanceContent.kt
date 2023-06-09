@@ -4,8 +4,10 @@ import android.util.Log
 import androidx.compose.animation.*
 import androidx.compose.animation.core.MutableTransitionState
 import androidx.compose.animation.core.tween
+import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
+import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -37,6 +39,7 @@ import com.pixelro.nenoonkiosk.R
 import com.pixelro.nenoonkiosk.data.AnimationProvider
 import com.pixelro.nenoonkiosk.data.GlobalConstants
 import com.pixelro.nenoonkiosk.data.StringProvider
+import com.pixelro.nenoonkiosk.data.TestType
 import kotlin.math.roundToInt
 
 @Composable
@@ -89,7 +92,10 @@ fun MeasuringDistanceContent(
                 fontSize = 68.sp,
                 fontWeight = FontWeight.Bold
             )
-            if(viewModel.screenToFaceDistance.collectAsState().value in (-500.0..500.0)) {
+            if(viewModel.screenToFaceDistance.collectAsState().value in when(viewModel.selectedTestType.collectAsState().value) {
+                    TestType.ShortDistanceVisualAcuity -> (350.0..450.0)
+                    else -> (250.0..350.0)
+                }) {
                 Box(
                     modifier = Modifier
                         .fillMaxSize(),
@@ -98,7 +104,11 @@ fun MeasuringDistanceContent(
                     Box(
                         modifier = Modifier
                             .fillMaxWidth()
-                            .padding(start = 40.dp, end = 40.dp, bottom = (viewModel.navigationBarPadding.collectAsState().value).dp)
+                            .padding(
+                                start = 40.dp,
+                                end = 40.dp,
+                                bottom = (viewModel.navigationBarPadding.collectAsState().value).dp
+                            )
                             .clip(
                                 shape = RoundedCornerShape(8.dp)
                             )
@@ -114,6 +124,37 @@ fun MeasuringDistanceContent(
                     ) {
                         Text(
                             text = StringProvider.getString(R.string.test_predescription_screen_start),
+                            fontSize = 24.sp,
+                            color = Color(0xffffffff),
+                            textAlign = TextAlign.Center
+                        )
+                    }
+                }
+            } else {
+                Box(
+                    modifier = Modifier
+                        .fillMaxSize(),
+                    contentAlignment = Alignment.BottomCenter
+                ) {
+                    Box(
+                        modifier = Modifier
+                            .padding(
+                                start = 40.dp,
+                                end = 40.dp,
+                                bottom = (viewModel.navigationBarPadding.collectAsState().value + 120).dp
+                            )
+                            .border(
+                                border = BorderStroke(1.dp, Color(0xffffffff)),
+                                shape = RoundedCornerShape(50)
+                            )
+                            .padding(start = 20.dp, top = 12.dp, end = 20.dp, bottom = 12.dp),
+                        contentAlignment = Alignment.Center
+                    ) {
+                        Text(
+                            text = when(viewModel.selectedTestType.collectAsState().value) {
+                                TestType.ShortDistanceVisualAcuity -> "40cm로 조정해주세요"
+                                else -> "30cm로 조정해주세요"
+                            },
                             fontSize = 24.sp,
                             color = Color(0xffffffff),
                             textAlign = TextAlign.Center

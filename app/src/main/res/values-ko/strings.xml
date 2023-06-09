@@ -116,4 +116,19 @@
     <string name="presbyopia_result_near_point_accommodation">조절근점</string>
     <string name="presbyopia_result_hoffstetter2">세 입니다</string>
     <string name="covered_eye_checking_description">곧 검사가 시작됩니다</string>
+    <string name="test_result_normal_case">이상 없을 경우</string>
+    <string name="test_result_normal_right">눈에 이상이 없을 경우 오른쪽과 같은 결과가 나옵니다</string>
+    <string name="test_result_normal_bottom">눈에 이상이 없을 경우 아래와 같은 결과가 나옵니다</string>
+    <string name="left">왼쪽</string>
+    <string name="right">오른쪽</string>
+    <string name="left_and_right">왼쪽 · 오른쪽</string>
+    <string name="left_and_right_0.7_or_higher">왼쪽 · 오른쪽 0.7 이상</string>
+    <string name="red">빨강</string>
+    <string name="green">초록</string>
+    <string name="test_result_my_result">내 결과</string>
+    <string name="test_result_all_seems_clear">바탕의 글이 모두 선명하게 보임</string>
+    <string name="test_result_seems_more_clear">바탕의 글이 더 선명하게 보임</string>
+    <string name="test_result_seems_no_clear">글이 모두 선명하게 보이지 않음</string>
+    <string name="vertical">수직</string>
+    <string name="horizontal">수평</string>
 </resources>

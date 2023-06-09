@@ -106,6 +106,15 @@ fun AmslerGridContent(
             val currentSelectedArea = viewModel.currentSelectedArea.collectAsState().value
             val isLeft = viewModel.isLeftEye.collectAsState().value
 
+            Text(
+                modifier = Modifier
+                    .padding(top = 40.dp, bottom = 40.dp),
+                text = "가운데 검은 점을 바라보고\n이상이 있거나 왜곡되어 보이는 부분을 선택해주세요",
+                fontSize = 32.sp,
+                color = Color(0xffffffff),
+                fontWeight = FontWeight.Medium,
+                textAlign = TextAlign.Center
+            )
             Box(
                 contentAlignment = Alignment.Center,
                 modifier = Modifier
@@ -137,7 +146,7 @@ fun AmslerGridContent(
                         }
                 ) {
                     drawCircle(
-                        color = Color(0xff00ff00),
+                        color = Color(0xff000000),
                         radius = 50f,
                         center = Offset(450f, 450f)
                     )
@@ -161,7 +170,7 @@ fun AmslerGridContent(
                         }
                     }
                     drawCircle(
-                        color = Color(0xffff0000),
+                        color = Color(0xff0000ff),
                         radius = 20f,
                         center = Offset(450f - (400f * tan(rotY * 0.0174533)).toFloat(), 450f - (400f * tan((rotX + 10) * 0.0174533)).toFloat())
                     )

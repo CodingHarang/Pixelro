@@ -116,6 +116,21 @@
     <string name="presbyopia_result_near_point_accommodation">npa</string>
     <string name="presbyopia_result_hoffstetter2">str</string>
     <string name="covered_eye_checking_description">str</string>
+    <string name="test_result_normal_case">str</string>
+    <string name="test_result_normal_right">str</string>
+    <string name="test_result_normal_bottom">str</string>
+    <string name="left">left</string>
+    <string name="right">right</string>
+    <string name="left_and_right">str</string>
+    <string name="left_and_right_0.7_or_higher">str</string>
+    <string name="red">red</string>
+    <string name="green">green</string>
+    <string name="test_result_my_result">str</string>
+    <string name="test_result_seems_more_clear">str</string>
+    <string name="test_result_all_seems_clear">str</string>
+    <string name="test_result_seems_no_clear">str</string>
+    <string name="vertical">vertical</string>
+    <string name="horizontal">horizontal</string>
     <!--    <string name=""></string>-->
     <!--    <string name=""></string>-->
 </resources>

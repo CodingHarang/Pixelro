@@ -56,7 +56,7 @@ fun CoveredEyeCheckingContent(
                     else -> StringProvider.getString(R.string.covered_eye_checking_right_description)
                 },
                 color = Color(0xffffffff),
-                fontSize = 30.sp,
+                fontSize = 40.sp,
                 fontWeight = FontWeight.Bold,
                 textAlign = TextAlign.Center
             )

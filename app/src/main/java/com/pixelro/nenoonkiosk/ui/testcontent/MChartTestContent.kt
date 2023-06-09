@@ -34,6 +34,7 @@ import androidx.compose.ui.draw.rotate
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.IntOffset
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
@@ -108,6 +109,15 @@ fun MChartContent(
                 .fillMaxWidth(),
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
+            Text(
+                modifier = Modifier
+                    .padding(top = 40.dp, bottom = 40.dp),
+                text = "아래의 선이 곧은 선으로 보이는지\n휘어진 선으로 보이는지 선택해주세요",
+                fontSize = 32.sp,
+                color = Color(0xffffffff),
+                fontWeight = FontWeight.Medium,
+                textAlign = TextAlign.Center
+            )
             Column(
                 modifier = Modifier
                     .width(700.dp),
@@ -166,14 +176,15 @@ fun MChartContent(
                             )
                             .clickable {
                                 viewModel.updateMChartResult(currentLevel)
-                                viewModel.updateCurrentLevel(0)
                                 if (isVertical && isLeftEye) {
+                                    viewModel.updateCurrentLevel(0)
                                     viewModel.updateIsVertical(false)
                                 } else if (!isVertical && isLeftEye) {
                                     viewModel.toNextMChartTest()
                                     mChartContentVisibleState.targetState = false
                                     nextVisibleState.targetState = true
                                 } else if (isVertical) {
+                                    viewModel.updateCurrentLevel(0)
                                     viewModel.updateIsVertical(false)
                                 } else {
                                     viewModel.updateSavedResult()

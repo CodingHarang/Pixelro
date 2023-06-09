@@ -36,14 +36,15 @@ fun ShortDistanceVisualAcuityTestResultContent(
         Text(
             modifier = Modifier
                 .padding(start = 40.dp, top = 40.dp),
-            text = "이상 없을 경우",
+            text = StringProvider.getString(R.string.test_result_normal_case),
             fontSize = 28.sp,
-            fontWeight = FontWeight.Medium
+            fontWeight = FontWeight.Medium,
+            color = Color(0xff1d71e1)
         )
         Text(
             modifier = Modifier
                 .padding(start = 40.dp),
-            text = "눈에 이상이 없을 경우 아래와 같은 결과가 나옵니다",
+            text = StringProvider.getString(R.string.test_result_normal_bottom),
             fontSize = 16.sp,
             color = Color(0xff878787)
         )
@@ -59,7 +60,7 @@ fun ShortDistanceVisualAcuityTestResultContent(
             verticalAlignment = Alignment.CenterVertically
         ) {
             Text(
-                text = "오른쪽 · 왼쪽 0.7 이상",
+                text = StringProvider.getString(R.string.left_and_right_0_7_or_higher),
                 fontSize = 20.sp,
                 fontWeight = FontWeight.Medium
             )
@@ -71,7 +72,7 @@ fun ShortDistanceVisualAcuityTestResultContent(
                         shape = RoundedCornerShape(4.dp)
                     )
                     .padding(start = 12.dp, top = 4.dp, end = 12.dp, bottom = 4.dp),
-                text = "빨강",
+                text = StringProvider.getString(R.string.red),
                 color = Color(0xffd23d3d),
                 fontSize = 20.sp
             )
@@ -83,14 +84,14 @@ fun ShortDistanceVisualAcuityTestResultContent(
                         shape = RoundedCornerShape(4.dp)
                     )
                     .padding(start = 12.dp, top = 4.dp, end = 12.dp, bottom = 4.dp),
-                text = "초록",
+                text = StringProvider.getString(R.string.green),
                 color = Color(0xff28bd29),
                 fontSize = 20.sp
             )
             Text(
                 modifier = Modifier
                     .padding(start = 12.dp),
-                text = "바탕의 글이 모두 잘 보임",
+                text = StringProvider.getString(R.string.test_result_all_seems_clear),
                 color = Color(0xff878787),
                 fontSize = 20.sp
             )
@@ -98,7 +99,7 @@ fun ShortDistanceVisualAcuityTestResultContent(
         Text(
             modifier = Modifier
                 .padding(start = 40.dp, top = 40.dp),
-            text = "내 결과",
+            text = StringProvider.getString(R.string.test_result_my_result),
             fontSize = 28.sp,
             fontWeight = FontWeight.Medium
         )
@@ -118,7 +119,7 @@ fun ShortDistanceVisualAcuityTestResultContent(
                     .padding(20.dp)
             ) {
                 Text(
-                    text = "왼쪽",
+                    text = StringProvider.getString(R.string.left),
                     fontSize = 20.sp,
                     fontWeight = FontWeight.Medium
                 )
@@ -141,14 +142,14 @@ fun ShortDistanceVisualAcuityTestResultContent(
                                         shape = RoundedCornerShape(4.dp)
                                     )
                                     .padding(start = 12.dp, top = 4.dp, end = 12.dp, bottom = 4.dp),
-                                text = "초록",
+                                text = StringProvider.getString(R.string.green),
                                 color = Color(0xff28bd29),
                                 fontSize = 20.sp
                             )
                             Text(
                                 modifier = Modifier
                                     .padding(start = 12.dp),
-                                text = "바탕의 글이 선명하게 보임",
+                                text = StringProvider.getString(R.string.test_result_seems_more_clear),
                                 color = Color(0xff878787),
                                 fontSize = 20.sp
                             )
@@ -161,14 +162,14 @@ fun ShortDistanceVisualAcuityTestResultContent(
                                         shape = RoundedCornerShape(4.dp)
                                     )
                                     .padding(start = 12.dp, top = 4.dp, end = 12.dp, bottom = 4.dp),
-                                text = "빨강",
+                                text = StringProvider.getString(R.string.red),
                                 color = Color(0xffd23d3d),
                                 fontSize = 20.sp
                             )
                             Text(
                                 modifier = Modifier
                                     .padding(start = 12.dp),
-                                text = "바탕의 글이 선명하게 보임",
+                                text = StringProvider.getString(R.string.test_result_seems_more_clear),
                                 color = Color(0xff878787),
                                 fontSize = 20.sp
                             )
@@ -181,7 +182,7 @@ fun ShortDistanceVisualAcuityTestResultContent(
                                         shape = RoundedCornerShape(4.dp)
                                     )
                                     .padding(start = 12.dp, top = 4.dp, end = 12.dp, bottom = 4.dp),
-                                text = "빨강",
+                                text = StringProvider.getString(R.string.red),
                                 color = Color(0xffd23d3d),
                                 fontSize = 20.sp
                             )
@@ -193,21 +194,21 @@ fun ShortDistanceVisualAcuityTestResultContent(
                                         shape = RoundedCornerShape(4.dp)
                                     )
                                     .padding(start = 12.dp, top = 4.dp, end = 12.dp, bottom = 4.dp),
-                                text = "초록",
+                                text = StringProvider.getString(R.string.green),
                                 color = Color(0xff28bd29),
                                 fontSize = 20.sp
                             )
                             Text(
                                 modifier = Modifier
                                     .padding(start = 12.dp),
-                                text = "바탕의 글이 모두 선명하게 보임",
+                                text = StringProvider.getString(R.string.test_result_all_seems_clear),
                                 color = Color(0xff878787),
                                 fontSize = 20.sp
                             )
                         }
                         VisionDisorderType.Astigmatism -> {
                             Text(
-                                text = "글이 모두 선명하게 보이지 않음",
+                                text = StringProvider.getString(R.string.test_result_seems_no_clear),
                                 color = Color(0xff878787),
                                 fontSize = 20.sp
                             )
@@ -230,7 +231,7 @@ fun ShortDistanceVisualAcuityTestResultContent(
                     .padding(20.dp)
             ) {
                 Text(
-                    text = "오른쪽",
+                    text = StringProvider.getString(R.string.right),
                     fontSize = 20.sp,
                     fontWeight = FontWeight.Medium
                 )
@@ -253,14 +254,14 @@ fun ShortDistanceVisualAcuityTestResultContent(
                                         shape = RoundedCornerShape(4.dp)
                                     )
                                     .padding(start = 12.dp, top = 4.dp, end = 12.dp, bottom = 4.dp),
-                                text = "초록",
+                                text = StringProvider.getString(R.string.green),
                                 color = Color(0xff28bd29),
                                 fontSize = 20.sp
                             )
                             Text(
                                 modifier = Modifier
                                     .padding(start = 12.dp),
-                                text = "바탕의 글이 선명하게 보임",
+                                text = StringProvider.getString(R.string.test_result_seems_more_clear),
                                 color = Color(0xff878787),
                                 fontSize = 20.sp
                             )
@@ -273,14 +274,14 @@ fun ShortDistanceVisualAcuityTestResultContent(
                                         shape = RoundedCornerShape(4.dp)
                                     )
                                     .padding(start = 12.dp, top = 4.dp, end = 12.dp, bottom = 4.dp),
-                                text = "빨강",
+                                text = StringProvider.getString(R.string.red),
                                 color = Color(0xffd23d3d),
                                 fontSize = 20.sp
                             )
                             Text(
                                 modifier = Modifier
                                     .padding(start = 12.dp),
-                                text = "바탕의 글이 선명하게 보임",
+                                text = StringProvider.getString(R.string.test_result_seems_more_clear),
                                 color = Color(0xff878787),
                                 fontSize = 20.sp
                             )
@@ -293,7 +294,7 @@ fun ShortDistanceVisualAcuityTestResultContent(
                                         shape = RoundedCornerShape(4.dp)
                                     )
                                     .padding(start = 12.dp, top = 4.dp, end = 12.dp, bottom = 4.dp),
-                                text = "빨강",
+                                text = StringProvider.getString(R.string.red),
                                 color = Color(0xffd23d3d),
                                 fontSize = 20.sp
                             )
@@ -305,21 +306,21 @@ fun ShortDistanceVisualAcuityTestResultContent(
                                         shape = RoundedCornerShape(4.dp)
                                     )
                                     .padding(start = 12.dp, top = 4.dp, end = 12.dp, bottom = 4.dp),
-                                text = "초록",
+                                text = StringProvider.getString(R.string.green),
                                 color = Color(0xff28bd29),
                                 fontSize = 20.sp
                             )
                             Text(
                                 modifier = Modifier
                                     .padding(start = 12.dp),
-                                text = "바탕의 글이 모두 선명하게 보임",
+                                text = StringProvider.getString(R.string.test_result_all_seems_clear),
                                 color = Color(0xff878787),
                                 fontSize = 20.sp
                             )
                         }
                         VisionDisorderType.Astigmatism -> {
                             Text(
-                                text = "글이 모두 선명하게 보이지 않음",
+                                text = StringProvider.getString(R.string.test_result_seems_no_clear),
                                 color = Color(0xff878787),
                                 fontSize = 20.sp
                             )
@@ -328,28 +329,5 @@ fun ShortDistanceVisualAcuityTestResultContent(
                 }
             }
         }
-//        Box(
-//            modifier = Modifier
-//                .fillMaxWidth()
-//                .height(100.dp)
-//                .padding(20.dp)
-//                .background(
-//                    color = Color(0xff0000ff),
-//                    shape = RoundedCornerShape(8.dp)
-//                )
-//                .clickable {
-//                    navController.popBackStack(GlobalConstants.ROUTE_TEST_LIST, false)
-//                },
-//            contentAlignment = Alignment.Center
-//        ) {
-//            Text(
-//                modifier = Modifier
-//                    .fillMaxWidth(),
-//                text = "돌아가기",
-//                fontSize = 30.sp,
-//                color = Color(0xffffffff),
-//                textAlign = TextAlign.Center
-//            )
-//        }
     }
 }

@@ -75,9 +75,10 @@ fun TestResultScreen(
     navController: NavHostController
 ) {
     BackHandler(enabled = true) {
+        Log.e("backhandler", "backhandler")
         navController.popBackStack(GlobalConstants.ROUTE_TEST_LIST, false)
+        viewModel.resetScreenSaverTimer()
     }
-
     val composableScope = rememberCoroutineScope()
     val testType = viewModel.selectedTestType.collectAsState().value
     val context = LocalContext.current
@@ -603,16 +604,16 @@ fun textAsBitmap(
 
             paint.typeface = Typeface.DEFAULT_BOLD
             canvas.drawText(when(printString.split(",")[0]) {
-                                "0" -> "수평: 정상"
-                                else -> "수평: 이상"
+                                "0" -> "수직: 정상"
+                                else -> "수직: 이상"
                             }, 150f, baseline + 170f, paint)
             canvas.drawText(when(printString.split(",")[1]) {
                                 "0" -> "수평: 정상"
                                 else -> "수평: 이상"
                             }, 150f, baseline + 210f, paint)
             canvas.drawText(when(printString.split(",")[2]) {
-                                "0" -> "수평: 정상"
-                                else -> "수평: 이상"
+                                "0" -> "수직: 정상"
+                                else -> "수직: 이상"
                             }, 450f, baseline + 170f, paint)
             canvas.drawText(when(printString.split(",")[3]) {
                                 "0" -> "수평: 정상"

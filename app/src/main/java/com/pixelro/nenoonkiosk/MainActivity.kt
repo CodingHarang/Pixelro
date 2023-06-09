@@ -13,6 +13,8 @@ import android.util.SizeF
 import android.view.MotionEvent
 import android.view.WindowManager
 import androidx.activity.ComponentActivity
+import androidx.activity.OnBackPressedCallback
+import androidx.activity.compose.BackHandler
 import androidx.activity.compose.setContent
 import androidx.activity.viewModels
 import androidx.compose.foundation.layout.fillMaxSize
@@ -82,6 +84,12 @@ class MainActivity : ComponentActivity() {
         val navigationBarResourceId = resources.getIdentifier("navigation_bar_height", "dimen", "android")
         viewModel.updateSystemBarsPadding(resources.getDimension(statusBarResourceId), resources.getDimension(navigationBarResourceId))
 
+//        onBackPressedDispatcher.addCallback(this, object: OnBackPressedCallback(true) {
+//            override fun handleOnBackPressed() {
+//                Log.e("handleOnBackPressed", "handleOnBackPressed")
+//            }
+//        })
+
         window.addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON)
         applicationContext
         setContent {
@@ -125,6 +133,11 @@ class MainActivity : ComponentActivity() {
     override fun onPause() {
         super.onPause()
         viewModel.updateToPaused()
+    }
+
+    override fun onBackPressed() {
+        viewModel.resetScreenSaverTimer()
+        super.onBackPressed()
     }
 }
 

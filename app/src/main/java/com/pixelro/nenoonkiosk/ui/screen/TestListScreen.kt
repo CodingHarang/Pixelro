@@ -1,5 +1,7 @@
 package com.pixelro.nenoonkiosk.ui.screen
 
+import android.util.Log
+import androidx.activity.compose.BackHandler
 import androidx.compose.animation.*
 import androidx.compose.animation.core.tween
 import androidx.compose.foundation.ExperimentalFoundationApi
@@ -43,6 +45,10 @@ fun TestListScreen(
     navController: NavHostController,
     viewModel: NenoonViewModel
 ) {
+//    BackHandler(enabled = true) {
+//        viewModel.resetScreenSaverTimer()
+//        Log.e("backhandler", "backhandler")
+//    }
     val pagerState = rememberPagerState(
         initialPage = 50000
     )
@@ -63,9 +69,6 @@ fun TestListScreen(
                 color = Color(0xffffffff)
             )
     ) {
-//        Spacer(
-//            modifier = Modifier.height(viewModel.statusBarPadding.collectAsState().value.dp)
-//        )
         Box(
             modifier = Modifier
                 .padding(
@@ -243,10 +246,9 @@ fun Advertisement(
                     .clip(
                         shape = RoundedCornerShape(8.dp)
                     ),
-                painter = painterResource(id = when(idx % 3) {
+                painter = painterResource(id = when(idx % 2) {
                     0 -> R.drawable.ad_1
-                    1 -> R.drawable.ad_2
-                    else -> R.drawable.ad_3
+                    else -> R.drawable.ad_2
                 }),
                 contentDescription = ""
             )

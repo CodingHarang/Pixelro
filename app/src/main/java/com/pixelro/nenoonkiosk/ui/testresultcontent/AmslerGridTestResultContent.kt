@@ -28,6 +28,8 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavHostController
 import com.pixelro.nenoonkiosk.NenoonViewModel
+import com.pixelro.nenoonkiosk.R
+import com.pixelro.nenoonkiosk.data.StringProvider
 
 @Composable
 fun AmslerGridTestResultContent(
@@ -44,22 +46,23 @@ fun AmslerGridTestResultContent(
         Column() {
             Text(
                 modifier = Modifier
-                    .padding(start = 40.dp, top = 40.dp),
-                text = "이상 없을 경우",
+                    .padding(start = 40.dp, top = 20.dp),
+                text = StringProvider.getString(R.string.test_result_normal_case),
                 fontSize = 28.sp,
-                fontWeight = FontWeight.Medium
+                fontWeight = FontWeight.Medium,
+                color = Color(0xff1d71e1)
             )
             Text(
                 modifier = Modifier
                     .padding(start = 40.dp),
-                text = "눈에 이상이 없을 경우 오른쪽과 같은 결과가 나옵니다",
+                text = StringProvider.getString(R.string.test_result_normal_right),
                 fontSize = 16.sp,
                 color = Color(0xff878787)
             )
         }
         Column(
             modifier = Modifier
-                .padding(start = 80.dp, top = 40.dp)
+                .padding(start = 80.dp, top = 20.dp)
                 .width(210.dp)
                 .height(210.dp)
         ) {
@@ -345,7 +348,7 @@ fun AmslerGridTestResultContent(
         modifier = Modifier
             .padding(start = 40.dp, top = 40.dp)
             .fillMaxWidth(),
-        text = "내 결과",
+        text = StringProvider.getString(R.string.test_result_my_result),
         fontSize = 28.sp,
         fontWeight = FontWeight.Medium
     )
@@ -368,7 +371,7 @@ fun AmslerGridTestResultContent(
             Text(
                 modifier = Modifier
                     .padding(bottom = 12.dp),
-                text = "왼쪽",
+                text = StringProvider.getString(R.string.left),
                 fontSize = 20.sp,
                 fontWeight = FontWeight.Medium
             )
@@ -690,7 +693,7 @@ fun AmslerGridTestResultContent(
             Text(
                 modifier = Modifier
                     .padding(bottom = 12.dp),
-                text = "오른쪽",
+                text = StringProvider.getString(R.string.right),
                 fontSize = 20.sp,
                 fontWeight = FontWeight.Medium
             )

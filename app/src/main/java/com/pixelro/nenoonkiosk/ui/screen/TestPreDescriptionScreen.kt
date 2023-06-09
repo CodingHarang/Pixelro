@@ -324,6 +324,7 @@ fun TestPreDescriptionDialog(
 //                        indication = null,
 //                        interactionSource = remember { MutableInteractionSource() })
                     {
+                        viewModel.resetScreenSaverTimer()
                         onDismissRequest()
                     }
                     .padding(20.dp),

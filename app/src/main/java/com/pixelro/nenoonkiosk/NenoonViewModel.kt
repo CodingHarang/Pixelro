@@ -9,6 +9,7 @@ import android.content.IntentSender
 import android.content.pm.PackageManager
 import android.graphics.PointF
 import android.location.LocationManager
+import android.net.Uri
 import android.provider.Settings
 import android.util.Log
 import android.util.SizeF
@@ -44,6 +45,7 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
+import java.io.File
 import java.util.Locale
 import kotlin.math.roundToInt
 
@@ -88,8 +90,8 @@ class NenoonViewModel(application: Application) : AndroidViewModel(application) 
     private val _isResumed = MutableStateFlow(false)
     private val _isPaused = MutableStateFlow(false)
     val exoPlayer = ExoPlayer.Builder(application.applicationContext).build()
-    private val _screenSaverTimer = MutableStateFlow(20)
-    private val _timeValue = MutableStateFlow(20)
+    private val _screenSaverTimer = MutableStateFlow(30)
+    private val _timeValue = MutableStateFlow(30)
 //    val screenSaverTimer: StateFlow<Int> = _screenSaverTimer
     private val _isScreenSaverOn = MutableStateFlow(false)
     val isScreenSaverOn: StateFlow<Boolean> = _isScreenSaverOn
@@ -219,7 +221,10 @@ class NenoonViewModel(application: Application) : AndroidViewModel(application) 
     fun updateScreenToFaceDistance() {
         if((rightEyePosition.value.x - leftEyePosition.value.y) != 0f && lensSize.value.width != 0f) {
             _screenToFaceDistance.update {
-                (50f / 41.5f) * (focalLength.value * 63) * inputImageSizeX.value / ((rightEyePosition.value.x - leftEyePosition.value.x) * (lensSize.value.width))
+                val prev = _screenToFaceDistance.value
+                val dist = (50f / 41.5f) * (focalLength.value * 63) * inputImageSizeX.value / ((rightEyePosition.value.x - leftEyePosition.value.x) * (lensSize.value.width))
+                if(dist > 600f) prev
+                else dist
             }
         } else {
             return
@@ -252,7 +257,7 @@ class NenoonViewModel(application: Application) : AndroidViewModel(application) 
 
     fun initializeCoveredEyeChecking() {
 //        _isCoveredEyeCheckingDone.update { false }
-        _leftTime.update { 3f }
+        _leftTime.update { 5f }
         _isTimerShowing.update { false }
     }
 
@@ -263,8 +268,8 @@ class NenoonViewModel(application: Application) : AndroidViewModel(application) 
     fun checkCoveredEye() {
         viewModelScope.launch {
             var count = 0
-            _leftTime.update { 3.5f }
-            while(count < 6) {
+            _leftTime.update { 5f }
+            while(count < 10) {
                 delay(500)
                 if(
 //                    when(isLeftEye.value) {
@@ -283,7 +288,7 @@ class NenoonViewModel(application: Application) : AndroidViewModel(application) 
                         _isTimerShowing.update { false }
                     }
                     count = 0
-                    _leftTime.update { 3f }
+                    _leftTime.update { 5f }
                 }
             }
             coveredEyeCheckingContentVisibleState.targetState = false
@@ -644,7 +649,7 @@ class NenoonViewModel(application: Application) : AndroidViewModel(application) 
         coveredEyeCheckingContentVisibleState.targetState = true
         visualAcuityTestCommonContentVisibleState.targetState = false
         viewModelScope.launch {
-            delay(1000)
+            delay(700)
             visualAcuityTestContentVisibleState.targetState = true
             visualAcuityTestSightednessTestContentVisibleState.targetState = false
         }
@@ -675,7 +680,6 @@ class NenoonViewModel(application: Application) : AndroidViewModel(application) 
         visualAcuityTestCommonContentVisibleState.targetState = false
         visualAcuityTestContentVisibleState.targetState = true
         visualAcuityTestSightednessTestContentVisibleState.targetState = false
-
     }
 
     fun updateSightTestResult() {
@@ -808,6 +812,7 @@ class NenoonViewModel(application: Application) : AndroidViewModel(application) 
         updateIsLeftEye(false)
         viewModelScope.launch {
             delay(1500)
+            updateCurrentLevel(0)
             updateIsVertical(true)
         }
     }
@@ -834,6 +839,7 @@ class NenoonViewModel(application: Application) : AndroidViewModel(application) 
     }
 
     fun updateSavedResult() {
+        updateCurrentLevel(0)
         _savedResult.update { mChartResult.value }
     }
 
@@ -869,7 +875,8 @@ class NenoonViewModel(application: Application) : AndroidViewModel(application) 
         updateRandomList()
         showSplashScreen()
         checkBackgroundStatus()
-        exoPlayer.setMediaItem(MediaItem.fromUri("https://drive.google.com/uc?export=view&id=1NjKW1gtPEvppUEeXlJhxzak86Tmc63Rs"))
+//        exoPlayer.setMediaItem(MediaItem.fromUri("https://drive.google.com/uc?export=view&id=1vNW4Xia8pG4tfGoao4Nb7hEJtOd9Cg8F"))
+        exoPlayer.setMediaItem(MediaItem.fromUri(Uri.fromFile(File("/storage/emulated/0/Download/ad1.mp4"))))
         exoPlayer.prepare()
         exoPlayer.repeatMode = Player.REPEAT_MODE_ONE
 //        exoPlayer.playWhenReady = true

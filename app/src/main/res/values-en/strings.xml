@@ -116,4 +116,19 @@
     <string name="presbyopia_result_near_point_accommodation">Near Point Accommodation</string>
     <string name="presbyopia_result_hoffstetter2">years old</string>
     <string name="covered_eye_checking_description">Test will be soon started</string>
+    <string name="test_result_normal_case">Normal Case</string>
+    <string name="test_result_normal_right">If there\'s nothing wrong with your eyes, you\'ll get the same result as on the right</string>
+    <string name="test_result_normal_bottom">If there\'s nothing wrong with your eyes, you\'ll get the same result as on the bottom</string>
+    <string name="left">Left</string>
+    <string name="right">Right</string>
+    <string name="left_and_right">Left · Right</string>
+    <string name="left_and_right_0.7_or_higher">Left · Right 0.7 or higher</string>
+    <string name="red">Red</string>
+    <string name="green">Green</string>
+    <string name="test_result_my_result">My Result</string>
+    <string name="test_result_all_seems_clear">background words all seems clear</string>
+    <string name="test_result_seems_more_clear">background word seems more clear</string>
+    <string name="test_result_seems_no_clear">Not all of the writings are clearly visible</string>
+    <string name="vertical">Vertical</string>
+    <string name="horizontal">Horizontal</string>
 </resources>

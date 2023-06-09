@@ -21,6 +21,8 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavHostController
 import com.pixelro.nenoonkiosk.NenoonViewModel
+import com.pixelro.nenoonkiosk.R
+import com.pixelro.nenoonkiosk.data.StringProvider
 
 @Composable
 fun MChartTestResultContent(
@@ -37,15 +39,16 @@ fun MChartTestResultContent(
             modifier = Modifier
                 .padding(start = 40.dp, top = 40.dp)
                 .fillMaxWidth(),
-            text = "이상 없을 경우",
+            text = StringProvider.getString(R.string.test_result_normal_case),
             fontSize = 28.sp,
-            fontWeight = FontWeight.Medium
+            fontWeight = FontWeight.Medium,
+            color = Color(0xff1d71e1)
         )
         Text(
             modifier = Modifier
                 .padding(start = 40.dp)
                 .fillMaxWidth(),
-            text = "눈에 이상이 없을 경우 아래와 같은 결과가 나옵니다",
+            text = StringProvider.getString(R.string.test_result_normal_bottom),
             fontSize = 16.sp,
             color = Color(0xff878787)
         )
@@ -61,7 +64,7 @@ fun MChartTestResultContent(
             verticalAlignment = Alignment.CenterVertically
         ) {
             Text(
-                text = "오른쪽 · 왼쪽",
+                text = StringProvider.getString(R.string.left_and_right),
                 fontSize = 20.sp,
                 fontWeight = FontWeight.Medium
             )
@@ -73,7 +76,7 @@ fun MChartTestResultContent(
                         shape = RoundedCornerShape(4.dp)
                     )
                     .padding(start = 12.dp, top = 4.dp, end = 12.dp, bottom = 4.dp),
-                text = "수직",
+                text = StringProvider.getString(R.string.vertical),
                 color = Color(0xff1d71e1),
                 fontSize = 20.sp
             )
@@ -85,7 +88,7 @@ fun MChartTestResultContent(
                         shape = RoundedCornerShape(4.dp)
                     )
                     .padding(start = 12.dp, top = 4.dp, end = 12.dp, bottom = 4.dp),
-                text = "수평",
+                text = StringProvider.getString(R.string.horizontal),
                 color = Color(0xffffb800),
                 fontSize = 20.sp
             )
@@ -101,7 +104,7 @@ fun MChartTestResultContent(
             modifier = Modifier
                 .padding(start = 40.dp, top = 40.dp)
                 .fillMaxWidth(),
-            text = "내 결과",
+            text = StringProvider.getString(R.string.test_result_my_result),
             fontSize = 28.sp,
             fontWeight = FontWeight.Medium
         )
@@ -121,7 +124,7 @@ fun MChartTestResultContent(
                     .padding(20.dp)
             ) {
                 Text(
-                    text = "왼쪽",
+                    text = StringProvider.getString(R.string.left),
                     fontSize = 20.sp,
                     fontWeight = FontWeight.Medium
                 )
@@ -137,7 +140,7 @@ fun MChartTestResultContent(
                                 shape = RoundedCornerShape(4.dp)
                             )
                             .padding(start = 12.dp, top = 4.dp, end = 12.dp, bottom = 4.dp),
-                        text = "수직",
+                        text = StringProvider.getString(R.string.vertical),
                         color = Color(0xff1d71e1),
                         fontSize = 20.sp
                     )
@@ -161,7 +164,7 @@ fun MChartTestResultContent(
                                 shape = RoundedCornerShape(4.dp)
                             )
                             .padding(start = 12.dp, top = 4.dp, end = 12.dp, bottom = 4.dp),
-                        text = "수평",
+                        text = StringProvider.getString(R.string.horizontal),
                         color = Color(0xffffb800),
                         fontSize = 20.sp
                     )
@@ -189,7 +192,7 @@ fun MChartTestResultContent(
                     .padding(20.dp)
             ) {
                 Text(
-                    text = "오른쪽",
+                    text = StringProvider.getString(R.string.right),
                     fontSize = 20.sp,
                     fontWeight = FontWeight.Medium
                 )
@@ -205,7 +208,7 @@ fun MChartTestResultContent(
                                 shape = RoundedCornerShape(4.dp)
                             )
                             .padding(start = 12.dp, top = 4.dp, end = 12.dp, bottom = 4.dp),
-                        text = "수직",
+                        text = StringProvider.getString(R.string.vertical),
                         color = Color(0xff1d71e1),
                         fontSize = 20.sp
                     )
@@ -229,7 +232,7 @@ fun MChartTestResultContent(
                                 shape = RoundedCornerShape(4.dp)
                             )
                             .padding(start = 12.dp, top = 4.dp, end = 12.dp, bottom = 4.dp),
-                        text = "수평",
+                        text = StringProvider.getString(R.string.horizontal),
                         color = Color(0xffffb800),
                         fontSize = 20.sp
                     )

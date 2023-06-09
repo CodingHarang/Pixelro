@@ -1,6 +1,7 @@
 package com.pixelro.nenoonkiosk.ui.screen
 
 import android.app.Activity
+import android.util.Log
 import android.view.KeyEvent
 import androidx.activity.compose.BackHandler
 import androidx.compose.foundation.Image
@@ -42,18 +43,21 @@ fun EyeTestScreen(
     content: @Composable () -> Unit
 ) {
     BackHandler(enabled = true) {
+        Log.e("backhandler", "backhandler")
         navController.popBackStack(GlobalConstants.ROUTE_TEST_LIST, false)
+        viewModel.resetScreenSaverTimer()
     }
     val systemUiController = rememberSystemUiController()
     DisposableEffect(true) {
-        viewModel.updateScreenSaverTimerValue(60)
+        viewModel.updateScreenSaverTimerValue(90)
 //        systemUiController.setNavigationBarColor(
 //            color = Color(0x00000000),
 //            darkIcons = false
 //        )
     systemUiController.systemBarsDarkContentEnabled = false
     onDispose {
-        viewModel.updateScreenSaverTimerValue(20)
+        viewModel.updateScreenSaverTimerValue(30)
+        viewModel.resetScreenSaverTimer()
         systemUiController.systemBarsDarkContentEnabled = true
 //            systemUiController.setNavigationBarColor(
 //                color = Color(0x00000000),

@@ -191,8 +191,8 @@ fun PresbyopiaTestResultContent(
             Text(
                 modifier = Modifier
                     .padding(start = 40.dp, bottom = 40.dp),
-                text = StringProvider.getString(R.string.presbyopia_result_hoffstetter1)
-                        + ": ${(viewModel.avgDistance.collectAsState().value).roundToInt().toFloat() / 10}cm",
+                text = StringProvider.getString(R.string.presbyopia_result_hoffstetter1) + "25세 입니다",
+//                        + ": ${(viewModel.avgDistance.collectAsState().value).roundToInt().toFloat() / 10}cm",
                 fontSize = 24.sp,
                 fontWeight = FontWeight.Medium,
             )
