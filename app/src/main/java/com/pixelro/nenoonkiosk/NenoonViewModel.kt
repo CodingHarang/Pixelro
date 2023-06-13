@@ -823,7 +823,7 @@ class NenoonViewModel(application: Application) : AndroidViewModel(application) 
     fun toNextMChartTest() {
         updateIsLeftEye(false)
         viewModelScope.launch {
-            delay(1500)
+            delay(900)
             updateCurrentLevel(0)
             updateIsVertical(true)
         }
@@ -853,7 +853,7 @@ class NenoonViewModel(application: Application) : AndroidViewModel(application) 
     fun updateSavedResult() {
         _savedResult.update { mChartResult.value }
         viewModelScope.launch {
-            delay(700)
+            delay(900)
             updateCurrentLevel(0)
         }
     }

@@ -46,49 +46,33 @@ fun FaceDetectionScreenContent(
     val context = LocalContext.current
     val cameraProviderFuture = remember { ProcessCameraProvider.getInstance(context) }
     Box() {
-//        val systemUiController = rememberSystemUiController()
-//        systemUiController.isSystemBarsVisible = false
-        val executor = ContextCompat.getMainExecutor(context)
-        cameraProviderFuture.addListener({
-            val cameraProvider = cameraProviderFuture.get()
+        LaunchedEffect(true) {
+            val executor = ContextCompat.getMainExecutor(context)
+            cameraProviderFuture.addListener({
+                val cameraProvider = cameraProviderFuture.get()
 
-            val cameraSelector = CameraSelector.Builder()
-                .requireLensFacing(CameraSelector.LENS_FACING_FRONT).build()
-            val imageAnalysis = ImageAnalysis.Builder()
-                .setTargetResolution(Size(640, 480))
-                .setBackpressureStrategy(ImageAnalysis.STRATEGY_KEEP_ONLY_LATEST)
-                .setImageQueueDepth(5).build().apply {
-                    setAnalyzer(
-                        executor, MyFaceAnalyzer(
-                            viewModel::updateFaceDetectionData,
-                            viewModel::updateFaceContourData,
-                            viewModel::updateInputImageSize,
-                            viewModel::updateEyeOpenProbability
+                val cameraSelector = CameraSelector.Builder()
+                    .requireLensFacing(CameraSelector.LENS_FACING_FRONT).build()
+                val imageAnalysis = ImageAnalysis.Builder()
+                    .setTargetResolution(Size(400, 800))
+                    .setBackpressureStrategy(ImageAnalysis.STRATEGY_KEEP_ONLY_LATEST)
+                    .setImageQueueDepth(5).build().apply {
+                        setAnalyzer(
+                            executor, MyFaceAnalyzer(
+                                viewModel::updateFaceDetectionData,
+                                viewModel::updateFaceContourData,
+                                viewModel::updateInputImageSize,
+                                viewModel::updateEyeOpenProbability
+                            )
                         )
-                    )
-                }
+                    }
 
-            cameraProvider.unbindAll()
-            cameraProvider.bindToLifecycle(
-                lifecycleOwner, cameraSelector, imageAnalysis
-            )
+                cameraProvider.unbindAll()
+                cameraProvider.bindToLifecycle(
+                    lifecycleOwner, cameraSelector, imageAnalysis
+                )
 
-        }, executor)
-
-//        systemUiController.isSystemBarsVisible = false
+            }, executor)
+        }
     }
-//    Scaffold {
-//        Box(modifier = Modifier
-//            .fillMaxSize()
-//            .onGloballyPositioned {
-//                size = it.size
-//            }) {
-//            AndroidView(modifier = Modifier.matchParentSize(), factory = { ctx ->
-//                val previewView = PreviewView(ctx)
-//
-//
-//                previewView
-//            })
-//        }
-//    }
 }

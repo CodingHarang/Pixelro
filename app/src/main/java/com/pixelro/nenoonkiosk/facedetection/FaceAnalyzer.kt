@@ -33,7 +33,7 @@ class MyFaceAnalyzer(
     @SuppressLint("UnsafeOptInUsageError")
     override fun analyze(imageProxy: ImageProxy) {
         val now = SystemClock.uptimeMillis()
-        if(lastAnalysisTime != -1L && now - lastAnalysisTime < 300f) {
+        if(lastAnalysisTime != -1L && now - lastAnalysisTime < 200f) {
             imageProxy.close()
             return
         }
