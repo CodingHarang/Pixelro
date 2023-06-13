@@ -25,6 +25,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.asImageBitmap
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.SpanStyle
 import androidx.compose.ui.text.buildAnnotatedString
@@ -59,29 +60,42 @@ fun MeasuringDistanceContent(
         ) {
             Text(
                 modifier = Modifier
-                    .padding(start = 40.dp, top = 80.dp, end = 40.dp, bottom = 20.dp)
-                    .fillMaxWidth(),
+                    .padding(start = 40.dp, top = 40.dp, end = 40.dp, bottom = 20.dp),
                 text = StringProvider.getString(R.string.measuring_distance_content_description1),
                 color = Color(0xffffffff),
                 fontSize = 30.sp
             )
-            Text(
+//            Text(
+//                modifier = Modifier
+//                    .padding(start = 40.dp, end = 40.dp)
+//                    .fillMaxWidth(),
+//                text = StringProvider.getString(R.string.measuring_distance_content_description2),
+//                color = Color(0xffffffff),
+//                fontSize = 20.sp
+//            )
+//            Image(
+//                modifier = Modifier
+//                    .padding(start = 40.dp, top = 60.dp, end = 40.dp, bottom = 20.dp),
+//                painter = painterResource(id = R.drawable.img_eyetest_maneyes),
+//                contentDescription = ""
+//            )
+            Box(
                 modifier = Modifier
-                    .padding(start = 40.dp, end = 40.dp)
                     .fillMaxWidth(),
-                text = StringProvider.getString(R.string.measuring_distance_content_description2),
-                color = Color(0xffffffff),
-                fontSize = 20.sp
-            )
-            Image(
-                modifier = Modifier
-                    .padding(start = 40.dp, top = 60.dp, end = 40.dp, bottom = 20.dp),
-                painter = painterResource(id = R.drawable.img_eyetest_maneyes),
-                contentDescription = ""
-            )
+                contentAlignment = Alignment.Center
+            ) {
+                Image(
+                    bitmap = viewModel.bitmap.collectAsState().value.asImageBitmap(),
+                    contentDescription = ""
+                )
+                Image(
+                    painter = painterResource(id = R.drawable.face_contour),
+                    contentDescription = ""
+                )
+            }
             Text(
                 modifier = Modifier
-                    .padding(top = 40.dp),
+                    .padding(top = 20.dp),
                 text = StringProvider.getString(R.string.test_screen_current_distance),
                 color = Color(0xffffffff),
                 fontSize = 24.sp
@@ -120,7 +134,7 @@ fun MeasuringDistanceContent(
                             .padding(
                                 start = 40.dp,
                                 end = 40.dp,
-                                bottom = (viewModel.navigationBarPadding.collectAsState().value + 148).dp
+                                bottom = (viewModel.navigationBarPadding.collectAsState().value + 160).dp
                             )
                             .border(
                                 border = BorderStroke(1.dp, Color(0xffffffff)),

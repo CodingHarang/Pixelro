@@ -56,6 +56,7 @@ fun ScreenSaverScreen(
         )
     )
     val text = buildAnnotatedString {
+        append("화면을 ")
         withAnnotation("squiggles", annotation = "ignored") {
             withStyle(
                 SpanStyle(
@@ -63,10 +64,10 @@ fun ScreenSaverScreen(
                     baselineShift = BaselineShift(shiftVal)
                 )
             ) {
-                append("Touch")
+                append("터치")
             }
         }
-        append(" to Start an\nEye Test!")
+        append("하시면\n시력 검사를 할 수 있습니다")
     }
     val systemUiController = rememberSystemUiController()
     val context = LocalContext.current
@@ -104,7 +105,7 @@ fun ScreenSaverScreen(
                     text = text,
                     color = Color(0xffffffff),
                     fontWeight = FontWeight.Bold,
-                    fontSize = 80.sp,
+                    fontSize = 60.sp,
                     textAlign = TextAlign.Center
                 )
             }

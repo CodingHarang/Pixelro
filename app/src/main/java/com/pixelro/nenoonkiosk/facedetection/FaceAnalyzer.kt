@@ -3,6 +3,7 @@ package com.pixelro.nenoonkiosk.facedetection
 import android.annotation.SuppressLint
 import android.graphics.Bitmap
 import android.graphics.ImageFormat
+import android.graphics.Matrix
 import android.graphics.PointF
 import android.media.ImageReader
 import android.os.SystemClock
@@ -17,7 +18,8 @@ class MyFaceAnalyzer(
     val updateFaceDetectionData: (PointF, PointF, Float, Float, Float, Float, Float) -> Unit,
     val updateFaceContourData: (List<PointF>, List<PointF>, List<PointF>, List<PointF>, List<PointF>, List<PointF>, List<PointF>, Float, Float) -> Unit,
     val updateInputImageSize: (Float, Float) -> Unit,
-    val updateEyeOpenProbability: (Float, Float) -> Unit
+    val updateEyeOpenProbability: (Float, Float) -> Unit,
+    val updateBitmap: (Bitmap) -> Unit,
 ) : ImageAnalysis.Analyzer {
     private val realTimeOpts =
         FaceDetectorOptions.Builder().setContourMode(FaceDetectorOptions.CONTOUR_MODE_ALL)
@@ -47,6 +49,12 @@ class MyFaceAnalyzer(
             updateInputImageSize(mediaImage.width.toFloat(), mediaImage.height.toFloat())
         }
 
+        val bitmap = imageProxy.toBitmap()
+        val matrix = Matrix()
+        matrix.setScale(-1f, 1f)
+        matrix.postRotate(90f)
+        val rotatedImage = Bitmap.createBitmap(bitmap, 0, 0, bitmap.width - 300, bitmap.height, matrix, true)
+        updateBitmap(rotatedImage)
         // resized image
 //        val bitmap = imageProxy.toBitmap()
 //        val resizedBitmap = Bitmap.createScaledBitmap(bitmap, bitmap.width * 2, bitmap.height * 2, false)

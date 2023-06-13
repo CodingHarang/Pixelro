@@ -7,6 +7,8 @@ import android.bluetooth.BluetoothManager
 import android.content.Context
 import android.content.IntentSender
 import android.content.pm.PackageManager
+import android.graphics.Bitmap
+import android.graphics.BitmapFactory
 import android.graphics.PointF
 import android.location.LocationManager
 import android.net.Uri
@@ -150,6 +152,8 @@ class NenoonViewModel(application: Application) : AndroidViewModel(application) 
     val focalLength: StateFlow<Float> = _focalLength
     private val _lensSize = MutableStateFlow(SizeF(0f, 0f))
     val lensSize: StateFlow<SizeF> = _lensSize
+    private val _bitmap = MutableStateFlow(Bitmap.createBitmap(100, 100, Bitmap.Config.ARGB_8888))
+    val bitmap: StateFlow<Bitmap> = _bitmap
 
     fun updateFaceDetectionData(rightEyePosition: PointF, leftEyePosition: PointF, rotX: Float, rotY: Float, rotZ: Float, width: Float, height: Float) {
         _rightEyePosition.update { PointF(rightEyePosition.x, rightEyePosition.y) }
@@ -160,6 +164,10 @@ class NenoonViewModel(application: Application) : AndroidViewModel(application) 
         _inputImageSizeX.update { width }
         _inputImageSizeY.update { height }
         updateScreenToFaceDistance()
+    }
+
+    fun updateBitmap(bitmap: Bitmap) {
+        _bitmap.update { bitmap }
     }
 
     fun updateFaceContourData(leftEyeContour: List<PointF>, rightEyeContour: List<PointF>, upperLipTopContour: List<PointF>, upperLipBottomContour: List<PointF>, lowerLipTopContour: List<PointF>, lowerLipBottomContour: List<PointF>, faceContour: List<PointF>, width: Float, height: Float) {
@@ -222,8 +230,8 @@ class NenoonViewModel(application: Application) : AndroidViewModel(application) 
         if((rightEyePosition.value.x - leftEyePosition.value.y) != 0f && lensSize.value.width != 0f) {
             _screenToFaceDistance.update {
                 val prev = _screenToFaceDistance.value
-                val dist = (50f / 41.5f) * (focalLength.value * 63) * inputImageSizeX.value / ((rightEyePosition.value.x - leftEyePosition.value.x) * (lensSize.value.width))
-                if(dist > 600f) prev
+                val dist = 0.9f * (focalLength.value * 63) * inputImageSizeX.value / ((rightEyePosition.value.x - leftEyePosition.value.x) * (lensSize.value.width))
+                if(dist > 600f || dist < 1f) prev
                 else dist
             }
         } else {
@@ -499,6 +507,9 @@ class NenoonViewModel(application: Application) : AndroidViewModel(application) 
     }
 
     fun initializePresbyopiaTest() {
+        _bitmap.update {
+        Bitmap.createBitmap(100, 100, Bitmap.Config.ARGB_8888)
+    }
         firstItemVisibleState.targetState = true
         secondItemVisibleState.targetState = false
         thirdItemVisibleState.targetState = false
@@ -674,6 +685,9 @@ class NenoonViewModel(application: Application) : AndroidViewModel(application) 
     }
 
     fun initializeVisualAcuityTest() {
+        _bitmap.update {
+            Bitmap.createBitmap(100, 100, Bitmap.Config.ARGB_8888)
+        }
         _isLeftEye.update { true }
         sightHistory = mutableMapOf(
             1 to Pair(0, 0),
@@ -763,6 +777,9 @@ class NenoonViewModel(application: Application) : AndroidViewModel(application) 
     }
 
     fun initializeAmslerGridTest() {
+        _bitmap.update {
+            Bitmap.createBitmap(100, 100, Bitmap.Config.ARGB_8888)
+        }
         _currentSelectedArea.update { listOf(false, false, false, false, false, false, false, false, false) }
         measuringDistanceContentVisibleState.targetState = true
         coveredEyeCheckingContentVisibleState.targetState = false
@@ -811,6 +828,9 @@ class NenoonViewModel(application: Application) : AndroidViewModel(application) 
     val mChartImageId: StateFlow<Int> = _mChartImageId
 
     fun initializeMChartTest() {
+        _bitmap.update {
+            Bitmap.createBitmap(100, 100, Bitmap.Config.ARGB_8888)
+        }
         _isVertical.update { true }
         _currentLevel.update { 0 }
         _mChartResult.update { listOf() }

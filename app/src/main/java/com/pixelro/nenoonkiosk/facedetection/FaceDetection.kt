@@ -16,6 +16,7 @@ import com.google.accompanist.permissions.rememberMultiplePermissionsState
 import com.google.accompanist.permissions.rememberPermissionState
 import com.google.accompanist.systemuicontroller.rememberSystemUiController
 import com.pixelro.nenoonkiosk.NenoonViewModel
+import kotlinx.coroutines.coroutineScope
 
 @OptIn(ExperimentalPermissionsApi::class)
 @Composable
@@ -47,6 +48,9 @@ fun FaceDetectionScreenContent(
     val cameraProviderFuture = remember { ProcessCameraProvider.getInstance(context) }
     Box() {
         LaunchedEffect(true) {
+            coroutineScope {
+
+            }
             val executor = ContextCompat.getMainExecutor(context)
             cameraProviderFuture.addListener({
                 val cameraProvider = cameraProviderFuture.get()
@@ -62,7 +66,8 @@ fun FaceDetectionScreenContent(
                                 viewModel::updateFaceDetectionData,
                                 viewModel::updateFaceContourData,
                                 viewModel::updateInputImageSize,
-                                viewModel::updateEyeOpenProbability
+                                viewModel::updateEyeOpenProbability,
+                                viewModel::updateBitmap
                             )
                         )
                     }
