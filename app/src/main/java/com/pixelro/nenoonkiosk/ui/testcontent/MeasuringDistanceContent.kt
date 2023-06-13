@@ -87,20 +87,63 @@ fun MeasuringDistanceContent(
                 fontSize = 24.sp
             )
             Text(
-                color = Color(0xffffffff),
+                color = when(viewModel.selectedTestType.collectAsState().value) {
+                            TestType.ShortDistanceVisualAcuity -> {
+                                when(viewModel.screenToFaceDistance.collectAsState().value) {
+                                    in 350.0..450.0 -> Color(0xffffffff)
+                                    else -> Color(0xFF6D6D6D)
+                                }
+                            }
+                            else -> {
+                                when(viewModel.screenToFaceDistance.collectAsState().value) {
+                                    in 250.0..350.0 -> Color(0xffffffff)
+                                    else -> Color(0xFF6D6D6D)
+                                }
+                            }
+                    },
                 text = "${(viewModel.screenToFaceDistance.collectAsState().value / 10).roundToInt()}cm",
                 fontSize = 68.sp,
                 fontWeight = FontWeight.Bold
             )
-            if(viewModel.screenToFaceDistance.collectAsState().value in when(viewModel.selectedTestType.collectAsState().value) {
-                    TestType.ShortDistanceVisualAcuity -> (350.0..450.0)
-                    else -> (250.0..350.0)
-                }) {
+            Box(
+                modifier = Modifier
+                    .fillMaxSize(),
+                contentAlignment = Alignment.BottomCenter
+            ) {
                 Box(
                     modifier = Modifier
                         .fillMaxSize(),
                     contentAlignment = Alignment.BottomCenter
                 ) {
+                    Box(
+                        modifier = Modifier
+                            .padding(
+                                start = 40.dp,
+                                end = 40.dp,
+                                bottom = (viewModel.navigationBarPadding.collectAsState().value + 148).dp
+                            )
+                            .border(
+                                border = BorderStroke(1.dp, Color(0xffffffff)),
+                                shape = RoundedCornerShape(50)
+                            )
+                            .padding(start = 20.dp, top = 12.dp, end = 20.dp, bottom = 12.dp),
+                        contentAlignment = Alignment.Center
+                    ) {
+                        Text(
+                            text = when(viewModel.selectedTestType.collectAsState().value) {
+                                TestType.ShortDistanceVisualAcuity -> StringProvider.getString(R.string.adjust_distance_40cm)
+                                else -> StringProvider.getString(R.string.adjust_distance_30cm)
+                            },
+                            fontSize = 24.sp,
+                            color = Color(0xffffffff),
+                            textAlign = TextAlign.Center
+                        )
+                    }
+                }
+                if(viewModel.screenToFaceDistance.collectAsState().value in when(viewModel.selectedTestType.collectAsState().value) {
+                        TestType.ShortDistanceVisualAcuity -> (350.0..450.0)
+                        else -> (250.0..350.0)
+                    }) {
                     Box(
                         modifier = Modifier
                             .fillMaxWidth()
@@ -124,37 +167,6 @@ fun MeasuringDistanceContent(
                     ) {
                         Text(
                             text = StringProvider.getString(R.string.test_predescription_screen_start),
-                            fontSize = 24.sp,
-                            color = Color(0xffffffff),
-                            textAlign = TextAlign.Center
-                        )
-                    }
-                }
-            } else {
-                Box(
-                    modifier = Modifier
-                        .fillMaxSize(),
-                    contentAlignment = Alignment.BottomCenter
-                ) {
-                    Box(
-                        modifier = Modifier
-                            .padding(
-                                start = 40.dp,
-                                end = 40.dp,
-                                bottom = (viewModel.navigationBarPadding.collectAsState().value + 120).dp
-                            )
-                            .border(
-                                border = BorderStroke(1.dp, Color(0xffffffff)),
-                                shape = RoundedCornerShape(50)
-                            )
-                            .padding(start = 20.dp, top = 12.dp, end = 20.dp, bottom = 12.dp),
-                        contentAlignment = Alignment.Center
-                    ) {
-                        Text(
-                            text = when(viewModel.selectedTestType.collectAsState().value) {
-                                TestType.ShortDistanceVisualAcuity -> StringProvider.getString(R.string.adjust_distance_40cm)
-                                else -> StringProvider.getString(R.string.adjust_distance_30cm)
-                            },
                             fontSize = 24.sp,
                             color = Color(0xffffffff),
                             textAlign = TextAlign.Center

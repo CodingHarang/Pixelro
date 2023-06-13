@@ -76,7 +76,6 @@ class NenoonViewModel(application: Application) : AndroidViewModel(application) 
     private val _isLanguageSelectDialogShowing = MutableStateFlow(false)
     val isLanguageSelectDialogShowing: StateFlow<Boolean> = _isLanguageSelectDialogShowing
 
-
     fun updateIsLanguageSelectDialogShowing(isShowing: Boolean) {
         _isLanguageSelectDialogShowing.update { isShowing }
     }
@@ -852,8 +851,11 @@ class NenoonViewModel(application: Application) : AndroidViewModel(application) 
     }
 
     fun updateSavedResult() {
-        updateCurrentLevel(0)
         _savedResult.update { mChartResult.value }
+        viewModelScope.launch {
+            delay(700)
+            updateCurrentLevel(0)
+        }
     }
 
     fun updateCurrentLevel(level: Int) {
