@@ -19,14 +19,14 @@ class MyFaceAnalyzer(
     val updateFaceContourData: (List<PointF>, List<PointF>, List<PointF>, List<PointF>, List<PointF>, List<PointF>, List<PointF>, Float, Float) -> Unit,
     val updateInputImageSize: (Float, Float) -> Unit,
     val updateEyeOpenProbability: (Float, Float) -> Unit,
-    val updateBitmap: (Bitmap) -> Unit,
+//    val updateBitmap: (Bitmap) -> Unit,
 ) : ImageAnalysis.Analyzer {
     private val realTimeOpts =
         FaceDetectorOptions.Builder().setContourMode(FaceDetectorOptions.CONTOUR_MODE_ALL)
             .setPerformanceMode(FaceDetectorOptions.PERFORMANCE_MODE_ACCURATE)
             .setLandmarkMode(FaceDetectorOptions.LANDMARK_MODE_ALL)
             .setClassificationMode(FaceDetectorOptions.CLASSIFICATION_MODE_ALL)
-            .setMinFaceSize(0.1f)
+            .setMinFaceSize(0.2f)
             .enableTracking()
             .build()
     private var lastAnalysisTime = -1L
@@ -49,12 +49,13 @@ class MyFaceAnalyzer(
             updateInputImageSize(mediaImage.width.toFloat(), mediaImage.height.toFloat())
         }
 
-        val bitmap = imageProxy.toBitmap()
-        val matrix = Matrix()
-        matrix.setScale(-1f, 1f)
-        matrix.postRotate(90f)
-        val rotatedImage = Bitmap.createBitmap(bitmap, 0, 0, bitmap.width - 300, bitmap.height, matrix, true)
-        updateBitmap(rotatedImage)
+//        val bitmap = imageProxy.toBitmap()
+//        val matrix = Matrix()
+//        matrix.setScale(-1f, 1f)
+//        matrix.postRotate(90f)
+//        val rotatedImage = Bitmap.createBitmap(bitmap, 0, 0, bitmap.width - 300, bitmap.height, matrix, true)
+//
+//        updateBitmap(rotatedImage)
         // resized image
 //        val bitmap = imageProxy.toBitmap()
 //        val resizedBitmap = Bitmap.createScaledBitmap(bitmap, bitmap.width * 2, bitmap.height * 2, false)
@@ -96,10 +97,10 @@ class MyFaceAnalyzer(
 //                        updateFaceContourData(leftEyeContour, rightEyeContour, upperLipTopContour, upperLipBottomContour, lowerLipTopContour, lowerLipBottomContour, faceContour, image.width.toFloat(), image.height.toFloat())
 //                    }
                 }
-                imageProxy.close()
+//                imageProxy.close()
             }.addOnFailureListener {
                 it.printStackTrace()
-                imageProxy.close()
+//                imageProxy.close()
             }.addOnCompleteListener {
                 imageProxy.close()
             }

@@ -151,27 +151,24 @@ fun PresbyopiaTestResultContent(
         }
         Column(
             modifier = Modifier
+                .padding(40.dp)
                 .fillMaxWidth()
-                .padding(start = 40.dp, top = 20.dp, end = 40.dp)
                 .background(
                     color = Color(0xfff7f7f7),
                     shape = RoundedCornerShape(8.dp)
                 )
+                .padding(40.dp)
         ) {
             Text(
-                modifier = Modifier
-                    .padding(start = 40.dp, top = 40.dp),
-                text = StringProvider.getString(R.string.presbyopia_result_near_point_accommodation) + ": ${(viewModel.avgDistance.collectAsState().value).roundToInt().toFloat() / 10}cm",
-                fontSize = 20.sp,
-                color = Color(0xff878787)
-            )
-            Text(
-                modifier = Modifier
-                    .padding(start = 40.dp, bottom = 40.dp),
                 text = StringProvider.getString(R.string.presbyopia_result_hoffstetter1) + (viewModel.eyeAge.collectAsState().value - 2) + " ~ " + (viewModel.eyeAge.collectAsState().value + 2) + StringProvider.getString(R.string.presbyopia_result_years_old),
 //                        + ": ${(viewModel.avgDistance.collectAsState().value).roundToInt().toFloat() / 10}cm",
-                fontSize = 24.sp,
+                fontSize = 40.sp,
                 fontWeight = FontWeight.Medium,
+            )
+            Text(
+                text = "${(viewModel.avgDistance.collectAsState().value).roundToInt().toFloat() / 10}cm" + StringProvider.getString(R.string.presbyopia_result_near_point_accommodation),
+                fontSize = 32.sp,
+                color = Color(0xff878787)
             )
         }
     }

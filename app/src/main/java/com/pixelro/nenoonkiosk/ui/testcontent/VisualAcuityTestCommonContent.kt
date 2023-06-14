@@ -28,6 +28,7 @@ import com.pixelro.nenoonkiosk.R
 import com.pixelro.nenoonkiosk.data.AnimationProvider
 import com.pixelro.nenoonkiosk.data.StringProvider
 import com.pixelro.nenoonkiosk.data.VisionDisorderType
+import com.pixelro.nenoonkiosk.facedetection.FaceDetection
 import java.util.*
 import kotlin.math.roundToInt
 
@@ -38,26 +39,30 @@ fun VisualAcuityTestCommonContent(
     visualAcuityTestCommonContentVisibleState: MutableTransitionState<Boolean>,
     nextVisibleState: MutableTransitionState<Boolean>
 ) {
-
     AnimatedVisibility(
         visibleState = visualAcuityTestCommonContentVisibleState,
         enter = AnimationProvider.enterTransition,
         exit = AnimationProvider.exitTransition
     ) {
-        VisualAcuityTestContent(
+        FaceDetection(
             viewModel = viewModel
         )
-        SightednessTestContent(
-            toResultScreen = { toResultScreen() },
+        VisualAcuityTestContent(
             viewModel = viewModel,
-            visualAcuityTestSightednessTestContentVisibleState = viewModel.visualAcuityTestSightednessTestContentVisibleState
+            toResultScreen = { toResultScreen() }
         )
+//        SightednessTestContent(
+//            toResultScreen = { toResultScreen() },
+//            viewModel = viewModel,
+//            visualAcuityTestSightednessTestContentVisibleState = viewModel.visualAcuityTestSightednessTestContentVisibleState
+//        )
     }
 }
 
 @Composable
 fun VisualAcuityTestContent(
-    viewModel: NenoonViewModel
+    viewModel: NenoonViewModel,
+    toResultScreen: () -> Unit
 ) {
     val randomList = viewModel.randomList.collectAsState().value
     val ansNum = viewModel.ansNum.collectAsState().value
@@ -213,7 +218,7 @@ fun VisualAcuityTestContent(
                                 shape = RoundedCornerShape(8.dp)
                             )
                             .clickable {
-                                viewModel.processAnswerSelected(0)
+                                viewModel.processAnswerSelected(0) { toResultScreen() }
                             },
                         contentAlignment = Alignment.Center
                     ) {
@@ -249,7 +254,7 @@ fun VisualAcuityTestContent(
                                 shape = RoundedCornerShape(8.dp)
                             )
                             .clickable {
-                                viewModel.processAnswerSelected(1)
+                                viewModel.processAnswerSelected(1) { toResultScreen() }
                             },
                         contentAlignment = Alignment.Center
                     ) {
@@ -285,7 +290,7 @@ fun VisualAcuityTestContent(
                                 shape = RoundedCornerShape(8.dp)
                             )
                             .clickable {
-                                viewModel.processAnswerSelected(2)
+                                viewModel.processAnswerSelected(2) { toResultScreen() }
                             },
                         contentAlignment = Alignment.Center
                     ) {
@@ -321,7 +326,7 @@ fun VisualAcuityTestContent(
                                 shape = RoundedCornerShape(8.dp)
                             )
                             .clickable {
-                                viewModel.processAnswerSelected(3)
+                                viewModel.processAnswerSelected(3) { toResultScreen() }
                             },
                         contentAlignment = Alignment.Center
                     ) {

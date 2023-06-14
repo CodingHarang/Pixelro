@@ -31,6 +31,7 @@ import com.pixelro.nenoonkiosk.NenoonViewModel
 import com.pixelro.nenoonkiosk.R
 import com.pixelro.nenoonkiosk.data.AnimationProvider
 import com.pixelro.nenoonkiosk.data.StringProvider
+import com.pixelro.nenoonkiosk.facedetection.FaceDetection
 import com.pixelro.nenoonkiosk.ui.screen.textAsBitmap
 import java.util.*
 import kotlin.math.roundToInt
@@ -43,6 +44,9 @@ fun PresbyopiaTestContent(
     val firstVisibleState = viewModel.firstItemVisibleState
     val secondVisibleState = viewModel.secondItemVisibleState
     val thirdVisibleState = viewModel.thirdItemVisibleState
+    FaceDetection(
+        viewModel = viewModel
+    )
     Text(
         modifier = Modifier
             .padding(start = 40.dp, top = 120.dp, end = 40.dp)

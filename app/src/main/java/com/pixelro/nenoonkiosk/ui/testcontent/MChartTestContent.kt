@@ -43,6 +43,7 @@ import com.pixelro.nenoonkiosk.R
 import com.pixelro.nenoonkiosk.data.AnimationProvider
 import com.pixelro.nenoonkiosk.data.GlobalConstants
 import com.pixelro.nenoonkiosk.data.StringProvider
+import com.pixelro.nenoonkiosk.facedetection.FaceDetection
 import kotlinx.coroutines.coroutineScope
 import kotlinx.coroutines.launch
 
@@ -100,6 +101,9 @@ fun MChartContent(
         enter = AnimationProvider.enterTransition,
         exit = AnimationProvider.exitTransition
     ) {
+        FaceDetection(
+            viewModel = viewModel
+        )
         val isLeftEye = viewModel.isLeftEye.collectAsState().value
         val isVertical = viewModel.isVertical.collectAsState().value
         val currentLevel = viewModel.currentLevel.collectAsState().value

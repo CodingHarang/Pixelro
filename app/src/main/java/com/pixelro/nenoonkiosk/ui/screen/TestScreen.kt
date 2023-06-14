@@ -67,9 +67,6 @@ fun EyeTestScreen(
 }
     val selectedTestType = viewModel.selectedTestType.collectAsState().value
     val context = LocalContext.current
-    FaceDetection(
-        viewModel = viewModel
-    )
     Box(
         modifier = Modifier
             .fillMaxSize()

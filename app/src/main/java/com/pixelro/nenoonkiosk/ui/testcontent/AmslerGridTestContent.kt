@@ -36,6 +36,7 @@ import com.pixelro.nenoonkiosk.NenoonViewModel
 import com.pixelro.nenoonkiosk.R
 import com.pixelro.nenoonkiosk.data.AnimationProvider
 import com.pixelro.nenoonkiosk.data.StringProvider
+import com.pixelro.nenoonkiosk.facedetection.FaceDetection
 import kotlin.math.tan
 
 @Composable
@@ -46,7 +47,6 @@ fun AmslerGridTestContent(
     val measuringDistanceContentVisibleState = viewModel.measuringDistanceContentVisibleState
     val coveredEyeCheckingContentVisibleState = viewModel.coveredEyeCheckingContentVisibleState
     val amslerGridContentVisibleState = viewModel.amslerGridContentVisibleState
-
     Column(
         modifier = Modifier
             .fillMaxSize()
@@ -92,6 +92,9 @@ fun AmslerGridContent(
         enter = AnimationProvider.enterTransition,
         exit = AnimationProvider.exitTransition
     ) {
+        FaceDetection(
+            viewModel = viewModel
+        )
         DisposableEffect(true) {
             onDispose() {
             }

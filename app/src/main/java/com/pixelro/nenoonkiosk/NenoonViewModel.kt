@@ -105,6 +105,7 @@ class NenoonViewModel(application: Application) : AndroidViewModel(application) 
 
     fun updateScreenSaverTimerValue(time: Int) {
         _timeValue.update { time }
+        resetScreenSaverTimer()
     }
 
     // Face detection
@@ -152,8 +153,8 @@ class NenoonViewModel(application: Application) : AndroidViewModel(application) 
     val focalLength: StateFlow<Float> = _focalLength
     private val _lensSize = MutableStateFlow(SizeF(0f, 0f))
     val lensSize: StateFlow<SizeF> = _lensSize
-    private val _bitmap = MutableStateFlow(Bitmap.createBitmap(100, 100, Bitmap.Config.ARGB_8888))
-    val bitmap: StateFlow<Bitmap> = _bitmap
+//    private val _bitmap = MutableStateFlow(Bitmap.createBitmap(100, 100, Bitmap.Config.ARGB_8888))
+//    val bitmap: StateFlow<Bitmap> = _bitmap
 
     fun updateFaceDetectionData(rightEyePosition: PointF, leftEyePosition: PointF, rotX: Float, rotY: Float, rotZ: Float, width: Float, height: Float) {
         _rightEyePosition.update { PointF(rightEyePosition.x, rightEyePosition.y) }
@@ -166,9 +167,9 @@ class NenoonViewModel(application: Application) : AndroidViewModel(application) 
         updateScreenToFaceDistance()
     }
 
-    fun updateBitmap(bitmap: Bitmap) {
-        _bitmap.update { bitmap }
-    }
+//    fun updateBitmap(bitmap: Bitmap) {
+//        _bitmap.update { bitmap }
+//    }
 
     fun updateFaceContourData(leftEyeContour: List<PointF>, rightEyeContour: List<PointF>, upperLipTopContour: List<PointF>, upperLipBottomContour: List<PointF>, lowerLipTopContour: List<PointF>, lowerLipBottomContour: List<PointF>, faceContour: List<PointF>, width: Float, height: Float) {
         _leftEyeContour.update {
@@ -230,7 +231,7 @@ class NenoonViewModel(application: Application) : AndroidViewModel(application) 
         if((rightEyePosition.value.x - leftEyePosition.value.y) != 0f && lensSize.value.width != 0f) {
             _screenToFaceDistance.update {
                 val prev = _screenToFaceDistance.value
-                val dist = 0.9f * (focalLength.value * 63) * inputImageSizeX.value / ((rightEyePosition.value.x - leftEyePosition.value.x) * (lensSize.value.width))
+                val dist = 1.1f * (focalLength.value * 63) * inputImageSizeX.value / ((rightEyePosition.value.x - leftEyePosition.value.x) * (lensSize.value.width))
                 if(dist > 600f || dist < 1f) prev
                 else dist
             }
@@ -507,9 +508,9 @@ class NenoonViewModel(application: Application) : AndroidViewModel(application) 
     }
 
     fun initializePresbyopiaTest() {
-        _bitmap.update {
-        Bitmap.createBitmap(100, 100, Bitmap.Config.ARGB_8888)
-    }
+//        _bitmap.update {
+//        Bitmap.createBitmap(100, 100, Bitmap.Config.ARGB_8888)
+//    }
         firstItemVisibleState.targetState = true
         secondItemVisibleState.targetState = false
         thirdItemVisibleState.targetState = false
@@ -548,7 +549,7 @@ class NenoonViewModel(application: Application) : AndroidViewModel(application) 
             if(diff < 0) diff = -diff
             if(max > diff) {
                 max = diff
-                _eyeAge.update { entry.y.toInt() - 20 }
+                _eyeAge.update { entry.y.toInt() - 15 }
             }
         }
     }
@@ -584,7 +585,10 @@ class NenoonViewModel(application: Application) : AndroidViewModel(application) 
     private var _ansNum = MutableStateFlow(0)
     val ansNum: StateFlow<Int> = _ansNum
 
-    fun processAnswerSelected(idx: Int) {
+    fun processAnswerSelected(
+        idx: Int,
+        toResultScreen: () -> Unit
+    ) {
         var isEnd = false
         if(idx != 3) {
             // if correct
@@ -595,7 +599,7 @@ class NenoonViewModel(application: Application) : AndroidViewModel(application) 
                     // if level == 10
                     if(_sightLevel.value == 10) {
                         isEnd = true
-                        moveToSightednessTestContent()
+                        moveToRightVisualAcuityTest(toResultScreen)
                     } else {
                         _sightLevel.update { it + 1 }
                     }
@@ -615,7 +619,7 @@ class NenoonViewModel(application: Application) : AndroidViewModel(application) 
                 // if next level trial >= 3
                 if(sightHistory[_sightLevel.value + 1]!!.first + sightHistory[_sightLevel.value + 1]!!.second >= 3) {
                     isEnd = true
-                    moveToSightednessTestContent()
+                    moveToRightVisualAcuityTest(toResultScreen)
                 } // to next level
                 else {
                     _sightLevel.update { it + 1 }
@@ -625,13 +629,13 @@ class NenoonViewModel(application: Application) : AndroidViewModel(application) 
                 // if level == 1
                 if(_sightLevel.value == 1) {
                     isEnd = true
-                    moveToSightednessTestContent()
+                    moveToRightVisualAcuityTest(toResultScreen)
                 } // level--
                 else {
                     // if prev level trial >= 3
                     if(sightHistory[_sightLevel.value - 1]!!.first + sightHistory[_sightLevel.value - 1]!!.second >= 3) {
                         isEnd = true
-                        moveToSightednessTestContent()
+                        moveToRightVisualAcuityTest(toResultScreen)
                     } else {
                         _sightLevel.update { it - 1 }
                     }
@@ -641,7 +645,9 @@ class NenoonViewModel(application: Application) : AndroidViewModel(application) 
         if(!isEnd) updateRandomList()
     }
 
-    private fun moveToSightednessTestContent() {
+    private fun moveToRightVisualAcuityTest(
+        toResultScreen: () -> Unit
+    ) {
         if(_isLeftEye.value) {
             sightHistory = mutableMapOf(
                 1 to Pair(0, 0),
@@ -660,24 +666,22 @@ class NenoonViewModel(application: Application) : AndroidViewModel(application) 
             _rightEyeSightValue.update { _sightLevel.value }
         }
         viewModelScope.launch {
-            delay(1000)
+            delay(900)
             _sightLevel.update { 1 }
         }
-        visualAcuityTestContentVisibleState.targetState = false
-        visualAcuityTestSightednessTestContentVisibleState.targetState = true
-
+        visualAcuityTestCommonContentVisibleState.targetState = false
+        coveredEyeCheckingContentVisibleState.targetState = true
+        if(!_isLeftEye.value) { toResultScreen() }
+        else { _isLeftEye.update { false } }
     }
 
     fun updateLeftEyeSightedValue(type: VisionDisorderType) {
-        coveredEyeCheckingContentVisibleState.targetState = true
-        visualAcuityTestCommonContentVisibleState.targetState = false
         viewModelScope.launch {
             delay(700)
             visualAcuityTestContentVisibleState.targetState = true
             visualAcuityTestSightednessTestContentVisibleState.targetState = false
         }
         _leftEyeSightedValue.update { type }
-        _isLeftEye.update { false }
     }
 
     fun updateRightEyeSightedValue(type: VisionDisorderType) {
@@ -685,9 +689,9 @@ class NenoonViewModel(application: Application) : AndroidViewModel(application) 
     }
 
     fun initializeVisualAcuityTest() {
-        _bitmap.update {
-            Bitmap.createBitmap(100, 100, Bitmap.Config.ARGB_8888)
-        }
+//        _bitmap.update {
+//            Bitmap.createBitmap(100, 100, Bitmap.Config.ARGB_8888)
+//        }
         _isLeftEye.update { true }
         sightHistory = mutableMapOf(
             1 to Pair(0, 0),
@@ -777,9 +781,9 @@ class NenoonViewModel(application: Application) : AndroidViewModel(application) 
     }
 
     fun initializeAmslerGridTest() {
-        _bitmap.update {
-            Bitmap.createBitmap(100, 100, Bitmap.Config.ARGB_8888)
-        }
+//        _bitmap.update {
+//            Bitmap.createBitmap(100, 100, Bitmap.Config.ARGB_8888)
+//        }
         _currentSelectedArea.update { listOf(false, false, false, false, false, false, false, false, false) }
         measuringDistanceContentVisibleState.targetState = true
         coveredEyeCheckingContentVisibleState.targetState = false
@@ -828,9 +832,9 @@ class NenoonViewModel(application: Application) : AndroidViewModel(application) 
     val mChartImageId: StateFlow<Int> = _mChartImageId
 
     fun initializeMChartTest() {
-        _bitmap.update {
-            Bitmap.createBitmap(100, 100, Bitmap.Config.ARGB_8888)
-        }
+//        _bitmap.update {
+//            Bitmap.createBitmap(100, 100, Bitmap.Config.ARGB_8888)
+//        }
         _isVertical.update { true }
         _currentLevel.update { 0 }
         _mChartResult.update { listOf() }
