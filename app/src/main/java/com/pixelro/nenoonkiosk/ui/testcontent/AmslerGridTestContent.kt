@@ -127,7 +127,7 @@ fun AmslerGridContent(
                     )
                     .width(700.dp)
                     .height(700.dp)
-                    .padding(40.dp)
+                    .padding(40.dp),
             ) {
                 Image(
                     modifier = Modifier
@@ -140,6 +140,41 @@ fun AmslerGridContent(
                     modifier = Modifier
                         .width(600.dp)
                         .height(600.dp)
+                ) {
+                    drawCircle(
+                        color = Color(0xff000000),
+                        radius = 50f,
+                        center = Offset(450f, 450f)
+                    )
+//                    for(areaNum in 0..8) {
+//                        if(currentSelectedArea[areaNum]) {
+//                            drawRect(
+//                                color = Color(0x550000ff),
+//                                topLeft = when(areaNum) {
+//                                    0 -> Offset(0f, 0f)
+//                                    1 -> Offset(300f, 0f)
+//                                    2 -> Offset(600f, 0f)
+//                                    3 -> Offset(0f, 300f)
+//                                    4 -> Offset(300f, 300f)
+//                                    5 -> Offset(600f, 300f)
+//                                    6 -> Offset(0f, 600f)
+//                                    7 -> Offset(300f, 600f)
+//                                    else -> Offset(600f, 600f)
+//                                },
+//                                size = Size(300f, 300f)
+//                            )
+//                        }
+//                    }
+                    drawCircle(
+                        color = Color(0xff0000ff),
+                        radius = 20f,
+                        center = Offset(450f - (400f * tan(rotY * 0.0174533)).toFloat(), 450f - (400f * tan((rotX + 10) * 0.0174533)).toFloat())
+                    )
+                }
+                Column(
+                    modifier = Modifier
+                        .width(600.dp)
+                        .height(600.dp)
                         .pointerInput(this) {
                             detectTapGestures(
                                 onPress = {
@@ -148,35 +183,120 @@ fun AmslerGridContent(
                             )
                         }
                 ) {
-                    drawCircle(
-                        color = Color(0xff000000),
-                        radius = 50f,
-                        center = Offset(450f, 450f)
-                    )
-                    for(areaNum in 0..8) {
-                        if(currentSelectedArea[areaNum]) {
-                            drawRect(
-                                color = Color(0x550000ff),
-                                topLeft = when(areaNum) {
-                                    0 -> Offset(0f, 0f)
-                                    1 -> Offset(300f, 0f)
-                                    2 -> Offset(600f, 0f)
-                                    3 -> Offset(0f, 300f)
-                                    4 -> Offset(300f, 300f)
-                                    5 -> Offset(600f, 300f)
-                                    6 -> Offset(0f, 600f)
-                                    7 -> Offset(300f, 600f)
-                                    else -> Offset(600f, 600f)
-                                },
-                                size = Size(300f, 300f)
-                            )
-                        }
+                    Row(
+                        modifier = Modifier
+                            .weight(1f)
+                    ) {
+                        Box(
+                            modifier = Modifier
+                                .weight(1f)
+                                .fillMaxHeight()
+                                .background(
+                                    color = when(currentSelectedArea[0]) {
+                                        true -> Color(0x550000ff)
+                                        else -> Color(0x00000000)
+                                    }
+                                )
+                        )
+                        Box(
+                            modifier = Modifier
+                                .weight(1f)
+                                .fillMaxHeight()
+                                .background(
+                                    color = when(currentSelectedArea[1]) {
+                                        true -> Color(0x550000ff)
+                                        else -> Color(0x00000000)
+                                    }
+                                )
+                        )
+                        Box(
+                            modifier = Modifier
+                                .weight(1f)
+                                .fillMaxHeight()
+                                .background(
+                                    color = when(currentSelectedArea[2]) {
+                                        true -> Color(0x550000ff)
+                                        else -> Color(0x00000000)
+                                    }
+                                )
+                        )
                     }
-                    drawCircle(
-                        color = Color(0xff0000ff),
-                        radius = 20f,
-                        center = Offset(450f - (400f * tan(rotY * 0.0174533)).toFloat(), 450f - (400f * tan((rotX + 10) * 0.0174533)).toFloat())
-                    )
+                    Row(
+                        modifier = Modifier
+                            .weight(1f)
+                    ) {
+                        Box(
+                            modifier = Modifier
+                                .weight(1f)
+                                .fillMaxHeight()
+                                .background(
+                                    color = when(currentSelectedArea[3]) {
+                                        true -> Color(0x550000ff)
+                                        else -> Color(0x00000000)
+                                    }
+                                )
+                        )
+                        Box(
+                            modifier = Modifier
+                                .weight(1f)
+                                .fillMaxHeight()
+                                .background(
+                                    color = when(currentSelectedArea[4]) {
+                                        true -> Color(0x550000ff)
+                                        else -> Color(0x00000000)
+                                    }
+                                )
+                        )
+                        Box(
+                            modifier = Modifier
+                                .weight(1f)
+                                .fillMaxHeight()
+                                .background(
+                                    color = when(currentSelectedArea[5]) {
+                                        true -> Color(0x550000ff)
+                                        else -> Color(0x00000000)
+                                    }
+                                )
+                        )
+                    }
+                    Row(
+                        modifier = Modifier
+                            .weight(1f)
+                    ) {
+                        Box(
+                            modifier = Modifier
+                                .weight(1f)
+                                .fillMaxHeight()
+                                .background(
+                                    color = when(currentSelectedArea[6]) {
+                                        true -> Color(0x550000ff)
+                                        else -> Color(0x00000000)
+                                    }
+                                )
+                        )
+                        Box(
+                            modifier = Modifier
+                                .weight(1f)
+                                .fillMaxHeight()
+                                .background(
+                                    color = when(currentSelectedArea[7]) {
+                                        true -> Color(0x550000ff)
+                                        else -> Color(0x00000000)
+                                    }
+                                )
+                        )
+                        Box(
+                            modifier = Modifier
+                                .weight(1f)
+                                .fillMaxHeight()
+                                .background(
+                                    color = when(currentSelectedArea[8]) {
+                                        true -> Color(0x550000ff)
+                                        else -> Color(0x00000000)
+                                    }
+                                )
+                        )
+                    }
                 }
             }
             Spacer(

@@ -792,6 +792,7 @@ class NenoonViewModel(application: Application) : AndroidViewModel(application) 
     }
 
     fun updateCurrentSelectedArea(position: Offset) {
+        Log.e("clicked", "${position.x}, ${position.y}")
         _currentSelectedArea.update {
             val tmpList = it.toMutableList()
             if(position.x in 0f..299f && position.y in 0f..299f) {

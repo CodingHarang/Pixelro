@@ -20,4 +20,18 @@ object AnimationProvider {
     ) + fadeOut(
         animationSpec = TweenSpec(durationMillis = 800)
     )
+
+    val enterTransitionUp = slideIn(
+        animationSpec = TweenSpec(durationMillis = 800),
+        initialOffset = { IntOffset(0, 100) }
+    ) + fadeIn(
+        animationSpec = TweenSpec(durationMillis = 800)
+    )
+
+    val exitTransitionDown = slideOut(
+        animationSpec = TweenSpec(durationMillis = 800),
+        targetOffset = { IntOffset(0, -100) }
+    ) + fadeOut(
+        animationSpec = TweenSpec(durationMillis = 800)
+    )
 }
