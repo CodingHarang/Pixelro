@@ -35,6 +35,7 @@ import androidx.compose.ui.unit.sp
 import com.pixelro.nenoonkiosk.NenoonViewModel
 import com.pixelro.nenoonkiosk.R
 import com.pixelro.nenoonkiosk.data.AnimationProvider
+import com.pixelro.nenoonkiosk.data.MacularDisorderType
 import com.pixelro.nenoonkiosk.data.StringProvider
 import com.pixelro.nenoonkiosk.facedetection.FaceDetection
 import kotlin.math.tan
@@ -47,6 +48,8 @@ fun AmslerGridTestContent(
     val measuringDistanceContentVisibleState = viewModel.measuringDistanceContentVisibleState
     val coveredEyeCheckingContentVisibleState = viewModel.coveredEyeCheckingContentVisibleState
     val amslerGridContentVisibleState = viewModel.amslerGridContentVisibleState
+    val macularDistortedTypeVisibleState = viewModel.macularDistortedTypeVisibleState
+
     Column(
         modifier = Modifier
             .fillMaxSize()
@@ -74,6 +77,7 @@ fun AmslerGridTestContent(
                 viewModel = viewModel,
                 amslerGridContentVisibleState = amslerGridContentVisibleState,
                 nextVisibleState = coveredEyeCheckingContentVisibleState,
+                macularDistortedTypeVisibleState = macularDistortedTypeVisibleState,
                 toResultScreen = toResultScreen
             )
         }
@@ -85,6 +89,7 @@ fun AmslerGridContent(
     viewModel: NenoonViewModel,
     amslerGridContentVisibleState: MutableTransitionState<Boolean>,
     nextVisibleState: MutableTransitionState<Boolean>,
+    macularDistortedTypeVisibleState: MutableTransitionState<Boolean>,
     toResultScreen: () -> Unit
 ) {
     AnimatedVisibility(
@@ -111,12 +116,11 @@ fun AmslerGridContent(
 
             Text(
                 modifier = Modifier
-                    .padding(top = 40.dp, bottom = 40.dp),
+                    .padding(top = 20.dp, bottom = 20.dp),
                 text = StringProvider.getString(R.string.amsler_grid_test_description),
-                fontSize = 32.sp,
+                fontSize = 28.sp,
                 color = Color(0xffffffff),
-                fontWeight = FontWeight.Medium,
-                textAlign = TextAlign.Center
+                fontWeight = FontWeight.Medium
             )
             Box(
                 contentAlignment = Alignment.Center,
@@ -178,7 +182,7 @@ fun AmslerGridContent(
                         .pointerInput(this) {
                             detectTapGestures(
                                 onPress = {
-                                    viewModel.updateCurrentSelectedArea(it)
+                                    viewModel.updateCurrentSelectedPosition(it)
                                 }
                             )
                         }
@@ -192,9 +196,9 @@ fun AmslerGridContent(
                                 .weight(1f)
                                 .fillMaxHeight()
                                 .background(
-                                    color = when(currentSelectedArea[0]) {
-                                        true -> Color(0x550000ff)
-                                        else -> Color(0x00000000)
+                                    color = when (currentSelectedArea[0]) {
+                                        MacularDisorderType.Normal -> Color(0x00000000)
+                                        else -> Color(0x550000ff)
                                     }
                                 )
                         )
@@ -203,9 +207,9 @@ fun AmslerGridContent(
                                 .weight(1f)
                                 .fillMaxHeight()
                                 .background(
-                                    color = when(currentSelectedArea[1]) {
-                                        true -> Color(0x550000ff)
-                                        else -> Color(0x00000000)
+                                    color = when (currentSelectedArea[1]) {
+                                        MacularDisorderType.Normal -> Color(0x00000000)
+                                        else -> Color(0x550000ff)
                                     }
                                 )
                         )
@@ -214,47 +218,9 @@ fun AmslerGridContent(
                                 .weight(1f)
                                 .fillMaxHeight()
                                 .background(
-                                    color = when(currentSelectedArea[2]) {
-                                        true -> Color(0x550000ff)
-                                        else -> Color(0x00000000)
-                                    }
-                                )
-                        )
-                    }
-                    Row(
-                        modifier = Modifier
-                            .weight(1f)
-                    ) {
-                        Box(
-                            modifier = Modifier
-                                .weight(1f)
-                                .fillMaxHeight()
-                                .background(
-                                    color = when(currentSelectedArea[3]) {
-                                        true -> Color(0x550000ff)
-                                        else -> Color(0x00000000)
-                                    }
-                                )
-                        )
-                        Box(
-                            modifier = Modifier
-                                .weight(1f)
-                                .fillMaxHeight()
-                                .background(
-                                    color = when(currentSelectedArea[4]) {
-                                        true -> Color(0x550000ff)
-                                        else -> Color(0x00000000)
-                                    }
-                                )
-                        )
-                        Box(
-                            modifier = Modifier
-                                .weight(1f)
-                                .fillMaxHeight()
-                                .background(
-                                    color = when(currentSelectedArea[5]) {
-                                        true -> Color(0x550000ff)
-                                        else -> Color(0x00000000)
+                                    color = when (currentSelectedArea[2]) {
+                                        MacularDisorderType.Normal -> Color(0x00000000)
+                                        else -> Color(0x550000ff)
                                     }
                                 )
                         )
@@ -268,9 +234,9 @@ fun AmslerGridContent(
                                 .weight(1f)
                                 .fillMaxHeight()
                                 .background(
-                                    color = when(currentSelectedArea[6]) {
-                                        true -> Color(0x550000ff)
-                                        else -> Color(0x00000000)
+                                    color = when (currentSelectedArea[3]) {
+                                        MacularDisorderType.Normal -> Color(0x00000000)
+                                        else -> Color(0x550000ff)
                                     }
                                 )
                         )
@@ -279,9 +245,9 @@ fun AmslerGridContent(
                                 .weight(1f)
                                 .fillMaxHeight()
                                 .background(
-                                    color = when(currentSelectedArea[7]) {
-                                        true -> Color(0x550000ff)
-                                        else -> Color(0x00000000)
+                                    color = when (currentSelectedArea[4]) {
+                                        MacularDisorderType.Normal -> Color(0x00000000)
+                                        else -> Color(0x550000ff)
                                     }
                                 )
                         )
@@ -290,26 +256,102 @@ fun AmslerGridContent(
                                 .weight(1f)
                                 .fillMaxHeight()
                                 .background(
-                                    color = when(currentSelectedArea[8]) {
-                                        true -> Color(0x550000ff)
-                                        else -> Color(0x00000000)
+                                    color = when (currentSelectedArea[5]) {
+                                        MacularDisorderType.Normal -> Color(0x00000000)
+                                        else -> Color(0x550000ff)
+                                    }
+                                )
+                        )
+                    }
+                    Row(
+                        modifier = Modifier
+                            .weight(1f)
+                    ) {
+                        Box(
+                            modifier = Modifier
+                                .weight(1f)
+                                .fillMaxHeight()
+                                .background(
+                                    color = when (currentSelectedArea[6]) {
+                                        MacularDisorderType.Normal -> Color(0x00000000)
+                                        else -> Color(0x550000ff)
+                                    }
+                                )
+                        )
+                        Box(
+                            modifier = Modifier
+                                .weight(1f)
+                                .fillMaxHeight()
+                                .background(
+                                    color = when (currentSelectedArea[7]) {
+                                        MacularDisorderType.Normal -> Color(0x00000000)
+                                        else -> Color(0x550000ff)
+                                    }
+                                )
+                        )
+                        Box(
+                            modifier = Modifier
+                                .weight(1f)
+                                .fillMaxHeight()
+                                .background(
+                                    color = when (currentSelectedArea[8]) {
+                                        MacularDisorderType.Normal -> Color(0x00000000)
+                                        else -> Color(0x550000ff)
                                     }
                                 )
                         )
                     }
                 }
             }
-            Spacer(
-                modifier = Modifier
-                    .height(16.dp)
-            )
-            Row(
-                modifier = Modifier
-                    .fillMaxWidth(),
-                horizontalArrangement = Arrangement.Center
+            AnimatedVisibility(
+                visibleState = macularDistortedTypeVisibleState,
+                enter = AnimationProvider.enterTransitionUp,
+                exit = AnimationProvider.exitTransitionDown
             ) {
-
+                Row(
+                    modifier = Modifier
+                        .padding(top = 20.dp)
+                        .fillMaxWidth(),
+                    horizontalArrangement = Arrangement.Center
+                ) {
+                    Image(
+                        modifier = Modifier
+                            .padding(end = 40.dp)
+                            .width(200.dp)
+                            .height(200.dp)
+                            .clickable {
+                                macularDistortedTypeVisibleState.targetState = false
+                                viewModel.updateCurrentSelectedArea(0)
+                            },
+                        painter = painterResource(id = R.drawable.macular_distorted),
+                        contentDescription = ""
+                    )
+                    Image(
+                        modifier = Modifier
+                            .padding(end = 40.dp)
+                            .width(200.dp)
+                            .height(200.dp)
+                            .clickable {
+                                macularDistortedTypeVisibleState.targetState = false
+                                viewModel.updateCurrentSelectedArea(1)
+                            },
+                        painter = painterResource(id = R.drawable.macular_blacked),
+                        contentDescription = ""
+                    )
+                    Image(
+                        modifier = Modifier
+                            .width(200.dp)
+                            .height(200.dp)
+                            .clickable {
+                                macularDistortedTypeVisibleState.targetState = false
+                                viewModel.updateCurrentSelectedArea(2)
+                            },
+                        painter = painterResource(id = R.drawable.macular_whited),
+                        contentDescription = ""
+                    )
+                }
             }
+
             Box(
                 modifier = Modifier
                     .fillMaxSize(),
@@ -317,7 +359,11 @@ fun AmslerGridContent(
             ) {
                 Text(
                     modifier = Modifier
-                        .padding(start = 40.dp, end = 40.dp, bottom = (viewModel.navigationBarPadding.collectAsState().value).dp)
+                        .padding(
+                            start = 40.dp,
+                            end = 40.dp,
+                            bottom = (viewModel.navigationBarPadding.collectAsState().value).dp
+                        )
                         .fillMaxWidth()
                         .background(
                             color = Color(0xff1d71e1),

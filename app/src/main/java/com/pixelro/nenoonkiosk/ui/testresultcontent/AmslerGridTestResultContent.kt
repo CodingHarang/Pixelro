@@ -29,6 +29,7 @@ import androidx.compose.ui.unit.sp
 import androidx.navigation.NavHostController
 import com.pixelro.nenoonkiosk.NenoonViewModel
 import com.pixelro.nenoonkiosk.R
+import com.pixelro.nenoonkiosk.data.MacularDisorderType
 import com.pixelro.nenoonkiosk.data.StringProvider
 
 @Composable
@@ -386,8 +387,8 @@ fun AmslerGridTestResultContent(
                         .height(100.dp)
                         .background(
                             color = when (leftSelectedArea[0]) {
-                                true -> Color(0xb4ea2525)
-                                else -> Color(0xffffffff)
+                                MacularDisorderType.Normal -> Color(0xffffffff)
+                                else -> Color(0xb4ea2525)
                             }
                         )
                         .border(
@@ -422,8 +423,8 @@ fun AmslerGridTestResultContent(
                         .height(100.dp)
                         .background(
                             color = when (leftSelectedArea[1]) {
-                                true -> Color(0xb4ea2525)
-                                else -> Color(0xffffffff)
+                                MacularDisorderType.Normal -> Color(0xffffffff)
+                                else -> Color(0xb4ea2525)
                             }
                         )
                         .border(
@@ -452,8 +453,8 @@ fun AmslerGridTestResultContent(
                         .height(100.dp)
                         .background(
                             color = when (leftSelectedArea[2]) {
-                                true -> Color(0xb4ea2525)
-                                else -> Color(0xffffffff)
+                                MacularDisorderType.Normal -> Color(0xffffffff)
+                                else -> Color(0xb4ea2525)
                             }
                         )
                         .border(
@@ -494,8 +495,8 @@ fun AmslerGridTestResultContent(
                         .height(100.dp)
                         .background(
                             color = when (leftSelectedArea[3]) {
-                                true -> Color(0xb4ea2525)
-                                else -> Color(0xffffffff)
+                                MacularDisorderType.Normal -> Color(0xffffffff)
+                                else -> Color(0xb4ea2525)
                             }
                         )
                         .border(
@@ -524,8 +525,8 @@ fun AmslerGridTestResultContent(
                         .height(100.dp)
                         .background(
                             color = when (leftSelectedArea[4]) {
-                                true -> Color(0xb4ea2525)
-                                else -> Color(0xffffffff)
+                                MacularDisorderType.Normal -> Color(0xffffffff)
+                                else -> Color(0xb4ea2525)
                             }
                         )
                         .border(
@@ -543,8 +544,8 @@ fun AmslerGridTestResultContent(
                         .height(100.dp)
                         .background(
                             color = when (leftSelectedArea[5]) {
-                                true -> Color(0xb4ea2525)
-                                else -> Color(0xffffffff)
+                                MacularDisorderType.Normal -> Color(0xffffffff)
+                                else -> Color(0xb4ea2525)
                             }
                         )
                         .border(
@@ -579,8 +580,8 @@ fun AmslerGridTestResultContent(
                         .height(100.dp)
                         .background(
                             color = when (leftSelectedArea[6]) {
-                                true -> Color(0xb4ea2525)
-                                else -> Color(0xffffffff)
+                                MacularDisorderType.Normal -> Color(0xffffffff)
+                                else -> Color(0xb4ea2525)
                             }
                         )
                         .border(
@@ -615,8 +616,8 @@ fun AmslerGridTestResultContent(
                         .height(100.dp)
                         .background(
                             color = when (leftSelectedArea[7]) {
-                                true -> Color(0xb4ea2525)
-                                else -> Color(0xffffffff)
+                                MacularDisorderType.Normal -> Color(0xffffffff)
+                                else -> Color(0xb4ea2525)
                             }
                         )
                         .border(
@@ -645,8 +646,8 @@ fun AmslerGridTestResultContent(
                         .height(100.dp)
                         .background(
                             color = when (leftSelectedArea[8]) {
-                                true -> Color(0xb4ea2525)
-                                else -> Color(0xffffffff)
+                                MacularDisorderType.Normal -> Color(0xffffffff)
+                                else -> Color(0xb4ea2525)
                             }
                         )
                         .border(
@@ -708,8 +709,8 @@ fun AmslerGridTestResultContent(
                         .height(100.dp)
                         .background(
                             color = when (rightSelectedArea[0]) {
-                                true -> Color(0xb4ea2525)
-                                else -> Color(0xffffffff)
+                                MacularDisorderType.Normal -> Color(0xffffffff)
+                                else -> Color(0xb4ea2525)
                             }
                         )
                         .border(
@@ -744,8 +745,8 @@ fun AmslerGridTestResultContent(
                         .height(100.dp)
                         .background(
                             color = when (rightSelectedArea[1]) {
-                                true -> Color(0xb4ea2525)
-                                else -> Color(0xffffffff)
+                                MacularDisorderType.Normal -> Color(0xffffffff)
+                                else -> Color(0xb4ea2525)
                             }
                         )
                         .border(
@@ -774,8 +775,8 @@ fun AmslerGridTestResultContent(
                         .height(100.dp)
                         .background(
                             color = when (rightSelectedArea[2]) {
-                                true -> Color(0xb4ea2525)
-                                else -> Color(0xffffffff)
+                                MacularDisorderType.Normal -> Color(0xffffffff)
+                                else -> Color(0xb4ea2525)
                             }
                         )
                         .border(
@@ -816,8 +817,8 @@ fun AmslerGridTestResultContent(
                         .height(100.dp)
                         .background(
                             color = when (rightSelectedArea[3]) {
-                                true -> Color(0xb4ea2525)
-                                else -> Color(0xffffffff)
+                                MacularDisorderType.Normal -> Color(0xffffffff)
+                                else -> Color(0xb4ea2525)
                             }
                         )
                         .border(
@@ -846,8 +847,8 @@ fun AmslerGridTestResultContent(
                         .height(100.dp)
                         .background(
                             color = when (rightSelectedArea[4]) {
-                                true -> Color(0xb4ea2525)
-                                else -> Color(0xffffffff)
+                                MacularDisorderType.Normal -> Color(0xffffffff)
+                                else -> Color(0xb4ea2525)
                             }
                         )
                         .border(
@@ -865,8 +866,8 @@ fun AmslerGridTestResultContent(
                         .height(100.dp)
                         .background(
                             color = when (rightSelectedArea[5]) {
-                                true -> Color(0xb4ea2525)
-                                else -> Color(0xffffffff)
+                                MacularDisorderType.Normal -> Color(0xffffffff)
+                                else -> Color(0xb4ea2525)
                             }
                         )
                         .border(
@@ -901,8 +902,8 @@ fun AmslerGridTestResultContent(
                         .height(100.dp)
                         .background(
                             color = when (rightSelectedArea[6]) {
-                                true -> Color(0xb4ea2525)
-                                else -> Color(0xffffffff)
+                                MacularDisorderType.Normal -> Color(0xffffffff)
+                                else -> Color(0xb4ea2525)
                             }
                         )
                         .border(
@@ -937,8 +938,8 @@ fun AmslerGridTestResultContent(
                         .height(100.dp)
                         .background(
                             color = when (rightSelectedArea[7]) {
-                                true -> Color(0xb4ea2525)
-                                else -> Color(0xffffffff)
+                                MacularDisorderType.Normal -> Color(0xffffffff)
+                                else -> Color(0xb4ea2525)
                             }
                         )
                         .border(
@@ -967,8 +968,8 @@ fun AmslerGridTestResultContent(
                         .height(100.dp)
                         .background(
                             color = when (rightSelectedArea[8]) {
-                                true -> Color(0xb4ea2525)
-                                else -> Color(0xffffffff)
+                                MacularDisorderType.Normal -> Color(0xffffffff)
+                                else -> Color(0xb4ea2525)
                             }
                         )
                         .border(

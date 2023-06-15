@@ -41,7 +41,8 @@ fun CoveredEyeCheckingContent(
         DisposableEffect(true) {
             viewModel.initializeCoveredEyeChecking()
             viewModel.checkCoveredEye()
-            onDispose {}
+            onDispose {
+            }
         }
         val isLeftEye = viewModel.isLeftEye.collectAsState().value
         Column(

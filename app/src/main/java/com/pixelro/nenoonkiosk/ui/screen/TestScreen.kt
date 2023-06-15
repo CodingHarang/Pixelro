@@ -46,6 +46,8 @@ fun EyeTestScreen(
         Log.e("backhandler", "backhandler")
         navController.popBackStack(GlobalConstants.ROUTE_TEST_LIST, false)
         viewModel.resetScreenSaverTimer()
+        viewModel.coveredEyeCheckingContentVisibleState.targetState = false
+        viewModel.measuringDistanceContentVisibleState.targetState = false
     }
     val systemUiController = rememberSystemUiController()
     DisposableEffect(true) {

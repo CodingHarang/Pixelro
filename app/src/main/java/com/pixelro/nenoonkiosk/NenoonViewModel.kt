@@ -39,6 +39,7 @@ import com.google.android.gms.location.LocationSettingsResponse
 import com.google.android.gms.location.SettingsClient
 import com.google.android.gms.tasks.Task
 import com.pixelro.nenoonkiosk.data.AccommodationData
+import com.pixelro.nenoonkiosk.data.MacularDisorderType
 import com.pixelro.nenoonkiosk.data.SharedPreferencesManager
 import com.pixelro.nenoonkiosk.data.StringProvider
 import com.pixelro.nenoonkiosk.data.TestType
@@ -275,11 +276,15 @@ class NenoonViewModel(application: Application) : AndroidViewModel(application) 
 //    }
 
     fun checkCoveredEye() {
+
         viewModelScope.launch {
             var count = 0
-            _leftTime.update { 5f }
+            _leftTime.update { 5.5f }
             while(count < 10) {
                 delay(500)
+                if(!coveredEyeCheckingContentVisibleState.targetState) {
+                    return@launch
+                }
                 if(
 //                    when(isLeftEye.value) {
 //                        true -> leftEyeOpenProbability.value
@@ -666,7 +671,7 @@ class NenoonViewModel(application: Application) : AndroidViewModel(application) 
             _rightEyeSightValue.update { _sightLevel.value }
         }
         viewModelScope.launch {
-            delay(900)
+            delay(700)
             _sightLevel.update { 1 }
         }
         visualAcuityTestCommonContentVisibleState.targetState = false
@@ -757,16 +762,19 @@ class NenoonViewModel(application: Application) : AndroidViewModel(application) 
     // Macular degeneration test
     // Amsler Grid Test
     val amslerGridContentVisibleState = MutableTransitionState(false)
-    private val _currentSelectedArea = MutableStateFlow(listOf(false, false, false, false, false, false, false, false, false))
-    val currentSelectedArea: StateFlow<List<Boolean>> = _currentSelectedArea
-    private val _leftSelectedArea = MutableStateFlow(emptyList<Boolean>())
-    val leftSelectedArea: StateFlow<List<Boolean>> = _leftSelectedArea
-    private val _rightSelectedArea = MutableStateFlow(emptyList<Boolean>())
-    val rightSelectedArea: StateFlow<List<Boolean>> = _rightSelectedArea
+    val macularDistortedTypeVisibleState = MutableTransitionState(false)
+    private val _currentSelectedPosition = MutableStateFlow(Offset(0f, 0f))
+    val currentSelectedPosition: StateFlow<Offset> = _currentSelectedPosition
+    private val _currentSelectedArea = MutableStateFlow(listOf(MacularDisorderType.Normal, MacularDisorderType.Normal, MacularDisorderType.Normal, MacularDisorderType.Normal, MacularDisorderType.Normal, MacularDisorderType.Normal, MacularDisorderType.Normal, MacularDisorderType.Normal, MacularDisorderType.Normal))
+    val currentSelectedArea: StateFlow<List<MacularDisorderType>> = _currentSelectedArea
+    private val _leftSelectedArea = MutableStateFlow(emptyList<MacularDisorderType>())
+    val leftSelectedArea: StateFlow<List<MacularDisorderType>> = _leftSelectedArea
+    private val _rightSelectedArea = MutableStateFlow(emptyList<MacularDisorderType>())
+    val rightSelectedArea: StateFlow<List<MacularDisorderType>> = _rightSelectedArea
 
     fun updateLeftSelectedArea() {
         _leftSelectedArea.update { currentSelectedArea.value }
-        _currentSelectedArea.update { listOf(false, false, false, false, false, false, false, false, false) }
+        _currentSelectedArea.update { listOf(MacularDisorderType.Normal, MacularDisorderType.Normal, MacularDisorderType.Normal, MacularDisorderType.Normal, MacularDisorderType.Normal, MacularDisorderType.Normal, MacularDisorderType.Normal, MacularDisorderType.Normal, MacularDisorderType.Normal) }
         _printString.update {
             _leftSelectedArea.value.toString()
         }
@@ -774,7 +782,7 @@ class NenoonViewModel(application: Application) : AndroidViewModel(application) 
 
     fun updateRightSelectedArea() {
         _rightSelectedArea.update { currentSelectedArea.value }
-        _currentSelectedArea.update { listOf(false, false, false, false, false, false, false, false, false) }
+        _currentSelectedArea.update { listOf(MacularDisorderType.Normal, MacularDisorderType.Normal, MacularDisorderType.Normal, MacularDisorderType.Normal, MacularDisorderType.Normal, MacularDisorderType.Normal, MacularDisorderType.Normal, MacularDisorderType.Normal, MacularDisorderType.Normal) }
         _printString.update {
             (it + _rightSelectedArea.value.toString()).replace("][", ",").replace("[", "").replace("]", "").replace(" ", "")
         }
@@ -784,35 +792,168 @@ class NenoonViewModel(application: Application) : AndroidViewModel(application) 
 //        _bitmap.update {
 //            Bitmap.createBitmap(100, 100, Bitmap.Config.ARGB_8888)
 //        }
-        _currentSelectedArea.update { listOf(false, false, false, false, false, false, false, false, false) }
+        _currentSelectedArea.update { listOf(MacularDisorderType.Normal, MacularDisorderType.Normal, MacularDisorderType.Normal, MacularDisorderType.Normal, MacularDisorderType.Normal, MacularDisorderType.Normal, MacularDisorderType.Normal, MacularDisorderType.Normal, MacularDisorderType.Normal) }
         measuringDistanceContentVisibleState.targetState = true
         coveredEyeCheckingContentVisibleState.targetState = false
         amslerGridContentVisibleState.targetState = false
         _isLeftEye.update { true }
     }
 
-    fun updateCurrentSelectedArea(position: Offset) {
+    fun updateCurrentSelectedPosition(position: Offset) {
+        _currentSelectedPosition.update { position }
+        if(position.x in 0f..299f && position.y in 0f..299f) {
+            if(_currentSelectedArea.value[0] != MacularDisorderType.Normal) {
+                _currentSelectedArea.update {
+                    val tmpList = it.toMutableList()
+                    tmpList[0] = MacularDisorderType.Normal
+                    tmpList
+                }
+            } else {
+                macularDistortedTypeVisibleState.targetState = true
+            }
+        } else if(position.x in 300f..599f && position.y in 0f..299f) {
+            if(_currentSelectedArea.value[1] != MacularDisorderType.Normal) {
+                _currentSelectedArea.update {
+                    val tmpList = it.toMutableList()
+                    tmpList[1] = MacularDisorderType.Normal
+                    tmpList
+                }
+            } else {
+                macularDistortedTypeVisibleState.targetState = true
+            }
+        } else if(position.x in 600f..900f && position.y in 0f..299f) {
+            if(_currentSelectedArea.value[2] != MacularDisorderType.Normal) {
+                _currentSelectedArea.update {
+                    val tmpList = it.toMutableList()
+                    tmpList[2] = MacularDisorderType.Normal
+                    tmpList
+                }
+            } else {
+                macularDistortedTypeVisibleState.targetState = true
+            }
+        } else if(position.x in 0f..299f && position.y in 300f..599f) {
+            if(_currentSelectedArea.value[3] != MacularDisorderType.Normal) {
+                _currentSelectedArea.update {
+                    val tmpList = it.toMutableList()
+                    tmpList[3] = MacularDisorderType.Normal
+                    tmpList
+                }
+            } else {
+                macularDistortedTypeVisibleState.targetState = true
+            }
+        } else if(position.x in 300f..599f && position.y in 300f..599f) {
+            if(_currentSelectedArea.value[4] != MacularDisorderType.Normal) {
+                _currentSelectedArea.update {
+                    val tmpList = it.toMutableList()
+                    tmpList[4] = MacularDisorderType.Normal
+                    tmpList
+                }
+            } else {
+                macularDistortedTypeVisibleState.targetState = true
+            }
+        } else if(position.x in 600f..900f && position.y in 300f..599f) {
+            if(_currentSelectedArea.value[5] != MacularDisorderType.Normal) {
+                _currentSelectedArea.update {
+                    val tmpList = it.toMutableList()
+                    tmpList[5] = MacularDisorderType.Normal
+                    tmpList
+                }
+            } else {
+                macularDistortedTypeVisibleState.targetState = true
+            }
+        } else if(position.x in 0f..299f && position.y in 600f..900f) {
+            if(_currentSelectedArea.value[6] != MacularDisorderType.Normal) {
+                _currentSelectedArea.update {
+                    val tmpList = it.toMutableList()
+                    tmpList[6] = MacularDisorderType.Normal
+                    tmpList
+                }
+            } else {
+                macularDistortedTypeVisibleState.targetState = true
+            }
+        } else if(position.x in 300f..599f && position.y in 600f..900f) {
+            if(_currentSelectedArea.value[7] != MacularDisorderType.Normal) {
+                _currentSelectedArea.update {
+                    val tmpList = it.toMutableList()
+                    tmpList[7] = MacularDisorderType.Normal
+                    tmpList
+                }
+            } else {
+                macularDistortedTypeVisibleState.targetState = true
+            }
+        } else {
+            if(_currentSelectedArea.value[8] != MacularDisorderType.Normal) {
+                _currentSelectedArea.update {
+                    val tmpList = it.toMutableList()
+                    tmpList[8] = MacularDisorderType.Normal
+                    tmpList
+                }
+            } else {
+                macularDistortedTypeVisibleState.targetState = true
+            }
+        }
+    }
+
+    fun updateCurrentSelectedArea(idx: Int) {
+        val position = _currentSelectedPosition.value
+
         Log.e("clicked", "${position.x}, ${position.y}")
         _currentSelectedArea.update {
             val tmpList = it.toMutableList()
             if(position.x in 0f..299f && position.y in 0f..299f) {
-                tmpList[0] = !it[0]
+                when(idx) {
+                    0 -> { tmpList[0] = MacularDisorderType.Distorted }
+                    1 -> { tmpList[0] = MacularDisorderType.Blacked }
+                    else -> { tmpList[0] = MacularDisorderType.Whited }
+                }
             } else if(position.x in 300f..599f && position.y in 0f..299f) {
-                tmpList[1] = !it[1]
+                when(idx) {
+                    0 -> { tmpList[1] = MacularDisorderType.Distorted }
+                    1 -> { tmpList[1] = MacularDisorderType.Blacked }
+                    else -> { tmpList[1] = MacularDisorderType.Whited }
+                }
             } else if(position.x in 600f..900f && position.y in 0f..299f) {
-                tmpList[2] = !it[2]
+                when(idx) {
+                    0 -> { tmpList[2] = MacularDisorderType.Distorted }
+                    1 -> { tmpList[2] = MacularDisorderType.Blacked }
+                    else -> { tmpList[2] = MacularDisorderType.Whited }
+                }
             } else if(position.x in 0f..299f && position.y in 300f..599f) {
-                tmpList[3] = !it[3]
+                when(idx) {
+                    0 -> { tmpList[3] = MacularDisorderType.Distorted }
+                    1 -> { tmpList[3] = MacularDisorderType.Blacked }
+                    else -> { tmpList[3] = MacularDisorderType.Whited }
+                }
             } else if(position.x in 300f..599f && position.y in 300f..599f) {
-                tmpList[4] = !it[4]
+                when(idx) {
+                    0 -> { tmpList[4] = MacularDisorderType.Distorted }
+                    1 -> { tmpList[4] = MacularDisorderType.Blacked }
+                    else -> { tmpList[4] = MacularDisorderType.Whited }
+                }
             } else if(position.x in 600f..900f && position.y in 300f..599f) {
-                tmpList[5] = !it[5]
+                when(idx) {
+                    0 -> { tmpList[5] = MacularDisorderType.Distorted }
+                    1 -> { tmpList[5] = MacularDisorderType.Blacked }
+                    else -> { tmpList[5] = MacularDisorderType.Whited }
+                }
             } else if(position.x in 0f..299f && position.y in 600f..900f) {
-                tmpList[6] = !it[6]
+                when(idx) {
+                    0 -> { tmpList[6] = MacularDisorderType.Distorted }
+                    1 -> { tmpList[6] = MacularDisorderType.Blacked }
+                    else -> { tmpList[6] = MacularDisorderType.Whited }
+                }
             } else if(position.x in 300f..599f && position.y in 600f..900f) {
-                tmpList[7] = !it[7]
+                when(idx) {
+                    0 -> { tmpList[7] = MacularDisorderType.Distorted }
+                    1 -> { tmpList[7] = MacularDisorderType.Blacked }
+                    else -> { tmpList[7] = MacularDisorderType.Whited }
+                }
             } else {
-                tmpList[8] = !it[8]
+                when(idx) {
+                    0 -> { tmpList[8] = MacularDisorderType.Distorted }
+                    1 -> { tmpList[8] = MacularDisorderType.Blacked }
+                    else -> { tmpList[8] = MacularDisorderType.Whited }
+                }
             }
             tmpList
         }
@@ -848,7 +989,7 @@ class NenoonViewModel(application: Application) : AndroidViewModel(application) 
     fun toNextMChartTest() {
         updateIsLeftEye(false)
         viewModelScope.launch {
-            delay(900)
+            delay(700)
             updateCurrentLevel(0)
             updateIsVertical(true)
         }
@@ -878,7 +1019,7 @@ class NenoonViewModel(application: Application) : AndroidViewModel(application) 
     fun updateSavedResult() {
         _savedResult.update { mChartResult.value }
         viewModelScope.launch {
-            delay(900)
+            delay(700)
             updateCurrentLevel(0)
         }
     }
