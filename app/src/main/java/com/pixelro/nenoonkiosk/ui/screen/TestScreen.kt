@@ -42,11 +42,20 @@ fun EyeTestScreen(
     navController: NavHostController,
     content: @Composable () -> Unit
 ) {
+    val currentTestType = viewModel.selectedTestType.collectAsState().value
     BackHandler(enabled = true) {
         Log.e("backhandler", "backhandler")
         navController.popBackStack(GlobalConstants.ROUTE_TEST_LIST, false)
         viewModel.resetScreenSaverTimer()
         viewModel.coveredEyeCheckingContentVisibleState.targetState = false
+        when(currentTestType) {
+            TestType.Presbyopia -> viewModel.initializePresbyopiaTest()
+            TestType.ShortDistanceVisualAcuity -> viewModel.initializeVisualAcuityTest()
+            TestType.LongDistanceVisualAcuity -> viewModel.initializeVisualAcuityTest()
+            TestType.ChildrenVisualAcuity -> viewModel.initializeVisualAcuityTest()
+            TestType.AmslerGrid -> viewModel.initializeAmslerGridTest()
+            else -> viewModel.initializeMChartTest()
+        }
         viewModel.measuringDistanceContentVisibleState.targetState = false
     }
     val systemUiController = rememberSystemUiController()
@@ -83,7 +92,12 @@ fun EyeTestScreen(
         ) {
             Box(
                 modifier = Modifier
-                    .padding(start = 40.dp, top = (viewModel.statusBarPadding.collectAsState().value + 20).dp, end = 40.dp, bottom = 20.dp)
+                    .padding(
+                        start = 40.dp,
+                        top = (viewModel.statusBarPadding.collectAsState().value + 20).dp,
+                        end = 40.dp,
+                        bottom = 20.dp
+                    )
                     .fillMaxWidth()
                     .height(40.dp)
             ) {
@@ -96,8 +110,18 @@ fun EyeTestScreen(
                         modifier = Modifier
                             .width(32.dp)
                             .clickable {
-                                (context as Activity).dispatchKeyEvent(KeyEvent(KeyEvent.ACTION_DOWN, KeyEvent.KEYCODE_BACK))
-                                context.dispatchKeyEvent(KeyEvent(KeyEvent.ACTION_UP, KeyEvent.KEYCODE_BACK))
+                                (context as Activity).dispatchKeyEvent(
+                                    KeyEvent(
+                                        KeyEvent.ACTION_DOWN,
+                                        KeyEvent.KEYCODE_BACK
+                                    )
+                                )
+                                context.dispatchKeyEvent(
+                                    KeyEvent(
+                                        KeyEvent.ACTION_UP,
+                                        KeyEvent.KEYCODE_BACK
+                                    )
+                                )
                             },
                         painter = painterResource(id = R.drawable.close_button),
                         contentDescription = ""

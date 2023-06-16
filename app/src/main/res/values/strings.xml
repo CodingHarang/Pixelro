@@ -136,6 +136,7 @@
     <string name="adjust_distance_30cm">str</string>
     <string name="amsler_grid_test_description">str</string>
     <string name="mchart_test_description">str</string>
+    <string name="survey_title">survey_title</string>
     <!--    <string name=""></string>-->
     <!--    <string name=""></string>-->
 </resources>

@@ -42,6 +42,11 @@ import com.pixelro.nenoonkiosk.data.AccommodationData
 import com.pixelro.nenoonkiosk.data.MacularDisorderType
 import com.pixelro.nenoonkiosk.data.SharedPreferencesManager
 import com.pixelro.nenoonkiosk.data.StringProvider
+import com.pixelro.nenoonkiosk.data.SurveyAge
+import com.pixelro.nenoonkiosk.data.SurveyDiabetes
+import com.pixelro.nenoonkiosk.data.SurveyGlass
+import com.pixelro.nenoonkiosk.data.SurveySex
+import com.pixelro.nenoonkiosk.data.SurveySurgery
 import com.pixelro.nenoonkiosk.data.TestType
 import com.pixelro.nenoonkiosk.data.VisionDisorderType
 import kotlinx.coroutines.delay
@@ -60,7 +65,7 @@ class NenoonViewModel(application: Application) : AndroidViewModel(application) 
             while(true) {
                 if(_isResumed.value) {
                     // Check screen saver timer
-                    _screenSaverTimer.update { _screenSaverTimer.value - 1 }
+                    _screenSaverTimer.update { _screenSaverTimer.value - 0 }
                     Log.e("screenSaver", "${_screenSaverTimer.value}")
                     if(_screenSaverTimer.value < 0) {
                         _isScreenSaverOn.update { true }
@@ -73,6 +78,42 @@ class NenoonViewModel(application: Application) : AndroidViewModel(application) 
                 delay(1000)
             }
         }
+    }
+
+    // Survey
+    private val _surveyAge = MutableStateFlow(SurveyAge.None)
+    val surveyAge: StateFlow<SurveyAge> = _surveyAge
+    private val _surveySex = MutableStateFlow(SurveySex.None)
+    val surveySex: StateFlow<SurveySex> = _surveySex
+    private val _surveyGlass = MutableStateFlow(SurveyGlass.None)
+    val surveyGlass: StateFlow<SurveyGlass> = _surveyGlass
+    private val _surveySurgery = MutableStateFlow(SurveySurgery.None)
+    val surveySurgery: StateFlow<SurveySurgery> = _surveySurgery
+    private val _surveyDiabetes = MutableStateFlow(SurveyDiabetes.None)
+    val surveyDiabetes: StateFlow<SurveyDiabetes> = _surveyDiabetes
+
+    fun updateSurveyAge(type: SurveyAge) {
+        _surveyAge.update { type }
+    }
+
+    fun updateSurveySex(type: SurveySex) {
+        _surveySex.update { type }
+    }
+
+    fun updateSurveyGlass(type: SurveyGlass) {
+        _surveyGlass.update { type }
+    }
+
+    fun updateSurveySurgery(type: SurveySurgery) {
+        _surveySurgery.update { type }
+    }
+
+    fun updateSurveyDiabetes(type: SurveyDiabetes) {
+        _surveyDiabetes.update { type }
+    }
+
+    fun submitSurvey() {
+        
     }
 
     // Settings
@@ -447,7 +488,7 @@ class NenoonViewModel(application: Application) : AndroidViewModel(application) 
 
     private fun showSplashScreen() {
         viewModelScope.launch {
-            delay(3000)
+            delay(0)
             _isShowingSplashScreen.update { false }
         }
     }
@@ -778,6 +819,7 @@ class NenoonViewModel(application: Application) : AndroidViewModel(application) 
         _printString.update {
             _leftSelectedArea.value.toString()
         }
+        macularDistortedTypeVisibleState.targetState = false
     }
 
     fun updateRightSelectedArea() {

@@ -1,6 +1,7 @@
 package com.pixelro.nenoonkiosk.data
 
 object GlobalConstants {
+    const val ROUTE_SURVEY = "Servey"
     const val ROUTE_TEST_LIST = "MainTestList"
     const val ROUTE_MAIN_TEST_LIST = "MainTestList"
     const val ROUTE_VISUAL_ACUITY_TEST_LIST = "VisualAcuityTestList"

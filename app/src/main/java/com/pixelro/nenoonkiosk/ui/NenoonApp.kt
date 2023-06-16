@@ -58,6 +58,16 @@ fun NenoonApp(
                     startDestination = GlobalConstants.ROUTE_TEST_LIST,
                     contentAlignment = Alignment.TopCenter
                 ) {
+                    composable(
+                        route = GlobalConstants.ROUTE_SURVEY,
+                        enterTransition = { AnimationProvider.enterTransition },
+                        exitTransition = { AnimationProvider.exitTransition }
+                    ) {
+                        SurveyScreen(
+                            viewModel = viewModel
+                        )
+                    }
+
                     // 검사 선택 화면
                     composable(
                         route = GlobalConstants.ROUTE_TEST_LIST,

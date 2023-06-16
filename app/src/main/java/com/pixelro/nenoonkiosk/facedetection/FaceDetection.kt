@@ -81,6 +81,7 @@ fun FaceDetection(
 fun FaceDetectionScreenContent(
     viewModel: NenoonViewModel
 ) {
+//    Log.e("androidView1", "androidView1")
     val lifecycleOwner = LocalLifecycleOwner.current
     val context = LocalContext.current
     val cameraProviderFuture = remember { ProcessCameraProvider.getInstance(context) }
@@ -111,7 +112,6 @@ fun FaceDetectionScreenContent(
                 cameraProvider.bindToLifecycle(
                     lifecycleOwner, cameraSelector, imageAnalysis
                 )
-
             }, executor)
         }
     }
@@ -127,6 +127,7 @@ fun FaceDetectionScreenContentWithPreview(
     val cameraProviderFuture = remember { ProcessCameraProvider.getInstance(context) }
     if(visibleState.targetState) {
         Surface() {
+//            Log.e("androidView2", "androidView2")
             AndroidView(
                 modifier = Modifier
                     .height(740.dp),
@@ -165,8 +166,3 @@ fun FaceDetectionScreenContentWithPreview(
         }
     }
 }
-
-private val fadeInAnimationSpec = tween<Float>(
-    durationMillis = 300,
-    easing = LinearOutSlowInEasing
-)

@@ -70,7 +70,6 @@ fun MeasuringDistanceContent(
         enter = AnimationProvider.enterTransition,
         exit = AnimationProvider.exitTransition
     ) {
-        var hide = remember { mutableStateOf(false) }
 
         Column(
             modifier = Modifier,
@@ -234,7 +233,6 @@ fun MeasuringDistanceContent(
                             )
                             .clickable {
                                 viewModel.updateTestDistance()
-                                hide.value = true
                             }
                             .padding(20.dp),
                         contentAlignment = Alignment.Center

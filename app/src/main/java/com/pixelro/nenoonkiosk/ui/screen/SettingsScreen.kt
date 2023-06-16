@@ -18,6 +18,7 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
@@ -51,22 +52,26 @@ fun SettingsScreen(
         modifier = Modifier
             .fillMaxSize()
     ) {
+        Box(
+            modifier = Modifier
+                .padding(top = (viewModel.statusBarPadding.collectAsState().value + 20).dp, bottom = 20.dp)
+                .fillMaxWidth()
+                .height(40.dp),
+            contentAlignment = Alignment.Center
+        ) {
+            Text(
+                textAlign = TextAlign.Center,
+                text = StringProvider.getString(R.string.settings_title),
+                fontSize = 24.sp,
+                fontWeight = FontWeight.Medium
+            )
+        }
+
+
         Spacer(
             modifier = Modifier
-                .height(20.dp)
-        )
-        Text(
-            modifier = Modifier
                 .fillMaxWidth()
-                .padding(bottom = 20.dp),
-            textAlign = TextAlign.Center,
-            text = StringProvider.getString(R.string.settings_title),
-            fontSize = 30.sp
-        )
-        Spacer(
-            modifier = Modifier
-                .fillMaxWidth()
-                .height(2.dp)
+                .height(1.dp)
                 .background(
                     color = Color(0xffdddddd)
                 )

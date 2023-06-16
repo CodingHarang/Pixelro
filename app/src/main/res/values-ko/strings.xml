@@ -135,4 +135,5 @@
     <string name="adjust_distance_30cm">30cm로 조정해주세요</string>
     <string name="amsler_grid_test_description">가운데 검은 점을 바라보고\n이상이 있거나 왜곡되어 보이는 부분을 선택해주세요</string>
     <string name="mchart_test_description">아래의 선이 곧은 선으로 보이는지\n휘어진 선으로 보이는지 선택해주세요</string>
+    <string name="survey_title">초기 문진표 작성</string>
 </resources>
