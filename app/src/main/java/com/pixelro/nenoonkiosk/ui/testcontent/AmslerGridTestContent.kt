@@ -98,7 +98,8 @@ fun AmslerGridContent(
         exit = AnimationProvider.exitTransition
     ) {
         FaceDetection(
-            viewModel = viewModel
+            viewModel = viewModel,
+            visibleState = viewModel.measuringDistanceContentVisibleState
         )
         DisposableEffect(true) {
             onDispose() {

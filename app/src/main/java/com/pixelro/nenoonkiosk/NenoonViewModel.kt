@@ -66,7 +66,7 @@ class NenoonViewModel(application: Application) : AndroidViewModel(application) 
                 if(_isResumed.value) {
                     // Check screen saver timer
                     _screenSaverTimer.update { _screenSaverTimer.value - 0 }
-                    Log.e("screenSaver", "${_screenSaverTimer.value}")
+//                    Log.e("screenSaver", "${_screenSaverTimer.value}")
                     if(_screenSaverTimer.value < 0) {
                         _isScreenSaverOn.update { true }
                     }
@@ -113,7 +113,7 @@ class NenoonViewModel(application: Application) : AndroidViewModel(application) 
     }
 
     fun submitSurvey() {
-        
+
     }
 
     // Settings
@@ -488,7 +488,7 @@ class NenoonViewModel(application: Application) : AndroidViewModel(application) 
 
     private fun showSplashScreen() {
         viewModelScope.launch {
-            delay(0)
+            delay(3000)
             _isShowingSplashScreen.update { false }
         }
     }
@@ -557,6 +557,7 @@ class NenoonViewModel(application: Application) : AndroidViewModel(application) 
 //        _bitmap.update {
 //        Bitmap.createBitmap(100, 100, Bitmap.Config.ARGB_8888)
 //    }
+        measuringDistanceContentVisibleState.targetState = false
         firstItemVisibleState.targetState = true
         secondItemVisibleState.targetState = false
         thirdItemVisibleState.targetState = false
@@ -635,7 +636,9 @@ class NenoonViewModel(application: Application) : AndroidViewModel(application) 
         idx: Int,
         toResultScreen: () -> Unit
     ) {
+//        Log.e("", "start: ${_sightLevel.value}")
         var isEnd = false
+        // choose number
         if(idx != 3) {
             // if correct
             if(ansNum.value == _randomList.value[idx]) {
@@ -648,13 +651,15 @@ class NenoonViewModel(application: Application) : AndroidViewModel(application) 
                         moveToRightVisualAcuityTest(toResultScreen)
                     } else {
                         _sightLevel.update { it + 1 }
+//                        if(_sightLevel.value > 10) moveToRightVisualAcuityTest(toResultScreen)
                     }
                 }
             } // if wrong
             else {
                 sightHistory[_sightLevel.value] = Pair(sightHistory[_sightLevel.value]!!.first, sightHistory[_sightLevel.value]!!.second + 1)
             }
-        } else {
+        } // choose question mark
+        else {
             sightHistory[_sightLevel.value] = Pair(sightHistory[_sightLevel.value]!!.first, sightHistory[_sightLevel.value]!!.second + 1)
         }
 
@@ -689,6 +694,8 @@ class NenoonViewModel(application: Application) : AndroidViewModel(application) 
             }
         }
         if(!isEnd) updateRandomList()
+//        Log.e("", "end: ${_sightLevel.value}")
+        Log.e("", "${sightHistory[0]}\n${sightHistory[1]}\n${sightHistory[2]}\n${sightHistory[3]}\n${sightHistory[4]}\n${sightHistory[5]}\n${sightHistory[6]}\n${sightHistory[7]}\n${sightHistory[8]}\n${sightHistory[9]}\n")
     }
 
     private fun moveToRightVisualAcuityTest(

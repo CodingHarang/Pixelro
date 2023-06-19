@@ -60,7 +60,8 @@ fun FaceDetectionWithPreview(
 @OptIn(ExperimentalPermissionsApi::class)
 @Composable
 fun FaceDetection(
-    viewModel: NenoonViewModel
+    viewModel: NenoonViewModel,
+    visibleState: MutableTransitionState<Boolean>
 ) {
 
     val permissionState = rememberMultiplePermissionsState(
@@ -73,46 +74,49 @@ fun FaceDetection(
         permissionState.launchMultiplePermissionRequest()
     }
     FaceDetectionScreenContent(
-        viewModel = viewModel
+        viewModel = viewModel,
+        visibleState = visibleState
     )
 }
 
 @Composable
 fun FaceDetectionScreenContent(
-    viewModel: NenoonViewModel
+    viewModel: NenoonViewModel,
+    visibleState: MutableTransitionState<Boolean>
 ) {
-//    Log.e("androidView1", "androidView1")
-    val lifecycleOwner = LocalLifecycleOwner.current
-    val context = LocalContext.current
-    val cameraProviderFuture = remember { ProcessCameraProvider.getInstance(context) }
-    Box() {
-        LaunchedEffect(true) {
-            val executor = ContextCompat.getMainExecutor(context)
-            cameraProviderFuture.addListener({
-                val cameraProvider = cameraProviderFuture.get()
+    if(!visibleState.targetState) {
+//        Log.e("androidView1", "androidView1")
+        val lifecycleOwner = LocalLifecycleOwner.current
+        val context = LocalContext.current
+        val cameraProviderFuture = remember { ProcessCameraProvider.getInstance(context) }
+        Box() {
+            LaunchedEffect(true) {
+                val executor = ContextCompat.getMainExecutor(context)
+                cameraProviderFuture.addListener({
+                    val cameraProvider = cameraProviderFuture.get()
 
-                val cameraSelector = CameraSelector.Builder()
-                    .requireLensFacing(CameraSelector.LENS_FACING_FRONT).build()
-                val imageAnalysis = ImageAnalysis.Builder()
-                    .setTargetResolution(Size(1200, 1200))
-                    .setBackpressureStrategy(ImageAnalysis.STRATEGY_KEEP_ONLY_LATEST)
-                    .setImageQueueDepth(5).build().apply {
-                        setAnalyzer(
-                            executor, MyFaceAnalyzer(
-                                viewModel::updateFaceDetectionData,
-                                viewModel::updateFaceContourData,
-                                viewModel::updateInputImageSize,
-                                viewModel::updateEyeOpenProbability,
+                    val cameraSelector = CameraSelector.Builder()
+                        .requireLensFacing(CameraSelector.LENS_FACING_FRONT).build()
+                    val imageAnalysis = ImageAnalysis.Builder()
+                        .setTargetResolution(Size(1200, 1200))
+                        .setBackpressureStrategy(ImageAnalysis.STRATEGY_KEEP_ONLY_LATEST)
+                        .setImageQueueDepth(5).build().apply {
+                            setAnalyzer(
+                                executor, MyFaceAnalyzer(
+                                    viewModel::updateFaceDetectionData,
+                                    viewModel::updateFaceContourData,
+                                    viewModel::updateInputImageSize,
+                                    viewModel::updateEyeOpenProbability,
 //                                viewModel::updateBitmap
+                                )
                             )
-                        )
-                    }
-
-                cameraProvider.unbindAll()
-                cameraProvider.bindToLifecycle(
-                    lifecycleOwner, cameraSelector, imageAnalysis
-                )
-            }, executor)
+                        }
+                    cameraProvider.unbindAll()
+                    cameraProvider.bindToLifecycle(
+                        lifecycleOwner, cameraSelector, imageAnalysis
+                    )
+                }, executor)
+            }
         }
     }
 }
@@ -122,12 +126,12 @@ fun FaceDetectionScreenContentWithPreview(
     viewModel: NenoonViewModel,
     visibleState: MutableTransitionState<Boolean>
 ) {
-    val lifecycleOwner = LocalLifecycleOwner.current
-    val context = LocalContext.current
-    val cameraProviderFuture = remember { ProcessCameraProvider.getInstance(context) }
     if(visibleState.targetState) {
+        val lifecycleOwner = LocalLifecycleOwner.current
+        val context = LocalContext.current
+        val cameraProviderFuture = remember { ProcessCameraProvider.getInstance(context) }
         Surface() {
-//            Log.e("androidView2", "androidView2")
+            Log.e("androidView2", "androidView2")
             AndroidView(
                 modifier = Modifier
                     .height(740.dp),

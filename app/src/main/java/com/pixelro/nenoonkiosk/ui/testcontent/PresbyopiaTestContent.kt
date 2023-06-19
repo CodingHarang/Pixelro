@@ -45,7 +45,8 @@ fun PresbyopiaTestContent(
     val secondVisibleState = viewModel.secondItemVisibleState
     val thirdVisibleState = viewModel.thirdItemVisibleState
     FaceDetection(
-        viewModel = viewModel
+        viewModel = viewModel,
+        visibleState = viewModel.measuringDistanceContentVisibleState
     )
     Text(
         modifier = Modifier

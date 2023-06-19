@@ -102,7 +102,8 @@ fun MChartContent(
         exit = AnimationProvider.exitTransition
     ) {
         FaceDetection(
-            viewModel = viewModel
+            viewModel = viewModel,
+            visibleState = viewModel.measuringDistanceContentVisibleState
         )
         val isLeftEye = viewModel.isLeftEye.collectAsState().value
         val isVertical = viewModel.isVertical.collectAsState().value

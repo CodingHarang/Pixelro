@@ -45,7 +45,8 @@ fun VisualAcuityTestCommonContent(
         exit = AnimationProvider.exitTransition
     ) {
         FaceDetection(
-            viewModel = viewModel
+            viewModel = viewModel,
+            visibleState = viewModel.measuringDistanceContentVisibleState
         )
         VisualAcuityTestContent(
             viewModel = viewModel,
