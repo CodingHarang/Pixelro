@@ -72,6 +72,7 @@ class MyFaceAnalyzer(
                     val rotZ = face.headEulerAngleZ
                     val leftEyePosition = face.getLandmark(FaceLandmark.LEFT_EYE)?.position
                     val rightEyePosition = face.getLandmark(FaceLandmark.RIGHT_EYE)?.position
+//                    Log.e("", "${leftEyePosition!!.x}, ${leftEyePosition.y}, ${rightEyePosition!!.x}, ${rightEyePosition.y}")
                     val leftEyeOpenProbability = face.leftEyeOpenProbability
                     val rightEyeOpenProbability = face.rightEyeOpenProbability
 //                    Log.e("rotX, rotY, rotZ, rightEyePosition, leftEyePosition", "$rotX $rotY  $rotZ, $rightEyePosition $leftEyePosition ${image.width.toFloat()} ${image.height.toFloat()}")
