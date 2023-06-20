@@ -42,16 +42,6 @@ import java.util.Locale
 class MainActivity : ComponentActivity() {
 
     private val viewModel: NenoonViewModel by viewModels()
-//    private val settingResultRequest = registerForActivityResult(
-//        ActivityResultContracts.StartIntentSenderForResult()
-//    ) { activityResult ->
-//        if (activityResult.resultCode == RESULT_OK)
-//            Log.d("appDebug", "Accepted")
-//        else {
-//            Log.d("appDebug", "Denied")
-//        }
-//        isChecking = true
-//    }
 
     override fun onTouchEvent(event: MotionEvent?): Boolean {
         viewModel.resetScreenSaverTimer()
