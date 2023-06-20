@@ -65,7 +65,7 @@ class NenoonViewModel(application: Application) : AndroidViewModel(application) 
             while(true) {
                 if(_isResumed.value) {
                     // Check screen saver timer
-                    _screenSaverTimer.update { _screenSaverTimer.value - 0 }
+                    _screenSaverTimer.update { _screenSaverTimer.value - 1 }
 //                    Log.e("screenSaver", "${_screenSaverTimer.value}")
                     if(_screenSaverTimer.value < 0) {
                         _isScreenSaverOn.update { true }
@@ -780,8 +780,8 @@ class NenoonViewModel(application: Application) : AndroidViewModel(application) 
                 VisionDisorderType.Hyperopia -> "원시"
                 else -> "난시"
             }
-            "${_leftEyeSightValue.value.toFloat() / 10} $leftEyeSighted," +
-            "${_rightEyeSightValue.value.toFloat() / 10} $rightEyeSighted"
+            "${_leftEyeSightValue.value.toFloat() / 10}," +
+            "${_rightEyeSightValue.value.toFloat() / 10}"
         }
     }
 
@@ -1026,13 +1026,17 @@ class NenoonViewModel(application: Application) : AndroidViewModel(application) 
 //        _bitmap.update {
 //            Bitmap.createBitmap(100, 100, Bitmap.Config.ARGB_8888)
 //        }
-        _isVertical.update { true }
-        _currentLevel.update { 0 }
-        _mChartResult.update { listOf() }
-        measuringDistanceContentVisibleState.targetState = true
-        coveredEyeCheckingContentVisibleState.targetState = false
-        mChartContentVisibleState.targetState = false
-        _isLeftEye.update { true }
+        viewModelScope.launch {
+            delay(700)
+            _isVertical.update { true }
+            _currentLevel.update { 0 }
+            _mChartResult.update { listOf() }
+            measuringDistanceContentVisibleState.targetState = true
+            coveredEyeCheckingContentVisibleState.targetState = false
+            mChartContentVisibleState.targetState = false
+            _isLeftEye.update { true }
+            _mChartImageId.update { R.drawable.mchart_0_0 }
+        }
     }
 
     fun toNextMChartTest() {

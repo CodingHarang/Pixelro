@@ -415,8 +415,8 @@ fun textAsBitmap(
             paint.typeface = Typeface.DEFAULT
 
             paint.textAlign = Paint.Align.LEFT
-            canvas.drawText(printName, 0f, baseline + 320f, paint)
-            canvas.drawText("☎0000-0000", 0f, baseline + 360f, paint)
+//            canvas.drawText(printName, 0f, baseline + 320f, paint)
+//            canvas.drawText("☎0000-0000", 0f, baseline + 360f, paint)
             return image!!
         }
         TestType.ShortDistanceVisualAcuity -> {
@@ -438,8 +438,8 @@ fun textAsBitmap(
 
             paint.textAlign = Paint.Align.LEFT
             canvas.drawLine(300f, 100f, 300f, 300f, paint)
-            canvas.drawText(printName, 0f, baseline + 320f, paint)
-            canvas.drawText("☎0000-0000", 0f, baseline + 360f, paint)
+//            canvas.drawText(printName, 0f, baseline + 320f, paint)
+//            canvas.drawText("☎0000-0000", 0f, baseline + 360f, paint)
             return image!!
         }
         TestType.LongDistanceVisualAcuity -> {
@@ -461,8 +461,8 @@ fun textAsBitmap(
 
             paint.textAlign = Paint.Align.LEFT
             canvas.drawLine(300f, 100f, 300f, 300f, paint)
-            canvas.drawText(printName, 0f, baseline + 320f, paint)
-            canvas.drawText("☎0000-0000", 0f, baseline + 360f, paint)
+//            canvas.drawText(printName, 0f, baseline + 320f, paint)
+//            canvas.drawText("☎0000-0000", 0f, baseline + 360f, paint)
             return image!!
         }
         TestType.ChildrenVisualAcuity -> {
@@ -484,8 +484,8 @@ fun textAsBitmap(
 
             paint.textAlign = Paint.Align.LEFT
             canvas.drawLine(300f, 100f, 300f, 300f, paint)
-            canvas.drawText(printName, 0f, baseline + 320f, paint)
-            canvas.drawText("☎0000-0000", 0f, baseline + 360f, paint)
+//            canvas.drawText(printName, 0f, baseline + 320f, paint)
+//            canvas.drawText("☎0000-0000", 0f, baseline + 360f, paint)
             return image!!
         }
         TestType.AmslerGrid -> {
@@ -525,59 +525,60 @@ fun textAsBitmap(
 
             paint.style = Paint.Style.FILL
             paint.typeface = Typeface.DEFAULT_BOLD
-            if(printString.split(",")[0] == "true") {
+            Log.e("", printString.split(",")[0])
+            if(printString.split(",")[0] != "Normal") {
                 canvas.drawText("이상", 70f, baseline + 160f, paint)
             }
-            if(printString.split(",")[1] == "true") {
+            if(printString.split(",")[1] != "Normal") {
                 canvas.drawText("이상", 150f, baseline + 160f, paint)
             }
-            if(printString.split(",")[2] == "true") {
+            if(printString.split(",")[2] != "Normal") {
                 canvas.drawText("이상", 230f, baseline + 160f, paint)
             }
-            if(printString.split(",")[3] == "true") {
+            if(printString.split(",")[3] != "Normal") {
                 canvas.drawText("이상", 70f, baseline + 240f, paint)
             }
-            if(printString.split(",")[4] == "true") {
+            if(printString.split(",")[4] != "Normal") {
                 canvas.drawText("이상", 150f, baseline + 240f, paint)
             }
-            if(printString.split(",")[5] == "true") {
+            if(printString.split(",")[5] != "Normal") {
                 canvas.drawText("이상", 230f, baseline + 240f, paint)
             }
-            if(printString.split(",")[6] == "true") {
+            if(printString.split(",")[6] != "Normal") {
                 canvas.drawText("이상", 70f, baseline + 320f, paint)
             }
-            if(printString.split(",")[7] == "true") {
+            if(printString.split(",")[7] != "Normal") {
                 canvas.drawText("이상", 150f, baseline + 320f, paint)
             }
-            if(printString.split(",")[8] == "true") {
+            if(printString.split(",")[8] != "Normal") {
                 canvas.drawText("이상", 230f, baseline + 320f, paint)
             }
 
-            if(printString.split(",")[9] == "true") {
+            if(printString.split(",")[9] != "Normal") {
                 canvas.drawText("이상", 370f, baseline + 160f, paint)
             }
-            if(printString.split(",")[10] == "true") {
+            if(printString.split(",")[10] != "Normal") {
                 canvas.drawText("이상", 450f, baseline + 160f, paint)
             }
-            if(printString.split(",")[11] == "true") {
+            if(printString.split(",")[11] != "Normal") {
                 canvas.drawText("이상", 530f, baseline + 160f, paint)
             }
-            if(printString.split(",")[12] == "true") {
+            if(printString.split(",")[12] != "Normal") {
                 canvas.drawText("이상", 370f, baseline + 240f, paint)
             }
-            if(printString.split(",")[13] == "true") {
+            if(printString.split(",")[13] != "Normal") {
                 canvas.drawText("이상", 450f, baseline + 240f, paint)
             }
-            if(printString.split(",")[14] == "true") {
+            if(printString.split(",")[14] != "Normal") {
                 canvas.drawText("이상", 530f, baseline + 240f, paint)
             }
-            if(printString.split(",")[15] == "true") {
+            if(printString.split(",")[15] != "Normal") {
                 canvas.drawText("이상", 370f, baseline + 320f, paint)
             }
-            if(printString.split(",")[16] == "true") {
+            if(printString.split(",")[16] != "Normal") {
                 canvas.drawText("이상", 450f, baseline + 320f, paint)
             }
-            if(printString.split(",")[17] == "true") {
+            if(printString.split(",")[17] != "Normal") {
                 canvas.drawText("이상", 530f, baseline + 320f, paint)
             }
 //            canvas.drawText("이상", 450f, baseline + 320f, paint)
@@ -586,8 +587,8 @@ fun textAsBitmap(
             paint.textAlign = Paint.Align.LEFT
             paint.strokeWidth = 1f
             canvas.drawLine(300f, 100f, 300f, 400f, paint)
-            canvas.drawText(printName, 0f, baseline + 420f, paint)
-            canvas.drawText("☎0000-0000", 0f, baseline + 460f, paint)
+//            canvas.drawText(printName, 0f, baseline + 420f, paint)
+//            canvas.drawText("☎0000-0000", 0f, baseline + 460f, paint)
             return image!!
         }
         TestType.MChart -> {
@@ -623,8 +624,8 @@ fun textAsBitmap(
 
             paint.textAlign = Paint.Align.LEFT
             canvas.drawLine(300f, 100f, 300f, 300f, paint)
-            canvas.drawText(printName, 0f, baseline + 320f, paint)
-            canvas.drawText("☎0000-0000", 0f, baseline + 360f, paint)
+//            canvas.drawText(printName, 0f, baseline + 320f, paint)
+//            canvas.drawText("☎0000-0000", 0f, baseline + 360f, paint)
             return image!!
         }
         else -> {

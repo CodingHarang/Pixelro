@@ -34,11 +34,13 @@ import com.google.accompanist.systemuicontroller.rememberSystemUiController
 import com.pixelro.nenoonkiosk.data.SharedPreferencesManager
 import com.pixelro.nenoonkiosk.ui.NenoonApp
 import com.pixelro.nenoonkiosk.ui.theme.NenoonKioskTheme
+import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import java.util.Locale
 
 
+@AndroidEntryPoint
 class MainActivity : ComponentActivity() {
 
     private val viewModel: NenoonViewModel by viewModels()
