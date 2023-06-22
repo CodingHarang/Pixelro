@@ -1,14 +1,11 @@
 package com.pixelro.nenoonkiosk
 
 import android.Manifest
-import android.app.Application
-import android.bluetooth.BluetoothAdapter
+import android.annotation.SuppressLint
 import android.bluetooth.BluetoothManager
 import android.content.Context
 import android.content.IntentSender
 import android.content.pm.PackageManager
-import android.graphics.Bitmap
-import android.graphics.BitmapFactory
 import android.graphics.PointF
 import android.location.LocationManager
 import android.net.Uri
@@ -16,16 +13,10 @@ import android.provider.Settings
 import android.util.Log
 import android.util.SizeF
 import androidx.compose.animation.core.MutableTransitionState
-import androidx.compose.animation.core.TweenSpec
-import androidx.compose.animation.fadeIn
-import androidx.compose.animation.fadeOut
-import androidx.compose.animation.slideIn
-import androidx.compose.animation.slideOut
 import androidx.compose.ui.geometry.Offset
-import androidx.compose.ui.unit.IntOffset
 import androidx.core.content.ContextCompat
 import androidx.core.content.ContextCompat.getSystemService
-import androidx.lifecycle.AndroidViewModel
+import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import androidx.media3.common.MediaItem
 import androidx.media3.common.Player
@@ -49,6 +40,8 @@ import com.pixelro.nenoonkiosk.data.SurveySex
 import com.pixelro.nenoonkiosk.data.SurveySurgery
 import com.pixelro.nenoonkiosk.data.TestType
 import com.pixelro.nenoonkiosk.data.VisionDisorderType
+import dagger.hilt.android.lifecycle.HiltViewModel
+import dagger.hilt.android.qualifiers.ApplicationContext
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -56,9 +49,14 @@ import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import java.io.File
 import java.util.Locale
+import javax.inject.Inject
 import kotlin.math.roundToInt
 
-class NenoonViewModel(application: Application) : AndroidViewModel(application) {
+@HiltViewModel
+class NenoonViewModel @SuppressLint("StaticFieldLeak")
+@Inject constructor(
+    @ApplicationContext private val context: Context
+) : ViewModel() {
 
     private fun checkBackgroundStatus() {
         viewModelScope.launch {
@@ -126,14 +124,14 @@ class NenoonViewModel(application: Application) : AndroidViewModel(application) 
 
     fun updateLanguage(language: String) {
         SharedPreferencesManager.putString("language", language)
-        getApplication<Application>().applicationContext.resources.configuration.setLocale(Locale(language))
+        context.resources.configuration.setLocale(Locale(language))
         _isLanguageSelectDialogShowing.update { false }
     }
 
     // Screen Saver
     private val _isResumed = MutableStateFlow(false)
     private val _isPaused = MutableStateFlow(false)
-    val exoPlayer = ExoPlayer.Builder(application.applicationContext).build()
+    val exoPlayer = ExoPlayer.Builder(context).build()
     private val _screenSaverTimer = MutableStateFlow(30)
     private val _timeValue = MutableStateFlow(30)
 //    val screenSaverTimer: StateFlow<Int> = _screenSaverTimer
@@ -383,7 +381,7 @@ class NenoonViewModel(application: Application) : AndroidViewModel(application) 
     val navigationBarPadding: StateFlow<Int> = _navigationBarPadding
 
     fun updateSystemBarsPadding(statusBar: Float, navigationBar: Float) {
-        _statusBarPadding.update { (statusBar / getApplication<Application>().resources.displayMetrics.density).toInt() }
+        _statusBarPadding.update { (statusBar / context.resources.displayMetrics.density).toInt() }
         _navigationBarPadding.update { navigationBar.toInt() }
     }
 
@@ -404,22 +402,22 @@ class NenoonViewModel(application: Application) : AndroidViewModel(application) 
     val resolvableApiException: StateFlow<ResolvableApiException> = _resolvableApiException
 
     private fun checkPermissions() {
-        if(ContextCompat.checkSelfPermission(getApplication(), Manifest.permission.BLUETOOTH_SCAN) == PackageManager.PERMISSION_GRANTED
-            && ContextCompat.checkSelfPermission(getApplication(), Manifest.permission.BLUETOOTH_CONNECT) == PackageManager.PERMISSION_GRANTED
-            && ContextCompat.checkSelfPermission(getApplication(), Manifest.permission.BLUETOOTH) == PackageManager.PERMISSION_GRANTED
-            && ContextCompat.checkSelfPermission(getApplication(), Manifest.permission.BLUETOOTH_ADMIN) == PackageManager.PERMISSION_GRANTED
-            && ContextCompat.checkSelfPermission(getApplication(), Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED
-            && ContextCompat.checkSelfPermission(getApplication(), Manifest.permission.ACCESS_COARSE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
+        if(ContextCompat.checkSelfPermission(context, Manifest.permission.BLUETOOTH_SCAN) == PackageManager.PERMISSION_GRANTED
+            && ContextCompat.checkSelfPermission(context, Manifest.permission.BLUETOOTH_CONNECT) == PackageManager.PERMISSION_GRANTED
+            && ContextCompat.checkSelfPermission(context, Manifest.permission.BLUETOOTH) == PackageManager.PERMISSION_GRANTED
+            && ContextCompat.checkSelfPermission(context, Manifest.permission.BLUETOOTH_ADMIN) == PackageManager.PERMISSION_GRANTED
+            && ContextCompat.checkSelfPermission(context, Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED
+            && ContextCompat.checkSelfPermission(context, Manifest.permission.ACCESS_COARSE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
             _isBluetoothPermissionsGranted.update { true }
         } else {
             _isBluetoothPermissionsGranted.update { false }
         }
-        if(ContextCompat.checkSelfPermission(getApplication(), Manifest.permission.CAMERA) == PackageManager.PERMISSION_GRANTED) {
+        if(ContextCompat.checkSelfPermission(context, Manifest.permission.CAMERA) == PackageManager.PERMISSION_GRANTED) {
             _isCameraPermissionGranted.update { true }
         } else {
             _isCameraPermissionGranted.update { false }
         }
-        if(Settings.System.canWrite(getApplication())) {
+        if(Settings.System.canWrite(context)) {
             _isWriteSettingsPermissionGranted.update { true }
         } else {
             _isWriteSettingsPermissionGranted.update { false }
@@ -433,12 +431,12 @@ class NenoonViewModel(application: Application) : AndroidViewModel(application) 
     }
 
     private fun checkIsLocationOn() {
-        val locationManager = getSystemService(getApplication(), LocationManager::class.java) as LocationManager
+        val locationManager = getSystemService(context, LocationManager::class.java) as LocationManager
 
         if(!locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER)) {
 
             val locationRequest: LocationRequest = LocationRequest.Builder(10000).build()
-            val client: SettingsClient = LocationServices.getSettingsClient(getApplication() as Context)
+            val client: SettingsClient = LocationServices.getSettingsClient(context as Context)
             val builder: LocationSettingsRequest.Builder = LocationSettingsRequest
                 .Builder()
                 .addLocationRequest(locationRequest)
@@ -462,7 +460,7 @@ class NenoonViewModel(application: Application) : AndroidViewModel(application) 
     }
 
     private fun checkIsBluetoothOn() {
-        val bluetoothAdapter = (getApplication<Application>().getSystemService(Context.BLUETOOTH_SERVICE) as BluetoothManager).adapter
+        val bluetoothAdapter = (context.getSystemService(Context.BLUETOOTH_SERVICE) as BluetoothManager).adapter
         if(bluetoothAdapter.isEnabled) {
             _isBluetoothOn.update { true }
         } else {
