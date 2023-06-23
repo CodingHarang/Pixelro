@@ -40,6 +40,7 @@ import androidx.compose.ui.unit.sp
 import androidx.core.app.ActivityCompat
 import com.pixelro.nenoonkiosk.NenoonViewModel
 import com.pixelro.nenoonkiosk.R
+import com.pixelro.nenoonkiosk.data.GlobalValue
 
 @Composable
 fun PermissionRequestScreen(
@@ -133,7 +134,7 @@ fun PermissionRequestScreen(
     ) {
         Spacer(
             modifier = Modifier
-                .height((viewModel.statusBarPadding.collectAsState().value + 152).dp)
+                .height((GlobalValue.statusBarPadding + 152).dp)
         )
         Text(
             text = "앱 사용을 위해\n접근 권한 허용이 필요해요",

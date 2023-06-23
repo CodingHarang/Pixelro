@@ -1,9 +1,7 @@
 package com.pixelro.nenoonkiosk.ui.testcontent
 
-import android.util.Log
 import androidx.compose.animation.*
 import androidx.compose.animation.core.MutableTransitionState
-import androidx.compose.animation.core.tween
 import androidx.compose.foundation.Canvas
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
@@ -11,44 +9,48 @@ import androidx.compose.foundation.clickable
 import androidx.compose.foundation.gestures.detectTapGestures
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material.Slider
-import androidx.compose.material.SliderColors
-import androidx.compose.material.SliderDefaults
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.DisposableEffect
-import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.geometry.Offset
-import androidx.compose.ui.geometry.Size
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.input.pointer.pointerInput
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
-import androidx.compose.ui.unit.IntOffset
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.hilt.navigation.compose.hiltViewModel
 import com.pixelro.nenoonkiosk.NenoonViewModel
 import com.pixelro.nenoonkiosk.R
+import com.pixelro.nenoonkiosk.amslergrid.AmslerGridViewModel
 import com.pixelro.nenoonkiosk.data.AnimationProvider
-import com.pixelro.nenoonkiosk.data.MacularDisorderType
+import com.pixelro.nenoonkiosk.amslergrid.MacularDisorderType
+import com.pixelro.nenoonkiosk.data.GlobalValue
 import com.pixelro.nenoonkiosk.data.StringProvider
+import com.pixelro.nenoonkiosk.data.TestType
 import com.pixelro.nenoonkiosk.facedetection.FaceDetection
+import com.pixelro.nenoonkiosk.facedetection.FaceDetectionViewModel
 import kotlin.math.tan
 
 @Composable
 fun AmslerGridTestContent(
     toResultScreen: () -> Unit,
-    viewModel: NenoonViewModel
+    amslerGridViewModel: AmslerGridViewModel = hiltViewModel()
 ) {
-    val measuringDistanceContentVisibleState = viewModel.measuringDistanceContentVisibleState
-    val coveredEyeCheckingContentVisibleState = viewModel.coveredEyeCheckingContentVisibleState
-    val amslerGridContentVisibleState = viewModel.amslerGridContentVisibleState
-    val macularDistortedTypeVisibleState = viewModel.macularDistortedTypeVisibleState
+    FaceDetection()
+    val isMeasuringDistanceContentVisible = amslerGridViewModel.isMeasuringDistanceContentVisible.collectAsState().value
+    val isCoveredEyeCheckingContentVisible = amslerGridViewModel.isCoveredEyeCheckingContentVisible.collectAsState().value
+    val isAmslerGridContentVisible = amslerGridViewModel.isAmslerGridContentVisible.collectAsState().value
+    val isMacularDegenerationTypeVisible = amslerGridViewModel.isMacularDegenerationTypeVisible.collectAsState().value
+    val measuringDistanceContentVisibleState = MutableTransitionState(isMeasuringDistanceContentVisible)
+    val coveredEyeCheckingContentVisibleState = MutableTransitionState(isCoveredEyeCheckingContentVisible)
+    val amslerGridContentVisibleState = MutableTransitionState(isAmslerGridContentVisible)
+    val macularDistortedTypeVisibleState = MutableTransitionState(isMacularDegenerationTypeVisible)
 
     Column(
         modifier = Modifier
@@ -64,17 +66,20 @@ fun AmslerGridTestContent(
                 .fillMaxSize()
         ) {
             MeasuringDistanceContent(
-                viewModel = viewModel,
                 measuringDistanceContentVisibleState = measuringDistanceContentVisibleState,
-                nextVisibleState = coveredEyeCheckingContentVisibleState
+                toNextContent = {
+                    amslerGridViewModel.toCoveredEyeCheckingContent()
+                },
+                selectedTestType = TestType.AmslerGrid
             )
             CoveredEyeCheckingContent(
-                viewModel = viewModel,
                 coveredEyeCheckingContentVisibleState = coveredEyeCheckingContentVisibleState,
-                nextVisibleState = amslerGridContentVisibleState
+                toNextContent = {
+                    amslerGridViewModel.toAmslerGridContent()
+                },
+                amslerGridViewModel.isLeftEye.collectAsState().value
             )
             AmslerGridContent(
-                viewModel = viewModel,
                 amslerGridContentVisibleState = amslerGridContentVisibleState,
                 nextVisibleState = coveredEyeCheckingContentVisibleState,
                 macularDistortedTypeVisibleState = macularDistortedTypeVisibleState,
@@ -86,34 +91,28 @@ fun AmslerGridTestContent(
 
 @Composable
 fun AmslerGridContent(
-    viewModel: NenoonViewModel,
     amslerGridContentVisibleState: MutableTransitionState<Boolean>,
     nextVisibleState: MutableTransitionState<Boolean>,
     macularDistortedTypeVisibleState: MutableTransitionState<Boolean>,
-    toResultScreen: () -> Unit
+    toResultScreen: () -> Unit,
+    amslerGridViewModel: AmslerGridViewModel = hiltViewModel(),
+    faceDetectionViewModel: FaceDetectionViewModel = hiltViewModel()
 ) {
     AnimatedVisibility(
         visibleState = amslerGridContentVisibleState,
         enter = AnimationProvider.enterTransition,
         exit = AnimationProvider.exitTransition
     ) {
-        FaceDetection(
-            viewModel = viewModel,
-            visibleState = viewModel.measuringDistanceContentVisibleState
-        )
-        DisposableEffect(true) {
-            onDispose() {
-            }
-        }
+        FaceDetection()
         Column(
             modifier = Modifier
                 .fillMaxSize(),
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
-            val rotX = viewModel.rotX.collectAsState().value
-            val rotY = viewModel.rotY.collectAsState().value
-            val currentSelectedArea = viewModel.currentSelectedArea.collectAsState().value
-            val isLeft = viewModel.isLeftEye.collectAsState().value
+            val rotX = faceDetectionViewModel.rotX.collectAsState().value
+            val rotY = faceDetectionViewModel.rotY.collectAsState().value
+            val currentSelectedArea = amslerGridViewModel.currentSelectedArea.collectAsState().value
+            val isLeft = amslerGridViewModel.isLeftEye.collectAsState().value
 
             Text(
                 modifier = Modifier
@@ -183,7 +182,7 @@ fun AmslerGridContent(
                         .pointerInput(this) {
                             detectTapGestures(
                                 onPress = {
-                                    viewModel.updateCurrentSelectedPosition(it)
+                                    amslerGridViewModel.updateCurrentSelectedPosition(it)
                                 }
                             )
                         }
@@ -322,7 +321,7 @@ fun AmslerGridContent(
                             .height(200.dp)
                             .clickable {
                                 macularDistortedTypeVisibleState.targetState = false
-                                viewModel.updateCurrentSelectedArea(0)
+                                amslerGridViewModel.updateCurrentSelectedArea(0)
                             },
                         painter = painterResource(id = R.drawable.macular_distorted),
                         contentDescription = ""
@@ -334,7 +333,7 @@ fun AmslerGridContent(
                             .height(200.dp)
                             .clickable {
                                 macularDistortedTypeVisibleState.targetState = false
-                                viewModel.updateCurrentSelectedArea(1)
+                                amslerGridViewModel.updateCurrentSelectedArea(1)
                             },
                         painter = painterResource(id = R.drawable.macular_blacked),
                         contentDescription = ""
@@ -345,7 +344,7 @@ fun AmslerGridContent(
                             .height(200.dp)
                             .clickable {
                                 macularDistortedTypeVisibleState.targetState = false
-                                viewModel.updateCurrentSelectedArea(2)
+                                amslerGridViewModel.updateCurrentSelectedArea(2)
                             },
                         painter = painterResource(id = R.drawable.macular_whited),
                         contentDescription = ""
@@ -363,7 +362,7 @@ fun AmslerGridContent(
                         .padding(
                             start = 40.dp,
                             end = 40.dp,
-                            bottom = (viewModel.navigationBarPadding.collectAsState().value).dp
+                            bottom = GlobalValue.navigationBarPadding.dp
                         )
                         .fillMaxWidth()
                         .background(
@@ -372,12 +371,12 @@ fun AmslerGridContent(
                         )
                         .clickable {
                             if (isLeft) {
-                                viewModel.updateIsLeftEye(false)
-                                viewModel.updateLeftSelectedArea()
+                                amslerGridViewModel.updateIsLeftEye(false)
+                                amslerGridViewModel.updateLeftSelectedArea()
                                 amslerGridContentVisibleState.targetState = false
                                 nextVisibleState.targetState = true
                             } else {
-                                viewModel.updateRightSelectedArea()
+                                amslerGridViewModel.updateRightSelectedArea()
 //                                viewModel.updateIsCoveredEyeCheckingDone(false)
                                 toResultScreen()
                             }

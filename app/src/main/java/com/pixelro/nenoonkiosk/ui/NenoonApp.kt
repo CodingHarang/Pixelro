@@ -26,8 +26,7 @@ import com.pixelro.nenoonkiosk.ui.testcontent.ShortDistanceVisualAcuityTestConte
 @Composable
 fun NenoonApp(
     viewModel: NenoonViewModel,
-    mainNavController: NavHostController = rememberAnimatedNavController(),
-    subNavController: NavHostController = rememberAnimatedNavController()
+    mainNavController: NavHostController = rememberAnimatedNavController()
 ) {
     val selectedTest = viewModel.selectedTestType.collectAsState().value
     // Splash Screen
@@ -55,7 +54,7 @@ fun NenoonApp(
                     modifier = Modifier
                         .fillMaxSize(),
                     navController = mainNavController,
-                    startDestination = GlobalConstants.ROUTE_TEST_LIST,
+                    startDestination = GlobalConstants.ROUTE_SURVEY,
                     contentAlignment = Alignment.TopCenter
                 ) {
                     composable(
@@ -64,7 +63,8 @@ fun NenoonApp(
                         exitTransition = { AnimationProvider.exitTransition }
                     ) {
                         SurveyScreen(
-                            viewModel = viewModel
+                            viewModel = viewModel,
+                            toTestListScreen = { mainNavController.navigate(GlobalConstants.ROUTE_TEST_LIST) }
                         )
                     }
 
@@ -78,7 +78,7 @@ fun NenoonApp(
                             toPreDescriptionScreen = {
                                 mainNavController.popBackStack(GlobalConstants.ROUTE_TEST_LIST, false)
                                 when(selectedTest) {
-                                    TestType.Presbyopia -> viewModel.initializePresbyopiaTest()
+//                                    TestType.Presbyopia -> viewModel.initializePresbyopiaTest()
                                     TestType.ShortDistanceVisualAcuity -> viewModel.initializeVisualAcuityTest()
                                     TestType.LongDistanceVisualAcuity -> viewModel.initializeVisualAcuityTest()
                                     TestType.ChildrenVisualAcuity -> viewModel.initializeVisualAcuityTest()
@@ -90,7 +90,6 @@ fun NenoonApp(
                             toSettingsScreen = {
                                 mainNavController.navigate(GlobalConstants.ROUTE_SETTINGS)
                             },
-                            navController = subNavController,
                             viewModel = viewModel
                         )
                     }
@@ -113,7 +112,7 @@ fun NenoonApp(
                         exitTransition = { AnimationProvider.exitTransition }
                     ) {
                         when(selectedTest) {
-                            TestType.Presbyopia -> viewModel.initializePresbyopiaTest()
+//                            TestType.Presbyopia -> viewModel.initializePresbyopiaTest()
                             TestType.ShortDistanceVisualAcuity -> viewModel.initializeVisualAcuityTest()
                             TestType.LongDistanceVisualAcuity -> viewModel.initializeVisualAcuityTest()
                             TestType.ChildrenVisualAcuity -> viewModel.initializeVisualAcuityTest()
@@ -139,8 +138,10 @@ fun NenoonApp(
                                 when(selectedTest) {
                                     TestType.Presbyopia -> {
                                         PresbyopiaTestContent(
-                                            toResultScreen = { mainNavController.navigate(GlobalConstants.ROUTE_TEST_RESULT) },
-                                            viewModel = viewModel
+                                            toResultScreen = {
+                                                mainNavController.navigate(GlobalConstants.ROUTE_TEST_RESULT)
+                                                viewModel.presbyopiaTestResult = it
+                                            }
                                         )
                                     }
                                     TestType.ShortDistanceVisualAcuity -> {
@@ -163,8 +164,9 @@ fun NenoonApp(
                                     }
                                     TestType.AmslerGrid -> {
                                         AmslerGridTestContent(
-                                            toResultScreen = { mainNavController.navigate(GlobalConstants.ROUTE_TEST_RESULT) },
-                                            viewModel = viewModel
+                                            toResultScreen = {
+                                                mainNavController.navigate(GlobalConstants.ROUTE_TEST_RESULT)
+                                            },
                                         )
                                     }
                                     TestType.MChart -> {

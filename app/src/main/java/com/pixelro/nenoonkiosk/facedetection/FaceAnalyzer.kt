@@ -5,6 +5,7 @@ import android.graphics.Bitmap
 import android.graphics.ImageFormat
 import android.graphics.Matrix
 import android.graphics.PointF
+import android.graphics.Rect
 import android.media.ImageReader
 import android.os.SystemClock
 import android.util.Log
@@ -15,12 +16,12 @@ import com.google.mlkit.vision.face.FaceDetectorOptions
 import com.google.mlkit.vision.face.FaceLandmark
 
 class MyFaceAnalyzer(
-    val updateFaceDetectionData: (PointF, PointF, Float, Float, Float, Float, Float) -> Unit,
+    val updateFaceDetectionData: (Rect, PointF?, PointF?, Float, Float, Float, Float?, Float?) -> Unit,
     val updateFaceContourData: (List<PointF>, List<PointF>, List<PointF>, List<PointF>, List<PointF>, List<PointF>, List<PointF>, Float, Float) -> Unit,
-    val updateInputImageSize: (Float, Float) -> Unit,
-    val updateEyeOpenProbability: (Float, Float) -> Unit,
+    val updateInputImageSize: (Float, Float) -> Unit
 //    val updateBitmap: (Bitmap) -> Unit,
 ) : ImageAnalysis.Analyzer {
+
     private val realTimeOpts =
         FaceDetectorOptions.Builder().setContourMode(FaceDetectorOptions.CONTOUR_MODE_ALL)
             .setPerformanceMode(FaceDetectorOptions.PERFORMANCE_MODE_ACCURATE)
@@ -40,6 +41,7 @@ class MyFaceAnalyzer(
             return
         }
         lastAnalysisTime = now
+
         // original image
         val mediaImage = imageProxy.image
         val image =
@@ -63,29 +65,29 @@ class MyFaceAnalyzer(
 //        val imageReader = ImageReader.newInstance(resizedBitmap.width, resizedBitmap.height, ImageFormat.YUV_420_888, 1)
 //        val resizedImage = imageReader.acquireLatestImage()
 //        val inputResizedImage = InputImage.fromBitmap(croppedBitmap, imageProxy.imageInfo.rotationDegrees)
+
         if (image != null) {
             detector.process(image).addOnSuccessListener { faces ->
                 for (face in faces) {
-//                        val bounds = face.boundingBox
+                    val boundingBox = face.boundingBox
                     val rotX = face.headEulerAngleX
                     val rotY = face.headEulerAngleY
                     val rotZ = face.headEulerAngleZ
                     val leftEyePosition = face.getLandmark(FaceLandmark.LEFT_EYE)?.position
                     val rightEyePosition = face.getLandmark(FaceLandmark.RIGHT_EYE)?.position
-//                    Log.e("", "${leftEyePosition!!.x}, ${leftEyePosition.y}, ${rightEyePosition!!.x}, ${rightEyePosition.y}")
                     val leftEyeOpenProbability = face.leftEyeOpenProbability
                     val rightEyeOpenProbability = face.rightEyeOpenProbability
-//                    Log.e("rotX, rotY, rotZ, rightEyePosition, leftEyePosition", "$rotX $rotY  $rotZ, $rightEyePosition $leftEyePosition ${image.width.toFloat()} ${image.height.toFloat()}")
 
-                    if(leftEyeOpenProbability != null && rightEyeOpenProbability != null) {
-                        updateEyeOpenProbability(leftEyeOpenProbability, rightEyeOpenProbability)
-//                        Log.e("faceDetection", "$leftEyeOpenProbability, $rightEyeOpenProbability")
-                    } else {
-//                        Log.e("null", "null")
-                    }
-                    if (rightEyePosition != null && leftEyePosition != null) {
-                        updateFaceDetectionData(rightEyePosition, leftEyePosition, rotX, rotY, rotZ, image.width.toFloat(), image.height.toFloat())
-                    }
+                    updateFaceDetectionData(
+                        boundingBox,
+                        leftEyePosition,
+                        rightEyePosition,
+                        rotX,
+                        rotY,
+                        rotZ,
+                        leftEyeOpenProbability,
+                        rightEyeOpenProbability
+                    )
 
 //                    val leftEyeContour = face.getContour(FaceContour.LEFT_EYE)?.points
 //                    val rightEyeContour = face.getContour(FaceContour.RIGHT_EYE)?.points
@@ -98,10 +100,8 @@ class MyFaceAnalyzer(
 //                        updateFaceContourData(leftEyeContour, rightEyeContour, upperLipTopContour, upperLipBottomContour, lowerLipTopContour, lowerLipBottomContour, faceContour, image.width.toFloat(), image.height.toFloat())
 //                    }
                 }
-//                imageProxy.close()
             }.addOnFailureListener {
                 it.printStackTrace()
-//                imageProxy.close()
             }.addOnCompleteListener {
                 imageProxy.close()
             }

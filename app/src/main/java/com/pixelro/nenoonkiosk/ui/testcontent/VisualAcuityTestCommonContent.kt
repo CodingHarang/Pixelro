@@ -26,6 +26,7 @@ import androidx.compose.ui.unit.sp
 import com.pixelro.nenoonkiosk.NenoonViewModel
 import com.pixelro.nenoonkiosk.R
 import com.pixelro.nenoonkiosk.data.AnimationProvider
+import com.pixelro.nenoonkiosk.data.GlobalValue
 import com.pixelro.nenoonkiosk.data.StringProvider
 import com.pixelro.nenoonkiosk.data.VisionDisorderType
 import com.pixelro.nenoonkiosk.facedetection.FaceDetection
@@ -44,10 +45,7 @@ fun VisualAcuityTestCommonContent(
         enter = AnimationProvider.enterTransition,
         exit = AnimationProvider.exitTransition
     ) {
-        FaceDetection(
-            viewModel = viewModel,
-            visibleState = viewModel.measuringDistanceContentVisibleState
-        )
+        FaceDetection()
         VisualAcuityTestContent(
             viewModel = viewModel,
             toResultScreen = { toResultScreen() }
@@ -189,20 +187,20 @@ fun VisualAcuityTestContent(
                 horizontalArrangement = Arrangement.Center,
                 verticalAlignment = Alignment.CenterVertically
             ) {
-                Text(
-                    modifier = Modifier
-                        .padding(end = 20.dp),
-                    text = StringProvider.getString(R.string.visual_acuity_test_common_content_distance)
-                            + ": ${viewModel.testDistance.collectAsState().value / 10}cm",
-                    fontSize = 30.sp,
-                    color = Color(0xffffffff)
-                )
-                Text(
-                    text = StringProvider.getString(R.string.test_screen_current_distance) + "${(viewModel.screenToFaceDistance.collectAsState().value / 10).roundToInt()}cm",
-                    fontSize = 30.sp,
-                    color = Color(0xffffffff),
-                    fontWeight = FontWeight.Bold
-                )
+//                Text(
+//                    modifier = Modifier
+//                        .padding(end = 20.dp),
+//                    text = StringProvider.getString(R.string.visual_acuity_test_common_content_distance)
+//                            + ": ${viewModel.testDistance.collectAsState().value / 10}cm",
+//                    fontSize = 30.sp,
+//                    color = Color(0xffffffff)
+//                )
+//                Text(
+//                    text = StringProvider.getString(R.string.test_screen_current_distance) + "${(viewModel.screenToFaceDistance.collectAsState().value / 10).roundToInt()}cm",
+//                    fontSize = 30.sp,
+//                    color = Color(0xffffffff),
+//                    fontWeight = FontWeight.Bold
+//                )
             }
             Row() {
                 // 1
@@ -432,7 +430,7 @@ fun SightednessTestContent(
             )
             Column(
                 modifier = Modifier
-                    .padding(bottom = viewModel.navigationBarPadding.collectAsState().value.dp)
+                    .padding(bottom = GlobalValue.navigationBarPadding.dp)
                     .fillMaxHeight(),
                 verticalArrangement = Arrangement.Bottom
             ) {

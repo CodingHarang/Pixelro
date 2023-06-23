@@ -42,7 +42,7 @@ fun TestListContent(
             MainTestListContent(
                 toPreDescriptionScreen = {
                     viewModel.updateSelectedTestType(TestType.Presbyopia)
-                    viewModel.initializePresbyopiaTest()
+//                    viewModel.initializePresbyopiaTest()
                     toPreDescriptionScreen()
                 },
                 toVisualAcuityTestList = { navController.navigate(GlobalConstants.ROUTE_VISUAL_ACUITY_TEST_LIST) },

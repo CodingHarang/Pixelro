@@ -22,16 +22,19 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.hilt.navigation.compose.hiltViewModel
 import com.pixelro.nenoonkiosk.NenoonViewModel
 import com.pixelro.nenoonkiosk.R
 import com.pixelro.nenoonkiosk.data.AnimationProvider
 import com.pixelro.nenoonkiosk.data.StringProvider
+import com.pixelro.nenoonkiosk.facedetection.FaceDetectionViewModel
 
 @Composable
 fun CoveredEyeCheckingContent(
-    viewModel: NenoonViewModel,
     coveredEyeCheckingContentVisibleState: MutableTransitionState<Boolean>,
-    nextVisibleState: MutableTransitionState<Boolean>
+    toNextContent: () -> Unit,
+    isLeftEye: Boolean,
+    faceDetectionViewModel: FaceDetectionViewModel = hiltViewModel()
 ) {
     AnimatedVisibility(
         visibleState = coveredEyeCheckingContentVisibleState,
@@ -39,12 +42,11 @@ fun CoveredEyeCheckingContent(
         exit = AnimationProvider.exitTransition
     ) {
         DisposableEffect(true) {
-            viewModel.initializeCoveredEyeChecking()
-            viewModel.checkCoveredEye()
+            faceDetectionViewModel.initializeCoveredEyeChecking()
+            faceDetectionViewModel.checkCoveredEye { toNextContent() }
             onDispose {
             }
         }
-        val isLeftEye = viewModel.isLeftEye.collectAsState().value
         Column(
             modifier = Modifier,
             horizontalAlignment = Alignment.CenterHorizontally
@@ -63,15 +65,15 @@ fun CoveredEyeCheckingContent(
             )
             Image(
                 modifier = Modifier
-                .graphicsLayer {
-                    this.rotationY = when(isLeftEye) {
-                        true -> 0f
-                        else -> 180f
+                    .graphicsLayer {
+                        this.rotationY = when (isLeftEye) {
+                            true -> 0f
+                            else -> 180f
+                        }
                     }
-                }
-                .width(600.dp)
-                .height(600.dp)
-                .padding(bottom = 40.dp),
+                    .width(600.dp)
+                    .height(600.dp)
+                    .padding(bottom = 40.dp),
                 painter = painterResource(id = R.drawable.img_right_eye_covered),
                 contentDescription = ""
             )
@@ -80,9 +82,9 @@ fun CoveredEyeCheckingContent(
                 color = Color(0xffffffff),
                 fontSize = 20.sp
             )
-            if(viewModel.isTimerShowing.collectAsState().value) {
+            if(faceDetectionViewModel.isTimerShowing.collectAsState().value) {
                 Text(
-                    text = "${viewModel.leftTime.collectAsState().value.toInt()}",
+                    text = "${faceDetectionViewModel.leftTime.collectAsState().value.toInt()}",
                     color = Color(0xffffffff),
                     fontSize = 80.sp,
                     fontWeight = FontWeight.Bold

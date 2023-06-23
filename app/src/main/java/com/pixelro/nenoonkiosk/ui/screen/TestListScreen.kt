@@ -30,19 +30,21 @@ import androidx.compose.ui.text.withStyle
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavHostController
+import com.google.accompanist.navigation.animation.rememberAnimatedNavController
 import com.pixelro.nenoonkiosk.NenoonViewModel
 import com.pixelro.nenoonkiosk.R
+import com.pixelro.nenoonkiosk.data.GlobalValue
 import com.pixelro.nenoonkiosk.data.StringProvider
 import com.pixelro.nenoonkiosk.ui.testlist.TestListContent
 import kotlinx.coroutines.delay
 
 
-@OptIn(ExperimentalFoundationApi::class)
+@OptIn(ExperimentalFoundationApi::class, ExperimentalAnimationApi::class)
 @Composable
 fun TestListScreen(
     toPreDescriptionScreen: () -> Unit,
     toSettingsScreen: () -> Unit,
-    navController: NavHostController,
+    navController: NavHostController = rememberAnimatedNavController(),
     viewModel: NenoonViewModel
 ) {
 //    BackHandler(enabled = true) {
@@ -73,7 +75,7 @@ fun TestListScreen(
             modifier = Modifier
                 .padding(
                     start = 40.dp,
-                    top = (viewModel.statusBarPadding.collectAsState().value + 20).dp,
+                    top = (GlobalValue.statusBarPadding + 20).dp,
                     end = 40.dp,
                     bottom = 20.dp
                 )
@@ -172,7 +174,7 @@ fun TestListScreen(
                 modifier = Modifier
                     .padding(
                         start = 40.dp,
-                        bottom = (viewModel.navigationBarPadding.collectAsState().value + 40).dp
+                        bottom = (GlobalValue.navigationBarPadding + 40).dp
                     )
                     .fillMaxWidth(),
                 verticalAlignment = Alignment.CenterVertically

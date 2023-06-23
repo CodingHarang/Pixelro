@@ -63,6 +63,7 @@ import com.github.mikephil.charting.utils.Utils.drawImage
 import com.pixelro.nenoonkiosk.NenoonViewModel
 import com.pixelro.nenoonkiosk.R
 import com.pixelro.nenoonkiosk.data.GlobalConstants
+import com.pixelro.nenoonkiosk.data.GlobalValue
 import com.pixelro.nenoonkiosk.data.StringProvider
 import com.pixelro.nenoonkiosk.data.TestType
 import com.pixelro.nenoonkiosk.ui.testresultcontent.*
@@ -158,7 +159,7 @@ fun TestResultScreen(
             modifier = Modifier
                 .padding(
                     start = 40.dp,
-                    top = (viewModel.statusBarPadding.collectAsState().value + 20).dp,
+                    top = (GlobalValue.statusBarPadding + 20).dp,
                     end = 40.dp,
                     bottom = 20.dp
                 )
@@ -342,7 +343,7 @@ fun TestResultScreen(
                         .padding(
                             start = 40.dp,
                             end = 40.dp,
-                            bottom = (viewModel.navigationBarPadding.collectAsState().value).dp
+                            bottom = GlobalValue.navigationBarPadding.dp
                         )
                         .fillMaxWidth()
                         .clip(

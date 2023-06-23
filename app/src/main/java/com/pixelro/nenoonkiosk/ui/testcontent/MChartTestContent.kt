@@ -42,6 +42,7 @@ import com.pixelro.nenoonkiosk.NenoonViewModel
 import com.pixelro.nenoonkiosk.R
 import com.pixelro.nenoonkiosk.data.AnimationProvider
 import com.pixelro.nenoonkiosk.data.GlobalConstants
+import com.pixelro.nenoonkiosk.data.GlobalValue
 import com.pixelro.nenoonkiosk.data.StringProvider
 import com.pixelro.nenoonkiosk.facedetection.FaceDetection
 import kotlinx.coroutines.coroutineScope
@@ -52,7 +53,7 @@ fun MChartTestContent(
     toResultScreen: () -> Unit,
     viewModel: NenoonViewModel
 ) {
-    val measuringDistanceContentVisibleState = viewModel.measuringDistanceContentVisibleState
+//    val measuringDistanceContentVisibleState = viewModel.measuringDistanceContentVisibleState
     val coveredEyeCheckingContentVisibleState = viewModel.coveredEyeCheckingContentVisibleState
     val mChartContentVisibleState = viewModel.mChartContentVisibleState
 
@@ -69,16 +70,16 @@ fun MChartTestContent(
             modifier = Modifier
                 .fillMaxWidth()
         ) {
-            MeasuringDistanceContent(
-                viewModel = viewModel,
-                measuringDistanceContentVisibleState = measuringDistanceContentVisibleState,
-                nextVisibleState = coveredEyeCheckingContentVisibleState
-            )
-            CoveredEyeCheckingContent(
-                viewModel = viewModel,
-                coveredEyeCheckingContentVisibleState = coveredEyeCheckingContentVisibleState,
-                nextVisibleState = mChartContentVisibleState
-            )
+//            MeasuringDistanceContent(
+//                viewModel = viewModel,
+//                measuringDistanceContentVisibleState = measuringDistanceContentVisibleState,
+//                nextVisibleState = coveredEyeCheckingContentVisibleState
+//            )
+//            CoveredEyeCheckingContent(
+//                viewModel = viewModel,
+//                coveredEyeCheckingContentVisibleState = coveredEyeCheckingContentVisibleState,
+//                nextVisibleState = mChartContentVisibleState
+//            )
             MChartContent(
                 viewModel = viewModel,
                 mChartContentVisibleState = mChartContentVisibleState,
@@ -101,10 +102,7 @@ fun MChartContent(
         enter = AnimationProvider.enterTransition,
         exit = AnimationProvider.exitTransition
     ) {
-        FaceDetection(
-            viewModel = viewModel,
-            visibleState = viewModel.measuringDistanceContentVisibleState
-        )
+        FaceDetection()
         val isLeftEye = viewModel.isLeftEye.collectAsState().value
         val isVertical = viewModel.isVertical.collectAsState().value
         val currentLevel = viewModel.currentLevel.collectAsState().value
@@ -212,7 +210,7 @@ fun MChartContent(
                             .padding(
                                 start = 40.dp,
                                 end = 40.dp,
-                                bottom = (viewModel.navigationBarPadding.collectAsState().value).dp
+                                bottom = GlobalValue.navigationBarPadding.dp
                             )
                             .fillMaxWidth()
                             .clip(

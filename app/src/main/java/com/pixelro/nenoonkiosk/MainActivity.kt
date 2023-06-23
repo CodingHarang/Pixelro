@@ -31,6 +31,7 @@ import androidx.core.os.LocaleListCompat
 import androidx.core.view.WindowCompat
 import androidx.lifecycle.lifecycleScope
 import com.google.accompanist.systemuicontroller.rememberSystemUiController
+import com.pixelro.nenoonkiosk.data.GlobalValue
 import com.pixelro.nenoonkiosk.data.SharedPreferencesManager
 import com.pixelro.nenoonkiosk.ui.NenoonApp
 import com.pixelro.nenoonkiosk.ui.theme.NenoonKioskTheme
@@ -74,7 +75,9 @@ class MainActivity : ComponentActivity() {
         )
         val statusBarResourceId = resources.getIdentifier("status_bar_height", "dimen", "android")
         val navigationBarResourceId = resources.getIdentifier("navigation_bar_height", "dimen", "android")
-        viewModel.updateSystemBarsPadding(resources.getDimension(statusBarResourceId), resources.getDimension(navigationBarResourceId))
+        GlobalValue.statusBarPadding = resources.getDimension(statusBarResourceId)
+        GlobalValue.navigationBarPadding = resources.getDimension(navigationBarResourceId)
+        Log.e("padding", "${GlobalValue.statusBarPadding}, ${GlobalValue.navigationBarPadding}")
 
 //        onBackPressedDispatcher.addCallback(this, object: OnBackPressedCallback(true) {
 //            override fun handleOnBackPressed() {

@@ -1,6 +1,7 @@
 package com.pixelro.nenoonkiosk.di
 
 import androidx.media3.ui.BuildConfig
+import com.harang.data.api.NenoonKioskApi
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -28,13 +29,15 @@ object NetworkModule {
     @Singleton
     fun provideRetrofitInstance(okHttpClient: OkHttpClient): Retrofit {
         return Retrofit.Builder()
-            .baseUrl("")
+            .baseUrl("https://6366a2a6-c93a-4568-b838-c9e8a117847d.mock.pstmn.io/")
             .client(okHttpClient)
             .addConverterFactory(GsonConverterFactory.create())
             .build()
     }
 
-//    @Provides
-//    @Singleton
-//    fun provideMovieApi(retrofit: Retrofit): NenoonKioskApi
+    @Provides
+    @Singleton
+    fun provideMovieApi(retrofit: Retrofit): NenoonKioskApi {
+        return retrofit.create(NenoonKioskApi::class.java)
+    }
 }

@@ -39,6 +39,7 @@ import com.bumptech.glide.integration.compose.GlideImage
 import com.pixelro.nenoonkiosk.NenoonViewModel
 import com.pixelro.nenoonkiosk.R
 import com.pixelro.nenoonkiosk.data.GlobalConstants
+import com.pixelro.nenoonkiosk.data.GlobalValue
 import com.pixelro.nenoonkiosk.data.StringProvider
 import com.pixelro.nenoonkiosk.data.TestType
 import com.pixelro.nenoonkiosk.ui.testcontent.TestPreDescriptionScreenDialogContent
@@ -86,7 +87,7 @@ fun TestPreDescriptionBackground(
     val heightDP = LocalConfiguration.current.screenHeightDp / 3
     Box(
         modifier = Modifier
-            .padding(start = 40.dp, top = (viewModel.statusBarPadding.collectAsState().value + 20).dp, end = 40.dp, bottom = 20.dp)
+            .padding(start = 40.dp, top = (GlobalValue.statusBarPadding + 20).dp, end = 40.dp, bottom = 20.dp)
             .fillMaxWidth()
             .height(40.dp),
         contentAlignment = Alignment.CenterStart
@@ -229,7 +230,7 @@ fun TestPreDescriptionContent(
             Box(
                 modifier = Modifier
                     .fillMaxWidth()
-                    .padding(start = 40.dp, end = 40.dp, bottom = (viewModel.navigationBarPadding.collectAsState().value).dp)
+                    .padding(start = 40.dp, end = 40.dp, bottom = GlobalValue.navigationBarPadding.dp)
                     .clip(
                         shape = RoundedCornerShape(8.dp)
                     )

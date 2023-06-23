@@ -1,12 +1,11 @@
 package com.pixelro.nenoonkiosk
 
 import android.Manifest
-import android.annotation.SuppressLint
+import android.app.Application
 import android.bluetooth.BluetoothManager
 import android.content.Context
 import android.content.IntentSender
 import android.content.pm.PackageManager
-import android.graphics.PointF
 import android.location.LocationManager
 import android.net.Uri
 import android.provider.Settings
@@ -16,7 +15,7 @@ import androidx.compose.animation.core.MutableTransitionState
 import androidx.compose.ui.geometry.Offset
 import androidx.core.content.ContextCompat
 import androidx.core.content.ContextCompat.getSystemService
-import androidx.lifecycle.ViewModel
+import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.viewModelScope
 import androidx.media3.common.MediaItem
 import androidx.media3.common.Player
@@ -29,8 +28,10 @@ import com.google.android.gms.location.LocationSettingsRequest
 import com.google.android.gms.location.LocationSettingsResponse
 import com.google.android.gms.location.SettingsClient
 import com.google.android.gms.tasks.Task
+import com.harang.data.api.NenoonKioskApi
 import com.pixelro.nenoonkiosk.data.AccommodationData
-import com.pixelro.nenoonkiosk.data.MacularDisorderType
+import com.pixelro.nenoonkiosk.data.GlobalValue
+import com.pixelro.nenoonkiosk.amslergrid.MacularDisorderType
 import com.pixelro.nenoonkiosk.data.SharedPreferencesManager
 import com.pixelro.nenoonkiosk.data.StringProvider
 import com.pixelro.nenoonkiosk.data.SurveyAge
@@ -40,8 +41,8 @@ import com.pixelro.nenoonkiosk.data.SurveySex
 import com.pixelro.nenoonkiosk.data.SurveySurgery
 import com.pixelro.nenoonkiosk.data.TestType
 import com.pixelro.nenoonkiosk.data.VisionDisorderType
+import com.pixelro.nenoonkiosk.presbyopia.PresbyopiaTestResult
 import dagger.hilt.android.lifecycle.HiltViewModel
-import dagger.hilt.android.qualifiers.ApplicationContext
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -53,10 +54,10 @@ import javax.inject.Inject
 import kotlin.math.roundToInt
 
 @HiltViewModel
-class NenoonViewModel @SuppressLint("StaticFieldLeak")
-@Inject constructor(
-    @ApplicationContext private val context: Context
-) : ViewModel() {
+class NenoonViewModel @Inject constructor(
+    application: Application,
+    private val api: NenoonKioskApi
+) : AndroidViewModel(application) {
 
     private fun checkBackgroundStatus() {
         viewModelScope.launch {
@@ -76,6 +77,14 @@ class NenoonViewModel @SuppressLint("StaticFieldLeak")
                 delay(1000)
             }
         }
+    }
+
+    // signIn
+    private val _inputSignInId = MutableStateFlow("")
+    val inputSignInId: StateFlow<String> = _inputSignInId
+
+    fun updateInputSignInId(id: String) {
+        _inputSignInId.update { id }
     }
 
     // Survey
@@ -124,14 +133,14 @@ class NenoonViewModel @SuppressLint("StaticFieldLeak")
 
     fun updateLanguage(language: String) {
         SharedPreferencesManager.putString("language", language)
-        context.resources.configuration.setLocale(Locale(language))
+        getApplication<Application>().resources.configuration.setLocale(Locale(language))
         _isLanguageSelectDialogShowing.update { false }
     }
 
     // Screen Saver
     private val _isResumed = MutableStateFlow(false)
     private val _isPaused = MutableStateFlow(false)
-    val exoPlayer = ExoPlayer.Builder(context).build()
+    val exoPlayer = ExoPlayer.Builder(getApplication()).build()
     private val _screenSaverTimer = MutableStateFlow(30)
     private val _timeValue = MutableStateFlow(30)
 //    val screenSaverTimer: StateFlow<Int> = _screenSaverTimer
@@ -148,153 +157,12 @@ class NenoonViewModel @SuppressLint("StaticFieldLeak")
         resetScreenSaverTimer()
     }
 
-    // Face detection
-    private val _screenToFaceDistance = MutableStateFlow(0f)
-    val screenToFaceDistance: StateFlow<Float> = _screenToFaceDistance
-    private val _inputImageSizeX = MutableStateFlow(1f)
-    val inputImageSizeX: StateFlow<Float> = _inputImageSizeX
-    private val _inputImageSizeY = MutableStateFlow(1f)
-    val inputImageSizeY: StateFlow<Float> = _inputImageSizeY
-    private val _rightEyePosition = MutableStateFlow(PointF(0f, 0f))
-    val rightEyePosition: StateFlow<PointF> = _rightEyePosition
-    private val _leftEyePosition = MutableStateFlow(PointF(0f, 0f))
-    val leftEyePosition: StateFlow<PointF> = _leftEyePosition
-    private val _rotX = MutableStateFlow(0f)
-    val rotX: StateFlow<Float> = _rotX
-    private val _rotY = MutableStateFlow(0f)
-    val rotY: StateFlow<Float> = _rotY
-    private val _rotZ = MutableStateFlow(0f)
-    val rotZ: StateFlow<Float> = _rotZ
-    private val _leftEyeContour = MutableStateFlow(listOf(PointF(0f, 0f)))
-    val leftEyeContour: StateFlow<List<PointF>> = _leftEyeContour
-    private val _rightEyeContour = MutableStateFlow(listOf(PointF(0f, 0f)))
-    val rightEyeContour: StateFlow<List<PointF>> = _rightEyeContour
-    private val _upperLipTopContour = MutableStateFlow(listOf(PointF(0f, 0f)))
-    val upperLipTopContour: StateFlow<List<PointF>> = _upperLipTopContour
-    private val _upperLipBottomContour = MutableStateFlow(listOf(PointF(0f, 0f)))
-    val upperLipBottomContour: StateFlow<List<PointF>> = _upperLipBottomContour
-    private val _lowerLipTopContour = MutableStateFlow(listOf(PointF(0f, 0f)))
-    val lowerLipTopContour: StateFlow<List<PointF>> = _lowerLipTopContour
-    private val _lowerLipBottomContour = MutableStateFlow(listOf(PointF(0f, 0f)))
-    val lowerLipBottomContour: StateFlow<List<PointF>> = _lowerLipBottomContour
-    private val _faceContour = MutableStateFlow(listOf(PointF(0f, 0f)))
-    val faceContour: StateFlow<List<PointF>> = _faceContour
-    private val _leftEyeOpenProbability = MutableStateFlow(0f)
-    val leftEyeOpenProbability: StateFlow<Float> = _leftEyeOpenProbability
-    private val _rightEyeOpenProbability = MutableStateFlow(0f)
-    val rightEyeOpenProbability: StateFlow<Float> = _rightEyeOpenProbability
-    private val _pixelDensity = MutableStateFlow(0f)
-    val pixelDensity: StateFlow<Float> = _pixelDensity
-    private val _screenWidthDp = MutableStateFlow(0)
-    val screenWidthDp: StateFlow<Int> = _screenWidthDp
-    private val _screenHeightDp = MutableStateFlow(0)
-    val screenHeightDp: StateFlow<Int> = _screenHeightDp
-    private val _focalLength = MutableStateFlow(0f)
-    val focalLength: StateFlow<Float> = _focalLength
-    private val _lensSize = MutableStateFlow(SizeF(0f, 0f))
-    val lensSize: StateFlow<SizeF> = _lensSize
-//    private val _bitmap = MutableStateFlow(Bitmap.createBitmap(100, 100, Bitmap.Config.ARGB_8888))
-//    val bitmap: StateFlow<Bitmap> = _bitmap
-
-    fun updateFaceDetectionData(rightEyePosition: PointF, leftEyePosition: PointF, rotX: Float, rotY: Float, rotZ: Float, width: Float, height: Float) {
-        _rightEyePosition.update { PointF(rightEyePosition.x, rightEyePosition.y) }
-        _leftEyePosition.update { PointF(leftEyePosition.x, leftEyePosition.y) }
-        _rotX.update { rotX }
-        _rotY.update { rotY }
-        _rotZ.update { rotZ }
-        _inputImageSizeX.update { width }
-        _inputImageSizeY.update { height }
-        updateScreenToFaceDistance()
-    }
-
-//    fun updateBitmap(bitmap: Bitmap) {
-//        _bitmap.update { bitmap }
-//    }
-
-    fun updateFaceContourData(leftEyeContour: List<PointF>, rightEyeContour: List<PointF>, upperLipTopContour: List<PointF>, upperLipBottomContour: List<PointF>, lowerLipTopContour: List<PointF>, lowerLipBottomContour: List<PointF>, faceContour: List<PointF>, width: Float, height: Float) {
-        _leftEyeContour.update {
-            List(leftEyeContour.size) {
-                PointF(leftEyeContour[it].x / width, leftEyeContour[it].y / height)
-            }
-        }
-        _rightEyeContour.update {
-            List(rightEyeContour.size) {
-                PointF(rightEyeContour[it].x / width, rightEyeContour[it].y / height)
-            }
-        }
-        _upperLipTopContour.update {
-            List(upperLipTopContour.size) {
-                PointF(upperLipTopContour[it].x / width, upperLipTopContour[it].y / height)
-            }
-        }
-        _upperLipBottomContour.update {
-            List(upperLipBottomContour.size) {
-                PointF(upperLipBottomContour[it].x / width, upperLipBottomContour[it].y / height)
-            }
-        }
-        _lowerLipTopContour.update {
-            List(lowerLipTopContour.size) {
-                PointF(lowerLipTopContour[it].x / width, lowerLipTopContour[it].y / height)
-            }
-        }
-        _lowerLipBottomContour.update {
-            List(lowerLipBottomContour.size) {
-                PointF(lowerLipBottomContour[it].x / width, lowerLipBottomContour[it].y / height)
-            }
-        }
-        _faceContour.update {
-            List(faceContour.size) {
-                PointF(faceContour[it].x / width, faceContour[it].y / height)
-            }
-        }
-    }
-
     fun updateLocalConfigurationValues(pixelDensity: Float, screenWidthDp: Int, screenHeightDp: Int, focalLength: Float, lensSize: SizeF) {
-        _pixelDensity.update { pixelDensity }
-        _screenWidthDp.update { screenWidthDp }
-        _screenHeightDp.update { screenHeightDp }
-        _focalLength.update { focalLength }
-        _lensSize.update { lensSize }
-    }
-
-    fun updateEyeOpenProbability(left: Float, right: Float) {
-        _leftEyeOpenProbability.update { left }
-        _rightEyeOpenProbability.update { right }
-    }
-
-    fun updateInputImageSize(x: Float, y: Float) {
-        _inputImageSizeX.update { x }
-        _inputImageSizeY.update { y }
-    }
-
-    fun updateScreenToFaceDistance() {
-        if((rightEyePosition.value.x - leftEyePosition.value.y) != 0f && lensSize.value.width != 0f) {
-            _screenToFaceDistance.update {
-                val prev = _screenToFaceDistance.value
-                val dist = 1.1f * (focalLength.value * 63) * inputImageSizeX.value / ((rightEyePosition.value.x - leftEyePosition.value.x) * (lensSize.value.width))
-                if(dist > 600f || dist < 1f) prev
-                else dist
-            }
-        } else {
-            return
-        }
-    }
-
-    // Measuring Distance
-    val measuringDistanceContentVisibleState = MutableTransitionState(false)
-    private val _testDistance = MutableStateFlow(0)
-    val testDistance: StateFlow<Int> = _testDistance
-
-    fun updateTestDistance() {
-        _testDistance.update { screenToFaceDistance.value.toInt() }
-        measuringDistanceContentVisibleState.targetState = false
-        when(_selectedTestType.value) {
-            TestType.ShortDistanceVisualAcuity -> { coveredEyeCheckingContentVisibleState.targetState = true }
-            TestType.LongDistanceVisualAcuity -> { coveredEyeCheckingContentVisibleState.targetState = true }
-            TestType.ChildrenVisualAcuity -> { coveredEyeCheckingContentVisibleState.targetState = true }
-            TestType.AmslerGrid -> { coveredEyeCheckingContentVisibleState.targetState = true }
-            else -> { coveredEyeCheckingContentVisibleState.targetState = true }
-        }
+        GlobalValue.pixelDensity = pixelDensity
+        GlobalValue.screenWidthDp = screenWidthDp
+        GlobalValue.screenHeightDp = screenHeightDp
+        GlobalValue.focalLength = focalLength
+        GlobalValue.lensSize = lensSize
     }
 
     // Covered Eye Checking
@@ -381,7 +249,7 @@ class NenoonViewModel @SuppressLint("StaticFieldLeak")
     val navigationBarPadding: StateFlow<Int> = _navigationBarPadding
 
     fun updateSystemBarsPadding(statusBar: Float, navigationBar: Float) {
-        _statusBarPadding.update { (statusBar / context.resources.displayMetrics.density).toInt() }
+        _statusBarPadding.update { (statusBar / getApplication<Application>().resources.displayMetrics.density).toInt() }
         _navigationBarPadding.update { navigationBar.toInt() }
     }
 
@@ -402,22 +270,22 @@ class NenoonViewModel @SuppressLint("StaticFieldLeak")
     val resolvableApiException: StateFlow<ResolvableApiException> = _resolvableApiException
 
     private fun checkPermissions() {
-        if(ContextCompat.checkSelfPermission(context, Manifest.permission.BLUETOOTH_SCAN) == PackageManager.PERMISSION_GRANTED
-            && ContextCompat.checkSelfPermission(context, Manifest.permission.BLUETOOTH_CONNECT) == PackageManager.PERMISSION_GRANTED
-            && ContextCompat.checkSelfPermission(context, Manifest.permission.BLUETOOTH) == PackageManager.PERMISSION_GRANTED
-            && ContextCompat.checkSelfPermission(context, Manifest.permission.BLUETOOTH_ADMIN) == PackageManager.PERMISSION_GRANTED
-            && ContextCompat.checkSelfPermission(context, Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED
-            && ContextCompat.checkSelfPermission(context, Manifest.permission.ACCESS_COARSE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
+        if(ContextCompat.checkSelfPermission(getApplication(), Manifest.permission.BLUETOOTH_SCAN) == PackageManager.PERMISSION_GRANTED
+            && ContextCompat.checkSelfPermission(getApplication(), Manifest.permission.BLUETOOTH_CONNECT) == PackageManager.PERMISSION_GRANTED
+            && ContextCompat.checkSelfPermission(getApplication(), Manifest.permission.BLUETOOTH) == PackageManager.PERMISSION_GRANTED
+            && ContextCompat.checkSelfPermission(getApplication(), Manifest.permission.BLUETOOTH_ADMIN) == PackageManager.PERMISSION_GRANTED
+            && ContextCompat.checkSelfPermission(getApplication(), Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED
+            && ContextCompat.checkSelfPermission(getApplication(), Manifest.permission.ACCESS_COARSE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
             _isBluetoothPermissionsGranted.update { true }
         } else {
             _isBluetoothPermissionsGranted.update { false }
         }
-        if(ContextCompat.checkSelfPermission(context, Manifest.permission.CAMERA) == PackageManager.PERMISSION_GRANTED) {
+        if(ContextCompat.checkSelfPermission(getApplication(), Manifest.permission.CAMERA) == PackageManager.PERMISSION_GRANTED) {
             _isCameraPermissionGranted.update { true }
         } else {
             _isCameraPermissionGranted.update { false }
         }
-        if(Settings.System.canWrite(context)) {
+        if(Settings.System.canWrite(getApplication())) {
             _isWriteSettingsPermissionGranted.update { true }
         } else {
             _isWriteSettingsPermissionGranted.update { false }
@@ -431,12 +299,12 @@ class NenoonViewModel @SuppressLint("StaticFieldLeak")
     }
 
     private fun checkIsLocationOn() {
-        val locationManager = getSystemService(context, LocationManager::class.java) as LocationManager
+        val locationManager = getSystemService(getApplication(), LocationManager::class.java) as LocationManager
 
         if(!locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER)) {
 
             val locationRequest: LocationRequest = LocationRequest.Builder(10000).build()
-            val client: SettingsClient = LocationServices.getSettingsClient(context as Context)
+            val client: SettingsClient = LocationServices.getSettingsClient(getApplication() as Context)
             val builder: LocationSettingsRequest.Builder = LocationSettingsRequest
                 .Builder()
                 .addLocationRequest(locationRequest)
@@ -460,7 +328,7 @@ class NenoonViewModel @SuppressLint("StaticFieldLeak")
     }
 
     private fun checkIsBluetoothOn() {
-        val bluetoothAdapter = (context.getSystemService(Context.BLUETOOTH_SERVICE) as BluetoothManager).adapter
+        val bluetoothAdapter = (getApplication<Application>().getSystemService(Context.BLUETOOTH_SERVICE) as BluetoothManager).adapter
         if(bluetoothAdapter.isEnabled) {
             _isBluetoothOn.update { true }
         } else {
@@ -536,68 +404,41 @@ class NenoonViewModel @SuppressLint("StaticFieldLeak")
     }
 
     // Presbyopia test
-    val firstItemVisibleState = MutableTransitionState(true)
-    val secondItemVisibleState = MutableTransitionState(false)
-    val thirdItemVisibleState = MutableTransitionState(false)
-    private val _firstDistance = MutableStateFlow(0f)
-    private val _secondDistance = MutableStateFlow(0f)
-    private val _thirdDistance = MutableStateFlow(0f)
-    private val _avgDistance = MutableStateFlow(0f)
-    val avgDistance: StateFlow<Float> = _avgDistance
-    private val _eyeAge = MutableStateFlow(0)
-    val eyeAge: StateFlow<Int> = _eyeAge
+    var presbyopiaTestResult = PresbyopiaTestResult()
+
 
     fun updateIsLeftEye(isLeft: Boolean) {
         _isLeftEye.update { isLeft }
     }
 
-    fun initializePresbyopiaTest() {
-//        _bitmap.update {
-//        Bitmap.createBitmap(100, 100, Bitmap.Config.ARGB_8888)
+//    fun initializePresbyopiaTest() {
+////        _bitmap.update {
+////        Bitmap.createBitmap(100, 100, Bitmap.Config.ARGB_8888)
+////    }
+//        measuringDistanceContentVisibleState.targetState = false
+//        firstItemVisibleState.targetState = true
+//        secondItemVisibleState.targetState = false
+//        thirdItemVisibleState.targetState = false
 //    }
-        measuringDistanceContentVisibleState.targetState = false
-        firstItemVisibleState.targetState = true
-        secondItemVisibleState.targetState = false
-        thirdItemVisibleState.targetState = false
-    }
-
-    fun updateFirstDistance() {
-        _firstDistance.update { screenToFaceDistance.value }
-        firstItemVisibleState.targetState = false
-        secondItemVisibleState.targetState = true
-        thirdItemVisibleState.targetState = false
-    }
-
-    fun updateSecondDistance() {
-        _secondDistance.update { screenToFaceDistance.value }
-        firstItemVisibleState.targetState = false
-        secondItemVisibleState.targetState = false
-        thirdItemVisibleState.targetState = true
-    }
-
-    fun updateThirdDistance() {
-        _thirdDistance.update { screenToFaceDistance.value }
-        updateAvgDistance()
-    }
-
-    private fun updateAvgDistance() {
-        _avgDistance.update {
-            (_firstDistance.value + _secondDistance.value + _thirdDistance.value) / 3
-        }
-        _printString.update {
-            "조절근점: ${(avgDistance.value).roundToInt().toFloat() / 10}cm"
-        }
-
-        var max = 100000f
-        for(entry in AccommodationData.allEntries) {
-            var diff = (entry.x * 10) - _avgDistance.value
-            if(diff < 0) diff = -diff
-            if(max > diff) {
-                max = diff
-                _eyeAge.update { entry.y.toInt() - 15 }
-            }
-        }
-    }
+//
+//    private fun updateAvgDistance() {
+//        _avgDistance.update {
+//            (_firstDistance.value + _secondDistance.value + _thirdDistance.value) / 3
+//        }
+//        _printString.update {
+//            "조절근점: ${(avgDistance.value).roundToInt().toFloat() / 10}cm"
+//        }
+//
+//        var max = 100000f
+//        for(entry in AccommodationData.allEntries) {
+//            var diff = (entry.x * 10) - _avgDistance.value
+//            if(diff < 0) diff = -diff
+//            if(max > diff) {
+//                max = diff
+//                _eyeAge.update { entry.y.toInt() - 15 }
+//            }
+//        }
+//    }
 
     // Visual acuity test
     val visualAcuityTestCommonContentVisibleState = MutableTransitionState(false)
@@ -756,7 +597,7 @@ class NenoonViewModel @SuppressLint("StaticFieldLeak")
             9 to Pair(0, 0),
             10 to Pair(0, 0)
         )
-        measuringDistanceContentVisibleState.targetState = true
+//        measuringDistanceContentVisibleState.targetState = true
         coveredEyeCheckingContentVisibleState.targetState = false
         visualAcuityTestCommonContentVisibleState.targetState = false
         visualAcuityTestContentVisibleState.targetState = true
@@ -840,7 +681,7 @@ class NenoonViewModel @SuppressLint("StaticFieldLeak")
 //            Bitmap.createBitmap(100, 100, Bitmap.Config.ARGB_8888)
 //        }
         _currentSelectedArea.update { listOf(MacularDisorderType.Normal, MacularDisorderType.Normal, MacularDisorderType.Normal, MacularDisorderType.Normal, MacularDisorderType.Normal, MacularDisorderType.Normal, MacularDisorderType.Normal, MacularDisorderType.Normal, MacularDisorderType.Normal) }
-        measuringDistanceContentVisibleState.targetState = true
+//        measuringDistanceContentVisibleState.targetState = true
         coveredEyeCheckingContentVisibleState.targetState = false
         amslerGridContentVisibleState.targetState = false
         _isLeftEye.update { true }
@@ -1029,7 +870,7 @@ class NenoonViewModel @SuppressLint("StaticFieldLeak")
             _isVertical.update { true }
             _currentLevel.update { 0 }
             _mChartResult.update { listOf() }
-            measuringDistanceContentVisibleState.targetState = true
+//            measuringDistanceContentVisibleState.targetState = true
             coveredEyeCheckingContentVisibleState.targetState = false
             mChartContentVisibleState.targetState = false
             _isLeftEye.update { true }
@@ -1104,6 +945,10 @@ class NenoonViewModel @SuppressLint("StaticFieldLeak")
     }
 
     init {
+        viewModelScope.launch {
+            val response = api.getTest()
+            Log.e("response", "code: ${response.code()}\nbody: ${response.body()}\nerrorbody: ${response.errorBody()}\n")
+        }
         updateRandomList()
         showSplashScreen()
         checkBackgroundStatus()

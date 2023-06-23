@@ -18,6 +18,7 @@ import androidx.compose.ui.unit.sp
 import com.google.accompanist.systemuicontroller.rememberSystemUiController
 import com.pixelro.nenoonkiosk.NenoonViewModel
 import com.pixelro.nenoonkiosk.R
+import com.pixelro.nenoonkiosk.data.GlobalValue
 import com.pixelro.nenoonkiosk.data.StringProvider
 
 @Composable
@@ -87,7 +88,7 @@ fun SplashScreen(
         ) {
             Image(
                 modifier = Modifier
-                    .padding(bottom = (viewModel.navigationBarPadding.collectAsState().value + 20).dp)
+                    .padding(bottom = (GlobalValue.navigationBarPadding + 20).dp)
                     .height(50.dp),
                 painter = painterResource(id = R.drawable.pixelro_logo),
                 contentDescription = ""

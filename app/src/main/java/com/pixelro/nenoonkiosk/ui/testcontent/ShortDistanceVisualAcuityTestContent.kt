@@ -28,23 +28,23 @@ fun ShortDistanceVisualAcuityTestContent(
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
         viewModel.initializeVisualAcuityTest()
-        val measuringDistanceContentVisibleState = viewModel.measuringDistanceContentVisibleState
+//        val measuringDistanceContentVisibleState = viewModel.measuringDistanceContentVisibleState
         val coveredEyeCheckingContentVisibleState = viewModel.coveredEyeCheckingContentVisibleState
         val visualAcuityTestCommonContentVisibleState = viewModel.visualAcuityTestCommonContentVisibleState
 
         Box(
             contentAlignment = Alignment.TopCenter
         ) {
-            MeasuringDistanceContent(
-                viewModel = viewModel,
-                measuringDistanceContentVisibleState = measuringDistanceContentVisibleState,
-                nextVisibleState = coveredEyeCheckingContentVisibleState
-            )
-            CoveredEyeCheckingContent(
-                viewModel = viewModel,
-                coveredEyeCheckingContentVisibleState = coveredEyeCheckingContentVisibleState,
-                nextVisibleState = visualAcuityTestCommonContentVisibleState
-            )
+//            MeasuringDistanceContent(
+//                viewModel = viewModel,
+//                measuringDistanceContentVisibleState = measuringDistanceContentVisibleState,
+//                nextVisibleState = coveredEyeCheckingContentVisibleState
+//            )
+//            CoveredEyeCheckingContent(
+//                viewModel = viewModel,
+//                coveredEyeCheckingContentVisibleState = coveredEyeCheckingContentVisibleState,
+//                nextVisibleState = visualAcuityTestCommonContentVisibleState
+//            )
             VisualAcuityTestCommonContent(
                 toResultScreen = toResultScreen,
                 viewModel = viewModel,

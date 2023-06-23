@@ -48,12 +48,16 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.compose.ui.viewinterop.AndroidView
 import androidx.core.content.ContextCompat
+import androidx.hilt.navigation.compose.hiltViewModel
 import com.pixelro.nenoonkiosk.NenoonViewModel
 import com.pixelro.nenoonkiosk.R
 import com.pixelro.nenoonkiosk.data.AnimationProvider
 import com.pixelro.nenoonkiosk.data.GlobalConstants
+import com.pixelro.nenoonkiosk.data.GlobalValue
 import com.pixelro.nenoonkiosk.data.StringProvider
 import com.pixelro.nenoonkiosk.data.TestType
+import com.pixelro.nenoonkiosk.facedetection.FaceDetection
+import com.pixelro.nenoonkiosk.facedetection.FaceDetectionViewModel
 import com.pixelro.nenoonkiosk.facedetection.FaceDetectionWithPreview
 import kotlinx.coroutines.coroutineScope
 import kotlinx.coroutines.launch
@@ -61,9 +65,10 @@ import kotlin.math.roundToInt
 
 @Composable
 fun MeasuringDistanceContent(
-    viewModel: NenoonViewModel,
     measuringDistanceContentVisibleState: MutableTransitionState<Boolean>,
-    nextVisibleState: MutableTransitionState<Boolean>
+    toNextContent: () -> Unit,
+    selectedTestType: TestType,
+    faceDetectionViewModel: FaceDetectionViewModel = hiltViewModel()
 ) {
     AnimatedVisibility(
         visibleState = measuringDistanceContentVisibleState,
@@ -75,20 +80,6 @@ fun MeasuringDistanceContent(
             modifier = Modifier,
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
-//            Text(
-//                modifier = Modifier
-//                    .padding(start = 40.dp, end = 40.dp)
-//                    .fillMaxWidth(),
-//                text = StringProvider.getString(R.string.measuring_distance_content_description2),
-//                color = Color(0xffffffff),
-//                fontSize = 20.sp
-//            )
-//            Image(
-//                modifier = Modifier
-//                    .padding(start = 40.dp, top = 60.dp, end = 40.dp, bottom = 20.dp),
-//                painter = painterResource(id = R.drawable.img_eyetest_maneyes),
-//                contentDescription = ""
-//            )
             Box(
                 modifier = Modifier
                     .padding(top = 40.dp)
@@ -105,8 +96,7 @@ fun MeasuringDistanceContent(
 //                    contentDescription = ""
 //                )
                     FaceDetectionWithPreview(
-                        viewModel = viewModel,
-                        visibleState = measuringDistanceContentVisibleState
+                        measuringDistanceContentVisibleState
                     )
                     Box(
                         modifier = Modifier
@@ -161,29 +151,29 @@ fun MeasuringDistanceContent(
                 ) {
                     Text(
                         modifier = Modifier
-                            .padding(bottom = (viewModel.navigationBarPadding.collectAsState().value + 344).dp),
+                            .padding(bottom = (GlobalValue.navigationBarPadding + 344).dp),
                         text = StringProvider.getString(R.string.test_screen_current_distance),
                         color = Color(0xffffffff),
                         fontSize = 24.sp
                     )
                     Text(
                         modifier = Modifier
-                            .padding(bottom = (viewModel.navigationBarPadding.collectAsState().value + 240).dp),
-                        color = when(viewModel.selectedTestType.collectAsState().value) {
+                            .padding(bottom = (GlobalValue.navigationBarPadding + 240).dp),
+                        color = when(selectedTestType) {
                             TestType.ShortDistanceVisualAcuity -> {
-                                when(viewModel.screenToFaceDistance.collectAsState().value) {
+                                when(faceDetectionViewModel.screenToFaceDistance.collectAsState().value) {
                                     in 370.0..430.0 -> Color(0xffffffff)
                                     else -> Color(0xFF6D6D6D)
                                 }
                             }
                             else -> {
-                                when(viewModel.screenToFaceDistance.collectAsState().value) {
+                                when(faceDetectionViewModel.screenToFaceDistance.collectAsState().value) {
                                     in 270.0..330.0 -> Color(0xffffffff)
                                     else -> Color(0xFF6D6D6D)
                                 }
                             }
                         },
-                        text = "${(viewModel.screenToFaceDistance.collectAsState().value / 10).roundToInt()}cm",
+                        text = "${(faceDetectionViewModel.screenToFaceDistance.collectAsState().value / 10).roundToInt()}cm",
                         fontSize = 68.sp,
                         fontWeight = FontWeight.Bold
                     )
@@ -192,7 +182,7 @@ fun MeasuringDistanceContent(
                             .padding(
                                 start = 40.dp,
                                 end = 40.dp,
-                                bottom = (viewModel.navigationBarPadding.collectAsState().value + 160).dp
+                                bottom = (GlobalValue.navigationBarPadding + 160).dp
                             )
                             .border(
                                 border = BorderStroke(1.dp, Color(0xffffffff)),
@@ -202,7 +192,7 @@ fun MeasuringDistanceContent(
                         contentAlignment = Alignment.Center
                     ) {
                         Text(
-                            text = when(viewModel.selectedTestType.collectAsState().value) {
+                            text = when(selectedTestType) {
                                 TestType.ShortDistanceVisualAcuity -> StringProvider.getString(R.string.adjust_distance_40cm)
                                 else -> StringProvider.getString(R.string.adjust_distance_30cm)
                             },
@@ -212,7 +202,7 @@ fun MeasuringDistanceContent(
                         )
                     }
                 }
-                if(viewModel.screenToFaceDistance.collectAsState().value in when(viewModel.selectedTestType.collectAsState().value) {
+                if(faceDetectionViewModel.screenToFaceDistance.collectAsState().value in when(selectedTestType) {
                         TestType.ShortDistanceVisualAcuity -> (370.0..430.0)
                         else -> (270.0..330.0)
                     }) {
@@ -222,7 +212,7 @@ fun MeasuringDistanceContent(
                             .padding(
                                 start = 40.dp,
                                 end = 40.dp,
-                                bottom = (viewModel.navigationBarPadding.collectAsState().value).dp
+                                bottom = GlobalValue.navigationBarPadding.dp
                             )
                             .clip(
                                 shape = RoundedCornerShape(8.dp)
@@ -232,7 +222,7 @@ fun MeasuringDistanceContent(
                                 shape = RoundedCornerShape(8.dp),
                             )
                             .clickable {
-                                viewModel.updateTestDistance()
+                                toNextContent()
                             }
                             .padding(20.dp),
                         contentAlignment = Alignment.Center

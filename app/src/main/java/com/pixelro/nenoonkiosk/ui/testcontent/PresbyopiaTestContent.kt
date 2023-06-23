@@ -1,20 +1,22 @@
 package com.pixelro.nenoonkiosk.ui.testcontent
 
-import android.app.Activity
 import android.speech.tts.TextToSpeech
-import android.util.Log
-import android.view.KeyEvent
-import androidx.compose.animation.*
+import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.core.MutableTransitionState
-import androidx.compose.animation.core.tween
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
-import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.DisposableEffect
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
@@ -24,30 +26,39 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
-import androidx.compose.ui.unit.IntOffset
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import com.pixelro.nenoonkiosk.NenoonViewModel
+import androidx.hilt.navigation.compose.hiltViewModel
 import com.pixelro.nenoonkiosk.R
 import com.pixelro.nenoonkiosk.data.AnimationProvider
 import com.pixelro.nenoonkiosk.data.StringProvider
 import com.pixelro.nenoonkiosk.facedetection.FaceDetection
-import com.pixelro.nenoonkiosk.ui.screen.textAsBitmap
-import java.util.*
+import com.pixelro.nenoonkiosk.facedetection.FaceDetectionViewModel
+import com.pixelro.nenoonkiosk.presbyopia.PresbyopiaTestResult
+import com.pixelro.nenoonkiosk.presbyopia.PresbyopiaViewModel
+import java.util.Locale
 import kotlin.math.roundToInt
 
 @Composable
 fun PresbyopiaTestContent(
-    toResultScreen: () -> Unit,
-    viewModel: NenoonViewModel
+    toResultScreen: (PresbyopiaTestResult) -> Unit,
+    presbyopiaViewModel: PresbyopiaViewModel = hiltViewModel(),
+    faceDetectionViewModel: FaceDetectionViewModel = hiltViewModel()
 ) {
-    val firstVisibleState = viewModel.firstItemVisibleState
-    val secondVisibleState = viewModel.secondItemVisibleState
-    val thirdVisibleState = viewModel.thirdItemVisibleState
-    FaceDetection(
-        viewModel = viewModel,
-        visibleState = viewModel.measuringDistanceContentVisibleState
-    )
+    LaunchedEffect(Unit) {
+        presbyopiaViewModel.init()
+    }
+    val distance = faceDetectionViewModel.screenToFaceDistance.collectAsState().value
+    val isFirstItemVisible = presbyopiaViewModel.isFirstItemVisible.collectAsState().value
+    val isSecondItemVisible = presbyopiaViewModel.isSecondItemVisible.collectAsState().value
+    val isThirdItemVisible = presbyopiaViewModel.isThirdItemVisible.collectAsState().value
+    val firstItemVisibleState = remember { MutableTransitionState(true) }
+    firstItemVisibleState.targetState = isFirstItemVisible
+    val secondItemVisibleState = remember { MutableTransitionState(false) }
+    secondItemVisibleState.targetState = isSecondItemVisible
+    val thirdItemVisibleState = remember { MutableTransitionState(false) }
+    thirdItemVisibleState.targetState = isThirdItemVisible
+    FaceDetection()
     Text(
         modifier = Modifier
             .padding(start = 40.dp, top = 120.dp, end = 40.dp)
@@ -68,19 +79,13 @@ fun PresbyopiaTestContent(
             )
     ) {
         PresbyopiaFirstPage(
-            visibleState = firstVisibleState,
-            enterAnimation = AnimationProvider.enterTransition,
-            exitAnimation = AnimationProvider.exitTransition
+            visibleState = firstItemVisibleState
         )
         PresbyopiaSecondPage(
-            visibleState = secondVisibleState,
-            enterAnimation = AnimationProvider.enterTransition,
-            exitAnimation = AnimationProvider.exitTransition
+            visibleState = secondItemVisibleState
         )
         PresbyopiaThirdPage(
-            visibleState = thirdVisibleState,
-            enterAnimation = AnimationProvider.enterTransition,
-            exitAnimation = AnimationProvider.exitTransition
+            visibleState = thirdItemVisibleState
         )
     }
     Text(
@@ -91,7 +96,7 @@ fun PresbyopiaTestContent(
         color = Color(0xffffffff)
     )
     Text(
-        text = "${(viewModel.screenToFaceDistance.collectAsState().value / 10).roundToInt()}cm",
+        text = "${(faceDetectionViewModel.screenToFaceDistance.collectAsState().value / 10).roundToInt()}cm",
         fontSize = 68.sp,
         fontWeight = FontWeight.Medium,
         color = Color(0xffffffff)
@@ -102,22 +107,18 @@ fun PresbyopiaTestContent(
     ) {
         Text(
             modifier = Modifier
-                .padding(start = 40.dp, end = 40.dp, bottom = (viewModel.navigationBarPadding.collectAsState().value).dp)
+                .padding(
+                    start = 40.dp,
+                    end = 40.dp,
+                    bottom = (100).dp
+                )
                 .fillMaxWidth()
                 .background(
                     color = Color(0xff1d71e1),
                     shape = RoundedCornerShape(8.dp)
                 )
                 .clickable {
-                    if (firstVisibleState.currentState) {
-                        viewModel.updateFirstDistance()
-
-                    } else if (secondVisibleState.currentState) {
-                        viewModel.updateSecondDistance()
-                    } else {
-                        viewModel.updateThirdDistance()
-                        toResultScreen()
-                    }
+                    presbyopiaViewModel.moveToNextStep(distance) { toResultScreen(presbyopiaViewModel.getPresbyopiaTestResult()) }
                 }
                 .padding(20.dp),
             text = StringProvider.getString(R.string.next),
@@ -130,24 +131,27 @@ fun PresbyopiaTestContent(
 
 @Composable
 fun PresbyopiaFirstPage(
-    visibleState: MutableTransitionState<Boolean>,
-    enterAnimation: EnterTransition,
-    exitAnimation: ExitTransition
+    visibleState: MutableTransitionState<Boolean>
 ) {
     AnimatedVisibility(
         visibleState = visibleState,
-        enter = enterAnimation,
-        exit = exitAnimation
+        enter = AnimationProvider.enterTransition,
+        exit = AnimationProvider.exitTransition
     ) {
         val context = LocalContext.current
         lateinit var tts: TextToSpeech
         tts = remember {
             TextToSpeech(context) {
-                if(it == TextToSpeech.SUCCESS) {
+                if (it == TextToSpeech.SUCCESS) {
                     tts.stop()
                     tts.language = Locale.KOREAN
                     tts.setSpeechRate(1.0f)
-                    tts.speak("조절력 검사를 시작하겠습니다. 화면을 눈과 평행하게 놓고, 50cm 지점에서 멈추세요. 다음으로, 조금씩 가까이 오다가 시표가 흐릿해지는 지점에서 멈추고, 아래의 다음 버튼을 누르세요. 각 3개의 시표에 대해 같은 과정을 반복하세요.", TextToSpeech.QUEUE_FLUSH, null, null)
+                    tts.speak(
+                        "조절력 검사를 시작하겠습니다. 화면을 눈과 평행하게 놓고, 50cm 지점에서 멈추세요. 다음으로, 조금씩 가까이 오다가 시표가 흐릿해지는 지점에서 멈추고, 아래의 다음 버튼을 누르세요. 각 3개의 시표에 대해 같은 과정을 반복하세요.",
+                        TextToSpeech.QUEUE_FLUSH,
+                        null,
+                        null
+                    )
                 }
             }
         }
@@ -171,20 +175,18 @@ fun PresbyopiaFirstPage(
 
 @Composable
 fun PresbyopiaSecondPage(
-    visibleState: MutableTransitionState<Boolean>,
-    enterAnimation: EnterTransition,
-    exitAnimation: ExitTransition
+    visibleState: MutableTransitionState<Boolean>
 ) {
     AnimatedVisibility(
         visibleState = visibleState,
-        enter = enterAnimation,
-        exit = exitAnimation
+        enter = AnimationProvider.enterTransition,
+        exit = AnimationProvider.exitTransition
     ) {
         val context = LocalContext.current
         lateinit var tts: TextToSpeech
         tts = remember {
             TextToSpeech(context) {
-                if(it == TextToSpeech.SUCCESS) {
+                if (it == TextToSpeech.SUCCESS) {
                     tts.stop()
                     tts.language = Locale.KOREAN
                     tts.setSpeechRate(1.0f)
@@ -212,20 +214,18 @@ fun PresbyopiaSecondPage(
 
 @Composable
 fun PresbyopiaThirdPage(
-    visibleState: MutableTransitionState<Boolean>,
-    enterAnimation: EnterTransition,
-    exitAnimation: ExitTransition
+    visibleState: MutableTransitionState<Boolean>
 ) {
     AnimatedVisibility(
         visibleState = visibleState,
-        enter = enterAnimation,
-        exit = exitAnimation
+        enter = AnimationProvider.enterTransition,
+        exit = AnimationProvider.exitTransition
     ) {
         val context = LocalContext.current
         lateinit var tts: TextToSpeech
         tts = remember {
             TextToSpeech(context) {
-                if(it == TextToSpeech.SUCCESS) {
+                if (it == TextToSpeech.SUCCESS) {
                     tts.stop()
                     tts.language = Locale.KOREAN
                     tts.setSpeechRate(1.0f)

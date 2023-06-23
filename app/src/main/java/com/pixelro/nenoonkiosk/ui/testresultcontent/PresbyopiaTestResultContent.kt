@@ -159,17 +159,17 @@ fun PresbyopiaTestResultContent(
                 )
                 .padding(40.dp)
         ) {
-            Text(
-                text = StringProvider.getString(R.string.presbyopia_result_hoffstetter1) + "\n" + (viewModel.eyeAge.collectAsState().value - 2) + " ~ " + (viewModel.eyeAge.collectAsState().value + 2) + StringProvider.getString(R.string.presbyopia_result_years_old),
-//                        + ": ${(viewModel.avgDistance.collectAsState().value).roundToInt().toFloat() / 10}cm",
-                fontSize = 40.sp,
-                fontWeight = FontWeight.Medium,
-            )
-            Text(
-                text = "${(viewModel.avgDistance.collectAsState().value).roundToInt().toFloat() / 10}cm " + StringProvider.getString(R.string.presbyopia_result_near_point_accommodation),
-                fontSize = 32.sp,
-                color = Color(0xff878787)
-            )
+//            Text(
+//                text = StringProvider.getString(R.string.presbyopia_result_hoffstetter1) + "\n" + (viewModel.eyeAge.collectAsState().value - 2) + " ~ " + (viewModel.eyeAge.collectAsState().value + 2) + StringProvider.getString(R.string.presbyopia_result_years_old),
+////                        + ": ${(viewModel.avgDistance.collectAsState().value).roundToInt().toFloat() / 10}cm",
+//                fontSize = 40.sp,
+//                fontWeight = FontWeight.Medium,
+//            )
+//            Text(
+//                text = "${(viewModel.avgDistance.collectAsState().value).roundToInt().toFloat() / 10}cm " + StringProvider.getString(R.string.presbyopia_result_near_point_accommodation),
+//                fontSize = 32.sp,
+//                color = Color(0xff878787)
+//            )
         }
     }
 }

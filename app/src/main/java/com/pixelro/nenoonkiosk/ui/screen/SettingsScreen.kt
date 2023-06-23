@@ -30,6 +30,7 @@ import androidx.compose.ui.window.DialogProperties
 import com.pixelro.nenoonkiosk.NenoonKioskApplication
 import com.pixelro.nenoonkiosk.NenoonViewModel
 import com.pixelro.nenoonkiosk.R
+import com.pixelro.nenoonkiosk.data.GlobalValue
 import com.pixelro.nenoonkiosk.data.SharedPreferencesManager
 import com.pixelro.nenoonkiosk.data.StringProvider
 import java.util.Locale
@@ -54,7 +55,7 @@ fun SettingsScreen(
     ) {
         Box(
             modifier = Modifier
-                .padding(top = (viewModel.statusBarPadding.collectAsState().value + 20).dp, bottom = 20.dp)
+                .padding(top = (GlobalValue.statusBarPadding + 20).dp, bottom = 20.dp)
                 .fillMaxWidth()
                 .height(40.dp),
             contentAlignment = Alignment.Center

@@ -29,6 +29,7 @@ import androidx.compose.ui.unit.sp
 import com.pixelro.nenoonkiosk.NenoonViewModel
 import com.pixelro.nenoonkiosk.R
 import com.pixelro.nenoonkiosk.data.GlobalConstants
+import com.pixelro.nenoonkiosk.data.GlobalValue
 import com.pixelro.nenoonkiosk.data.StringProvider
 import com.pixelro.nenoonkiosk.data.SurveyAge
 import com.pixelro.nenoonkiosk.data.SurveyDiabetes
@@ -38,7 +39,8 @@ import com.pixelro.nenoonkiosk.data.SurveySurgery
 
 @Composable
 fun SurveyScreen(
-    viewModel: NenoonViewModel
+    viewModel: NenoonViewModel,
+    toTestListScreen: () -> Unit
 ) {
     Column(
         modifier = Modifier
@@ -47,7 +49,7 @@ fun SurveyScreen(
         Box(
             modifier = Modifier
                 .padding(
-                    top = (viewModel.statusBarPadding.collectAsState().value + 20).dp,
+                    top = (GlobalValue.statusBarPadding + 20).dp,
                     bottom = 20.dp
                 )
                 .fillMaxWidth()
@@ -726,7 +728,7 @@ fun SurveyScreen(
                     .padding(
                         start = 40.dp,
                         end = 40.dp,
-                        bottom = (viewModel.navigationBarPadding.collectAsState().value).dp
+                        bottom = GlobalValue.navigationBarPadding.dp
                     )
                     .clip(
                         shape = RoundedCornerShape(8.dp)
@@ -737,6 +739,7 @@ fun SurveyScreen(
                     )
                     .clickable {
                         viewModel.submitSurvey()
+                        toTestListScreen()
                     }
                     .padding(20.dp),
                 contentAlignment = Alignment.Center

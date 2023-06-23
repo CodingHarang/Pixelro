@@ -39,6 +39,7 @@ import androidx.media3.ui.AspectRatioFrameLayout
 import androidx.media3.ui.PlayerView
 import com.google.accompanist.systemuicontroller.rememberSystemUiController
 import com.pixelro.nenoonkiosk.NenoonViewModel
+import com.pixelro.nenoonkiosk.data.GlobalValue
 
 @OptIn(ExperimentalTextApi::class)
 @androidx.annotation.OptIn(androidx.media3.common.util.UnstableApi::class)
@@ -91,7 +92,7 @@ fun ScreenSaverScreen(
         }
         Spacer(
             modifier = Modifier
-                .padding(top = viewModel.statusBarPadding.collectAsState().value.dp)
+                .padding(top = GlobalValue.statusBarPadding.dp)
         )
         Box() {
             Column(

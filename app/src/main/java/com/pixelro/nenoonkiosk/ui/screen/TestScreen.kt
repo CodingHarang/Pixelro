@@ -32,6 +32,7 @@ import com.google.accompanist.systemuicontroller.rememberSystemUiController
 import com.pixelro.nenoonkiosk.NenoonViewModel
 import com.pixelro.nenoonkiosk.R
 import com.pixelro.nenoonkiosk.data.GlobalConstants
+import com.pixelro.nenoonkiosk.data.GlobalValue
 import com.pixelro.nenoonkiosk.data.StringProvider
 import com.pixelro.nenoonkiosk.data.TestType
 import com.pixelro.nenoonkiosk.facedetection.FaceDetection
@@ -49,14 +50,14 @@ fun EyeTestScreen(
         viewModel.resetScreenSaverTimer()
         viewModel.coveredEyeCheckingContentVisibleState.targetState = false
         when(currentTestType) {
-            TestType.Presbyopia -> viewModel.initializePresbyopiaTest()
+//            TestType.Presbyopia -> viewModel.initializePresbyopiaTest()
             TestType.ShortDistanceVisualAcuity -> viewModel.initializeVisualAcuityTest()
             TestType.LongDistanceVisualAcuity -> viewModel.initializeVisualAcuityTest()
             TestType.ChildrenVisualAcuity -> viewModel.initializeVisualAcuityTest()
             TestType.AmslerGrid -> viewModel.initializeAmslerGridTest()
             else -> viewModel.initializeMChartTest()
         }
-        viewModel.measuringDistanceContentVisibleState.targetState = false
+//        viewModel.measuringDistanceContentVisibleState.targetState = false
     }
     val systemUiController = rememberSystemUiController()
     DisposableEffect(true) {
@@ -94,7 +95,7 @@ fun EyeTestScreen(
                 modifier = Modifier
                     .padding(
                         start = 40.dp,
-                        top = (viewModel.statusBarPadding.collectAsState().value + 20).dp,
+                        top = (GlobalValue.statusBarPadding + 20).dp,
                         end = 40.dp,
                         bottom = 20.dp
                     )
