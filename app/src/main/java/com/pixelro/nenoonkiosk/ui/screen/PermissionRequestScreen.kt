@@ -38,6 +38,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.core.app.ActivityCompat
+import androidx.hilt.navigation.compose.hiltViewModel
 import com.pixelro.nenoonkiosk.NenoonViewModel
 import com.pixelro.nenoonkiosk.R
 import com.pixelro.nenoonkiosk.data.GlobalValue

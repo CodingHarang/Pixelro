@@ -49,14 +49,14 @@ fun EyeTestScreen(
         navController.popBackStack(GlobalConstants.ROUTE_TEST_LIST, false)
         viewModel.resetScreenSaverTimer()
         viewModel.coveredEyeCheckingContentVisibleState.targetState = false
-        when(currentTestType) {
+//        when(currentTestType) {
 //            TestType.Presbyopia -> viewModel.initializePresbyopiaTest()
-            TestType.ShortDistanceVisualAcuity -> viewModel.initializeVisualAcuityTest()
-            TestType.LongDistanceVisualAcuity -> viewModel.initializeVisualAcuityTest()
-            TestType.ChildrenVisualAcuity -> viewModel.initializeVisualAcuityTest()
-            TestType.AmslerGrid -> viewModel.initializeAmslerGridTest()
-            else -> viewModel.initializeMChartTest()
-        }
+//            TestType.ShortDistanceVisualAcuity -> viewModel.initializeVisualAcuityTest()
+//            TestType.LongDistanceVisualAcuity -> viewModel.initializeVisualAcuityTest()
+//            TestType.ChildrenVisualAcuity -> viewModel.initializeVisualAcuityTest()
+//            TestType.AmslerGrid -> viewModel.initializeAmslerGridTest()
+//            else -> viewModel.initializeMChartTest()
+//        }
 //        viewModel.measuringDistanceContentVisibleState.targetState = false
     }
     val systemUiController = rememberSystemUiController()

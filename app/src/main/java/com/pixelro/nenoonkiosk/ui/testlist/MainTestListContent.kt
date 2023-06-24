@@ -9,10 +9,11 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import com.pixelro.nenoonkiosk.R
 import com.pixelro.nenoonkiosk.data.StringProvider
+import com.pixelro.nenoonkiosk.data.TestType
 
 @Composable
 fun MainTestListContent(
-    toPreDescriptionScreen: () -> Unit,
+    toTestScreen: (TestType) -> Unit,
     toVisualAcuityTestList: () -> Unit,
     toMacularDegenerationTestList: () -> Unit
 ) {
@@ -22,7 +23,7 @@ fun MainTestListContent(
         EyeTestSelectableBox(
             title = StringProvider.getString(R.string.presbyopia_name1),
             description = StringProvider.getString(R.string.presbyopia_short_description),
-            onClickMethod = toPreDescriptionScreen
+            onClickMethod = { toTestScreen(TestType.Presbyopia) }
         )
         Spacer(
             modifier = Modifier

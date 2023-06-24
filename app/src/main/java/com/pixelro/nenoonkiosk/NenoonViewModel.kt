@@ -29,9 +29,10 @@ import com.google.android.gms.location.LocationSettingsResponse
 import com.google.android.gms.location.SettingsClient
 import com.google.android.gms.tasks.Task
 import com.harang.data.api.NenoonKioskApi
+import com.pixelro.nenoonkiosk.test.macular.amslergrid.AmslerGridTestResult
 import com.pixelro.nenoonkiosk.data.AccommodationData
 import com.pixelro.nenoonkiosk.data.GlobalValue
-import com.pixelro.nenoonkiosk.amslergrid.MacularDisorderType
+import com.pixelro.nenoonkiosk.test.macular.amslergrid.MacularDisorderType
 import com.pixelro.nenoonkiosk.data.SharedPreferencesManager
 import com.pixelro.nenoonkiosk.data.StringProvider
 import com.pixelro.nenoonkiosk.data.SurveyAge
@@ -41,7 +42,11 @@ import com.pixelro.nenoonkiosk.data.SurveySex
 import com.pixelro.nenoonkiosk.data.SurveySurgery
 import com.pixelro.nenoonkiosk.data.TestType
 import com.pixelro.nenoonkiosk.data.VisionDisorderType
-import com.pixelro.nenoonkiosk.presbyopia.PresbyopiaTestResult
+import com.pixelro.nenoonkiosk.test.macular.mchart.MChartTestResult
+import com.pixelro.nenoonkiosk.test.presbyopia.PresbyopiaTestResult
+import com.pixelro.nenoonkiosk.test.visualacuity.children.ChildrenVisualAcuityTestResult
+import com.pixelro.nenoonkiosk.test.visualacuity.longdistance.LongVisualAcuityTestResult
+import com.pixelro.nenoonkiosk.test.visualacuity.shortdistance.ShortVisualAcuityTestResult
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -61,12 +66,12 @@ class NenoonViewModel @Inject constructor(
 
     private fun checkBackgroundStatus() {
         viewModelScope.launch {
-            while(true) {
-                if(_isResumed.value) {
+            while (true) {
+                if (_isResumed.value) {
                     // Check screen saver timer
-                    _screenSaverTimer.update { _screenSaverTimer.value - 1 }
+                    _screenSaverTimer.update { _screenSaverTimer.value - 0 }
 //                    Log.e("screenSaver", "${_screenSaverTimer.value}")
-                    if(_screenSaverTimer.value < 0) {
+                    if (_screenSaverTimer.value < 0) {
                         _isScreenSaverOn.update { true }
                     }
                     // Check permissions
@@ -143,7 +148,8 @@ class NenoonViewModel @Inject constructor(
     val exoPlayer = ExoPlayer.Builder(getApplication()).build()
     private val _screenSaverTimer = MutableStateFlow(30)
     private val _timeValue = MutableStateFlow(30)
-//    val screenSaverTimer: StateFlow<Int> = _screenSaverTimer
+
+    //    val screenSaverTimer: StateFlow<Int> = _screenSaverTimer
     private val _isScreenSaverOn = MutableStateFlow(false)
     val isScreenSaverOn: StateFlow<Boolean> = _isScreenSaverOn
 
@@ -157,7 +163,13 @@ class NenoonViewModel @Inject constructor(
         resetScreenSaverTimer()
     }
 
-    fun updateLocalConfigurationValues(pixelDensity: Float, screenWidthDp: Int, screenHeightDp: Int, focalLength: Float, lensSize: SizeF) {
+    fun updateLocalConfigurationValues(
+        pixelDensity: Float,
+        screenWidthDp: Int,
+        screenHeightDp: Int,
+        focalLength: Float,
+        lensSize: SizeF
+    ) {
         GlobalValue.pixelDensity = pixelDensity
         GlobalValue.screenWidthDp = screenWidthDp
         GlobalValue.screenHeightDp = screenHeightDp
@@ -187,25 +199,25 @@ class NenoonViewModel @Inject constructor(
         viewModelScope.launch {
             var count = 0
             _leftTime.update { 5.5f }
-            while(count < 10) {
+            while (count < 10) {
                 delay(500)
-                if(!coveredEyeCheckingContentVisibleState.targetState) {
+                if (!coveredEyeCheckingContentVisibleState.targetState) {
                     return@launch
                 }
-                if(
+                if (
 //                    when(isLeftEye.value) {
 //                        true -> leftEyeOpenProbability.value
 //                        else -> rightEyeOpenProbability.value
 //                    } < 0.7f && abs(leftEyeOpenProbability.value - rightEyeOpenProbability.value) > 0.3f
                     true
                 ) {
-                    if(!isTimerShowing.value) {
+                    if (!isTimerShowing.value) {
                         _isTimerShowing.update { true }
                     }
                     count++
                     _leftTime.update { (it - 0.5f) }
                 } else {
-                    if(isTimerShowing.value) {
+                    if (isTimerShowing.value) {
                         _isTimerShowing.update { false }
                     }
                     count = 0
@@ -213,45 +225,18 @@ class NenoonViewModel @Inject constructor(
                 }
             }
             coveredEyeCheckingContentVisibleState.targetState = false
-            if(_selectedTestType.value == TestType.ShortDistanceVisualAcuity) {
-                visualAcuityTestCommonContentVisibleState.targetState = true
-            } else if(_selectedTestType.value == TestType.AmslerGrid) {
-                amslerGridContentVisibleState.targetState = true
-            } else if(_selectedTestType.value == TestType.MChart) {
-                mChartContentVisibleState.targetState = true
+            if (_selectedTestType.value == TestType.ShortDistanceVisualAcuity) {
+//                visualAcuityTestCommonContentVisibleState.targetState = true
+            } else if (_selectedTestType.value == TestType.AmslerGrid) {
+//                amslerGridContentVisibleState.targetState = true
+            } else if (_selectedTestType.value == TestType.MChart) {
+//                mChartContentVisibleState.targetState = true
             }
         }
     }
 
     // Nemonic Printer
-    private val _printerName = MutableStateFlow("")
-    val printerName: StateFlow<String> = _printerName
-    private val _printerMacAddress = MutableStateFlow("")
-    val printerMacAddress: StateFlow<String> = _printerMacAddress
-    private val _nemonicList = MutableStateFlow(emptyList<Pair<String, String>>())
-    val nemonicList: StateFlow<List<Pair<String, String>>> = _nemonicList
-    private val _printString = MutableStateFlow("")
-    val printString: StateFlow<String> = _printString
 
-    fun updatePrintString(string: String) {
-        _printString.update { string }
-    }
-
-    fun updatePrinter(name: String, address: String) {
-        _printerName.update { name }
-        _printerMacAddress.update { address }
-    }
-
-    // UI
-    private val _statusBarPadding = MutableStateFlow(0)
-    val statusBarPadding: StateFlow<Int> = _statusBarPadding
-    private val _navigationBarPadding = MutableStateFlow(0)
-    val navigationBarPadding: StateFlow<Int> = _navigationBarPadding
-
-    fun updateSystemBarsPadding(statusBar: Float, navigationBar: Float) {
-        _statusBarPadding.update { (statusBar / getApplication<Application>().resources.displayMetrics.density).toInt() }
-        _navigationBarPadding.update { navigationBar.toInt() }
-    }
 
     // Checking permission, location, bluetooth
     private val _isWriteSettingsPermissionGranted = MutableStateFlow(false)
@@ -266,32 +251,56 @@ class NenoonViewModel @Inject constructor(
     val isLocationOn: StateFlow<Boolean> = _isLocationOn
     private val _isBluetoothOn = MutableStateFlow(false)
     val isBlueToothOn: StateFlow<Boolean> = _isBluetoothOn
-    private val _resolvableApiException = MutableStateFlow(ResolvableApiException(Status.RESULT_CANCELED))
+    private val _resolvableApiException =
+        MutableStateFlow(ResolvableApiException(Status.RESULT_CANCELED))
     val resolvableApiException: StateFlow<ResolvableApiException> = _resolvableApiException
 
     private fun checkPermissions() {
-        if(ContextCompat.checkSelfPermission(getApplication(), Manifest.permission.BLUETOOTH_SCAN) == PackageManager.PERMISSION_GRANTED
-            && ContextCompat.checkSelfPermission(getApplication(), Manifest.permission.BLUETOOTH_CONNECT) == PackageManager.PERMISSION_GRANTED
-            && ContextCompat.checkSelfPermission(getApplication(), Manifest.permission.BLUETOOTH) == PackageManager.PERMISSION_GRANTED
-            && ContextCompat.checkSelfPermission(getApplication(), Manifest.permission.BLUETOOTH_ADMIN) == PackageManager.PERMISSION_GRANTED
-            && ContextCompat.checkSelfPermission(getApplication(), Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED
-            && ContextCompat.checkSelfPermission(getApplication(), Manifest.permission.ACCESS_COARSE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
+        if (ContextCompat.checkSelfPermission(
+                getApplication(),
+                Manifest.permission.BLUETOOTH_SCAN
+            ) == PackageManager.PERMISSION_GRANTED
+            && ContextCompat.checkSelfPermission(
+                getApplication(),
+                Manifest.permission.BLUETOOTH_CONNECT
+            ) == PackageManager.PERMISSION_GRANTED
+            && ContextCompat.checkSelfPermission(
+                getApplication(),
+                Manifest.permission.BLUETOOTH
+            ) == PackageManager.PERMISSION_GRANTED
+            && ContextCompat.checkSelfPermission(
+                getApplication(),
+                Manifest.permission.BLUETOOTH_ADMIN
+            ) == PackageManager.PERMISSION_GRANTED
+            && ContextCompat.checkSelfPermission(
+                getApplication(),
+                Manifest.permission.ACCESS_FINE_LOCATION
+            ) == PackageManager.PERMISSION_GRANTED
+            && ContextCompat.checkSelfPermission(
+                getApplication(),
+                Manifest.permission.ACCESS_COARSE_LOCATION
+            ) == PackageManager.PERMISSION_GRANTED
+        ) {
             _isBluetoothPermissionsGranted.update { true }
         } else {
             _isBluetoothPermissionsGranted.update { false }
         }
-        if(ContextCompat.checkSelfPermission(getApplication(), Manifest.permission.CAMERA) == PackageManager.PERMISSION_GRANTED) {
+        if (ContextCompat.checkSelfPermission(
+                getApplication(),
+                Manifest.permission.CAMERA
+            ) == PackageManager.PERMISSION_GRANTED
+        ) {
             _isCameraPermissionGranted.update { true }
         } else {
             _isCameraPermissionGranted.update { false }
         }
-        if(Settings.System.canWrite(getApplication())) {
+        if (Settings.System.canWrite(getApplication())) {
             _isWriteSettingsPermissionGranted.update { true }
         } else {
             _isWriteSettingsPermissionGranted.update { false }
         }
 
-        if(_isBluetoothPermissionsGranted.value && _isCameraPermissionGranted.value && _isWriteSettingsPermissionGranted.value && _isLocationOn.value && _isBluetoothOn.value) {
+        if (_isBluetoothPermissionsGranted.value && _isCameraPermissionGranted.value && _isWriteSettingsPermissionGranted.value && _isLocationOn.value && _isBluetoothOn.value) {
             _isAllPermissionsGranted.update { true }
         } else {
             _isAllPermissionsGranted.update { false }
@@ -299,25 +308,28 @@ class NenoonViewModel @Inject constructor(
     }
 
     private fun checkIsLocationOn() {
-        val locationManager = getSystemService(getApplication(), LocationManager::class.java) as LocationManager
+        val locationManager =
+            getSystemService(getApplication(), LocationManager::class.java) as LocationManager
 
-        if(!locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER)) {
+        if (!locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER)) {
 
             val locationRequest: LocationRequest = LocationRequest.Builder(10000).build()
-            val client: SettingsClient = LocationServices.getSettingsClient(getApplication() as Context)
+            val client: SettingsClient =
+                LocationServices.getSettingsClient(getApplication() as Context)
             val builder: LocationSettingsRequest.Builder = LocationSettingsRequest
                 .Builder()
                 .addLocationRequest(locationRequest)
-            val gpsSettingTask: Task<LocationSettingsResponse> = client.checkLocationSettings(builder.build())
+            val gpsSettingTask: Task<LocationSettingsResponse> =
+                client.checkLocationSettings(builder.build())
 
             gpsSettingTask.addOnSuccessListener {
             }
             gpsSettingTask.addOnFailureListener { exception ->
-                if(exception is ResolvableApiException) {
+                if (exception is ResolvableApiException) {
                     try {
                         _resolvableApiException.update { exception }
                         _isLocationOn.update { false }
-                    } catch(sendEx: IntentSender.SendIntentException) {
+                    } catch (sendEx: IntentSender.SendIntentException) {
 
                     }
                 }
@@ -328,8 +340,9 @@ class NenoonViewModel @Inject constructor(
     }
 
     private fun checkIsBluetoothOn() {
-        val bluetoothAdapter = (getApplication<Application>().getSystemService(Context.BLUETOOTH_SERVICE) as BluetoothManager).adapter
-        if(bluetoothAdapter.isEnabled) {
+        val bluetoothAdapter =
+            (getApplication<Application>().getSystemService(Context.BLUETOOTH_SERVICE) as BluetoothManager).adapter
+        if (bluetoothAdapter.isEnabled) {
             _isBluetoothOn.update { true }
         } else {
             _isBluetoothOn.update { false }
@@ -372,7 +385,7 @@ class NenoonViewModel @Inject constructor(
     fun updateSelectedTestType(testType: TestType) {
         _selectedTestType.update { testType }
         _selectedTestName.update {
-            when(testType) {
+            when (testType) {
                 TestType.Presbyopia -> StringProvider.getString(R.string.presbyopia_name1)
                 TestType.ShortDistanceVisualAcuity -> StringProvider.getString(R.string.short_visual_acuity_name)
                 TestType.LongDistanceVisualAcuity -> StringProvider.getString(R.string.long_visual_acuity_name)
@@ -382,7 +395,7 @@ class NenoonViewModel @Inject constructor(
             }
         }
         _selectedTestDescription.update {
-            when(testType) {
+            when (testType) {
                 TestType.Presbyopia -> StringProvider.getString(R.string.presbyopia_long_description)
                 TestType.ShortDistanceVisualAcuity -> StringProvider.getString(R.string.short_visual_acuity_long_description)
                 TestType.LongDistanceVisualAcuity -> StringProvider.getString(R.string.long_visual_acuity_long_description)
@@ -392,7 +405,7 @@ class NenoonViewModel @Inject constructor(
             }
         }
         _predescriptionTitle.update {
-            when(testType) {
+            when (testType) {
                 TestType.Presbyopia -> StringProvider.getString(R.string.test_predescription_presbyopia_title)
                 TestType.ShortDistanceVisualAcuity -> StringProvider.getString(R.string.test_predescription_short_visual_acuity_title)
                 TestType.LongDistanceVisualAcuity -> StringProvider.getString(R.string.test_predescription_long_visual_acuity_title)
@@ -403,553 +416,28 @@ class NenoonViewModel @Inject constructor(
         }
     }
 
-    // Presbyopia test
+    // Test Result
     var presbyopiaTestResult = PresbyopiaTestResult()
+    var shortVisualAcuityTestResult = ShortVisualAcuityTestResult()
+    var longVisualAcuityTestResult = LongVisualAcuityTestResult()
+    var childrenVisualAcuityTestResult = ChildrenVisualAcuityTestResult()
+    var amslerGridTestResult = AmslerGridTestResult()
+    var mChartTestResult = MChartTestResult()
 
 
     fun updateIsLeftEye(isLeft: Boolean) {
         _isLeftEye.update { isLeft }
     }
 
-//    fun initializePresbyopiaTest() {
-////        _bitmap.update {
-////        Bitmap.createBitmap(100, 100, Bitmap.Config.ARGB_8888)
-////    }
-//        measuringDistanceContentVisibleState.targetState = false
-//        firstItemVisibleState.targetState = true
-//        secondItemVisibleState.targetState = false
-//        thirdItemVisibleState.targetState = false
-//    }
-//
-//    private fun updateAvgDistance() {
-//        _avgDistance.update {
-//            (_firstDistance.value + _secondDistance.value + _thirdDistance.value) / 3
-//        }
-//        _printString.update {
-//            "조절근점: ${(avgDistance.value).roundToInt().toFloat() / 10}cm"
-//        }
-//
-//        var max = 100000f
-//        for(entry in AccommodationData.allEntries) {
-//            var diff = (entry.x * 10) - _avgDistance.value
-//            if(diff < 0) diff = -diff
-//            if(max > diff) {
-//                max = diff
-//                _eyeAge.update { entry.y.toInt() - 15 }
-//            }
-//        }
-//    }
-
-    // Visual acuity test
-    val visualAcuityTestCommonContentVisibleState = MutableTransitionState(false)
-    val visualAcuityTestContentVisibleState = MutableTransitionState(true)
-    val visualAcuityTestSightednessTestContentVisibleState = MutableTransitionState(false)
-    private var sightHistory = mutableMapOf(
-        1 to Pair(0, 0),
-        2 to Pair(0, 0),
-        3 to Pair(0, 0),
-        4 to Pair(0, 0),
-        5 to Pair(0, 0),
-        6 to Pair(0, 0),
-        7 to Pair(0, 0),
-        8 to Pair(0, 0),
-        9 to Pair(0, 0),
-        10 to Pair(0, 0)
-    )
-    private val _sightLevel = MutableStateFlow(1)
-    val sightLevel: StateFlow<Int> = _sightLevel
-    private val _leftEyeSightValue = MutableStateFlow(1)
-    val leftEyeSightValue: StateFlow<Int> = _leftEyeSightValue
-    private val _rightEyeSightValue = MutableStateFlow(1)
-    val rightEyeSightValue: StateFlow<Int> = _rightEyeSightValue
-    private val _leftEyeSightedValue = MutableStateFlow(VisionDisorderType.Normal)
-    val leftEyeSightedValue: StateFlow<VisionDisorderType> = _leftEyeSightedValue
-    private val _rightEyeSightedValue = MutableStateFlow(VisionDisorderType.Normal)
-    val rightEyeSightedValue: StateFlow<VisionDisorderType> = _rightEyeSightedValue
-    private var _randomList = MutableStateFlow(mutableListOf(0))
-    val randomList: StateFlow<MutableList<Int>> = _randomList
-    private var _ansNum = MutableStateFlow(0)
-    val ansNum: StateFlow<Int> = _ansNum
-
-    fun processAnswerSelected(
-        idx: Int,
-        toResultScreen: () -> Unit
-    ) {
-//        Log.e("", "start: ${_sightLevel.value}")
-        var isEnd = false
-        // choose number
-        if(idx != 3) {
-            // if correct
-            if(ansNum.value == _randomList.value[idx]) {
-                sightHistory[_sightLevel.value] = Pair(sightHistory[_sightLevel.value]!!.first + 1, sightHistory[_sightLevel.value]!!.second)
-                // if first trial
-                if(sightHistory[_sightLevel.value]!!.first == 1 && sightHistory[_sightLevel.value]!!.second == 0) {
-                    // if level == 10
-                    if(_sightLevel.value == 10) {
-                        isEnd = true
-                        moveToRightVisualAcuityTest(toResultScreen)
-                    } else {
-                        _sightLevel.update { it + 1 }
-//                        if(_sightLevel.value > 10) moveToRightVisualAcuityTest(toResultScreen)
-                    }
-                }
-            } // if wrong
-            else {
-                sightHistory[_sightLevel.value] = Pair(sightHistory[_sightLevel.value]!!.first, sightHistory[_sightLevel.value]!!.second + 1)
-            }
-        } // choose question mark
-        else {
-            sightHistory[_sightLevel.value] = Pair(sightHistory[_sightLevel.value]!!.first, sightHistory[_sightLevel.value]!!.second + 1)
-        }
-
-        // if 3th trial
-        if(sightHistory[_sightLevel.value]!!.first + sightHistory[_sightLevel.value]!!.second >= 3) {
-            // if correct >= 2
-            if(sightHistory[_sightLevel.value]!!.first >= 2) {
-                // if next level trial >= 3
-                if(sightHistory[_sightLevel.value + 1]!!.first + sightHistory[_sightLevel.value + 1]!!.second >= 3) {
-                    isEnd = true
-                    moveToRightVisualAcuityTest(toResultScreen)
-                } // to next level
-                else {
-                    _sightLevel.update { it + 1 }
-                }
-            } // if correct < 1
-            else {
-                // if level == 1
-                if(_sightLevel.value == 1) {
-                    isEnd = true
-                    moveToRightVisualAcuityTest(toResultScreen)
-                } // level--
-                else {
-                    // if prev level trial >= 3
-                    if(sightHistory[_sightLevel.value - 1]!!.first + sightHistory[_sightLevel.value - 1]!!.second >= 3) {
-                        isEnd = true
-                        moveToRightVisualAcuityTest(toResultScreen)
-                    } else {
-                        _sightLevel.update { it - 1 }
-                    }
-                }
-            }
-        }
-        if(!isEnd) updateRandomList()
-//        Log.e("", "end: ${_sightLevel.value}")
-        Log.e("", "${sightHistory[0]}\n${sightHistory[1]}\n${sightHistory[2]}\n${sightHistory[3]}\n${sightHistory[4]}\n${sightHistory[5]}\n${sightHistory[6]}\n${sightHistory[7]}\n${sightHistory[8]}\n${sightHistory[9]}\n")
-    }
-
-    private fun moveToRightVisualAcuityTest(
-        toResultScreen: () -> Unit
-    ) {
-        if(_isLeftEye.value) {
-            sightHistory = mutableMapOf(
-                1 to Pair(0, 0),
-                2 to Pair(0, 0),
-                3 to Pair(0, 0),
-                4 to Pair(0, 0),
-                5 to Pair(0, 0),
-                6 to Pair(0, 0),
-                7 to Pair(0, 0),
-                8 to Pair(0, 0),
-                9 to Pair(0, 0),
-                10 to Pair(0, 0)
-            )
-            _leftEyeSightValue.update { _sightLevel.value }
-        } else {
-            _rightEyeSightValue.update { _sightLevel.value }
-        }
-        viewModelScope.launch {
-            delay(700)
-            _sightLevel.update { 1 }
-        }
-        visualAcuityTestCommonContentVisibleState.targetState = false
-        coveredEyeCheckingContentVisibleState.targetState = true
-        if(!_isLeftEye.value) { toResultScreen() }
-        else { _isLeftEye.update { false } }
-    }
-
-    fun updateLeftEyeSightedValue(type: VisionDisorderType) {
-        viewModelScope.launch {
-            delay(700)
-            visualAcuityTestContentVisibleState.targetState = true
-            visualAcuityTestSightednessTestContentVisibleState.targetState = false
-        }
-        _leftEyeSightedValue.update { type }
-    }
-
-    fun updateRightEyeSightedValue(type: VisionDisorderType) {
-        _rightEyeSightedValue.update { type }
-    }
-
-    fun initializeVisualAcuityTest() {
-//        _bitmap.update {
-//            Bitmap.createBitmap(100, 100, Bitmap.Config.ARGB_8888)
-//        }
-        _isLeftEye.update { true }
-        sightHistory = mutableMapOf(
-            1 to Pair(0, 0),
-            2 to Pair(0, 0),
-            3 to Pair(0, 0),
-            4 to Pair(0, 0),
-            5 to Pair(0, 0),
-            6 to Pair(0, 0),
-            7 to Pair(0, 0),
-            8 to Pair(0, 0),
-            9 to Pair(0, 0),
-            10 to Pair(0, 0)
-        )
-//        measuringDistanceContentVisibleState.targetState = true
-        coveredEyeCheckingContentVisibleState.targetState = false
-        visualAcuityTestCommonContentVisibleState.targetState = false
-        visualAcuityTestContentVisibleState.targetState = true
-        visualAcuityTestSightednessTestContentVisibleState.targetState = false
-    }
-
-    fun updateSightTestResult() {
-        _printString.update {
-            val leftEyeSighted = when(_leftEyeSightedValue.value) {
-                VisionDisorderType.Normal -> "정상"
-                VisionDisorderType.Myopia -> "근시"
-                VisionDisorderType.Hyperopia -> "원시"
-                else -> "난시"
-            }
-
-            val rightEyeSighted = when(_rightEyeSightedValue.value) {
-                VisionDisorderType.Normal -> "정상"
-                VisionDisorderType.Myopia -> "근시"
-                VisionDisorderType.Hyperopia -> "원시"
-                else -> "난시"
-            }
-            "${_leftEyeSightValue.value.toFloat() / 10}," +
-            "${_rightEyeSightValue.value.toFloat() / 10}"
-        }
-    }
-
-    private fun updateRandomList() {
-        _randomList.update { mutableListOf() }
-        var ranNum = (2..7).random()
-        for(i in 1..3) {
-            while(ranNum in randomList.value) {
-                ranNum = (2..7).random()
-            }
-            _randomList.update {
-                it.add(ranNum)
-                it
-            }
-        }
-        val prevNum = ansNum.value
-        _ansNum.update {
-            var newNum = randomList.value[(0..2).random()]
-            while(prevNum == newNum) {
-                newNum = randomList.value[(0..2).random()]
-            }
-            newNum
-        }
-    }
-
-    // Macular degeneration test
-    // Amsler Grid Test
-    val amslerGridContentVisibleState = MutableTransitionState(false)
-    val macularDistortedTypeVisibleState = MutableTransitionState(false)
-    private val _currentSelectedPosition = MutableStateFlow(Offset(0f, 0f))
-    val currentSelectedPosition: StateFlow<Offset> = _currentSelectedPosition
-    private val _currentSelectedArea = MutableStateFlow(listOf(MacularDisorderType.Normal, MacularDisorderType.Normal, MacularDisorderType.Normal, MacularDisorderType.Normal, MacularDisorderType.Normal, MacularDisorderType.Normal, MacularDisorderType.Normal, MacularDisorderType.Normal, MacularDisorderType.Normal))
-    val currentSelectedArea: StateFlow<List<MacularDisorderType>> = _currentSelectedArea
-    private val _leftSelectedArea = MutableStateFlow(emptyList<MacularDisorderType>())
-    val leftSelectedArea: StateFlow<List<MacularDisorderType>> = _leftSelectedArea
-    private val _rightSelectedArea = MutableStateFlow(emptyList<MacularDisorderType>())
-    val rightSelectedArea: StateFlow<List<MacularDisorderType>> = _rightSelectedArea
-
-    fun updateLeftSelectedArea() {
-        _leftSelectedArea.update { currentSelectedArea.value }
-        _currentSelectedArea.update { listOf(MacularDisorderType.Normal, MacularDisorderType.Normal, MacularDisorderType.Normal, MacularDisorderType.Normal, MacularDisorderType.Normal, MacularDisorderType.Normal, MacularDisorderType.Normal, MacularDisorderType.Normal, MacularDisorderType.Normal) }
-        _printString.update {
-            _leftSelectedArea.value.toString()
-        }
-        macularDistortedTypeVisibleState.targetState = false
-    }
-
-    fun updateRightSelectedArea() {
-        _rightSelectedArea.update { currentSelectedArea.value }
-        _currentSelectedArea.update { listOf(MacularDisorderType.Normal, MacularDisorderType.Normal, MacularDisorderType.Normal, MacularDisorderType.Normal, MacularDisorderType.Normal, MacularDisorderType.Normal, MacularDisorderType.Normal, MacularDisorderType.Normal, MacularDisorderType.Normal) }
-        _printString.update {
-            (it + _rightSelectedArea.value.toString()).replace("][", ",").replace("[", "").replace("]", "").replace(" ", "")
-        }
-    }
-
-    fun initializeAmslerGridTest() {
-//        _bitmap.update {
-//            Bitmap.createBitmap(100, 100, Bitmap.Config.ARGB_8888)
-//        }
-        _currentSelectedArea.update { listOf(MacularDisorderType.Normal, MacularDisorderType.Normal, MacularDisorderType.Normal, MacularDisorderType.Normal, MacularDisorderType.Normal, MacularDisorderType.Normal, MacularDisorderType.Normal, MacularDisorderType.Normal, MacularDisorderType.Normal) }
-//        measuringDistanceContentVisibleState.targetState = true
-        coveredEyeCheckingContentVisibleState.targetState = false
-        amslerGridContentVisibleState.targetState = false
-        _isLeftEye.update { true }
-    }
-
-    fun updateCurrentSelectedPosition(position: Offset) {
-        _currentSelectedPosition.update { position }
-        if(position.x in 0f..299f && position.y in 0f..299f) {
-            if(_currentSelectedArea.value[0] != MacularDisorderType.Normal) {
-                _currentSelectedArea.update {
-                    val tmpList = it.toMutableList()
-                    tmpList[0] = MacularDisorderType.Normal
-                    tmpList
-                }
-            } else {
-                macularDistortedTypeVisibleState.targetState = true
-            }
-        } else if(position.x in 300f..599f && position.y in 0f..299f) {
-            if(_currentSelectedArea.value[1] != MacularDisorderType.Normal) {
-                _currentSelectedArea.update {
-                    val tmpList = it.toMutableList()
-                    tmpList[1] = MacularDisorderType.Normal
-                    tmpList
-                }
-            } else {
-                macularDistortedTypeVisibleState.targetState = true
-            }
-        } else if(position.x in 600f..900f && position.y in 0f..299f) {
-            if(_currentSelectedArea.value[2] != MacularDisorderType.Normal) {
-                _currentSelectedArea.update {
-                    val tmpList = it.toMutableList()
-                    tmpList[2] = MacularDisorderType.Normal
-                    tmpList
-                }
-            } else {
-                macularDistortedTypeVisibleState.targetState = true
-            }
-        } else if(position.x in 0f..299f && position.y in 300f..599f) {
-            if(_currentSelectedArea.value[3] != MacularDisorderType.Normal) {
-                _currentSelectedArea.update {
-                    val tmpList = it.toMutableList()
-                    tmpList[3] = MacularDisorderType.Normal
-                    tmpList
-                }
-            } else {
-                macularDistortedTypeVisibleState.targetState = true
-            }
-        } else if(position.x in 300f..599f && position.y in 300f..599f) {
-            if(_currentSelectedArea.value[4] != MacularDisorderType.Normal) {
-                _currentSelectedArea.update {
-                    val tmpList = it.toMutableList()
-                    tmpList[4] = MacularDisorderType.Normal
-                    tmpList
-                }
-            } else {
-                macularDistortedTypeVisibleState.targetState = true
-            }
-        } else if(position.x in 600f..900f && position.y in 300f..599f) {
-            if(_currentSelectedArea.value[5] != MacularDisorderType.Normal) {
-                _currentSelectedArea.update {
-                    val tmpList = it.toMutableList()
-                    tmpList[5] = MacularDisorderType.Normal
-                    tmpList
-                }
-            } else {
-                macularDistortedTypeVisibleState.targetState = true
-            }
-        } else if(position.x in 0f..299f && position.y in 600f..900f) {
-            if(_currentSelectedArea.value[6] != MacularDisorderType.Normal) {
-                _currentSelectedArea.update {
-                    val tmpList = it.toMutableList()
-                    tmpList[6] = MacularDisorderType.Normal
-                    tmpList
-                }
-            } else {
-                macularDistortedTypeVisibleState.targetState = true
-            }
-        } else if(position.x in 300f..599f && position.y in 600f..900f) {
-            if(_currentSelectedArea.value[7] != MacularDisorderType.Normal) {
-                _currentSelectedArea.update {
-                    val tmpList = it.toMutableList()
-                    tmpList[7] = MacularDisorderType.Normal
-                    tmpList
-                }
-            } else {
-                macularDistortedTypeVisibleState.targetState = true
-            }
-        } else {
-            if(_currentSelectedArea.value[8] != MacularDisorderType.Normal) {
-                _currentSelectedArea.update {
-                    val tmpList = it.toMutableList()
-                    tmpList[8] = MacularDisorderType.Normal
-                    tmpList
-                }
-            } else {
-                macularDistortedTypeVisibleState.targetState = true
-            }
-        }
-    }
-
-    fun updateCurrentSelectedArea(idx: Int) {
-        val position = _currentSelectedPosition.value
-
-        Log.e("clicked", "${position.x}, ${position.y}")
-        _currentSelectedArea.update {
-            val tmpList = it.toMutableList()
-            if(position.x in 0f..299f && position.y in 0f..299f) {
-                when(idx) {
-                    0 -> { tmpList[0] = MacularDisorderType.Distorted }
-                    1 -> { tmpList[0] = MacularDisorderType.Blacked }
-                    else -> { tmpList[0] = MacularDisorderType.Whited }
-                }
-            } else if(position.x in 300f..599f && position.y in 0f..299f) {
-                when(idx) {
-                    0 -> { tmpList[1] = MacularDisorderType.Distorted }
-                    1 -> { tmpList[1] = MacularDisorderType.Blacked }
-                    else -> { tmpList[1] = MacularDisorderType.Whited }
-                }
-            } else if(position.x in 600f..900f && position.y in 0f..299f) {
-                when(idx) {
-                    0 -> { tmpList[2] = MacularDisorderType.Distorted }
-                    1 -> { tmpList[2] = MacularDisorderType.Blacked }
-                    else -> { tmpList[2] = MacularDisorderType.Whited }
-                }
-            } else if(position.x in 0f..299f && position.y in 300f..599f) {
-                when(idx) {
-                    0 -> { tmpList[3] = MacularDisorderType.Distorted }
-                    1 -> { tmpList[3] = MacularDisorderType.Blacked }
-                    else -> { tmpList[3] = MacularDisorderType.Whited }
-                }
-            } else if(position.x in 300f..599f && position.y in 300f..599f) {
-                when(idx) {
-                    0 -> { tmpList[4] = MacularDisorderType.Distorted }
-                    1 -> { tmpList[4] = MacularDisorderType.Blacked }
-                    else -> { tmpList[4] = MacularDisorderType.Whited }
-                }
-            } else if(position.x in 600f..900f && position.y in 300f..599f) {
-                when(idx) {
-                    0 -> { tmpList[5] = MacularDisorderType.Distorted }
-                    1 -> { tmpList[5] = MacularDisorderType.Blacked }
-                    else -> { tmpList[5] = MacularDisorderType.Whited }
-                }
-            } else if(position.x in 0f..299f && position.y in 600f..900f) {
-                when(idx) {
-                    0 -> { tmpList[6] = MacularDisorderType.Distorted }
-                    1 -> { tmpList[6] = MacularDisorderType.Blacked }
-                    else -> { tmpList[6] = MacularDisorderType.Whited }
-                }
-            } else if(position.x in 300f..599f && position.y in 600f..900f) {
-                when(idx) {
-                    0 -> { tmpList[7] = MacularDisorderType.Distorted }
-                    1 -> { tmpList[7] = MacularDisorderType.Blacked }
-                    else -> { tmpList[7] = MacularDisorderType.Whited }
-                }
-            } else {
-                when(idx) {
-                    0 -> { tmpList[8] = MacularDisorderType.Distorted }
-                    1 -> { tmpList[8] = MacularDisorderType.Blacked }
-                    else -> { tmpList[8] = MacularDisorderType.Whited }
-                }
-            }
-            tmpList
-        }
-    }
-
-
-    // M-Chart Test
-    val mChartContentVisibleState = MutableTransitionState(false)
-    private val _mChartResult = MutableStateFlow(listOf<Int>())
-    val mChartResult: StateFlow<List<Int>> = _mChartResult
-    private val _savedResult = MutableStateFlow(listOf<Int>())
-    val savedResult: StateFlow<List<Int>> = _savedResult
-    private val _isVertical = MutableStateFlow(true)
-    val isVertical: StateFlow<Boolean> = _isVertical
-    private val _currentLevel = MutableStateFlow(0)
-    val currentLevel: StateFlow<Int> = _currentLevel
-    private val _mChartImageId = MutableStateFlow(R.drawable.mchart_0_0)
-    val mChartImageId: StateFlow<Int> = _mChartImageId
-
-    fun initializeMChartTest() {
-//        _bitmap.update {
-//            Bitmap.createBitmap(100, 100, Bitmap.Config.ARGB_8888)
-//        }
-        viewModelScope.launch {
-            delay(700)
-            _isVertical.update { true }
-            _currentLevel.update { 0 }
-            _mChartResult.update { listOf() }
-//            measuringDistanceContentVisibleState.targetState = true
-            coveredEyeCheckingContentVisibleState.targetState = false
-            mChartContentVisibleState.targetState = false
-            _isLeftEye.update { true }
-            _mChartImageId.update { R.drawable.mchart_0_0 }
-        }
-    }
-
-    fun toNextMChartTest() {
-        updateIsLeftEye(false)
-        viewModelScope.launch {
-            delay(700)
-            updateCurrentLevel(0)
-            updateIsVertical(true)
-        }
-    }
-
-    fun updateMChartResult(value: Int) {
-        _mChartResult.update {
-            if(value == 0) {
-                val list = it + value
-                list
-            } else {
-                val list = it + (value + 1)
-                list
-            }
-        }
-        if(_mChartResult.value.size == 4) {
-            _printString.update {
-                _mChartResult.value.toString().replace("[", "").replace("]", "").replace(" ", "")
-            }
-        }
-    }
-
-    fun updateIsVertical(isVertical: Boolean) {
-        _isVertical.update { isVertical }
-    }
-
-    fun updateSavedResult() {
-        _savedResult.update { mChartResult.value }
-        viewModelScope.launch {
-            delay(700)
-            updateCurrentLevel(0)
-        }
-    }
-
-    fun updateCurrentLevel(level: Int) {
-        _currentLevel.update { level }
-        _mChartImageId.update {
-            when(currentLevel.value) {
-                0 -> R.drawable.mchart_0_0
-                1 -> R.drawable.mchart_0_2
-                2 -> R.drawable.mchart_0_3
-                3 -> R.drawable.mchart_0_4
-                4 -> R.drawable.mchart_0_5
-                5 -> R.drawable.mchart_0_6
-                6 -> R.drawable.mchart_0_7
-                7 -> R.drawable.mchart_0_8
-                8 -> R.drawable.mchart_0_9
-                9 -> R.drawable.mchart_1_0
-                10 -> R.drawable.mchart_1_1
-                11 -> R.drawable.mchart_1_2
-                12 -> R.drawable.mchart_1_3
-                13 -> R.drawable.mchart_1_4
-                14 -> R.drawable.mchart_1_5
-                15 -> R.drawable.mchart_1_6
-                16 -> R.drawable.mchart_1_7
-                17 -> R.drawable.mchart_1_8
-                18 -> R.drawable.mchart_1_9
-                else -> R.drawable.mchart_2_0
-            }
-        }
-    }
-
     init {
         viewModelScope.launch {
             val response = api.getTest()
-            Log.e("response", "code: ${response.code()}\nbody: ${response.body()}\nerrorbody: ${response.errorBody()}\n")
+            Log.e(
+                "response",
+                "code: ${response.code()}\nbody: ${response.body()}\nerrorbody: ${response.errorBody()}\n"
+            )
         }
-        updateRandomList()
+//        updateRandomList()
         showSplashScreen()
         checkBackgroundStatus()
 //        exoPlayer.setMediaItem(MediaItem.fromUri("https://drive.google.com/uc?export=view&id=1vNW4Xia8pG4tfGoao4Nb7hEJtOd9Cg8F"))

@@ -35,6 +35,7 @@ import com.pixelro.nenoonkiosk.NenoonViewModel
 import com.pixelro.nenoonkiosk.R
 import com.pixelro.nenoonkiosk.data.GlobalValue
 import com.pixelro.nenoonkiosk.data.StringProvider
+import com.pixelro.nenoonkiosk.data.TestType
 import com.pixelro.nenoonkiosk.ui.testlist.TestListContent
 import kotlinx.coroutines.delay
 
@@ -42,7 +43,7 @@ import kotlinx.coroutines.delay
 @OptIn(ExperimentalFoundationApi::class, ExperimentalAnimationApi::class)
 @Composable
 fun TestListScreen(
-    toPreDescriptionScreen: () -> Unit,
+    toTestScreen: (TestType) -> Unit,
     toSettingsScreen: () -> Unit,
     navController: NavHostController = rememberAnimatedNavController(),
     viewModel: NenoonViewModel
@@ -130,38 +131,16 @@ fun TestListScreen(
                     color = Color(0xffebebeb)
                 )
         )
-//        Row(
-//            modifier = Modifier
-//                .fillMaxWidth()
-//                .height(100.dp),
-//            horizontalArrangement = Arrangement.End,
-//            verticalAlignment = Alignment.CenterVertically
-//        ) {
-//            Spacer(
-//                modifier = Modifier.width(20.dp)
-//            )
-//            Text(
-//                modifier = Modifier
-//                    .padding(end = 20.dp),
-//                text = "Pixelro",
-//                fontSize = 30.sp
-//            )
-//        }
         HorizontalPager(
             contentPadding = PaddingValues(40.dp),
-//            modifier = Modifier
-//                .padding(20.dp),
             pageSpacing = 40.dp,
             state = pagerState,
             pageCount = 100000,
         ) {
             Advertisement(it)
         }
-//        AutoScrollingLazyRow(list = (1..8).take(4)) {
-//            LazyListItem(text = "Item $it")
-//        }
         TestListContent(
-            toPreDescriptionScreen = toPreDescriptionScreen,
+            toTestScreen = toTestScreen,
             navController = navController,
             viewModel = viewModel
         )
@@ -258,22 +237,3 @@ fun Advertisement(
         }
     }
 }
-
-//@Composable
-//fun LazyListItem(text: String) {
-//    Box(
-//        modifier = Modifier
-//            .padding(12.dp)
-//            .size(150.dp)
-//            .background(
-//                color = Color.White,
-//                shape = RoundedCornerShape(8.dp)
-//            ),
-//        contentAlignment = Alignment.Center
-//    ) {
-//        Text(
-//            text = text,
-//            fontSize = 24.sp
-//        )
-//    }
-//}

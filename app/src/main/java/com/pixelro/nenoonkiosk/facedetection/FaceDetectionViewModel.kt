@@ -138,53 +138,38 @@ class FaceDetectionViewModel @Inject constructor(
     }
 
     // Covered Eye Checking
-    val coveredEyeCheckingContentVisibleState = MutableTransitionState(false)
     private val _leftTime = MutableStateFlow(0f)
     val leftTime: StateFlow<Float> = _leftTime
     private val _isTimerShowing = MutableStateFlow(false)
     val isTimerShowing: StateFlow<Boolean> = _isTimerShowing
 
-    fun initializeCoveredEyeChecking() {
-//        _isCoveredEyeCheckingDone.update { false }
+    fun initializeCoveredEyeChecking(isLeftEye: Boolean, toNextContent: () -> Unit) {
         _leftTime.update { 5f }
         _isTimerShowing.update { false }
+        viewModelScope.launch {
+            when(isLeftEye) {
+                true -> {
+//                    while(_leftEyeOpenProbability.value < 50f) {}
+                    _isTimerShowing.update { true }
+                    startTimer { toNextContent() }
+                }
+                false -> {
+//                    while(_rightEyeOpenProbability.value < 50f) {}
+                    _isTimerShowing.update { true }
+                    startTimer { toNextContent() }
+                }
+            }
+        }
     }
 
-//    fun updateIsCoveredEyeCheckingDone(isDone: Boolean) {
-//        _isCoveredEyeCheckingDone.update { isDone }
-//    }
-
-    fun checkCoveredEye(
-        toNextContent: () -> Unit
-    ) {
-
+    private fun startTimer(toNextContent: () -> Unit) {
         viewModelScope.launch {
             var count = 0
             _leftTime.update { 5.5f }
-            while(count < 10) {
+            while(count < 3) {
                 delay(500)
-                if(!coveredEyeCheckingContentVisibleState.targetState) {
-                    return@launch
-                }
-                if(
-//                    when(isLeftEye.value) {
-//                        true -> leftEyeOpenProbability.value
-//                        else -> rightEyeOpenProbability.value
-//                    } < 0.7f && abs(leftEyeOpenProbability.value - rightEyeOpenProbability.value) > 0.3f
-                    true
-                ) {
-                    if(!isTimerShowing.value) {
-                        _isTimerShowing.update { true }
-                    }
-                    count++
-                    _leftTime.update { (it - 0.5f) }
-                } else {
-                    if(isTimerShowing.value) {
-                        _isTimerShowing.update { false }
-                    }
-                    count = 0
-                    _leftTime.update { 5f }
-                }
+                count++
+                _leftTime.update { (it - 0.5f) }
             }
             toNextContent()
         }

@@ -19,19 +19,15 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
-import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import androidx.lifecycle.viewmodel.compose.viewModel
-import com.pixelro.nenoonkiosk.NenoonViewModel
 import com.pixelro.nenoonkiosk.R
 import com.pixelro.nenoonkiosk.data.StringProvider
+import com.pixelro.nenoonkiosk.data.TestType
 
 @Composable
 fun MacularTestListContent(
-    toAmslerGridTest: () -> Unit,
-    toMChartTest: () -> Unit,
-    toPreDescriptionScreen: () -> Unit
+    toTestScreen: (TestType) -> Unit
 ) {
     val context = LocalContext.current
     Column(
@@ -76,10 +72,7 @@ fun MacularTestListContent(
         EyeTestSelectableBox(
             title = StringProvider.getString(R.string.amsler_grid_name),
             description = StringProvider.getString(R.string.amsler_grid_short_description),
-            onClickMethod = {
-                toAmslerGridTest()
-                toPreDescriptionScreen()
-            }
+            onClickMethod = { toTestScreen(TestType.AmslerGrid) }
         )
         Spacer(
             modifier = Modifier
@@ -88,10 +81,7 @@ fun MacularTestListContent(
         EyeTestSelectableBox(
             title = StringProvider.getString(R.string.mchart_name),
             description = StringProvider.getString(R.string.mchart_short_description),
-            onClickMethod = {
-                toMChartTest()
-                toPreDescriptionScreen()
-            }
+            onClickMethod = { toTestScreen(TestType.MChart) }
         )
     }
 }

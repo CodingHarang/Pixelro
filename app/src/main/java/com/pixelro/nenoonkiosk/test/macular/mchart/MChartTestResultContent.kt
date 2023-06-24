@@ -1,4 +1,4 @@
-package com.pixelro.nenoonkiosk.ui.testresultcontent
+package com.pixelro.nenoonkiosk.test.macular.mchart
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
@@ -26,10 +26,10 @@ import com.pixelro.nenoonkiosk.data.StringProvider
 
 @Composable
 fun MChartTestResultContent(
-    viewModel: NenoonViewModel,
+    testResult: MChartTestResult,
     navController: NavHostController
 ) {
-    val result = viewModel.savedResult.collectAsState().value
+    val result = testResult
     Column(
         modifier = Modifier
             .fillMaxWidth(),
@@ -154,7 +154,7 @@ fun MChartTestResultContent(
                         Text(
                             modifier = Modifier
                                 .padding(start = 100.dp),
-                            text = "${String.format("%.1f", result[0].toFloat() / 10)}°",
+                            text = "${String.format("%.1f", testResult.leftEyeVertical.toFloat() / 10)}°",
                             fontSize = 30.sp,
                             fontWeight = FontWeight.Bold
                         )
@@ -186,7 +186,7 @@ fun MChartTestResultContent(
                         Text(
                             modifier = Modifier
                                 .padding(start = 100.dp),
-                            text = "${String.format("%.1f", result[1].toFloat() / 10)}°",
+                            text = "${String.format("%.1f", testResult.rightEyeVertical.toFloat() / 10)}°",
                             fontSize = 30.sp,
                             fontWeight = FontWeight.Bold
                         )
@@ -238,7 +238,7 @@ fun MChartTestResultContent(
                         Text(
                             modifier = Modifier
                                 .padding(start = 100.dp),
-                            text = "${String.format("%.1f", result[2].toFloat() / 10)}°",
+                            text = "${String.format("%.1f", testResult.rightEyeVertical.toFloat() / 10)}°",
                             fontSize = 30.sp,
                             fontWeight = FontWeight.Bold
                         )
@@ -270,7 +270,7 @@ fun MChartTestResultContent(
                         Text(
                             modifier = Modifier
                                 .padding(start = 100.dp),
-                            text = "${String.format("%.1f", result[3].toFloat() / 10)}°",
+                            text = "${String.format("%.1f", testResult.rightEyeHorizontal.toFloat() / 10)}°",
                             fontSize = 30.sp,
                             fontWeight = FontWeight.Bold
                         )

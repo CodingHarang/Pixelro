@@ -1,4 +1,4 @@
-package com.pixelro.nenoonkiosk.ui.testresultcontent
+package com.pixelro.nenoonkiosk.test.macular.amslergrid
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
@@ -24,19 +24,21 @@ import androidx.compose.ui.graphics.RectangleShape
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavHostController
 import com.pixelro.nenoonkiosk.NenoonViewModel
 import com.pixelro.nenoonkiosk.R
-import com.pixelro.nenoonkiosk.amslergrid.MacularDisorderType
+import com.pixelro.nenoonkiosk.test.macular.amslergrid.MacularDisorderType
 import com.pixelro.nenoonkiosk.data.StringProvider
 
 @Composable
 fun AmslerGridTestResultContent(
-    viewModel: NenoonViewModel,
+    testResult: AmslerGridTestResult,
     navController: NavHostController
 ) {
-    val leftSelectedArea = viewModel.leftSelectedArea.collectAsState().value
-    val rightSelectedArea = viewModel.rightSelectedArea.collectAsState().value
+    val leftSelectedArea = testResult.leftEyeDisorderType
+    val rightSelectedArea = testResult.rightEyeDisorderType
+
     Row(
         modifier = Modifier
             .fillMaxWidth(),
@@ -392,7 +394,7 @@ fun AmslerGridTestResultContent(
                         .border(
                             width = (0.5).dp,
                             color =
-                                Color(0xffc3c3c3),
+                            Color(0xffc3c3c3),
                             shape = RectangleShape
                         )
                         .drawBehind {

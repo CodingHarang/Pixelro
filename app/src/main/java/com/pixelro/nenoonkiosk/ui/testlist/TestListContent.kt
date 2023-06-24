@@ -24,7 +24,7 @@ import com.pixelro.nenoonkiosk.data.TestType
 @OptIn(ExperimentalAnimationApi::class)
 @Composable
 fun TestListContent(
-    toPreDescriptionScreen: () -> Unit,
+    toTestScreen: (TestType) -> Unit,
     navController: NavHostController,
     viewModel: NenoonViewModel
 ) {
@@ -40,10 +40,10 @@ fun TestListContent(
             exitTransition = { AnimationProvider.exitTransition }
         ) {
             MainTestListContent(
-                toPreDescriptionScreen = {
+                toTestScreen = {
                     viewModel.updateSelectedTestType(TestType.Presbyopia)
 //                    viewModel.initializePresbyopiaTest()
-                    toPreDescriptionScreen()
+                    toTestScreen(it)
                 },
                 toVisualAcuityTestList = { navController.navigate(GlobalConstants.ROUTE_VISUAL_ACUITY_TEST_LIST) },
                 toMacularDegenerationTestList = { navController.navigate(GlobalConstants.ROUTE_MACULAR_DEGENERATION_TEST_LIST) }
@@ -57,18 +57,8 @@ fun TestListContent(
             exitTransition = { AnimationProvider.exitTransition }
         ) {
             VisualAcuityTestListContent(
-                toShortDistanceVisualAcuityTest = {
-                    viewModel.updateSelectedTestType(TestType.ShortDistanceVisualAcuity)
-                },
-                toLongDistanceVisualAcuityTest = {
-                    viewModel.updateSelectedTestType(TestType.LongDistanceVisualAcuity)
-                },
-                toChildrenVisualAcuityTest = {
-                    viewModel.updateSelectedTestType(TestType.ChildrenVisualAcuity)
-                },
-                toPreDescriptionScreen =  {
-                    viewModel.initializeVisualAcuityTest()
-                    toPreDescriptionScreen()
+                toTestScreen = {
+                    toTestScreen(it)
                 }
             )
         }
@@ -80,15 +70,9 @@ fun TestListContent(
             exitTransition = { AnimationProvider.exitTransition }
         ) {
             MacularTestListContent(
-                toAmslerGridTest = {
-                    viewModel.initializeAmslerGridTest()
-                    viewModel.updateSelectedTestType(TestType.AmslerGrid)
-                },
-                toMChartTest = {
-                    viewModel.initializeMChartTest()
-                    viewModel.updateSelectedTestType(TestType.MChart)
-                },
-                toPreDescriptionScreen = toPreDescriptionScreen
+                toTestScreen = {
+                    toTestScreen(it)
+                }
             )
         }
     }

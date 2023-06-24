@@ -1,22 +1,12 @@
-package com.pixelro.nenoonkiosk.ui.testcontent
+package com.pixelro.nenoonkiosk.test.macular.mchart
 
-import android.util.Log
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.core.MutableTransitionState
-import androidx.compose.animation.core.tween
-import androidx.compose.animation.fadeIn
-import androidx.compose.animation.fadeOut
-import androidx.compose.animation.slideIn
-import androidx.compose.animation.slideOut
-import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
-import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
@@ -25,8 +15,9 @@ import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
-import androidx.compose.runtime.rememberCoroutineScope
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -35,27 +26,34 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
-import androidx.compose.ui.unit.IntOffset
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.hilt.navigation.compose.hiltViewModel
 import com.pixelro.nenoonkiosk.NenoonViewModel
 import com.pixelro.nenoonkiosk.R
 import com.pixelro.nenoonkiosk.data.AnimationProvider
-import com.pixelro.nenoonkiosk.data.GlobalConstants
 import com.pixelro.nenoonkiosk.data.GlobalValue
 import com.pixelro.nenoonkiosk.data.StringProvider
+import com.pixelro.nenoonkiosk.data.TestType
+import com.pixelro.nenoonkiosk.facedetection.CoveredEyeCheckingContent
 import com.pixelro.nenoonkiosk.facedetection.FaceDetection
-import kotlinx.coroutines.coroutineScope
-import kotlinx.coroutines.launch
+import com.pixelro.nenoonkiosk.facedetection.MeasuringDistanceContent
 
 @Composable
 fun MChartTestContent(
-    toResultScreen: () -> Unit,
-    viewModel: NenoonViewModel
+    toResultScreen: (MChartTestResult) -> Unit,
+    mChartViewModel: MChartViewModel = hiltViewModel()
 ) {
-//    val measuringDistanceContentVisibleState = viewModel.measuringDistanceContentVisibleState
-    val coveredEyeCheckingContentVisibleState = viewModel.coveredEyeCheckingContentVisibleState
-    val mChartContentVisibleState = viewModel.mChartContentVisibleState
+    LaunchedEffect(true) {
+        mChartViewModel.init()
+    }
+    FaceDetection()
+    val measuringDistanceContentVisibleState = remember { MutableTransitionState(true) }
+    measuringDistanceContentVisibleState.targetState = mChartViewModel.isMeasuringDistanceContentVisible.collectAsState().value
+    val coveredEyeCheckingContentVisibleState = remember { MutableTransitionState(false) }
+    coveredEyeCheckingContentVisibleState.targetState = mChartViewModel.isCoveredEyeCheckingContentVisible.collectAsState().value
+    val mChartContentVisibleState = remember { MutableTransitionState(false) }
+    mChartContentVisibleState.targetState = mChartViewModel.isMChartContentVisible.collectAsState().value
 
     Column(
         modifier = Modifier
@@ -70,20 +68,24 @@ fun MChartTestContent(
             modifier = Modifier
                 .fillMaxWidth()
         ) {
-//            MeasuringDistanceContent(
-//                viewModel = viewModel,
-//                measuringDistanceContentVisibleState = measuringDistanceContentVisibleState,
-//                nextVisibleState = coveredEyeCheckingContentVisibleState
-//            )
-//            CoveredEyeCheckingContent(
-//                viewModel = viewModel,
-//                coveredEyeCheckingContentVisibleState = coveredEyeCheckingContentVisibleState,
-//                nextVisibleState = mChartContentVisibleState
-//            )
+            MeasuringDistanceContent(
+                measuringDistanceContentVisibleState = measuringDistanceContentVisibleState,
+                toNextContent = {
+                    mChartViewModel.updateIsMeasuringDistanceContentVisible(false)
+                    mChartViewModel.updateIsCoveredEyeCheckingContentVisible(true)
+                },
+                selectedTestType = TestType.AmslerGrid
+            )
+            CoveredEyeCheckingContent(
+                coveredEyeCheckingContentVisibleState = coveredEyeCheckingContentVisibleState,
+                toNextContent = {
+                    mChartViewModel.updateIsCoveredEyeCheckingContentVisible(false)
+                    mChartViewModel.updateIsMChartContentVisible(true)
+                },
+                isLeftEye = mChartViewModel.isLeftEye.collectAsState().value
+            )
             MChartContent(
-                viewModel = viewModel,
                 mChartContentVisibleState = mChartContentVisibleState,
-                nextVisibleState = coveredEyeCheckingContentVisibleState,
                 toResultScreen = toResultScreen
             )
         }
@@ -92,21 +94,19 @@ fun MChartTestContent(
 
 @Composable
 fun MChartContent(
-    viewModel: NenoonViewModel,
     mChartContentVisibleState: MutableTransitionState<Boolean>,
-    nextVisibleState: MutableTransitionState<Boolean>,
-    toResultScreen: () -> Unit
+    toResultScreen: (MChartTestResult) -> Unit,
+    mChartViewModel: MChartViewModel = hiltViewModel()
 ) {
     AnimatedVisibility(
         visibleState = mChartContentVisibleState,
         enter = AnimationProvider.enterTransition,
         exit = AnimationProvider.exitTransition
     ) {
-        FaceDetection()
-        val isLeftEye = viewModel.isLeftEye.collectAsState().value
-        val isVertical = viewModel.isVertical.collectAsState().value
-        val currentLevel = viewModel.currentLevel.collectAsState().value
-        val imageId = viewModel.mChartImageId.collectAsState().value
+        val isLeftEye = mChartViewModel.isLeftEye.collectAsState().value
+        val isVertical = mChartViewModel.isVertical.collectAsState().value
+        val currentLevel = mChartViewModel.currentLevel.collectAsState().value
+        val imageId = mChartViewModel.mChartImageId.collectAsState().value
         Column(
             modifier = Modifier
                 .fillMaxWidth(),
@@ -178,20 +178,22 @@ fun MChartContent(
                                 shape = RoundedCornerShape(8.dp)
                             )
                             .clickable {
-                                viewModel.updateMChartResult(currentLevel)
                                 if (isVertical && isLeftEye) {
-                                    viewModel.updateCurrentLevel(0)
-                                    viewModel.updateIsVertical(false)
+                                    mChartViewModel.updateLeftVerticalValue()
+                                    mChartViewModel.updateCurrentLevel(0)
+                                    mChartViewModel.updateIsVertical(false)
                                 } else if (!isVertical && isLeftEye) {
-                                    viewModel.toNextMChartTest()
-                                    mChartContentVisibleState.targetState = false
-                                    nextVisibleState.targetState = true
+                                    mChartViewModel.updateLeftHorizontalValue()
+                                    mChartViewModel.toNextMChartTest()
+                                    mChartViewModel.updateIsMChartContentVisible(false)
+                                    mChartViewModel.updateIsCoveredEyeCheckingContentVisible(true)
                                 } else if (isVertical) {
-                                    viewModel.updateCurrentLevel(0)
-                                    viewModel.updateIsVertical(false)
+                                    mChartViewModel.updateRightVerticalValue()
+                                    mChartViewModel.updateCurrentLevel(0)
+                                    mChartViewModel.updateIsVertical(false)
                                 } else {
-                                    viewModel.updateSavedResult()
-                                    toResultScreen()
+                                    mChartViewModel.updateRightHorizontalValue()
+                                    toResultScreen(mChartViewModel.getMChartTestResult())
                                 }
                             },
                         contentAlignment = Alignment.Center
@@ -222,22 +224,25 @@ fun MChartContent(
                             )
                             .clickable {
                                 if (currentLevel >= 19) {
-                                    viewModel.updateMChartResult(currentLevel)
-                                    viewModel.updateCurrentLevel(0)
                                     if (isVertical && isLeftEye) {
-                                        viewModel.updateIsVertical(false)
+                                        mChartViewModel.updateLeftVerticalValue()
+                                        mChartViewModel.updateCurrentLevel(0)
+                                        mChartViewModel.updateIsVertical(false)
                                     } else if (!isVertical && isLeftEye) {
-                                        viewModel.toNextMChartTest()
-                                        mChartContentVisibleState.targetState = false
-                                        nextVisibleState.targetState = true
+                                        mChartViewModel.updateLeftHorizontalValue()
+                                        mChartViewModel.toNextMChartTest()
+                                        mChartViewModel.updateIsMChartContentVisible(false)
+                                        mChartViewModel.updateIsCoveredEyeCheckingContentVisible(true)
                                     } else if (isVertical) {
-                                        viewModel.updateIsVertical(false)
+                                        mChartViewModel.updateRightVerticalValue()
+                                        mChartViewModel.updateCurrentLevel(0)
+                                        mChartViewModel.updateIsVertical(false)
                                     } else {
-                                        viewModel.updateSavedResult()
-                                        toResultScreen()
+                                        mChartViewModel.updateRightHorizontalValue()
+                                        toResultScreen(mChartViewModel.getMChartTestResult())
                                     }
                                 } else {
-                                    viewModel.updateCurrentLevel(currentLevel + 1)
+                                    mChartViewModel.updateCurrentLevel(currentLevel + 1)
                                 }
                             },
                         contentAlignment = Alignment.Center

@@ -1,4 +1,4 @@
-package com.pixelro.nenoonkiosk.ui.testresultcontent
+package com.pixelro.nenoonkiosk.test.presbyopia
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
@@ -35,7 +35,7 @@ import kotlin.math.roundToInt
 
 @Composable
 fun PresbyopiaTestResultContent(
-    viewModel: NenoonViewModel,
+    testResult: PresbyopiaTestResult,
     navController: NavHostController
 ) {
     Column() {
@@ -165,11 +165,11 @@ fun PresbyopiaTestResultContent(
 //                fontSize = 40.sp,
 //                fontWeight = FontWeight.Medium,
 //            )
-//            Text(
-//                text = "${(viewModel.avgDistance.collectAsState().value).roundToInt().toFloat() / 10}cm " + StringProvider.getString(R.string.presbyopia_result_near_point_accommodation),
-//                fontSize = 32.sp,
-//                color = Color(0xff878787)
-//            )
+            Text(
+                text = "${((testResult.firstDistance + testResult.secondDistance + testResult.thirdDistance) / 3).roundToInt().toFloat() / 10}cm " + StringProvider.getString(R.string.presbyopia_result_near_point_accommodation),
+                fontSize = 32.sp,
+                color = Color(0xff878787)
+            )
         }
     }
 }

@@ -6,6 +6,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavHostController
 import com.google.accompanist.navigation.animation.AnimatedNavHost
 import com.google.accompanist.navigation.animation.composable
@@ -14,42 +15,39 @@ import com.pixelro.nenoonkiosk.NenoonViewModel
 import com.pixelro.nenoonkiosk.data.AnimationProvider
 import com.pixelro.nenoonkiosk.data.GlobalConstants
 import com.pixelro.nenoonkiosk.data.TestType
+import com.pixelro.nenoonkiosk.test.macular.amslergrid.AmslerGridTestContent
+import com.pixelro.nenoonkiosk.test.macular.mchart.MChartTestContent
+import com.pixelro.nenoonkiosk.test.presbyopia.PresbyopiaTestContent
+import com.pixelro.nenoonkiosk.test.visualacuity.children.ChildrenVisualAcuityTestResult
+import com.pixelro.nenoonkiosk.test.visualacuity.longdistance.LongVisualAcuityTestResult
+import com.pixelro.nenoonkiosk.test.visualacuity.shortdistance.ShortDistanceVisualAcuityTestContent
+import com.pixelro.nenoonkiosk.test.visualacuity.shortdistance.ShortVisualAcuityTestResult
 import com.pixelro.nenoonkiosk.ui.screen.*
-import com.pixelro.nenoonkiosk.ui.testcontent.AmslerGridTestContent
 import com.pixelro.nenoonkiosk.ui.testcontent.ChildrenVisualAcuityTestContent
 import com.pixelro.nenoonkiosk.ui.testcontent.LongDistanceVisualAcuityTestContent
-import com.pixelro.nenoonkiosk.ui.testcontent.MChartTestContent
-import com.pixelro.nenoonkiosk.ui.testcontent.PresbyopiaTestContent
-import com.pixelro.nenoonkiosk.ui.testcontent.ShortDistanceVisualAcuityTestContent
 
 @OptIn(ExperimentalAnimationApi::class)
 @Composable
 fun NenoonApp(
-    viewModel: NenoonViewModel,
+    viewModel: NenoonViewModel = hiltViewModel(),
     mainNavController: NavHostController = rememberAnimatedNavController()
 ) {
     val selectedTest = viewModel.selectedTestType.collectAsState().value
     // Splash Screen
-    if(viewModel.isShowingSplashScreen.collectAsState().value) {
+    if (viewModel.isShowingSplashScreen.collectAsState().value) {
         SplashScreen(
             viewModel = viewModel
         )
     } else {
-        // Splash Screen
-        if(viewModel.isScreenSaverOn.collectAsState().value) {
+        // Screen Saver
+        if (viewModel.isScreenSaverOn.collectAsState().value) {
             ScreenSaverScreen(viewModel)
         } else {
             // Permission Request Screen
-            if(!viewModel.isAllPermissionsGranted.collectAsState().value) {
-                PermissionRequestScreen(
-                    viewModel
-                )
+            if (!viewModel.isAllPermissionsGranted.collectAsState().value) {
+                PermissionRequestScreen(viewModel)
             } // Main Content
             else {
-//            DisposableEffect(true) {
-//                Settings.System.putInt(context.contentResolver, Settings.System.SCREEN_OFF_TIMEOUT, 3600_000)
-//                onDispose {  }
-//            }
                 AnimatedNavHost(
                     modifier = Modifier
                         .fillMaxSize(),
@@ -57,6 +55,7 @@ fun NenoonApp(
                     startDestination = GlobalConstants.ROUTE_SURVEY,
                     contentAlignment = Alignment.TopCenter
                 ) {
+                    // 문진표 작성 화면
                     composable(
                         route = GlobalConstants.ROUTE_SURVEY,
                         enterTransition = { AnimationProvider.enterTransition },
@@ -75,18 +74,10 @@ fun NenoonApp(
                         exitTransition = { AnimationProvider.exitTransition }
                     ) {
                         TestListScreen(
-                            toPreDescriptionScreen = {
-                                mainNavController.popBackStack(GlobalConstants.ROUTE_TEST_LIST, false)
-                                when(selectedTest) {
-//                                    TestType.Presbyopia -> viewModel.initializePresbyopiaTest()
-                                    TestType.ShortDistanceVisualAcuity -> viewModel.initializeVisualAcuityTest()
-                                    TestType.LongDistanceVisualAcuity -> viewModel.initializeVisualAcuityTest()
-                                    TestType.ChildrenVisualAcuity -> viewModel.initializeVisualAcuityTest()
-                                    TestType.AmslerGrid -> viewModel.initializeAmslerGridTest()
-                                    else -> viewModel.initializeMChartTest()
-                                }
-                                mainNavController.navigate(GlobalConstants.ROUTE_TEST_PRE_DESCRIPTION)
-                                },
+                            toTestScreen = {
+                                viewModel.updateSelectedTestType(it)
+                                mainNavController.navigate(GlobalConstants.ROUTE_TEST_CONTENT)
+                            },
                             toSettingsScreen = {
                                 mainNavController.navigate(GlobalConstants.ROUTE_SETTINGS)
                             },
@@ -105,26 +96,6 @@ fun NenoonApp(
                         )
                     }
 
-                    // 검사 사전 설명 화면
-                    composable(
-                        route = GlobalConstants.ROUTE_TEST_PRE_DESCRIPTION,
-                        enterTransition = { AnimationProvider.enterTransition },
-                        exitTransition = { AnimationProvider.exitTransition }
-                    ) {
-                        when(selectedTest) {
-//                            TestType.Presbyopia -> viewModel.initializePresbyopiaTest()
-                            TestType.ShortDistanceVisualAcuity -> viewModel.initializeVisualAcuityTest()
-                            TestType.LongDistanceVisualAcuity -> viewModel.initializeVisualAcuityTest()
-                            TestType.ChildrenVisualAcuity -> viewModel.initializeVisualAcuityTest()
-                            TestType.AmslerGrid -> viewModel.initializeAmslerGridTest()
-                            else -> viewModel.initializeMChartTest()
-                        }
-                        TestPreDescriptionScreen(
-                            viewModel,
-                            mainNavController
-                        )
-                    }
-
                     // 검사 화면
                     composable(
                         route = GlobalConstants.ROUTE_TEST_CONTENT,
@@ -135,7 +106,7 @@ fun NenoonApp(
                             viewModel = viewModel,
                             navController = mainNavController,
                             content = {
-                                when(selectedTest) {
+                                when (selectedTest) {
                                     TestType.Presbyopia -> {
                                         PresbyopiaTestContent(
                                             toResultScreen = {
@@ -144,38 +115,67 @@ fun NenoonApp(
                                             }
                                         )
                                     }
+
                                     TestType.ShortDistanceVisualAcuity -> {
                                         ShortDistanceVisualAcuityTestContent(
-                                            toResultScreen = { mainNavController.navigate(GlobalConstants.ROUTE_TEST_RESULT) },
-                                            viewModel = viewModel
+                                            toResultScreen = {
+                                                mainNavController.navigate(GlobalConstants.ROUTE_TEST_RESULT)
+                                                viewModel.shortVisualAcuityTestResult =
+                                                    ShortVisualAcuityTestResult(
+                                                        it.leftEye,
+                                                        it.rightEye
+                                                    )
+                                            }
                                         )
                                     }
+
                                     TestType.LongDistanceVisualAcuity -> {
                                         LongDistanceVisualAcuityTestContent(
-                                            toResultScreen = { mainNavController.navigate(GlobalConstants.ROUTE_TEST_RESULT) },
+                                            toResultScreen = {
+                                                mainNavController.navigate(GlobalConstants.ROUTE_TEST_RESULT)
+                                                viewModel.longVisualAcuityTestResult =
+                                                    LongVisualAcuityTestResult(
+                                                        it.leftEye,
+                                                        it.rightEye
+                                                    )
+                                            },
                                             viewModel = viewModel
                                         )
                                     }
+
                                     TestType.ChildrenVisualAcuity -> {
                                         ChildrenVisualAcuityTestContent(
-                                            toResultScreen = { mainNavController.navigate(GlobalConstants.ROUTE_TEST_RESULT) },
+                                            toResultScreen = {
+                                                mainNavController.navigate(GlobalConstants.ROUTE_TEST_RESULT)
+                                                viewModel.childrenVisualAcuityTestResult =
+                                                    ChildrenVisualAcuityTestResult(
+                                                        it.leftEye,
+                                                        it.rightEye
+                                                    )
+                                            },
                                             viewModel = viewModel
                                         )
                                     }
+
                                     TestType.AmslerGrid -> {
                                         AmslerGridTestContent(
                                             toResultScreen = {
                                                 mainNavController.navigate(GlobalConstants.ROUTE_TEST_RESULT)
+                                                viewModel.amslerGridTestResult = it
                                             },
                                         )
                                     }
+
                                     TestType.MChart -> {
                                         MChartTestContent(
-                                            toResultScreen = { mainNavController.navigate(GlobalConstants.ROUTE_TEST_RESULT) },
-                                            viewModel = viewModel
+                                            toResultScreen = {
+                                                mainNavController.navigate(GlobalConstants.ROUTE_TEST_RESULT)
+                                                viewModel.mChartTestResult = it
+                                            }
                                         )
                                     }
-                                    else -> {
+
+                                    TestType.None -> {
                                         Box() {
 
                                         }
@@ -192,7 +192,17 @@ fun NenoonApp(
                         exitTransition = { AnimationProvider.exitTransition }
                     ) {
                         TestResultScreen(
-                            viewModel = viewModel,
+                            testType = viewModel.selectedTestType.collectAsState().value,
+                            testResult = when (
+                                viewModel.selectedTestType.collectAsState().value) {
+                                TestType.Presbyopia -> viewModel.presbyopiaTestResult
+                                TestType.ShortDistanceVisualAcuity -> viewModel.shortVisualAcuityTestResult
+                                TestType.LongDistanceVisualAcuity -> viewModel.longVisualAcuityTestResult
+                                TestType.ChildrenVisualAcuity -> viewModel.childrenVisualAcuityTestResult
+                                TestType.AmslerGrid -> viewModel.amslerGridTestResult
+                                TestType.MChart -> viewModel.mChartTestResult
+                                TestType.None -> null
+                            },
                             navController = mainNavController
                         )
                     }

@@ -1,4 +1,4 @@
-package com.pixelro.nenoonkiosk.ui.testcontent
+package com.pixelro.nenoonkiosk.test.presbyopia
 
 import android.speech.tts.TextToSpeech
 import androidx.compose.animation.AnimatedVisibility
@@ -34,8 +34,6 @@ import com.pixelro.nenoonkiosk.data.AnimationProvider
 import com.pixelro.nenoonkiosk.data.StringProvider
 import com.pixelro.nenoonkiosk.facedetection.FaceDetection
 import com.pixelro.nenoonkiosk.facedetection.FaceDetectionViewModel
-import com.pixelro.nenoonkiosk.presbyopia.PresbyopiaTestResult
-import com.pixelro.nenoonkiosk.presbyopia.PresbyopiaViewModel
 import java.util.Locale
 import kotlin.math.roundToInt
 
@@ -48,6 +46,7 @@ fun PresbyopiaTestContent(
     LaunchedEffect(Unit) {
         presbyopiaViewModel.init()
     }
+    FaceDetection()
     val distance = faceDetectionViewModel.screenToFaceDistance.collectAsState().value
     val isFirstItemVisible = presbyopiaViewModel.isFirstItemVisible.collectAsState().value
     val isSecondItemVisible = presbyopiaViewModel.isSecondItemVisible.collectAsState().value
@@ -58,7 +57,6 @@ fun PresbyopiaTestContent(
     secondItemVisibleState.targetState = isSecondItemVisible
     val thirdItemVisibleState = remember { MutableTransitionState(false) }
     thirdItemVisibleState.targetState = isThirdItemVisible
-    FaceDetection()
     Text(
         modifier = Modifier
             .padding(start = 40.dp, top = 120.dp, end = 40.dp)

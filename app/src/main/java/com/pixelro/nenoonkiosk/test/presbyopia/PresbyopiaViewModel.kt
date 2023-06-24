@@ -1,4 +1,4 @@
-package com.pixelro.nenoonkiosk.presbyopia
+package com.pixelro.nenoonkiosk.test.presbyopia
 
 import android.app.Application
 import androidx.lifecycle.AndroidViewModel

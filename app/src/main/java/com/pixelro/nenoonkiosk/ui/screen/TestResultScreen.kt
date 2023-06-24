@@ -1,7 +1,6 @@
 package com.pixelro.nenoonkiosk.ui.screen
 
 import android.Manifest
-import android.app.Activity
 import android.bluetooth.BluetoothDevice
 import android.bluetooth.BluetoothManager
 import android.content.BroadcastReceiver
@@ -16,7 +15,6 @@ import android.graphics.Paint
 import android.graphics.RectF
 import android.graphics.Typeface
 import android.util.Log
-import android.view.KeyEvent
 import android.widget.Toast
 import androidx.activity.compose.BackHandler
 import androidx.compose.foundation.BorderStroke
@@ -34,9 +32,6 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material.Button
-import androidx.compose.material.ButtonColors
-import androidx.compose.material.ButtonDefaults
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.DisposableEffect
@@ -46,42 +41,54 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.graphics.asImageBitmap
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.SpanStyle
 import androidx.compose.ui.text.buildAnnotatedString
 import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.withStyle
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat.getSystemService
+import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavHostController
-import com.github.mikephil.charting.utils.Utils.drawImage
 import com.pixelro.nenoonkiosk.NenoonViewModel
 import com.pixelro.nenoonkiosk.R
+import com.pixelro.nenoonkiosk.test.macular.amslergrid.AmslerGridTestResultContent
 import com.pixelro.nenoonkiosk.data.GlobalConstants
 import com.pixelro.nenoonkiosk.data.GlobalValue
 import com.pixelro.nenoonkiosk.data.StringProvider
 import com.pixelro.nenoonkiosk.data.TestType
+import com.pixelro.nenoonkiosk.test.macular.amslergrid.AmslerGridTestResult
+import com.pixelro.nenoonkiosk.test.macular.mchart.MChartTestResult
+import com.pixelro.nenoonkiosk.test.macular.mchart.MChartTestResultContent
+import com.pixelro.nenoonkiosk.test.presbyopia.PresbyopiaTestResult
+import com.pixelro.nenoonkiosk.test.presbyopia.PresbyopiaTestResultContent
+import com.pixelro.nenoonkiosk.test.result.TestResultUtil.textAsBitmap
+import com.pixelro.nenoonkiosk.test.result.TestResultViewModel
+import com.pixelro.nenoonkiosk.test.visualacuity.children.ChildrenVisualAcuityTestResult
+import com.pixelro.nenoonkiosk.test.visualacuity.longdistance.LongVisualAcuityTestResult
 import com.pixelro.nenoonkiosk.ui.testresultcontent.*
+import com.pixelro.nenoonkiosk.test.visualacuity.shortdistance.ShortDistanceVisualAcuityTestResultContent
+import com.pixelro.nenoonkiosk.test.visualacuity.shortdistance.ShortVisualAcuityTestResult
 import kotlinx.coroutines.launch
 import mangoslab.nemonicsdk.nemonicWrapper
+import java.util.Objects
 
 @Composable
 fun TestResultScreen(
-    viewModel: NenoonViewModel,
-    navController: NavHostController
+    testType: TestType,
+    testResult: Any?,
+    navController: NavHostController,
+    testResultViewModel: TestResultViewModel = hiltViewModel()
 ) {
     BackHandler(enabled = true) {
         Log.e("backhandler", "backhandler")
         navController.popBackStack(GlobalConstants.ROUTE_TEST_LIST, false)
-        viewModel.resetScreenSaverTimer()
+//        viewModel.resetScreenSaverTimer()
     }
     val composableScope = rememberCoroutineScope()
-    val testType = viewModel.selectedTestType.collectAsState().value
     val context = LocalContext.current
     val bluetoothManager = getSystemService(context, BluetoothManager::class.java) as BluetoothManager
     val bluetoothAdapter = bluetoothManager.adapter
@@ -104,7 +111,7 @@ fun TestResultScreen(
                     val deviceName = device?.name
                     val deviceHardwareAddress = device?.address // MAC address
                     if (deviceHardwareAddress != null && deviceName != null && deviceHardwareAddress.contains("74:F0:7D")) {
-                        viewModel.updatePrinter(deviceName, deviceHardwareAddress)
+                        testResultViewModel.updatePrinter(deviceName, deviceHardwareAddress)
                     }
                 }
             }
@@ -120,7 +127,7 @@ fun TestResultScreen(
         }
     }
 
-    val printerMacAddress = viewModel.printerMacAddress.collectAsState().value
+    val printerMacAddress = testResultViewModel.printerMacAddress.collectAsState().value
 
     fun printResult(
         testType: TestType,
@@ -154,7 +161,7 @@ fun TestResultScreen(
             .fillMaxSize(),
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
-        val printString = viewModel.printString.collectAsState().value
+        val printString = testResultViewModel.printString.collectAsState().value
         Box(
             modifier = Modifier
                 .padding(
@@ -213,38 +220,38 @@ fun TestResultScreen(
         when (testType) {
             TestType.Presbyopia -> {
                 PresbyopiaTestResultContent(
-                    viewModel = viewModel,
+                    testResult = testResult as PresbyopiaTestResult,
                     navController = navController
                 )
             }
             TestType.ShortDistanceVisualAcuity -> {
                 ShortDistanceVisualAcuityTestResultContent(
-                    viewModel = viewModel,
+                    testResult = testResult as ShortVisualAcuityTestResult,
                     navController = navController
                 )
             }
             TestType.LongDistanceVisualAcuity -> {
                 LongDistanceVisualAcuityTestResultContent(
-                    viewModel = viewModel,
+                    testResult = testResult as LongVisualAcuityTestResult,
                     navController = navController
                 )
             }
             TestType.ChildrenVisualAcuity -> {
                 ChildrenVisualAcuityTestResultContent(
-                    viewModel = viewModel,
+                    testResult = testResult as ChildrenVisualAcuityTestResult,
                     navController = navController
                 )
             }
             TestType.AmslerGrid -> {
                 AmslerGridTestResultContent(
-                    viewModel = viewModel,
+                    testResult = testResult as AmslerGridTestResult,
                     navController = navController
                 )
 
             }
             TestType.MChart -> {
                 MChartTestResultContent(
-                    viewModel = viewModel,
+                    testResult = testResult as MChartTestResult,
                     navController = navController
                 )
             }
@@ -381,258 +388,3 @@ fun TestResultScreen(
     }
 }
 
-fun textAsBitmap(
-    testType: TestType,
-    printString: String,
-    logoImg: Bitmap
-): Bitmap {
-    val paint = Paint(Paint.ANTI_ALIAS_FLAG)
-    paint.color = 0xff000000.toInt()
-    paint.textSize = 40f
-    paint.textAlign = Paint.Align.CENTER
-    val width = 600
-    val baseline = -paint.ascent()
-    val printName = "태전그룹"
-//    paint.textSize = 40f
-//    paint.color = 0xff000000.toInt()
-//    paint.textAlign = Paint.Align.CENTER
-//    val baseline = -paint.ascent() // ascent() is negative
-//    val width = 600
-//    val image = Bitmap.createBitmap(width, 400, Bitmap.Config.ARGB_8888)
-//    val canvas = Canvas(image)
-//    canvas.drawColor(android.graphics.Color.parseColor("#FFFFFFFF"))
-    when(testType) {
-        TestType.Presbyopia -> {
-            val image = Bitmap.createBitmap(width, 400, Bitmap.Config.ARGB_8888)
-            val canvas = Canvas(image)
-            canvas.drawARGB(255, 255, 255, 255)
-
-            canvas.drawBitmap(logoImg, 360f, 320f, null)
-
-            canvas.drawText("조절력 검사", 300f, baseline, paint)
-
-            paint.typeface = Typeface.DEFAULT_BOLD
-            canvas.drawText(printString, 300f, baseline + 160f, paint)
-            paint.typeface = Typeface.DEFAULT
-
-            paint.textAlign = Paint.Align.LEFT
-//            canvas.drawText(printName, 0f, baseline + 320f, paint)
-//            canvas.drawText("☎0000-0000", 0f, baseline + 360f, paint)
-            return image!!
-        }
-        TestType.ShortDistanceVisualAcuity -> {
-            val image = Bitmap.createBitmap(width, 400, Bitmap.Config.ARGB_8888)
-            val canvas = Canvas(image)
-            canvas.drawARGB(255, 255, 255, 255)
-
-            canvas.drawBitmap(logoImg, 360f, 320f, null)
-
-            canvas.drawText("근거리 시력 검사", 300f, baseline, paint)
-
-            canvas.drawText("좌안", 150f, baseline + 60f, paint)
-            canvas.drawText("우안", 450f, baseline + 60f, paint)
-
-            paint.typeface = Typeface.DEFAULT_BOLD
-            canvas.drawText(printString.split(",")[0], 150f, baseline + 190f, paint)
-            canvas.drawText(printString.split(",")[1], 450f, baseline + 190f, paint)
-            paint.typeface = Typeface.DEFAULT
-
-            paint.textAlign = Paint.Align.LEFT
-            canvas.drawLine(300f, 100f, 300f, 300f, paint)
-//            canvas.drawText(printName, 0f, baseline + 320f, paint)
-//            canvas.drawText("☎0000-0000", 0f, baseline + 360f, paint)
-            return image!!
-        }
-        TestType.LongDistanceVisualAcuity -> {
-            val image = Bitmap.createBitmap(width, 400, Bitmap.Config.ARGB_8888)
-            val canvas = Canvas(image)
-            canvas.drawARGB(255, 255, 255, 255)
-
-            canvas.drawBitmap(logoImg, 360f, 320f, null)
-
-            canvas.drawText("근거리 시력 검사", 300f, baseline, paint)
-
-            canvas.drawText("좌안", 150f, baseline + 60f, paint)
-            canvas.drawText("우안", 450f, baseline + 60f, paint)
-
-            paint.typeface = Typeface.DEFAULT_BOLD
-            canvas.drawText("0.6 난시", 150f, baseline + 190f, paint)
-            canvas.drawText("1.0 정상", 450f, baseline + 190f, paint)
-            paint.typeface = Typeface.DEFAULT
-
-            paint.textAlign = Paint.Align.LEFT
-            canvas.drawLine(300f, 100f, 300f, 300f, paint)
-//            canvas.drawText(printName, 0f, baseline + 320f, paint)
-//            canvas.drawText("☎0000-0000", 0f, baseline + 360f, paint)
-            return image!!
-        }
-        TestType.ChildrenVisualAcuity -> {
-            val image = Bitmap.createBitmap(width, 400, Bitmap.Config.ARGB_8888)
-            val canvas = Canvas(image)
-            canvas.drawARGB(255, 255, 255, 255)
-
-            canvas.drawBitmap(logoImg, 360f, 320f, null)
-
-            canvas.drawText("근거리 시력 검사", 300f, baseline, paint)
-
-            canvas.drawText("좌안", 150f, baseline + 60f, paint)
-            canvas.drawText("우안", 450f, baseline + 60f, paint)
-
-            paint.typeface = Typeface.DEFAULT_BOLD
-            canvas.drawText("0.6 난시", 150f, baseline + 190f, paint)
-            canvas.drawText("1.0 정상", 450f, baseline + 190f, paint)
-            paint.typeface = Typeface.DEFAULT
-
-            paint.textAlign = Paint.Align.LEFT
-            canvas.drawLine(300f, 100f, 300f, 300f, paint)
-//            canvas.drawText(printName, 0f, baseline + 320f, paint)
-//            canvas.drawText("☎0000-0000", 0f, baseline + 360f, paint)
-            return image!!
-        }
-        TestType.AmslerGrid -> {
-            val image = Bitmap.createBitmap(width, 500, Bitmap.Config.ARGB_8888)
-            val canvas = Canvas(image)
-            canvas.drawARGB(255, 255, 255, 255)
-
-            canvas.drawBitmap(logoImg, 360f, 420f, null)
-
-            canvas.drawText("암슬러 차트 검사", 300f, baseline, paint)
-
-            canvas.drawText("좌안", 150f, baseline + 60f, paint)
-            canvas.drawText("우안", 450f, baseline + 60f, paint)
-
-            paint.style = Paint.Style.STROKE
-            paint.strokeWidth = 4f
-
-            canvas.drawRect(RectF(30f, 140f, 110f, 220f), paint)
-            canvas.drawRect(RectF(110f, 140f, 190f, 220f), paint)
-            canvas.drawRect(RectF(190f, 140f, 270f, 220f), paint)
-            canvas.drawRect(RectF(30f, 220f, 110f, 300f), paint)
-            canvas.drawRect(RectF(110f, 220f, 190f, 300f), paint)
-            canvas.drawRect(RectF(190f, 220f, 270f, 300f), paint)
-            canvas.drawRect(RectF(30f, 300f, 110f, 380f), paint)
-            canvas.drawRect(RectF(110f, 300f, 190f, 380f), paint)
-            canvas.drawRect(RectF(190f, 300f, 270f, 380f), paint)
-
-            canvas.drawRect(RectF(330f, 140f, 410f, 220f), paint)
-            canvas.drawRect(RectF(410f, 140f, 490f, 220f), paint)
-            canvas.drawRect(RectF(490f, 140f, 570f, 220f), paint)
-            canvas.drawRect(RectF(330f, 220f, 410f, 300f), paint)
-            canvas.drawRect(RectF(410f, 220f, 490f, 300f), paint)
-            canvas.drawRect(RectF(490f, 220f, 570f, 300f), paint)
-            canvas.drawRect(RectF(330f, 300f, 410f, 380f), paint)
-            canvas.drawRect(RectF(410f, 300f, 490f, 380f), paint)
-            canvas.drawRect(RectF(490f, 300f, 570f, 380f), paint)
-
-            paint.style = Paint.Style.FILL
-            paint.typeface = Typeface.DEFAULT_BOLD
-            Log.e("", printString.split(",")[0])
-            if(printString.split(",")[0] != "Normal") {
-                canvas.drawText("이상", 70f, baseline + 160f, paint)
-            }
-            if(printString.split(",")[1] != "Normal") {
-                canvas.drawText("이상", 150f, baseline + 160f, paint)
-            }
-            if(printString.split(",")[2] != "Normal") {
-                canvas.drawText("이상", 230f, baseline + 160f, paint)
-            }
-            if(printString.split(",")[3] != "Normal") {
-                canvas.drawText("이상", 70f, baseline + 240f, paint)
-            }
-            if(printString.split(",")[4] != "Normal") {
-                canvas.drawText("이상", 150f, baseline + 240f, paint)
-            }
-            if(printString.split(",")[5] != "Normal") {
-                canvas.drawText("이상", 230f, baseline + 240f, paint)
-            }
-            if(printString.split(",")[6] != "Normal") {
-                canvas.drawText("이상", 70f, baseline + 320f, paint)
-            }
-            if(printString.split(",")[7] != "Normal") {
-                canvas.drawText("이상", 150f, baseline + 320f, paint)
-            }
-            if(printString.split(",")[8] != "Normal") {
-                canvas.drawText("이상", 230f, baseline + 320f, paint)
-            }
-
-            if(printString.split(",")[9] != "Normal") {
-                canvas.drawText("이상", 370f, baseline + 160f, paint)
-            }
-            if(printString.split(",")[10] != "Normal") {
-                canvas.drawText("이상", 450f, baseline + 160f, paint)
-            }
-            if(printString.split(",")[11] != "Normal") {
-                canvas.drawText("이상", 530f, baseline + 160f, paint)
-            }
-            if(printString.split(",")[12] != "Normal") {
-                canvas.drawText("이상", 370f, baseline + 240f, paint)
-            }
-            if(printString.split(",")[13] != "Normal") {
-                canvas.drawText("이상", 450f, baseline + 240f, paint)
-            }
-            if(printString.split(",")[14] != "Normal") {
-                canvas.drawText("이상", 530f, baseline + 240f, paint)
-            }
-            if(printString.split(",")[15] != "Normal") {
-                canvas.drawText("이상", 370f, baseline + 320f, paint)
-            }
-            if(printString.split(",")[16] != "Normal") {
-                canvas.drawText("이상", 450f, baseline + 320f, paint)
-            }
-            if(printString.split(",")[17] != "Normal") {
-                canvas.drawText("이상", 530f, baseline + 320f, paint)
-            }
-//            canvas.drawText("이상", 450f, baseline + 320f, paint)
-            paint.typeface = Typeface.DEFAULT
-
-            paint.textAlign = Paint.Align.LEFT
-            paint.strokeWidth = 1f
-            canvas.drawLine(300f, 100f, 300f, 400f, paint)
-//            canvas.drawText(printName, 0f, baseline + 420f, paint)
-//            canvas.drawText("☎0000-0000", 0f, baseline + 460f, paint)
-            return image!!
-        }
-        TestType.MChart -> {
-            val image = Bitmap.createBitmap(width, 400, Bitmap.Config.ARGB_8888)
-            val canvas = Canvas(image)
-            canvas.drawARGB(255, 255, 255, 255)
-
-            canvas.drawBitmap(logoImg, 360f, 320f, null)
-
-            canvas.drawText("엠식 변형시 검사", 300f, baseline, paint)
-
-            canvas.drawText("좌안", 150f, baseline + 60f, paint)
-            canvas.drawText("우안", 450f, baseline + 60f, paint)
-
-            paint.typeface = Typeface.DEFAULT_BOLD
-            canvas.drawText(when(printString.split(",")[0]) {
-                                "0" -> "수직: 정상"
-                                else -> "수직: 이상"
-                            }, 150f, baseline + 170f, paint)
-            canvas.drawText(when(printString.split(",")[1]) {
-                                "0" -> "수평: 정상"
-                                else -> "수평: 이상"
-                            }, 150f, baseline + 210f, paint)
-            canvas.drawText(when(printString.split(",")[2]) {
-                                "0" -> "수직: 정상"
-                                else -> "수직: 이상"
-                            }, 450f, baseline + 170f, paint)
-            canvas.drawText(when(printString.split(",")[3]) {
-                                "0" -> "수평: 정상"
-                                else -> "수평: 이상"
-                            }, 450f, baseline + 210f, paint)
-            paint.typeface = Typeface.DEFAULT
-
-            paint.textAlign = Paint.Align.LEFT
-            canvas.drawLine(300f, 100f, 300f, 300f, paint)
-//            canvas.drawText(printName, 0f, baseline + 320f, paint)
-//            canvas.drawText("☎0000-0000", 0f, baseline + 360f, paint)
-            return image!!
-        }
-        else -> {
-            val image = Bitmap.createBitmap(width, 400, Bitmap.Config.ARGB_8888)
-            val canvas = Canvas(image)
-            return image!!
-        }
-    }
-}

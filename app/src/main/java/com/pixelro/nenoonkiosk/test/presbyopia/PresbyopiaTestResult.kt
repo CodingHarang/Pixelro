@@ -1,4 +1,4 @@
-package com.pixelro.nenoonkiosk.presbyopia
+package com.pixelro.nenoonkiosk.test.presbyopia
 
 data class PresbyopiaTestResult(
     val firstDistance: Float = 1f,

@@ -19,20 +19,15 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
-import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import androidx.lifecycle.viewmodel.compose.viewModel
-import com.pixelro.nenoonkiosk.NenoonViewModel
 import com.pixelro.nenoonkiosk.R
 import com.pixelro.nenoonkiosk.data.StringProvider
+import com.pixelro.nenoonkiosk.data.TestType
 
 @Composable
 fun VisualAcuityTestListContent(
-    toShortDistanceVisualAcuityTest: () -> Unit,
-    toLongDistanceVisualAcuityTest: () -> Unit,
-    toChildrenVisualAcuityTest: () -> Unit,
-    toPreDescriptionScreen: () -> Unit
+    toTestScreen: (TestType) -> Unit
 ) {
     val context = LocalContext.current
     Column(
@@ -78,8 +73,7 @@ fun VisualAcuityTestListContent(
             title = StringProvider.getString(R.string.short_visual_acuity_name),
             description = StringProvider.getString(R.string.short_visual_acuity_short_description),
             onClickMethod = {
-                toShortDistanceVisualAcuityTest()
-                toPreDescriptionScreen()
+                toTestScreen(TestType.ShortDistanceVisualAcuity)
             }
         )
         Spacer(
@@ -90,8 +84,7 @@ fun VisualAcuityTestListContent(
             title = StringProvider.getString(R.string.long_visual_acuity_name),
             description = StringProvider.getString(R.string.long_visual_acuity_short_description),
             onClickMethod = {
-                toLongDistanceVisualAcuityTest()
-                toPreDescriptionScreen()
+                toTestScreen(TestType.LongDistanceVisualAcuity)
             }
         )
         Spacer(
@@ -102,8 +95,7 @@ fun VisualAcuityTestListContent(
             title = StringProvider.getString(R.string.children_visual_acuity_name),
             description = StringProvider.getString(R.string.children_visual_acuity_short_description),
             onClickMethod = {
-                toChildrenVisualAcuityTest()
-                toPreDescriptionScreen()
+                toTestScreen(TestType.ShortDistanceVisualAcuity)
             }
         )
     }

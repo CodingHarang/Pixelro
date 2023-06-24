@@ -3,10 +3,11 @@ package com.pixelro.nenoonkiosk.ui.testresultcontent
 import androidx.compose.runtime.Composable
 import androidx.navigation.NavHostController
 import com.pixelro.nenoonkiosk.NenoonViewModel
+import com.pixelro.nenoonkiosk.test.visualacuity.longdistance.LongVisualAcuityTestResult
 
 @Composable
 fun LongDistanceVisualAcuityTestResultContent(
-    viewModel: NenoonViewModel,
+    testResult: LongVisualAcuityTestResult,
     navController: NavHostController
 ) {
 }

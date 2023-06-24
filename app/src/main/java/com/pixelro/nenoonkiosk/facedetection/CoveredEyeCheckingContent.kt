@@ -1,4 +1,4 @@
-package com.pixelro.nenoonkiosk.ui.testcontent
+package com.pixelro.nenoonkiosk.facedetection
 
 import android.util.Log
 import androidx.compose.animation.*
@@ -12,6 +12,7 @@ import androidx.compose.foundation.layout.width
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.DisposableEffect
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -41,11 +42,8 @@ fun CoveredEyeCheckingContent(
         enter = AnimationProvider.enterTransition,
         exit = AnimationProvider.exitTransition
     ) {
-        DisposableEffect(true) {
-            faceDetectionViewModel.initializeCoveredEyeChecking()
-            faceDetectionViewModel.checkCoveredEye { toNextContent() }
-            onDispose {
-            }
+        LaunchedEffect(true) {
+            faceDetectionViewModel.initializeCoveredEyeChecking(isLeftEye) { toNextContent() }
         }
         Column(
             modifier = Modifier,

@@ -1,7 +1,6 @@
-package com.pixelro.nenoonkiosk.ui.testresultcontent
+package com.pixelro.nenoonkiosk.test.visualacuity.shortdistance
 
 import androidx.compose.foundation.background
-import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.Text
@@ -10,25 +9,20 @@ import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.layout.ModifierInfo
-import androidx.compose.ui.text.PlatformTextStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavHostController
 import com.pixelro.nenoonkiosk.NenoonViewModel
-import com.pixelro.nenoonkiosk.data.GlobalConstants
 import com.pixelro.nenoonkiosk.data.StringProvider
-import com.pixelro.nenoonkiosk.data.VisionDisorderType
 import com.pixelro.nenoonkiosk.R
 
 @Composable
 fun ShortDistanceVisualAcuityTestResultContent(
-    viewModel: NenoonViewModel,
+    testResult: ShortVisualAcuityTestResult,
     navController: NavHostController
 ) {
-    viewModel.updateSightTestResult()
     Column(
         modifier = Modifier
             .fillMaxWidth()
@@ -126,7 +120,7 @@ fun ShortDistanceVisualAcuityTestResultContent(
                 Text(
                     modifier = Modifier
                         .fillMaxWidth(),
-                    text = "${viewModel.leftEyeSightValue.collectAsState().value.toFloat() / 10}",
+                    text = "${testResult.leftEye.toFloat() / 10}",
                     fontSize = 60.sp,
                     fontWeight = FontWeight.Bold,
                     textAlign = TextAlign.Center
@@ -241,7 +235,7 @@ fun ShortDistanceVisualAcuityTestResultContent(
                 Text(
                     modifier = Modifier
                         .fillMaxWidth(),
-                    text = "${viewModel.rightEyeSightValue.collectAsState().value.toFloat() / 10}",
+                    text = "${testResult.rightEye.toFloat() / 10}",
                     fontSize = 60.sp,
                     fontWeight = FontWeight.Bold,
                     textAlign = TextAlign.Center
