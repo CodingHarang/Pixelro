@@ -131,8 +131,8 @@ class VisualAcuityViewModel @Inject constructor(
         if (!isEnd) updateRandomList()
 //        Log.e("", "end: ${_sightLevel.value}")
         Log.e(
-            "",
-            "${sightHistory[0]}\n${sightHistory[1]}\n${sightHistory[2]}\n${sightHistory[3]}\n${sightHistory[4]}\n${sightHistory[5]}\n${sightHistory[6]}\n${sightHistory[7]}\n${sightHistory[8]}\n${sightHistory[9]}\n"
+            "visualAcuityTest",
+            "${sightHistory[1]}\n${sightHistory[2]}\n${sightHistory[3]}\n${sightHistory[4]}\n${sightHistory[5]}\n${sightHistory[6]}\n${sightHistory[7]}\n${sightHistory[8]}\n${sightHistory[9]}\n${sightHistory[10]}"
         )
     }
 

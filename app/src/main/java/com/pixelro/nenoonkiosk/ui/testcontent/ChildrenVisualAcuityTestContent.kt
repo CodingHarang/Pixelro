@@ -6,7 +6,6 @@ import com.pixelro.nenoonkiosk.test.visualacuity.VisualAcuityTestResult
 
 @Composable
 fun ChildrenVisualAcuityTestContent(
-    toResultScreen: (VisualAcuityTestResult) -> Unit,
-    viewModel: NenoonViewModel
+    toResultScreen: (VisualAcuityTestResult) -> Unit
 ) {
 }

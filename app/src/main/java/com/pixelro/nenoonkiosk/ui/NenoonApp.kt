@@ -62,8 +62,10 @@ fun NenoonApp(
                         exitTransition = { AnimationProvider.exitTransition }
                     ) {
                         SurveyScreen(
-                            viewModel = viewModel,
-                            toTestListScreen = { mainNavController.navigate(GlobalConstants.ROUTE_TEST_LIST) }
+                            toTestListScreen = {
+                                mainNavController.navigate(GlobalConstants.ROUTE_TEST_LIST)
+                                viewModel.surveyData = it
+                            }
                         )
                     }
 
@@ -102,7 +104,7 @@ fun NenoonApp(
                         enterTransition = { AnimationProvider.enterTransition },
                         exitTransition = { AnimationProvider.exitTransition }
                     ) {
-                        EyeTestScreen(
+                        TestScreen(
                             viewModel = viewModel,
                             navController = mainNavController,
                             content = {
@@ -138,8 +140,7 @@ fun NenoonApp(
                                                         it.leftEye,
                                                         it.rightEye
                                                     )
-                                            },
-                                            viewModel = viewModel
+                                            }
                                         )
                                     }
 
@@ -152,8 +153,7 @@ fun NenoonApp(
                                                         it.leftEye,
                                                         it.rightEye
                                                     )
-                                            },
-                                            viewModel = viewModel
+                                            }
                                         )
                                     }
 

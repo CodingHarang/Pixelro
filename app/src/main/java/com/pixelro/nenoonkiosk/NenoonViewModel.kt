@@ -11,8 +11,6 @@ import android.net.Uri
 import android.provider.Settings
 import android.util.Log
 import android.util.SizeF
-import androidx.compose.animation.core.MutableTransitionState
-import androidx.compose.ui.geometry.Offset
 import androidx.core.content.ContextCompat
 import androidx.core.content.ContextCompat.getSystemService
 import androidx.lifecycle.AndroidViewModel
@@ -29,19 +27,12 @@ import com.google.android.gms.location.LocationSettingsResponse
 import com.google.android.gms.location.SettingsClient
 import com.google.android.gms.tasks.Task
 import com.harang.data.api.NenoonKioskApi
-import com.pixelro.nenoonkiosk.test.macular.amslergrid.AmslerGridTestResult
-import com.pixelro.nenoonkiosk.data.AccommodationData
 import com.pixelro.nenoonkiosk.data.GlobalValue
-import com.pixelro.nenoonkiosk.test.macular.amslergrid.MacularDisorderType
 import com.pixelro.nenoonkiosk.data.SharedPreferencesManager
 import com.pixelro.nenoonkiosk.data.StringProvider
-import com.pixelro.nenoonkiosk.data.SurveyAge
-import com.pixelro.nenoonkiosk.data.SurveyDiabetes
-import com.pixelro.nenoonkiosk.data.SurveyGlass
-import com.pixelro.nenoonkiosk.data.SurveySex
-import com.pixelro.nenoonkiosk.data.SurveySurgery
 import com.pixelro.nenoonkiosk.data.TestType
-import com.pixelro.nenoonkiosk.data.VisionDisorderType
+import com.pixelro.nenoonkiosk.survey.SurveyData
+import com.pixelro.nenoonkiosk.test.macular.amslergrid.AmslerGridTestResult
 import com.pixelro.nenoonkiosk.test.macular.mchart.MChartTestResult
 import com.pixelro.nenoonkiosk.test.presbyopia.PresbyopiaTestResult
 import com.pixelro.nenoonkiosk.test.visualacuity.children.ChildrenVisualAcuityTestResult
@@ -56,7 +47,6 @@ import kotlinx.coroutines.launch
 import java.io.File
 import java.util.Locale
 import javax.inject.Inject
-import kotlin.math.roundToInt
 
 @HiltViewModel
 class NenoonViewModel @Inject constructor(
@@ -90,42 +80,6 @@ class NenoonViewModel @Inject constructor(
 
     fun updateInputSignInId(id: String) {
         _inputSignInId.update { id }
-    }
-
-    // Survey
-    private val _surveyAge = MutableStateFlow(SurveyAge.None)
-    val surveyAge: StateFlow<SurveyAge> = _surveyAge
-    private val _surveySex = MutableStateFlow(SurveySex.None)
-    val surveySex: StateFlow<SurveySex> = _surveySex
-    private val _surveyGlass = MutableStateFlow(SurveyGlass.None)
-    val surveyGlass: StateFlow<SurveyGlass> = _surveyGlass
-    private val _surveySurgery = MutableStateFlow(SurveySurgery.None)
-    val surveySurgery: StateFlow<SurveySurgery> = _surveySurgery
-    private val _surveyDiabetes = MutableStateFlow(SurveyDiabetes.None)
-    val surveyDiabetes: StateFlow<SurveyDiabetes> = _surveyDiabetes
-
-    fun updateSurveyAge(type: SurveyAge) {
-        _surveyAge.update { type }
-    }
-
-    fun updateSurveySex(type: SurveySex) {
-        _surveySex.update { type }
-    }
-
-    fun updateSurveyGlass(type: SurveyGlass) {
-        _surveyGlass.update { type }
-    }
-
-    fun updateSurveySurgery(type: SurveySurgery) {
-        _surveySurgery.update { type }
-    }
-
-    fun updateSurveyDiabetes(type: SurveyDiabetes) {
-        _surveyDiabetes.update { type }
-    }
-
-    fun submitSurvey() {
-
     }
 
     // Settings
@@ -176,67 +130,6 @@ class NenoonViewModel @Inject constructor(
         GlobalValue.focalLength = focalLength
         GlobalValue.lensSize = lensSize
     }
-
-    // Covered Eye Checking
-    val coveredEyeCheckingContentVisibleState = MutableTransitionState(false)
-    private val _leftTime = MutableStateFlow(0f)
-    val leftTime: StateFlow<Float> = _leftTime
-    private val _isTimerShowing = MutableStateFlow(false)
-    val isTimerShowing: StateFlow<Boolean> = _isTimerShowing
-
-    fun initializeCoveredEyeChecking() {
-//        _isCoveredEyeCheckingDone.update { false }
-        _leftTime.update { 5f }
-        _isTimerShowing.update { false }
-    }
-
-//    fun updateIsCoveredEyeCheckingDone(isDone: Boolean) {
-//        _isCoveredEyeCheckingDone.update { isDone }
-//    }
-
-    fun checkCoveredEye() {
-
-        viewModelScope.launch {
-            var count = 0
-            _leftTime.update { 5.5f }
-            while (count < 10) {
-                delay(500)
-                if (!coveredEyeCheckingContentVisibleState.targetState) {
-                    return@launch
-                }
-                if (
-//                    when(isLeftEye.value) {
-//                        true -> leftEyeOpenProbability.value
-//                        else -> rightEyeOpenProbability.value
-//                    } < 0.7f && abs(leftEyeOpenProbability.value - rightEyeOpenProbability.value) > 0.3f
-                    true
-                ) {
-                    if (!isTimerShowing.value) {
-                        _isTimerShowing.update { true }
-                    }
-                    count++
-                    _leftTime.update { (it - 0.5f) }
-                } else {
-                    if (isTimerShowing.value) {
-                        _isTimerShowing.update { false }
-                    }
-                    count = 0
-                    _leftTime.update { 5f }
-                }
-            }
-            coveredEyeCheckingContentVisibleState.targetState = false
-            if (_selectedTestType.value == TestType.ShortDistanceVisualAcuity) {
-//                visualAcuityTestCommonContentVisibleState.targetState = true
-            } else if (_selectedTestType.value == TestType.AmslerGrid) {
-//                amslerGridContentVisibleState.targetState = true
-            } else if (_selectedTestType.value == TestType.MChart) {
-//                mChartContentVisibleState.targetState = true
-            }
-        }
-    }
-
-    // Nemonic Printer
-
 
     // Checking permission, location, bluetooth
     private val _isWriteSettingsPermissionGranted = MutableStateFlow(false)
@@ -360,10 +253,6 @@ class NenoonViewModel @Inject constructor(
     val selectedTestDescription: StateFlow<String> = _selectedTestDescription
     private val _selectedTestMenuDescription = MutableStateFlow("")
     val selectedTestMenuDescription: StateFlow<String> = _selectedTestMenuDescription
-    private val _isLeftEye = MutableStateFlow(true)
-    val isLeftEye: StateFlow<Boolean> = _isLeftEye
-    private val _predescriptionTitle = MutableStateFlow("")
-    val predescriptionTitle: StateFlow<String> = _predescriptionTitle
 
     private fun showSplashScreen() {
         viewModelScope.launch {
@@ -404,17 +293,10 @@ class NenoonViewModel @Inject constructor(
                 else -> StringProvider.getString(R.string.mchart_long_description)
             }
         }
-        _predescriptionTitle.update {
-            when (testType) {
-                TestType.Presbyopia -> StringProvider.getString(R.string.test_predescription_presbyopia_title)
-                TestType.ShortDistanceVisualAcuity -> StringProvider.getString(R.string.test_predescription_short_visual_acuity_title)
-                TestType.LongDistanceVisualAcuity -> StringProvider.getString(R.string.test_predescription_long_visual_acuity_title)
-                TestType.ChildrenVisualAcuity -> StringProvider.getString(R.string.test_predescription_children_visual_acuity_title)
-                TestType.AmslerGrid -> StringProvider.getString(R.string.test_predescription_amsler_title)
-                else -> StringProvider.getString(R.string.test_predescription_mchart_title)
-            }
-        }
     }
+
+    // Survey Data
+    var surveyData = SurveyData()
 
     // Test Result
     var presbyopiaTestResult = PresbyopiaTestResult()
@@ -424,11 +306,6 @@ class NenoonViewModel @Inject constructor(
     var amslerGridTestResult = AmslerGridTestResult()
     var mChartTestResult = MChartTestResult()
 
-
-    fun updateIsLeftEye(isLeft: Boolean) {
-        _isLeftEye.update { isLeft }
-    }
-
     init {
         viewModelScope.launch {
             val response = api.getTest()
@@ -437,7 +314,6 @@ class NenoonViewModel @Inject constructor(
                 "code: ${response.code()}\nbody: ${response.body()}\nerrorbody: ${response.errorBody()}\n"
             )
         }
-//        updateRandomList()
         showSplashScreen()
         checkBackgroundStatus()
 //        exoPlayer.setMediaItem(MediaItem.fromUri("https://drive.google.com/uc?export=view&id=1vNW4Xia8pG4tfGoao4Nb7hEJtOd9Cg8F"))

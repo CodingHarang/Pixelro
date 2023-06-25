@@ -21,4 +21,10 @@ class ExampleInstrumentedTest {
         val appContext = InstrumentationRegistry.getInstrumentation().targetContext
         assertEquals("com.pixelro.nenoonkiosk", appContext.packageName)
     }
+
+    @Test
+    fun useAppContextFail() {
+        val appContext = InstrumentationRegistry.getInstrumentation().targetContext
+        assertNotEquals("com.pixelro.nenoonkios", appContext.packageName)
+    }
 }

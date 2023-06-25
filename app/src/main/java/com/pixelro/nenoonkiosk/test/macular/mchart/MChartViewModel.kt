@@ -76,7 +76,7 @@ class MChartViewModel @Inject constructor(
     }
 
     fun updateRightVerticalValue() {
-        _rightHorizontalValue = currentLevel.value
+        _rightVerticalValue = currentLevel.value
     }
 
     fun updateRightHorizontalValue() {

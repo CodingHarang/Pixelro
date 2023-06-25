@@ -10,10 +10,6 @@ import android.content.IntentFilter
 import android.content.pm.PackageManager
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory
-import android.graphics.Canvas
-import android.graphics.Paint
-import android.graphics.RectF
-import android.graphics.Typeface
 import android.util.Log
 import android.widget.Toast
 import androidx.activity.compose.BackHandler
@@ -35,6 +31,7 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.DisposableEffect
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
@@ -53,14 +50,13 @@ import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat.getSystemService
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavHostController
-import com.pixelro.nenoonkiosk.NenoonViewModel
 import com.pixelro.nenoonkiosk.R
-import com.pixelro.nenoonkiosk.test.macular.amslergrid.AmslerGridTestResultContent
 import com.pixelro.nenoonkiosk.data.GlobalConstants
 import com.pixelro.nenoonkiosk.data.GlobalValue
 import com.pixelro.nenoonkiosk.data.StringProvider
 import com.pixelro.nenoonkiosk.data.TestType
 import com.pixelro.nenoonkiosk.test.macular.amslergrid.AmslerGridTestResult
+import com.pixelro.nenoonkiosk.test.macular.amslergrid.AmslerGridTestResultContent
 import com.pixelro.nenoonkiosk.test.macular.mchart.MChartTestResult
 import com.pixelro.nenoonkiosk.test.macular.mchart.MChartTestResultContent
 import com.pixelro.nenoonkiosk.test.presbyopia.PresbyopiaTestResult
@@ -69,12 +65,12 @@ import com.pixelro.nenoonkiosk.test.result.TestResultUtil.textAsBitmap
 import com.pixelro.nenoonkiosk.test.result.TestResultViewModel
 import com.pixelro.nenoonkiosk.test.visualacuity.children.ChildrenVisualAcuityTestResult
 import com.pixelro.nenoonkiosk.test.visualacuity.longdistance.LongVisualAcuityTestResult
-import com.pixelro.nenoonkiosk.ui.testresultcontent.*
 import com.pixelro.nenoonkiosk.test.visualacuity.shortdistance.ShortDistanceVisualAcuityTestResultContent
 import com.pixelro.nenoonkiosk.test.visualacuity.shortdistance.ShortVisualAcuityTestResult
+import com.pixelro.nenoonkiosk.ui.testresultcontent.ChildrenVisualAcuityTestResultContent
+import com.pixelro.nenoonkiosk.ui.testresultcontent.LongDistanceVisualAcuityTestResultContent
 import kotlinx.coroutines.launch
 import mangoslab.nemonicsdk.nemonicWrapper
-import java.util.Objects
 
 @Composable
 fun TestResultScreen(
@@ -88,17 +84,29 @@ fun TestResultScreen(
         navController.popBackStack(GlobalConstants.ROUTE_TEST_LIST, false)
 //        viewModel.resetScreenSaverTimer()
     }
+    LaunchedEffect(true) {
+        testResultViewModel.sendResultToServer(
+            testType = testType,
+            testResult = testResult
+        )
+        testResultViewModel.makePrintImage(
+            testType = testType,
+            testResult = testResult
+        )
+    }
     val composableScope = rememberCoroutineScope()
     val context = LocalContext.current
-    val bluetoothManager = getSystemService(context, BluetoothManager::class.java) as BluetoothManager
+    val bluetoothManager =
+        getSystemService(context, BluetoothManager::class.java) as BluetoothManager
     val bluetoothAdapter = bluetoothManager.adapter
     val receiver = object : BroadcastReceiver() {
         override fun onReceive(context: Context, intent: Intent?) {
-            when(intent?.action) {
+            when (intent?.action) {
                 BluetoothDevice.ACTION_FOUND -> {
                     // Discovery has found a device. Get the BluetoothDevice
                     // object and its info from the Intent.
-                    val device: BluetoothDevice? = intent.getParcelableExtra(BluetoothDevice.EXTRA_DEVICE)
+                    val device: BluetoothDevice? =
+                        intent.getParcelableExtra(BluetoothDevice.EXTRA_DEVICE)
 
                     if (ActivityCompat.checkSelfPermission(
                             context.applicationContext,
@@ -110,7 +118,10 @@ fun TestResultScreen(
 
                     val deviceName = device?.name
                     val deviceHardwareAddress = device?.address // MAC address
-                    if (deviceHardwareAddress != null && deviceName != null && deviceHardwareAddress.contains("74:F0:7D")) {
+                    if (deviceHardwareAddress != null && deviceName != null && deviceHardwareAddress.contains(
+                            "74:F0:7D"
+                        )
+                    ) {
                         testResultViewModel.updatePrinter(deviceName, deviceHardwareAddress)
                     }
                 }
@@ -119,7 +130,6 @@ fun TestResultScreen(
     }
 
     DisposableEffect(true) {
-
         context.registerReceiver(receiver, IntentFilter(BluetoothDevice.ACTION_FOUND))
         bluetoothAdapter.startDiscovery()
         onDispose {
@@ -141,13 +151,18 @@ fun TestResultScreen(
         val nCopies = 1
 
         val resources = context.resources
-        val logoImg = Bitmap.createScaledBitmap(BitmapFactory.decodeResource(resources, R.drawable.pixelro_logo_black), 240, 80, false)
+        val logoImg = Bitmap.createScaledBitmap(
+            BitmapFactory.decodeResource(
+                resources,
+                R.drawable.pixelro_logo_black
+            ), 240, 80, false
+        )
 
         val bm = textAsBitmap(testType, printString, logoImg)
         val nResult = 0
         val nPrintWidth = 576
         val nPaperHeight = ((bm.height.toFloat() / bm.width.toFloat()) * 576).toInt()
-        if(printerMacAddress != "") {
+        if (printerMacAddress != "") {
             mNemonicWrapper.openPrinter(printerMacAddress)
             mNemonicWrapper.print(bm, nPrintWidth, nPaperHeight, nCopies)
             mNemonicWrapper.closePrinter()
@@ -175,7 +190,7 @@ fun TestResultScreen(
             contentAlignment = Alignment.Center
         ) {
             Text(
-                text = when(testType) {
+                text = when (testType) {
                     TestType.Presbyopia -> StringProvider.getString(R.string.presbyopia_result_title)
                     TestType.ShortDistanceVisualAcuity -> StringProvider.getString(R.string.short_visual_acuity_result_title)
                     TestType.LongDistanceVisualAcuity -> StringProvider.getString(R.string.long_visual_acuity_result_title)
@@ -198,25 +213,6 @@ fun TestResultScreen(
                     color = Color(0xffebebeb)
                 )
         )
-//        Text(
-//            modifier = Modifier
-//                .fillMaxWidth()
-//                .padding(top = 40.dp),
-//            text = when(testType) {
-//                TestType.Presbyopia -> StringProvider.getString(R.string.presbyopia_result_title)
-//                TestType.ShortDistanceVisualAcuity -> StringProvider.getString(R.string.short_visual_acuity_result_title)
-//                TestType.LongDistanceVisualAcuity -> StringProvider.getString(R.string.long_visual_acuity_result_title)
-//                TestType.ChildrenVisualAcuity -> StringProvider.getString(R.string.children_visual_acuity_result_title)
-//                TestType.AmslerGrid -> StringProvider.getString(R.string.amsler_grid_result_title)
-//                TestType.MChart -> StringProvider.getString(R.string.mchart_result_title)
-//                else -> {
-//                    "None TestResultScreen"
-//                }
-//            },
-//            fontSize = 40.sp,
-//            fontWeight = FontWeight.Bold,
-//            textAlign = TextAlign.Center
-//        )
         when (testType) {
             TestType.Presbyopia -> {
                 PresbyopiaTestResultContent(
@@ -224,24 +220,28 @@ fun TestResultScreen(
                     navController = navController
                 )
             }
+
             TestType.ShortDistanceVisualAcuity -> {
                 ShortDistanceVisualAcuityTestResultContent(
                     testResult = testResult as ShortVisualAcuityTestResult,
                     navController = navController
                 )
             }
+
             TestType.LongDistanceVisualAcuity -> {
                 LongDistanceVisualAcuityTestResultContent(
                     testResult = testResult as LongVisualAcuityTestResult,
                     navController = navController
                 )
             }
+
             TestType.ChildrenVisualAcuity -> {
                 ChildrenVisualAcuityTestResultContent(
                     testResult = testResult as ChildrenVisualAcuityTestResult,
                     navController = navController
                 )
             }
+
             TestType.AmslerGrid -> {
                 AmslerGridTestResultContent(
                     testResult = testResult as AmslerGridTestResult,
@@ -249,12 +249,14 @@ fun TestResultScreen(
                 )
 
             }
+
             TestType.MChart -> {
                 MChartTestResultContent(
                     testResult = testResult as MChartTestResult,
                     navController = navController
                 )
             }
+
             else -> {
                 Text("None TestResultScreen")
             }

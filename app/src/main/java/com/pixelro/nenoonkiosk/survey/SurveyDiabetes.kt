@@ -1,4 +1,4 @@
-package com.pixelro.nenoonkiosk.data
+package com.pixelro.nenoonkiosk.survey
 
 enum class SurveyDiabetes {
     None, Yes, No

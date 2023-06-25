@@ -21,26 +21,26 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.modifier.modifierLocalConsumer
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import com.pixelro.nenoonkiosk.NenoonViewModel
+import androidx.hilt.navigation.compose.hiltViewModel
 import com.pixelro.nenoonkiosk.R
-import com.pixelro.nenoonkiosk.data.GlobalConstants
 import com.pixelro.nenoonkiosk.data.GlobalValue
 import com.pixelro.nenoonkiosk.data.StringProvider
-import com.pixelro.nenoonkiosk.data.SurveyAge
-import com.pixelro.nenoonkiosk.data.SurveyDiabetes
-import com.pixelro.nenoonkiosk.data.SurveyGlass
-import com.pixelro.nenoonkiosk.data.SurveySex
-import com.pixelro.nenoonkiosk.data.SurveySurgery
+import com.pixelro.nenoonkiosk.survey.SurveyAge
+import com.pixelro.nenoonkiosk.survey.SurveyData
+import com.pixelro.nenoonkiosk.survey.SurveyDiabetes
+import com.pixelro.nenoonkiosk.survey.SurveyGlass
+import com.pixelro.nenoonkiosk.survey.SurveySex
+import com.pixelro.nenoonkiosk.survey.SurveySurgery
+import com.pixelro.nenoonkiosk.survey.SurveyViewModel
 
 @Composable
 fun SurveyScreen(
-    viewModel: NenoonViewModel,
-    toTestListScreen: () -> Unit
+    toTestListScreen: (SurveyData) -> Unit,
+    surveyViewModel: SurveyViewModel = hiltViewModel()
 ) {
     Column(
         modifier = Modifier
@@ -94,7 +94,7 @@ fun SurveyScreen(
                             .border(
                                 border = BorderStroke(
                                     width = 1.dp,
-                                    color = when(viewModel.surveyAge.collectAsState().value) {
+                                    color = when (surveyViewModel.surveyAge.collectAsState().value) {
                                         SurveyAge.First -> Color(0xff1d71e1)
                                         else -> Color(0xffc3c3c3)
                                     }
@@ -102,7 +102,7 @@ fun SurveyScreen(
                                 shape = RoundedCornerShape(50)
                             )
                             .clickable {
-                                viewModel.updateSurveyAge(SurveyAge.First)
+                                surveyViewModel.updateSurveyAge(SurveyAge.First)
                             }
                             .padding(top = 12.dp, bottom = 12.dp),
                         contentAlignment = Alignment.Center
@@ -110,7 +110,7 @@ fun SurveyScreen(
                         Text(
                             text = "9세 이하",
                             fontSize = 24.sp,
-                            color = when(viewModel.surveyAge.collectAsState().value) {
+                            color = when(surveyViewModel.surveyAge.collectAsState().value) {
                                 SurveyAge.First -> Color(0xff1d71e1)
                                 else -> Color(0xffc3c3c3)
                             }
@@ -126,7 +126,7 @@ fun SurveyScreen(
                             .border(
                                 border = BorderStroke(
                                     width = 1.dp,
-                                    color = when(viewModel.surveyAge.collectAsState().value) {
+                                    color = when (surveyViewModel.surveyAge.collectAsState().value) {
                                         SurveyAge.Second -> Color(0xff1d71e1)
                                         else -> Color(0xffc3c3c3)
                                     }
@@ -134,7 +134,7 @@ fun SurveyScreen(
                                 shape = RoundedCornerShape(50)
                             )
                             .clickable {
-                                viewModel.updateSurveyAge(SurveyAge.Second)
+                                surveyViewModel.updateSurveyAge(SurveyAge.Second)
                             }
                             .padding(top = 12.dp, bottom = 12.dp),
                         contentAlignment = Alignment.Center
@@ -142,7 +142,7 @@ fun SurveyScreen(
                         Text(
                             text = "10 ~ 14세",
                             fontSize = 24.sp,
-                            color = when(viewModel.surveyAge.collectAsState().value) {
+                            color = when(surveyViewModel.surveyAge.collectAsState().value) {
                                 SurveyAge.Second -> Color(0xff1d71e1)
                                 else -> Color(0xffc3c3c3)
                             }
@@ -158,7 +158,7 @@ fun SurveyScreen(
                             .border(
                                 border = BorderStroke(
                                     width = 1.dp,
-                                    color = when(viewModel.surveyAge.collectAsState().value) {
+                                    color = when (surveyViewModel.surveyAge.collectAsState().value) {
                                         SurveyAge.Third -> Color(0xff1d71e1)
                                         else -> Color(0xffc3c3c3)
                                     }
@@ -166,7 +166,7 @@ fun SurveyScreen(
                                 shape = RoundedCornerShape(50)
                             )
                             .clickable {
-                                viewModel.updateSurveyAge(SurveyAge.Third)
+                                surveyViewModel.updateSurveyAge(SurveyAge.Third)
                             }
                             .padding(top = 12.dp, bottom = 12.dp),
                         contentAlignment = Alignment.Center
@@ -174,7 +174,7 @@ fun SurveyScreen(
                         Text(
                             text = "15 ~ 19세",
                             fontSize = 24.sp,
-                            color = when(viewModel.surveyAge.collectAsState().value) {
+                            color = when(surveyViewModel.surveyAge.collectAsState().value) {
                                 SurveyAge.Third -> Color(0xff1d71e1)
                                 else -> Color(0xffc3c3c3)
                             }
@@ -190,7 +190,7 @@ fun SurveyScreen(
                             .border(
                                 border = BorderStroke(
                                     width = 1.dp,
-                                    color = when(viewModel.surveyAge.collectAsState().value) {
+                                    color = when (surveyViewModel.surveyAge.collectAsState().value) {
                                         SurveyAge.Fourth -> Color(0xff1d71e1)
                                         else -> Color(0xffc3c3c3)
                                     }
@@ -198,7 +198,7 @@ fun SurveyScreen(
                                 shape = RoundedCornerShape(50)
                             )
                             .clickable {
-                                viewModel.updateSurveyAge(SurveyAge.Fourth)
+                                surveyViewModel.updateSurveyAge(SurveyAge.Fourth)
                             }
                             .padding(top = 12.dp, bottom = 12.dp),
                         contentAlignment = Alignment.Center
@@ -206,7 +206,7 @@ fun SurveyScreen(
                         Text(
                             text = "20 ~ 29세",
                             fontSize = 24.sp,
-                            color = when(viewModel.surveyAge.collectAsState().value) {
+                            color = when(surveyViewModel.surveyAge.collectAsState().value) {
                                 SurveyAge.Fourth -> Color(0xff1d71e1)
                                 else -> Color(0xffc3c3c3)
                             }
@@ -226,7 +226,7 @@ fun SurveyScreen(
                             .border(
                                 border = BorderStroke(
                                     width = 1.dp,
-                                    color = when(viewModel.surveyAge.collectAsState().value) {
+                                    color = when (surveyViewModel.surveyAge.collectAsState().value) {
                                         SurveyAge.Fifth -> Color(0xff1d71e1)
                                         else -> Color(0xffc3c3c3)
                                     }
@@ -234,7 +234,7 @@ fun SurveyScreen(
                                 shape = RoundedCornerShape(50)
                             )
                             .clickable {
-                                viewModel.updateSurveyAge(SurveyAge.Fifth)
+                                surveyViewModel.updateSurveyAge(SurveyAge.Fifth)
                             }
                             .padding(top = 12.dp, bottom = 12.dp),
                         contentAlignment = Alignment.Center
@@ -242,7 +242,7 @@ fun SurveyScreen(
                         Text(
                             text = "30 ~ 39세",
                             fontSize = 24.sp,
-                            color = when(viewModel.surveyAge.collectAsState().value) {
+                            color = when(surveyViewModel.surveyAge.collectAsState().value) {
                                 SurveyAge.Fifth -> Color(0xff1d71e1)
                                 else -> Color(0xffc3c3c3)
                             }
@@ -258,7 +258,7 @@ fun SurveyScreen(
                             .border(
                                 border = BorderStroke(
                                     width = 1.dp,
-                                    color = when(viewModel.surveyAge.collectAsState().value) {
+                                    color = when (surveyViewModel.surveyAge.collectAsState().value) {
                                         SurveyAge.Sixth -> Color(0xff1d71e1)
                                         else -> Color(0xffc3c3c3)
                                     }
@@ -266,7 +266,7 @@ fun SurveyScreen(
                                 shape = RoundedCornerShape(50)
                             )
                             .clickable {
-                                viewModel.updateSurveyAge(SurveyAge.Sixth)
+                                surveyViewModel.updateSurveyAge(SurveyAge.Sixth)
                             }
                             .padding(top = 12.dp, bottom = 12.dp),
                         contentAlignment = Alignment.Center
@@ -274,7 +274,7 @@ fun SurveyScreen(
                         Text(
                             text = "40 ~ 49세",
                             fontSize = 24.sp,
-                            color = when(viewModel.surveyAge.collectAsState().value) {
+                            color = when(surveyViewModel.surveyAge.collectAsState().value) {
                                 SurveyAge.Sixth -> Color(0xff1d71e1)
                                 else -> Color(0xffc3c3c3)
                             }
@@ -290,7 +290,7 @@ fun SurveyScreen(
                             .border(
                                 border = BorderStroke(
                                     width = 1.dp,
-                                    color = when(viewModel.surveyAge.collectAsState().value) {
+                                    color = when (surveyViewModel.surveyAge.collectAsState().value) {
                                         SurveyAge.Seventh -> Color(0xff1d71e1)
                                         else -> Color(0xffc3c3c3)
                                     }
@@ -298,7 +298,7 @@ fun SurveyScreen(
                                 shape = RoundedCornerShape(50)
                             )
                             .clickable {
-                                viewModel.updateSurveyAge(SurveyAge.Seventh)
+                                surveyViewModel.updateSurveyAge(SurveyAge.Seventh)
                             }
                             .padding(top = 12.dp, bottom = 12.dp),
                         contentAlignment = Alignment.Center
@@ -306,7 +306,7 @@ fun SurveyScreen(
                         Text(
                             text = "50 ~ 59세",
                             fontSize = 24.sp,
-                            color = when(viewModel.surveyAge.collectAsState().value) {
+                            color = when(surveyViewModel.surveyAge.collectAsState().value) {
                                 SurveyAge.Seventh -> Color(0xff1d71e1)
                                 else -> Color(0xffc3c3c3)
                             }
@@ -322,7 +322,7 @@ fun SurveyScreen(
                             .border(
                                 border = BorderStroke(
                                     width = 1.dp,
-                                    color = when(viewModel.surveyAge.collectAsState().value) {
+                                    color = when (surveyViewModel.surveyAge.collectAsState().value) {
                                         SurveyAge.Eighth -> Color(0xff1d71e1)
                                         else -> Color(0xffc3c3c3)
                                     }
@@ -330,7 +330,7 @@ fun SurveyScreen(
                                 shape = RoundedCornerShape(50)
                             )
                             .clickable {
-                                viewModel.updateSurveyAge(SurveyAge.Eighth)
+                                surveyViewModel.updateSurveyAge(SurveyAge.Eighth)
                             }
                             .padding(top = 12.dp, bottom = 12.dp),
                         contentAlignment = Alignment.Center
@@ -338,7 +338,7 @@ fun SurveyScreen(
                         Text(
                             text = "60세 이상",
                             fontSize = 24.sp,
-                            color = when(viewModel.surveyAge.collectAsState().value) {
+                            color = when(surveyViewModel.surveyAge.collectAsState().value) {
                                 SurveyAge.Eighth -> Color(0xff1d71e1)
                                 else -> Color(0xffc3c3c3)
                             }
@@ -363,7 +363,7 @@ fun SurveyScreen(
                         .border(
                             border = BorderStroke(
                                 width = 1.dp,
-                                color = when(viewModel.surveySex.collectAsState().value) {
+                                color = when (surveyViewModel.surveySex.collectAsState().value) {
                                     SurveySex.Man -> Color(0xff1d71e1)
                                     else -> Color(0xffc3c3c3)
                                 }
@@ -371,7 +371,7 @@ fun SurveyScreen(
                             shape = RoundedCornerShape(8.dp)
                         )
                         .clickable {
-                            viewModel.updateSurveySex(SurveySex.Man)
+                            surveyViewModel.updateSurveySex(SurveySex.Man)
                         }
                         .padding(start = 28.dp, top = 16.dp, end = 28.dp, bottom = 16.dp),
                     contentAlignment = Alignment.CenterStart
@@ -379,7 +379,7 @@ fun SurveyScreen(
                     Text(
                         text = "남성",
                         fontSize = 24.sp,
-                        color = when(viewModel.surveySex.collectAsState().value) {
+                        color = when(surveyViewModel.surveySex.collectAsState().value) {
                             SurveySex.Man -> Color(0xff1d71e1)
                             else -> Color(0xffc3c3c3)
                         }
@@ -398,7 +398,7 @@ fun SurveyScreen(
                         .border(
                             border = BorderStroke(
                                 width = 1.dp,
-                                color = when(viewModel.surveySex.collectAsState().value) {
+                                color = when (surveyViewModel.surveySex.collectAsState().value) {
                                     SurveySex.Woman -> Color(0xff1d71e1)
                                     else -> Color(0xffc3c3c3)
                                 }
@@ -406,7 +406,7 @@ fun SurveyScreen(
                             shape = RoundedCornerShape(8.dp)
                         )
                         .clickable {
-                            viewModel.updateSurveySex(SurveySex.Woman)
+                            surveyViewModel.updateSurveySex(SurveySex.Woman)
                         }
                         .padding(start = 28.dp, top = 16.dp, end = 28.dp, bottom = 16.dp),
                     contentAlignment = Alignment.CenterStart
@@ -414,7 +414,7 @@ fun SurveyScreen(
                     Text(
                         text = "여성",
                         fontSize = 24.sp,
-                        color = when(viewModel.surveySex.collectAsState().value) {
+                        color = when(surveyViewModel.surveySex.collectAsState().value) {
                             SurveySex.Woman -> Color(0xff1d71e1)
                             else -> Color(0xffc3c3c3)
                         }
@@ -438,7 +438,7 @@ fun SurveyScreen(
                         .border(
                             border = BorderStroke(
                                 width = 1.dp,
-                                color = when(viewModel.surveyGlass.collectAsState().value) {
+                                color = when (surveyViewModel.surveyGlass.collectAsState().value) {
                                     SurveyGlass.No -> Color(0xff1d71e1)
                                     else -> Color(0xffc3c3c3)
                                 }
@@ -446,7 +446,7 @@ fun SurveyScreen(
                             shape = RoundedCornerShape(8.dp)
                         )
                         .clickable {
-                            viewModel.updateSurveyGlass(SurveyGlass.No)
+                            surveyViewModel.updateSurveyGlass(SurveyGlass.No)
                         }
                         .padding(start = 28.dp, top = 16.dp, end = 28.dp, bottom = 16.dp),
                     contentAlignment = Alignment.CenterStart
@@ -454,7 +454,7 @@ fun SurveyScreen(
                     Text(
                         text = "미착용",
                         fontSize = 24.sp,
-                        color = when(viewModel.surveyGlass.collectAsState().value) {
+                        color = when(surveyViewModel.surveyGlass.collectAsState().value) {
                             SurveyGlass.No -> Color(0xff1d71e1)
                             else -> Color(0xffc3c3c3)
                         }
@@ -473,7 +473,7 @@ fun SurveyScreen(
                         .border(
                             border = BorderStroke(
                                 width = 1.dp,
-                                color = when(viewModel.surveyGlass.collectAsState().value) {
+                                color = when (surveyViewModel.surveyGlass.collectAsState().value) {
                                     SurveyGlass.Yes -> Color(0xff1d71e1)
                                     else -> Color(0xffc3c3c3)
                                 }
@@ -481,7 +481,7 @@ fun SurveyScreen(
                             shape = RoundedCornerShape(8.dp)
                         )
                         .clickable {
-                            viewModel.updateSurveyGlass(SurveyGlass.Yes)
+                            surveyViewModel.updateSurveyGlass(SurveyGlass.Yes)
                         }
                         .padding(start = 28.dp, top = 16.dp, end = 28.dp, bottom = 16.dp),
                     contentAlignment = Alignment.CenterStart
@@ -489,7 +489,7 @@ fun SurveyScreen(
                     Text(
                         text = "안경 또는 렌즈 착용",
                         fontSize = 24.sp,
-                        color = when(viewModel.surveyGlass.collectAsState().value) {
+                        color = when(surveyViewModel.surveyGlass.collectAsState().value) {
                             SurveyGlass.Yes -> Color(0xff1d71e1)
                             else -> Color(0xffc3c3c3)
                         }
@@ -513,7 +513,7 @@ fun SurveyScreen(
                         .border(
                             border = BorderStroke(
                                 width = 1.dp,
-                                color = when(viewModel.surveySurgery.collectAsState().value) {
+                                color = when (surveyViewModel.surveySurgery.collectAsState().value) {
                                     SurveySurgery.Normal -> Color(0xff1d71e1)
                                     else -> Color(0xffc3c3c3)
                                 }
@@ -521,7 +521,7 @@ fun SurveyScreen(
                             shape = RoundedCornerShape(8.dp)
                         )
                         .clickable {
-                            viewModel.updateSurveySurgery(SurveySurgery.Normal)
+                            surveyViewModel.updateSurveySurgery(SurveySurgery.Normal)
                         }
                         .padding(start = 28.dp, top = 16.dp, end = 28.dp, bottom = 16.dp),
                     contentAlignment = Alignment.CenterStart
@@ -529,7 +529,7 @@ fun SurveyScreen(
                     Text(
                         text = "없음",
                         fontSize = 24.sp,
-                        color = when(viewModel.surveySurgery.collectAsState().value) {
+                        color = when(surveyViewModel.surveySurgery.collectAsState().value) {
                             SurveySurgery.Normal -> Color(0xff1d71e1)
                             else -> Color(0xffc3c3c3)
                         }
@@ -548,7 +548,7 @@ fun SurveyScreen(
                         .border(
                             border = BorderStroke(
                                 width = 1.dp,
-                                color = when(viewModel.surveySurgery.collectAsState().value) {
+                                color = when (surveyViewModel.surveySurgery.collectAsState().value) {
                                     SurveySurgery.LASIK -> Color(0xff1d71e1)
                                     else -> Color(0xffc3c3c3)
                                 }
@@ -556,7 +556,7 @@ fun SurveyScreen(
                             shape = RoundedCornerShape(8.dp)
                         )
                         .clickable {
-                            viewModel.updateSurveySurgery(SurveySurgery.LASIK)
+                            surveyViewModel.updateSurveySurgery(SurveySurgery.LASIK)
                         }
                         .padding(start = 28.dp, top = 16.dp, end = 28.dp, bottom = 16.dp),
                     contentAlignment = Alignment.CenterStart
@@ -564,7 +564,7 @@ fun SurveyScreen(
                     Text(
                         text = "라식/라섹",
                         fontSize = 24.sp,
-                        color = when(viewModel.surveySurgery.collectAsState().value) {
+                        color = when(surveyViewModel.surveySurgery.collectAsState().value) {
                             SurveySurgery.LASIK -> Color(0xff1d71e1)
                             else -> Color(0xffc3c3c3)
                         }
@@ -583,7 +583,7 @@ fun SurveyScreen(
                         .border(
                             border = BorderStroke(
                                 width = 1.dp,
-                                color = when(viewModel.surveySurgery.collectAsState().value) {
+                                color = when (surveyViewModel.surveySurgery.collectAsState().value) {
                                     SurveySurgery.Cataract -> Color(0xff1d71e1)
                                     else -> Color(0xffc3c3c3)
                                 }
@@ -591,7 +591,7 @@ fun SurveyScreen(
                             shape = RoundedCornerShape(8.dp)
                         )
                         .clickable {
-                            viewModel.updateSurveySurgery(SurveySurgery.Cataract)
+                            surveyViewModel.updateSurveySurgery(SurveySurgery.Cataract)
                         }
                         .padding(start = 28.dp, top = 16.dp, end = 28.dp, bottom = 16.dp),
                     contentAlignment = Alignment.CenterStart
@@ -599,7 +599,7 @@ fun SurveyScreen(
                     Text(
                         text = "백내장",
                         fontSize = 24.sp,
-                        color = when(viewModel.surveySurgery.collectAsState().value) {
+                        color = when(surveyViewModel.surveySurgery.collectAsState().value) {
                             SurveySurgery.Cataract -> Color(0xff1d71e1)
                             else -> Color(0xffc3c3c3)
                         }
@@ -618,7 +618,7 @@ fun SurveyScreen(
                         .border(
                             border = BorderStroke(
                                 width = 1.dp,
-                                color = when(viewModel.surveySurgery.collectAsState().value) {
+                                color = when (surveyViewModel.surveySurgery.collectAsState().value) {
                                     SurveySurgery.Etc -> Color(0xff1d71e1)
                                     else -> Color(0xffc3c3c3)
                                 }
@@ -626,7 +626,7 @@ fun SurveyScreen(
                             shape = RoundedCornerShape(8.dp)
                         )
                         .clickable {
-                            viewModel.updateSurveySurgery(SurveySurgery.Etc)
+                            surveyViewModel.updateSurveySurgery(SurveySurgery.Etc)
                         }
                         .padding(start = 28.dp, top = 16.dp, end = 28.dp, bottom = 16.dp),
                     contentAlignment = Alignment.CenterStart
@@ -634,7 +634,7 @@ fun SurveyScreen(
                     Text(
                         text = "기타",
                         fontSize = 24.sp,
-                        color = when(viewModel.surveySurgery.collectAsState().value) {
+                        color = when(surveyViewModel.surveySurgery.collectAsState().value) {
                             SurveySurgery.Etc -> Color(0xff1d71e1)
                             else -> Color(0xffc3c3c3)
                         }
@@ -658,7 +658,7 @@ fun SurveyScreen(
                         .border(
                             border = BorderStroke(
                                 width = 1.dp,
-                                color = when(viewModel.surveyDiabetes.collectAsState().value) {
+                                color = when (surveyViewModel.surveyDiabetes.collectAsState().value) {
                                     SurveyDiabetes.Yes -> Color(0xff1d71e1)
                                     else -> Color(0xffc3c3c3)
                                 }
@@ -666,7 +666,7 @@ fun SurveyScreen(
                             shape = RoundedCornerShape(8.dp)
                         )
                         .clickable {
-                            viewModel.updateSurveyDiabetes(SurveyDiabetes.Yes)
+                            surveyViewModel.updateSurveyDiabetes(SurveyDiabetes.Yes)
                         }
                         .padding(start = 28.dp, top = 16.dp, end = 28.dp, bottom = 16.dp),
                     contentAlignment = Alignment.CenterStart
@@ -674,7 +674,7 @@ fun SurveyScreen(
                     Text(
                         text = "네",
                         fontSize = 24.sp,
-                        color = when(viewModel.surveyDiabetes.collectAsState().value) {
+                        color = when(surveyViewModel.surveyDiabetes.collectAsState().value) {
                             SurveyDiabetes.Yes -> Color(0xff1d71e1)
                             else -> Color(0xffc3c3c3)
                         }
@@ -693,7 +693,7 @@ fun SurveyScreen(
                         .border(
                             border = BorderStroke(
                                 width = 1.dp,
-                                color = when(viewModel.surveyDiabetes.collectAsState().value) {
+                                color = when (surveyViewModel.surveyDiabetes.collectAsState().value) {
                                     SurveyDiabetes.No -> Color(0xff1d71e1)
                                     else -> Color(0xffc3c3c3)
                                 }
@@ -701,7 +701,7 @@ fun SurveyScreen(
                             shape = RoundedCornerShape(8.dp)
                         )
                         .clickable {
-                            viewModel.updateSurveyDiabetes(SurveyDiabetes.No)
+                            surveyViewModel.updateSurveyDiabetes(SurveyDiabetes.No)
                         }
                         .padding(start = 28.dp, top = 16.dp, end = 28.dp, bottom = 16.dp),
                     contentAlignment = Alignment.CenterStart
@@ -709,7 +709,7 @@ fun SurveyScreen(
                     Text(
                         text = "아니오",
                         fontSize = 24.sp,
-                        color = when(viewModel.surveyDiabetes.collectAsState().value) {
+                        color = when(surveyViewModel.surveyDiabetes.collectAsState().value) {
                             SurveyDiabetes.No -> Color(0xff1d71e1)
                             else -> Color(0xffc3c3c3)
                         }
@@ -738,8 +738,8 @@ fun SurveyScreen(
                         shape = RoundedCornerShape(8.dp),
                     )
                     .clickable {
-                        viewModel.submitSurvey()
-                        toTestListScreen()
+                        if (!surveyViewModel.checkSurveyIsDone()) return@clickable
+                        toTestListScreen(surveyViewModel.getSurveyData())
                     }
                     .padding(20.dp),
                 contentAlignment = Alignment.Center

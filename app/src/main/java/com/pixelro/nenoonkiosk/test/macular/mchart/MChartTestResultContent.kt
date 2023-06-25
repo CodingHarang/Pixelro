@@ -186,7 +186,7 @@ fun MChartTestResultContent(
                         Text(
                             modifier = Modifier
                                 .padding(start = 100.dp),
-                            text = "${String.format("%.1f", testResult.rightEyeVertical.toFloat() / 10)}°",
+                            text = "${String.format("%.1f", testResult.leftEyeHorizontal.toFloat() / 10)}°",
                             fontSize = 30.sp,
                             fontWeight = FontWeight.Bold
                         )

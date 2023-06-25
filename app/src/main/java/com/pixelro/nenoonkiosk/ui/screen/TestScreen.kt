@@ -38,26 +38,14 @@ import com.pixelro.nenoonkiosk.data.TestType
 import com.pixelro.nenoonkiosk.facedetection.FaceDetection
 
 @Composable
-fun EyeTestScreen(
+fun TestScreen(
     viewModel: NenoonViewModel,
     navController: NavHostController,
     content: @Composable () -> Unit
 ) {
-    val currentTestType = viewModel.selectedTestType.collectAsState().value
     BackHandler(enabled = true) {
-        Log.e("backhandler", "backhandler")
         navController.popBackStack(GlobalConstants.ROUTE_TEST_LIST, false)
         viewModel.resetScreenSaverTimer()
-        viewModel.coveredEyeCheckingContentVisibleState.targetState = false
-//        when(currentTestType) {
-//            TestType.Presbyopia -> viewModel.initializePresbyopiaTest()
-//            TestType.ShortDistanceVisualAcuity -> viewModel.initializeVisualAcuityTest()
-//            TestType.LongDistanceVisualAcuity -> viewModel.initializeVisualAcuityTest()
-//            TestType.ChildrenVisualAcuity -> viewModel.initializeVisualAcuityTest()
-//            TestType.AmslerGrid -> viewModel.initializeAmslerGridTest()
-//            else -> viewModel.initializeMChartTest()
-//        }
-//        viewModel.measuringDistanceContentVisibleState.targetState = false
     }
     val systemUiController = rememberSystemUiController()
     DisposableEffect(true) {
@@ -151,18 +139,5 @@ fun EyeTestScreen(
             }
             content()
         }
-//        Image(
-//            modifier = Modifier
-//                .width(70.dp)
-//                .height(70.dp)
-//                .padding(start = 20.dp, top = 20.dp)
-//                .clickable {
-//                    (context as Activity).dispatchKeyEvent(KeyEvent(KeyEvent.ACTION_DOWN, KeyEvent.KEYCODE_BACK))
-//                    context.dispatchKeyEvent(KeyEvent(KeyEvent.ACTION_UP, KeyEvent.KEYCODE_BACK))
-//                },
-//            painter = painterResource(id = R.drawable.close_button),
-//            contentDescription = ""
-//        )
     }
-
 }
