@@ -12,5 +12,9 @@ data class SendShortVisualAcuityTestResultRequest(
 
 data class SendShortVisualAcuityTestResultResponse(
     @SerializedName("result")
-    val result: Int
+    val result: Int,
+    @SerializedName("leftEye")
+    val leftEye: Int,
+    @SerializedName("rightEye")
+    val rightEye: Int
 ) : Serializable

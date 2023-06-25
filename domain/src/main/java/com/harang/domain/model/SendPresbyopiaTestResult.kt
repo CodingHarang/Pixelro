@@ -14,5 +14,11 @@ data class SendPresbyopiaTestResultRequest(
 
 data class SendPresbyopiaTestResultResponse(
     @SerializedName("result")
-    val result: Int
+    val result: Int,
+    @SerializedName("firstDistance")
+    val firstDistance: Float,
+    @SerializedName("secondDistance")
+    val secondDistance: Float,
+    @SerializedName("thirdDistance")
+    val thirdDistance: Float
 ) : Serializable

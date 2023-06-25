@@ -16,5 +16,13 @@ data class SendMChartTestResultRequest(
 
 data class SendMChartTestResultResponse(
     @SerializedName("result")
-    val result: Int
+    val result: Int,
+    @SerializedName("leftEyeVertical")
+    val leftEyeVertical: Int,
+    @SerializedName("leftEyeHorizontal")
+    val leftEyeHorizontal: Int,
+    @SerializedName("rightEyeVertical")
+    val rightEyeVertical: Int,
+    @SerializedName("rightEyeHorizontal")
+    val rightEyeHorizontal: Int
 ) : Serializable

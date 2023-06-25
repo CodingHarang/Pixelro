@@ -12,5 +12,9 @@ data class SendAmslerGridTestResultRequest(
 
 data class SendAmslerGridTestResultResponse(
     @SerializedName("result")
-    val result: Int
+    val result: Int,
+    @SerializedName("leftEyeDisorderType")
+    val leftEyeDisorderType: String,
+    @SerializedName("rightEyeDisorderType")
+    val rightEyeDisorderType: String
 ) : Serializable
