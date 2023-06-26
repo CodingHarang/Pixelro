@@ -1,6 +1,7 @@
 package com.pixelro.nenoonkiosk.test.result
 
 import android.app.Application
+import android.graphics.Bitmap
 import android.util.Log
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.viewModelScope
@@ -44,7 +45,7 @@ class TestResultViewModel @Inject constructor(
                 }
                 TestType.Presbyopia -> {
                     testResult as PresbyopiaTestResult
-                    val request = SendPresbyopiaTestResultRequest(testResult.firstDistance, testResult.secondDistance, testResult.thirdDistance)
+                    val request = SendPresbyopiaTestResultRequest(testResult.firstDistance, testResult.secondDistance, testResult.thirdDistance, testResult.avgDistance, testResult.age)
                     val response = api.sendPresbyopiaTestResult(request)
                     Log.e(
                         "response",
@@ -86,10 +87,6 @@ class TestResultViewModel @Inject constructor(
                 }
             }
         }
-    }
-
-    fun makePrintImage(testType: TestType, testResult: Any?) {
-
     }
 
     fun updatePrinter(name: String, address: String) {

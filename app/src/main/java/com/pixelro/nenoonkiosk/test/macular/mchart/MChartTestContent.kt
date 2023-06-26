@@ -37,6 +37,7 @@ import com.pixelro.nenoonkiosk.data.StringProvider
 import com.pixelro.nenoonkiosk.data.TestType
 import com.pixelro.nenoonkiosk.facedetection.CoveredEyeCheckingContent
 import com.pixelro.nenoonkiosk.facedetection.FaceDetection
+import com.pixelro.nenoonkiosk.facedetection.FaceDetectionWithPreview
 import com.pixelro.nenoonkiosk.facedetection.MeasuringDistanceContent
 
 @Composable
@@ -47,7 +48,6 @@ fun MChartTestContent(
     LaunchedEffect(true) {
         mChartViewModel.init()
     }
-    FaceDetection()
     val measuringDistanceContentVisibleState = remember { MutableTransitionState(true) }
     measuringDistanceContentVisibleState.targetState = mChartViewModel.isMeasuringDistanceContentVisible.collectAsState().value
     val coveredEyeCheckingContentVisibleState = remember { MutableTransitionState(false) }
@@ -74,7 +74,7 @@ fun MChartTestContent(
                     mChartViewModel.updateIsMeasuringDistanceContentVisible(false)
                     mChartViewModel.updateIsCoveredEyeCheckingContentVisible(true)
                 },
-                selectedTestType = TestType.AmslerGrid
+                selectedTestType = TestType.MChart
             )
             CoveredEyeCheckingContent(
                 coveredEyeCheckingContentVisibleState = coveredEyeCheckingContentVisibleState,
@@ -103,6 +103,7 @@ fun MChartContent(
         enter = AnimationProvider.enterTransition,
         exit = AnimationProvider.exitTransition
     ) {
+        FaceDetection()
         val isLeftEye = mChartViewModel.isLeftEye.collectAsState().value
         val isVertical = mChartViewModel.isVertical.collectAsState().value
         val currentLevel = mChartViewModel.currentLevel.collectAsState().value

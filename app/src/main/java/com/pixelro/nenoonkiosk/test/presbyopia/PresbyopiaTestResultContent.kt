@@ -4,32 +4,17 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.text.SpanStyle
-import androidx.compose.ui.text.buildAnnotatedString
 import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.text.style.TextAlign
-import androidx.compose.ui.text.withStyle
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import androidx.compose.ui.viewinterop.AndroidView
 import androidx.navigation.NavHostController
-import com.github.mikephil.charting.charts.LineChart
-import com.github.mikephil.charting.components.XAxis
-import com.github.mikephil.charting.data.Entry
-import com.github.mikephil.charting.data.LineData
-import com.github.mikephil.charting.data.LineDataSet
-import com.pixelro.nenoonkiosk.ChartValueFormatter
-import com.pixelro.nenoonkiosk.NenoonViewModel
 import com.pixelro.nenoonkiosk.R
-import com.pixelro.nenoonkiosk.data.AccommodationData
 import com.pixelro.nenoonkiosk.data.StringProvider
 import kotlin.math.roundToInt
 
@@ -159,15 +144,15 @@ fun PresbyopiaTestResultContent(
                 )
                 .padding(40.dp)
         ) {
-//            Text(
-//                text = StringProvider.getString(R.string.presbyopia_result_hoffstetter1) + "\n" + (viewModel.eyeAge.collectAsState().value - 2) + " ~ " + (viewModel.eyeAge.collectAsState().value + 2) + StringProvider.getString(R.string.presbyopia_result_years_old),
-////                        + ": ${(viewModel.avgDistance.collectAsState().value).roundToInt().toFloat() / 10}cm",
-//                fontSize = 40.sp,
-//                fontWeight = FontWeight.Medium,
-//            )
             Text(
-                text = "${((testResult.firstDistance + testResult.secondDistance + testResult.thirdDistance) / 3).roundToInt().toFloat() / 10}cm " + StringProvider.getString(R.string.presbyopia_result_near_point_accommodation),
-                fontSize = 32.sp,
+                text = StringProvider.getString(R.string.presbyopia_result_hoffstetter1) + "\n" + (testResult.age - 2) + " ~ " + (testResult.age + 2) + StringProvider.getString(R.string.presbyopia_result_years_old),
+//                        + ": ${(viewModel.avgDistance.collectAsState().value).roundToInt().toFloat() / 10}cm",
+                fontSize = 40.sp,
+                fontWeight = FontWeight.Medium,
+            )
+            Text(
+                text = String.format("%.1f", testResult.avgDistance) + "cm " + StringProvider.getString(R.string.presbyopia_result_near_point_accommodation),
+                fontSize = 28.sp,
                 color = Color(0xff878787)
             )
         }

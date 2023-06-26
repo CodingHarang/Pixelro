@@ -42,6 +42,7 @@ fun CoveredEyeCheckingContent(
         enter = AnimationProvider.enterTransition,
         exit = AnimationProvider.exitTransition
     ) {
+        FaceDetection()
         LaunchedEffect(true) {
             faceDetectionViewModel.initializeCoveredEyeChecking(isLeftEye) { toNextContent() }
         }

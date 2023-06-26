@@ -14,59 +14,66 @@ import androidx.camera.core.ImageProxy
 import com.google.mlkit.vision.common.InputImage
 import com.google.mlkit.vision.face.FaceDetectorOptions
 import com.google.mlkit.vision.face.FaceLandmark
+import com.google.mlkit.vision.text.TextRecognition
+import com.google.mlkit.vision.text.latin.TextRecognizerOptions
 
 class MyFaceAnalyzer(
     val updateFaceDetectionData: (Rect, PointF?, PointF?, Float, Float, Float, Float?, Float?) -> Unit,
     val updateFaceContourData: (List<PointF>, List<PointF>, List<PointF>, List<PointF>, List<PointF>, List<PointF>, List<PointF>, Float, Float) -> Unit,
-    val updateInputImageSize: (Float, Float) -> Unit
+    val updateInputImageSize: (Float, Float) -> Unit,
+    val updateTextRecognitionData: (Rect?) -> Unit
 //    val updateBitmap: (Bitmap) -> Unit,
 ) : ImageAnalysis.Analyzer {
 
+    private var lastAnalysisTime = -1L
+
     private val realTimeOpts =
-        FaceDetectorOptions.Builder().setContourMode(FaceDetectorOptions.CONTOUR_MODE_ALL)
+        FaceDetectorOptions.Builder().setContourMode(FaceDetectorOptions.CONTOUR_MODE_NONE)
             .setPerformanceMode(FaceDetectorOptions.PERFORMANCE_MODE_ACCURATE)
             .setLandmarkMode(FaceDetectorOptions.LANDMARK_MODE_ALL)
             .setClassificationMode(FaceDetectorOptions.CLASSIFICATION_MODE_ALL)
             .setMinFaceSize(0.2f)
             .enableTracking()
             .build()
-    private var lastAnalysisTime = -1L
     private val detector = com.google.mlkit.vision.face.FaceDetection.getClient(realTimeOpts)
+
+
+    private val recognizer = TextRecognition.getClient(TextRecognizerOptions.DEFAULT_OPTIONS)
 
     @SuppressLint("UnsafeOptInUsageError")
     override fun analyze(imageProxy: ImageProxy) {
         val now = SystemClock.uptimeMillis()
-        if(lastAnalysisTime != -1L && now - lastAnalysisTime < 200f) {
+        if(lastAnalysisTime != -1L && now - lastAnalysisTime < 100f) {
             imageProxy.close()
             return
         }
         lastAnalysisTime = now
-
+        Log.e("width", "${imageProxy.width}, ${imageProxy.height}")
         // original image
         val mediaImage = imageProxy.image
-        val image =
-            mediaImage?.let { InputImage.fromMediaImage(it, imageProxy.imageInfo.rotationDegrees) }
-
+        Log.e("mediaImage", "${mediaImage?.width}, ${mediaImage?.height}")
         if (mediaImage != null) {
-            updateInputImageSize(mediaImage.width.toFloat(), mediaImage.height.toFloat())
-        }
+            val image = InputImage.fromMediaImage(mediaImage, imageProxy.imageInfo.rotationDegrees)
+//            updateInputImageSize(mediaImage.width.toFloat(), mediaImage.height.toFloat())
+            // Text Recognition
+            recognizer.process(image).addOnSuccessListener { result ->
+                for (block in result.textBlocks) {
+                    for (line in block.lines) {
+                        for (element in line.elements) {
+                            if (element.text == "NENOON") {
+                                Log.e("textRecognition", "NENOON, ${element.boundingBox?.left}, ${element.boundingBox?.top}")
+                                updateTextRecognitionData(element.boundingBox)
+                            }
+                        }
+                    }
+                }
+            }.addOnFailureListener {
+                it.printStackTrace()
+            }.addOnCompleteListener {
+                imageProxy.close()
+            }
 
-//        val bitmap = imageProxy.toBitmap()
-//        val matrix = Matrix()
-//        matrix.setScale(-1f, 1f)
-//        matrix.postRotate(90f)
-//        val rotatedImage = Bitmap.createBitmap(bitmap, 0, 0, bitmap.width - 300, bitmap.height, matrix, true)
-//
-//        updateBitmap(rotatedImage)
-        // resized image
-//        val bitmap = imageProxy.toBitmap()
-//        val resizedBitmap = Bitmap.createScaledBitmap(bitmap, bitmap.width * 2, bitmap.height * 2, false)
-//        val croppedBitmap = Bitmap.createBitmap(resizedBitmap, resizedBitmap.width / 4, resizedBitmap.height / 4, resizedBitmap.width / 2, resizedBitmap.height / 2)
-//        val imageReader = ImageReader.newInstance(resizedBitmap.width, resizedBitmap.height, ImageFormat.YUV_420_888, 1)
-//        val resizedImage = imageReader.acquireLatestImage()
-//        val inputResizedImage = InputImage.fromBitmap(croppedBitmap, imageProxy.imageInfo.rotationDegrees)
-
-        if (image != null) {
+            // Face Detection
             detector.process(image).addOnSuccessListener { faces ->
                 for (face in faces) {
                     val boundingBox = face.boundingBox
@@ -88,7 +95,6 @@ class MyFaceAnalyzer(
                         leftEyeOpenProbability,
                         rightEyeOpenProbability
                     )
-
 //                    val leftEyeContour = face.getContour(FaceContour.LEFT_EYE)?.points
 //                    val rightEyeContour = face.getContour(FaceContour.RIGHT_EYE)?.points
 //                    val upperLipTopContour = face.getContour(FaceContour.UPPER_LIP_TOP)?.points
@@ -106,5 +112,22 @@ class MyFaceAnalyzer(
                 imageProxy.close()
             }
         }
+
+//        val bitmap = imageProxy.toBitmap()
+//        val matrix = Matrix()
+//        matrix.setScale(-1f, 1f)
+//        matrix.postRotate(90f)
+//        val rotatedImage = Bitmap.createBitmap(bitmap, 0, 0, bitmap.width - 300, bitmap.height, matrix, true)
+//
+//        updateBitmap(rotatedImage)
+        // resized image
+//        val bitmap = imageProxy.toBitmap()
+//        val resizedBitmap = Bitmap.createScaledBitmap(bitmap, bitmap.width * 2, bitmap.height * 2, false)
+//        val croppedBitmap = Bitmap.createBitmap(resizedBitmap, resizedBitmap.width / 4, resizedBitmap.height / 4, resizedBitmap.width / 2, resizedBitmap.height / 2)
+//        val imageReader = ImageReader.newInstance(resizedBitmap.width, resizedBitmap.height, ImageFormat.YUV_420_888, 1)
+//        val resizedImage = imageReader.acquireLatestImage()
+//        val inputResizedImage = InputImage.fromBitmap(croppedBitmap, imageProxy.imageInfo.rotationDegrees)
+
+
     }
 }

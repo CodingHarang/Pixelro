@@ -33,6 +33,7 @@ import com.pixelro.nenoonkiosk.data.TestType
 import com.pixelro.nenoonkiosk.facedetection.FaceDetection
 import com.pixelro.nenoonkiosk.facedetection.FaceDetectionViewModel
 import com.pixelro.nenoonkiosk.facedetection.CoveredEyeCheckingContent
+import com.pixelro.nenoonkiosk.facedetection.FaceDetectionWithPreview
 import com.pixelro.nenoonkiosk.facedetection.MeasuringDistanceContent
 import kotlin.math.tan
 
@@ -44,7 +45,6 @@ fun AmslerGridTestContent(
     LaunchedEffect(true) {
         amslerGridViewModel.init()
     }
-    FaceDetection()
     val measuringDistanceContentVisibleState = remember { MutableTransitionState(true) }
     measuringDistanceContentVisibleState.targetState = amslerGridViewModel.isMeasuringDistanceContentVisible.collectAsState().value
     val coveredEyeCheckingContentVisibleState = remember { MutableTransitionState(false) }

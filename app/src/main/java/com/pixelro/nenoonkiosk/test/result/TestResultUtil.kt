@@ -7,11 +7,16 @@ import android.graphics.RectF
 import android.graphics.Typeface
 import android.util.Log
 import com.pixelro.nenoonkiosk.data.TestType
+import com.pixelro.nenoonkiosk.test.macular.amslergrid.AmslerGridTestResult
+import com.pixelro.nenoonkiosk.test.macular.amslergrid.MacularDisorderType
+import com.pixelro.nenoonkiosk.test.macular.mchart.MChartTestResult
+import com.pixelro.nenoonkiosk.test.presbyopia.PresbyopiaTestResult
+import com.pixelro.nenoonkiosk.test.visualacuity.shortdistance.ShortVisualAcuityTestResult
 
 object TestResultUtil {
     fun textAsBitmap(
         testType: TestType,
-        printString: String,
+        testResult: Any?,
         logoImg: Bitmap
     ): Bitmap {
         val paint = Paint(Paint.ANTI_ALIAS_FLAG)
@@ -31,6 +36,7 @@ object TestResultUtil {
 //    canvas.drawColor(android.graphics.Color.parseColor("#FFFFFFFF"))
         when(testType) {
             TestType.Presbyopia -> {
+                testResult as PresbyopiaTestResult
                 val image = Bitmap.createBitmap(width, 400, Bitmap.Config.ARGB_8888)
                 val canvas = Canvas(image)
                 canvas.drawARGB(255, 255, 255, 255)
@@ -40,7 +46,8 @@ object TestResultUtil {
                 canvas.drawText("조절력 검사", 300f, baseline, paint)
 
                 paint.typeface = Typeface.DEFAULT_BOLD
-                canvas.drawText(printString, 300f, baseline + 160f, paint)
+                canvas.drawText("안구 나이: " + (testResult.age - 2).toString()  + " ~ " + (testResult.age + 2).toString() + "세", 300f, baseline + 160f, paint)
+                canvas.drawText("조절근점: " + String.format("%.1f", testResult.avgDistance) + "cm", 300f, baseline + 200f, paint)
                 paint.typeface = Typeface.DEFAULT
 
                 paint.textAlign = Paint.Align.LEFT
@@ -49,6 +56,7 @@ object TestResultUtil {
                 return image!!
             }
             TestType.ShortDistanceVisualAcuity -> {
+                testResult as ShortVisualAcuityTestResult
                 val image = Bitmap.createBitmap(width, 400, Bitmap.Config.ARGB_8888)
                 val canvas = Canvas(image)
                 canvas.drawARGB(255, 255, 255, 255)
@@ -61,8 +69,8 @@ object TestResultUtil {
                 canvas.drawText("우안", 450f, baseline + 60f, paint)
 
                 paint.typeface = Typeface.DEFAULT_BOLD
-                canvas.drawText(printString.split(",")[0], 150f, baseline + 190f, paint)
-                canvas.drawText(printString.split(",")[1], 450f, baseline + 190f, paint)
+                canvas.drawText((testResult.leftEye / 10f).toString(), 150f, baseline + 190f, paint)
+                canvas.drawText((testResult.rightEye / 10f).toString(), 450f, baseline + 190f, paint)
                 paint.typeface = Typeface.DEFAULT
 
                 paint.textAlign = Paint.Align.LEFT
@@ -118,6 +126,7 @@ object TestResultUtil {
                 return image!!
             }
             TestType.AmslerGrid -> {
+                testResult as AmslerGridTestResult
                 val image = Bitmap.createBitmap(width, 500, Bitmap.Config.ARGB_8888)
                 val canvas = Canvas(image)
                 canvas.drawARGB(255, 255, 255, 255)
@@ -154,60 +163,60 @@ object TestResultUtil {
 
                 paint.style = Paint.Style.FILL
                 paint.typeface = Typeface.DEFAULT_BOLD
-                Log.e("", printString.split(",")[0])
-                if(printString.split(",")[0] != "Normal") {
+                Log.e("", testResult.leftEyeDisorderType[0].toString())
+                if(testResult.leftEyeDisorderType[0] != MacularDisorderType.Normal) {
                     canvas.drawText("이상", 70f, baseline + 160f, paint)
                 }
-                if(printString.split(",")[1] != "Normal") {
+                if(testResult.leftEyeDisorderType[1] != MacularDisorderType.Normal) {
                     canvas.drawText("이상", 150f, baseline + 160f, paint)
                 }
-                if(printString.split(",")[2] != "Normal") {
+                if(testResult.leftEyeDisorderType[2] != MacularDisorderType.Normal) {
                     canvas.drawText("이상", 230f, baseline + 160f, paint)
                 }
-                if(printString.split(",")[3] != "Normal") {
+                if(testResult.leftEyeDisorderType[3] != MacularDisorderType.Normal) {
                     canvas.drawText("이상", 70f, baseline + 240f, paint)
                 }
-                if(printString.split(",")[4] != "Normal") {
+                if(testResult.leftEyeDisorderType[4] != MacularDisorderType.Normal) {
                     canvas.drawText("이상", 150f, baseline + 240f, paint)
                 }
-                if(printString.split(",")[5] != "Normal") {
+                if(testResult.leftEyeDisorderType[5] != MacularDisorderType.Normal) {
                     canvas.drawText("이상", 230f, baseline + 240f, paint)
                 }
-                if(printString.split(",")[6] != "Normal") {
+                if(testResult.leftEyeDisorderType[6] != MacularDisorderType.Normal) {
                     canvas.drawText("이상", 70f, baseline + 320f, paint)
                 }
-                if(printString.split(",")[7] != "Normal") {
+                if(testResult.leftEyeDisorderType[7] != MacularDisorderType.Normal) {
                     canvas.drawText("이상", 150f, baseline + 320f, paint)
                 }
-                if(printString.split(",")[8] != "Normal") {
+                if(testResult.leftEyeDisorderType[8] != MacularDisorderType.Normal) {
                     canvas.drawText("이상", 230f, baseline + 320f, paint)
                 }
 
-                if(printString.split(",")[9] != "Normal") {
+                if(testResult.rightEyeDisorderType[0] != MacularDisorderType.Normal) {
                     canvas.drawText("이상", 370f, baseline + 160f, paint)
                 }
-                if(printString.split(",")[10] != "Normal") {
+                if(testResult.rightEyeDisorderType[1] != MacularDisorderType.Normal) {
                     canvas.drawText("이상", 450f, baseline + 160f, paint)
                 }
-                if(printString.split(",")[11] != "Normal") {
+                if(testResult.rightEyeDisorderType[2] != MacularDisorderType.Normal) {
                     canvas.drawText("이상", 530f, baseline + 160f, paint)
                 }
-                if(printString.split(",")[12] != "Normal") {
+                if(testResult.rightEyeDisorderType[3] != MacularDisorderType.Normal) {
                     canvas.drawText("이상", 370f, baseline + 240f, paint)
                 }
-                if(printString.split(",")[13] != "Normal") {
+                if(testResult.rightEyeDisorderType[4] != MacularDisorderType.Normal) {
                     canvas.drawText("이상", 450f, baseline + 240f, paint)
                 }
-                if(printString.split(",")[14] != "Normal") {
+                if(testResult.rightEyeDisorderType[5] != MacularDisorderType.Normal) {
                     canvas.drawText("이상", 530f, baseline + 240f, paint)
                 }
-                if(printString.split(",")[15] != "Normal") {
+                if(testResult.rightEyeDisorderType[6] != MacularDisorderType.Normal) {
                     canvas.drawText("이상", 370f, baseline + 320f, paint)
                 }
-                if(printString.split(",")[16] != "Normal") {
+                if(testResult.rightEyeDisorderType[7] != MacularDisorderType.Normal) {
                     canvas.drawText("이상", 450f, baseline + 320f, paint)
                 }
-                if(printString.split(",")[17] != "Normal") {
+                if(testResult.rightEyeDisorderType[8] != MacularDisorderType.Normal) {
                     canvas.drawText("이상", 530f, baseline + 320f, paint)
                 }
 //            canvas.drawText("이상", 450f, baseline + 320f, paint)
@@ -221,6 +230,7 @@ object TestResultUtil {
                 return image!!
             }
             TestType.MChart -> {
+                testResult as MChartTestResult
                 val image = Bitmap.createBitmap(width, 400, Bitmap.Config.ARGB_8888)
                 val canvas = Canvas(image)
                 canvas.drawARGB(255, 255, 255, 255)
@@ -233,20 +243,20 @@ object TestResultUtil {
                 canvas.drawText("우안", 450f, baseline + 60f, paint)
 
                 paint.typeface = Typeface.DEFAULT_BOLD
-                canvas.drawText(when(printString.split(",")[0]) {
-                    "0" -> "수직: 정상"
+                canvas.drawText(when(testResult.leftEyeVertical) {
+                    0 -> "수직: 정상"
                     else -> "수직: 이상"
                 }, 150f, baseline + 170f, paint)
-                canvas.drawText(when(printString.split(",")[1]) {
-                    "0" -> "수평: 정상"
+                canvas.drawText(when(testResult.leftEyeHorizontal) {
+                    0 -> "수평: 정상"
                     else -> "수평: 이상"
                 }, 150f, baseline + 210f, paint)
-                canvas.drawText(when(printString.split(",")[2]) {
-                    "0" -> "수직: 정상"
+                canvas.drawText(when(testResult.rightEyeVertical) {
+                    0 -> "수직: 정상"
                     else -> "수직: 이상"
                 }, 450f, baseline + 170f, paint)
-                canvas.drawText(when(printString.split(",")[3]) {
-                    "0" -> "수평: 정상"
+                canvas.drawText(when(testResult.rightEyeHorizontal) {
+                    0 -> "수평: 정상"
                     else -> "수평: 이상"
                 }, 450f, baseline + 210f, paint)
                 paint.typeface = Typeface.DEFAULT

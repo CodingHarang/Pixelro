@@ -1,6 +1,6 @@
 package com.pixelro.nenoonkiosk.facedetection
 
-import androidx.compose.animation.*
+import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.core.MutableTransitionState
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.Image
@@ -12,7 +12,9 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.offset
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
@@ -47,7 +49,6 @@ fun MeasuringDistanceContent(
         enter = AnimationProvider.enterTransition,
         exit = AnimationProvider.exitTransition
     ) {
-
         Column(
             modifier = Modifier,
             horizontalAlignment = Alignment.CenterHorizontally
@@ -67,9 +68,9 @@ fun MeasuringDistanceContent(
 //                    bitmap = viewModel.bitmap.collectAsState().value.asImageBitmap(),
 //                    contentDescription = ""
 //                )
-                    FaceDetectionWithPreview(
-                        measuringDistanceContentVisibleState
-                    )
+                    if (measuringDistanceContentVisibleState.currentState) {
+                        FaceDetectionWithPreview()
+                    }
                     Box(
                         modifier = Modifier
                             .fillMaxWidth()
@@ -78,6 +79,7 @@ fun MeasuringDistanceContent(
                                 color = Color(0xff000000)
                             )
                     )
+                    CustomShape()
                 }
                 Box(
                     modifier = Modifier
@@ -90,6 +92,33 @@ fun MeasuringDistanceContent(
                         painter = painterResource(id = R.drawable.face_frame),
                         contentDescription = "",
                         colorFilter = ColorFilter.tint(Color(0xff1d71e1))
+                    )
+//                    Image(
+//                        modifier = Modifier
+//                            .offset(
+//                                x = (((faceDetectionViewModel.textBox.collectAsState().value?.right ?: 0) + (faceDetectionViewModel.textBox.collectAsState().value?.left ?: 0)) / 2).dp,
+//                                y = (((faceDetectionViewModel.textBox.collectAsState().value?.bottom ?: 0) + (faceDetectionViewModel.textBox.collectAsState().value?.top ?: 0)) / 2).dp
+//                            ),
+//                        painter = painterResource(id = R.drawable.eyecover),
+//                        contentDescription = null,
+//                    )
+                    Image(
+                        modifier = Modifier
+                            .offset(
+                                x = (650 - (faceDetectionViewModel.rightEyePosition.collectAsState().value.x / 2.2f)).dp,
+                                y = (faceDetectionViewModel.leftEyePosition.collectAsState().value.y / 2.2f - 500).dp
+                            ),
+                        painter = painterResource(id = R.drawable.eyecover),
+                        contentDescription = null,
+                    )
+                    Image(
+                        modifier = Modifier
+                            .offset(
+                                x = (450 - (faceDetectionViewModel.rightEyePosition.collectAsState().value.x / 2.2f)).dp,
+                                y = (faceDetectionViewModel.leftEyePosition.collectAsState().value.y / 2.2f - 500).dp
+                            ),
+                        painter = painterResource(id = R.drawable.eyecover),
+                        contentDescription = null,
                     )
                 }
                 Box(
@@ -123,14 +152,14 @@ fun MeasuringDistanceContent(
                 ) {
                     Text(
                         modifier = Modifier
-                            .padding(bottom = (GlobalValue.navigationBarPadding + 344).dp),
+                            .padding(bottom = (GlobalValue.navigationBarPadding + 324).dp),
                         text = StringProvider.getString(R.string.test_screen_current_distance),
                         color = Color(0xffffffff),
                         fontSize = 24.sp
                     )
                     Text(
                         modifier = Modifier
-                            .padding(bottom = (GlobalValue.navigationBarPadding + 240).dp),
+                            .padding(bottom = (GlobalValue.navigationBarPadding + 220).dp),
                         color = when(selectedTestType) {
                             TestType.ShortDistanceVisualAcuity -> {
                                 when(faceDetectionViewModel.screenToFaceDistance.collectAsState().value) {
@@ -154,7 +183,7 @@ fun MeasuringDistanceContent(
                             .padding(
                                 start = 40.dp,
                                 end = 40.dp,
-                                bottom = (GlobalValue.navigationBarPadding + 160).dp
+                                bottom = (GlobalValue.navigationBarPadding + 140).dp
                             )
                             .border(
                                 border = BorderStroke(1.dp, Color(0xffffffff)),
@@ -175,10 +204,10 @@ fun MeasuringDistanceContent(
                     }
                 }
                 if(faceDetectionViewModel.screenToFaceDistance.collectAsState().value in when(selectedTestType) {
-//                        TestType.ShortDistanceVisualAcuity -> (370.0..430.0)
-//                        else -> (270.0..330.0)
-                        TestType.ShortDistanceVisualAcuity -> (-100.0..100.0)
-                        else -> (-100.0..100.0)
+                        TestType.ShortDistanceVisualAcuity -> (370.0..430.0)
+                        else -> (270.0..330.0)
+//                        TestType.ShortDistanceVisualAcuity -> (-100.0..100.0)
+//                        else -> (-100.0..100.0)
                     }) {
                     Box(
                         modifier = Modifier

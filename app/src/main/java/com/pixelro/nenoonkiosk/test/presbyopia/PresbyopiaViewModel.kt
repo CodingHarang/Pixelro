@@ -1,6 +1,7 @@
 package com.pixelro.nenoonkiosk.test.presbyopia
 
 import android.app.Application
+import android.util.Log
 import androidx.lifecycle.AndroidViewModel
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -28,27 +29,40 @@ class PresbyopiaViewModel @Inject constructor(
         when (currentItemNumber) {
             ItemNumber.First -> {
                 currentItemNumber = ItemNumber.Second
-                firstDistance = dist
+                firstDistance = dist / 10
                 _isFirstItemVisible.update { false }
                 _isSecondItemVisible.update { true }
             }
 
             ItemNumber.Second -> {
                 currentItemNumber = ItemNumber.Third
-                secondDistance = dist
+                secondDistance = dist / 10
                 _isSecondItemVisible.update { false }
                 _isThirdItemVisible.update { true }
             }
 
             ItemNumber.Third -> {
-                thirdDistance = dist
+                thirdDistance = dist / 10
                 toResultScreen()
             }
         }
     }
 
     fun getPresbyopiaTestResult(): PresbyopiaTestResult {
-        return PresbyopiaTestResult(firstDistance, secondDistance, thirdDistance)
+        var max = 2147483647f
+        val avgDistance = (firstDistance + secondDistance + thirdDistance) / 3
+        var age = 25
+        for (entry in AccommodationData.allEntries) {
+            var diff = avgDistance - entry.x
+            if (diff < 0) diff = -diff
+            if (diff < max) {
+                max = avgDistance - entry.x
+                age = entry.y.toInt()
+            }
+        }
+        age -= 15
+        Log.e("presbyopiaResult", "firstDistance: ${firstDistance}\nsecondDistance: ${secondDistance}\nthirdDistance: ${thirdDistance}\n${avgDistance}\nage: $age")
+        return PresbyopiaTestResult(firstDistance, secondDistance, thirdDistance, avgDistance, age)
     }
 
     fun init() {

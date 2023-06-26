@@ -59,7 +59,7 @@ class NenoonViewModel @Inject constructor(
             while (true) {
                 if (_isResumed.value) {
                     // Check screen saver timer
-                    _screenSaverTimer.update { _screenSaverTimer.value - 0 }
+                    _screenSaverTimer.update { _screenSaverTimer.value - 1 }
 //                    Log.e("screenSaver", "${_screenSaverTimer.value}")
                     if (_screenSaverTimer.value < 0) {
                         _isScreenSaverOn.update { true }
@@ -307,13 +307,13 @@ class NenoonViewModel @Inject constructor(
     var mChartTestResult = MChartTestResult()
 
     init {
-        viewModelScope.launch {
-            val response = api.getTest()
-            Log.e(
-                "response",
-                "code: ${response.code()}\nbody: ${response.body()}\nerrorbody: ${response.errorBody()}\n"
-            )
-        }
+//        viewModelScope.launch {
+//            val response = api.getTest()
+//            Log.e(
+//                "response",
+//                "code: ${response.code()}\nbody: ${response.body()}\nerrorbody: ${response.errorBody()}\n"
+//            )
+//        }
         showSplashScreen()
         checkBackgroundStatus()
 //        exoPlayer.setMediaItem(MediaItem.fromUri("https://drive.google.com/uc?export=view&id=1vNW4Xia8pG4tfGoao4Nb7hEJtOd9Cg8F"))

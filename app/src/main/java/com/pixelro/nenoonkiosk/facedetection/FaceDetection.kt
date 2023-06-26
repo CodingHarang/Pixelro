@@ -1,6 +1,7 @@
 package com.pixelro.nenoonkiosk.facedetection
 
 import android.Manifest
+import android.util.Log
 import android.util.Size
 import androidx.camera.core.CameraSelector
 import androidx.camera.core.ImageAnalysis
@@ -40,9 +41,7 @@ fun FaceDetection() {
 
 @OptIn(ExperimentalPermissionsApi::class)
 @Composable
-fun FaceDetectionWithPreview(
-    visibleState: MutableTransitionState<Boolean>
-) {
+fun FaceDetectionWithPreview() {
 
     val permissionState = rememberMultiplePermissionsState(
         permissions = listOf(
@@ -53,15 +52,14 @@ fun FaceDetectionWithPreview(
     LaunchedEffect(Unit) {
         permissionState.launchMultiplePermissionRequest()
     }
-    FaceDetectionScreenContentWithPreview(
-        visibleState = visibleState
-    )
+    FaceDetectionScreenContentWithPreview()
 }
 
 @Composable
 fun FaceDetectionScreenContent(
     viewModel: FaceDetectionViewModel = hiltViewModel()
 ) {
+    Log.e("faceDetection", "faceDetectionOnly")
     val lifecycleOwner = LocalLifecycleOwner.current
     val context = LocalContext.current
     val cameraProviderFuture = remember { ProcessCameraProvider.getInstance(context) }
@@ -81,6 +79,7 @@ fun FaceDetectionScreenContent(
                                 viewModel::updateFaceDetectionData,
                                 viewModel::updateFaceContourData,
                                 viewModel::updateInputImageSize,
+                                viewModel::updateTextRecognitionData
 //                                viewModel::updateBitmap
                             )
                         )
@@ -96,10 +95,10 @@ fun FaceDetectionScreenContent(
 
 @Composable
 fun FaceDetectionScreenContentWithPreview(
-    viewModel: FaceDetectionViewModel = hiltViewModel(),
-    visibleState: MutableTransitionState<Boolean>
+    viewModel: FaceDetectionViewModel = hiltViewModel()
 ) {
-    if(visibleState.targetState) {
+    Log.e("faceDetection", "faceDetectionWithPreview")
+//    if(visibleState.targetState) {
         val lifecycleOwner = LocalLifecycleOwner.current
         val context = LocalContext.current
         val cameraProviderFuture = remember { ProcessCameraProvider.getInstance(context) }
@@ -125,6 +124,7 @@ fun FaceDetectionScreenContentWithPreview(
                                         viewModel::updateFaceDetectionData,
                                         viewModel::updateFaceContourData,
                                         viewModel::updateInputImageSize,
+                                        viewModel::updateTextRecognitionData
 //                                    viewModel::updateBitmap
                                     )
                                 )
@@ -139,5 +139,5 @@ fun FaceDetectionScreenContentWithPreview(
                 }
             )
         }
-    }
+//    }
 }

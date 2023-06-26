@@ -3,6 +3,7 @@ package com.pixelro.nenoonkiosk.facedetection
 import android.app.Application
 import android.graphics.PointF
 import android.graphics.Rect
+import android.util.Log
 import androidx.compose.animation.core.MutableTransitionState
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.viewModelScope
@@ -22,9 +23,9 @@ class FaceDetectionViewModel @Inject constructor(
 ) : AndroidViewModel(application) {
     private val _screenToFaceDistance = MutableStateFlow(0f)
     val screenToFaceDistance: StateFlow<Float> = _screenToFaceDistance
-    private val _inputImageSizeX = MutableStateFlow(1f)
+    private val _inputImageSizeX = MutableStateFlow(1920f)
     val inputImageSizeX: StateFlow<Float> = _inputImageSizeX
-    private val _inputImageSizeY = MutableStateFlow(1f)
+    private val _inputImageSizeY = MutableStateFlow(1920f)
     val inputImageSizeY: StateFlow<Float> = _inputImageSizeY
     private val _rightEyePosition = MutableStateFlow(PointF(0f, 0f))
     val rightEyePosition: StateFlow<PointF> = _rightEyePosition
@@ -137,6 +138,24 @@ class FaceDetectionViewModel @Inject constructor(
         }
     }
 
+    // Text Recognition
+    private val _textBox: MutableStateFlow<Rect?> = MutableStateFlow(Rect(0, 0, 0, 0))
+    val textBox: StateFlow<Rect?> = _textBox
+
+    private val _distance = MutableStateFlow(0f)
+    val distance: StateFlow<Float> = _distance
+
+    fun updateTextRecognitionData(
+        textBox: Rect?
+    ) {
+        _textBox.update { textBox }
+        _distance.update { 11400 / ((_textBox.value?.right?.toFloat() ?: 0f) - (_textBox.value?.left?.toFloat() ?: 0f)) }
+        Log.e("distance", "너비: ${12000 / ((_textBox.value?.right?.toFloat() ?: 0f) - (_textBox.value?.left?.toFloat() ?: 0f))}\n" +
+                "높이: ${3000 / ((_textBox.value?.bottom?.toFloat() ?: 0f) - (_textBox.value?.top?.toFloat() ?: 0f))}"
+        )
+    }
+
+
     // Covered Eye Checking
     private val _leftTime = MutableStateFlow(0f)
     val leftTime: StateFlow<Float> = _leftTime
@@ -147,14 +166,23 @@ class FaceDetectionViewModel @Inject constructor(
         _leftTime.update { 5f }
         _isTimerShowing.update { false }
         viewModelScope.launch {
+            var count = 0
             when(isLeftEye) {
                 true -> {
-//                    while(_leftEyeOpenProbability.value < 50f) {}
+                    while(count < 4) {
+                        if (_leftEyeOpenProbability.value < 0.5f) count++
+                        Log.e("probability", "${leftEyeOpenProbability.value}, ${rightEyeOpenProbability.value}")
+                        delay(500)
+                    }
                     _isTimerShowing.update { true }
                     startTimer { toNextContent() }
                 }
                 false -> {
-//                    while(_rightEyeOpenProbability.value < 50f) {}
+                    while(count < 4) {
+                        if (_rightEyeOpenProbability.value < 0.5f) count++
+                        Log.e("probability", "${leftEyeOpenProbability.value}, ${rightEyeOpenProbability.value}")
+                        delay(500)
+                    }
                     _isTimerShowing.update { true }
                     startTimer { toNextContent() }
                 }
@@ -165,8 +193,8 @@ class FaceDetectionViewModel @Inject constructor(
     private fun startTimer(toNextContent: () -> Unit) {
         viewModelScope.launch {
             var count = 0
-            _leftTime.update { 5.5f }
-            while(count < 3) {
+            _leftTime.update { 3.5f }
+            while(count < 6) {
                 delay(500)
                 count++
                 _leftTime.update { (it - 0.5f) }

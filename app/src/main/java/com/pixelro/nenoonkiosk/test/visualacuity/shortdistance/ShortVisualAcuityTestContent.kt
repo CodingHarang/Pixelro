@@ -17,6 +17,7 @@ import com.pixelro.nenoonkiosk.NenoonViewModel
 import com.pixelro.nenoonkiosk.data.TestType
 import com.pixelro.nenoonkiosk.facedetection.CoveredEyeCheckingContent
 import com.pixelro.nenoonkiosk.facedetection.FaceDetection
+import com.pixelro.nenoonkiosk.facedetection.FaceDetectionWithPreview
 import com.pixelro.nenoonkiosk.facedetection.MeasuringDistanceContent
 import com.pixelro.nenoonkiosk.test.visualacuity.VisualAcuityTestResult
 import com.pixelro.nenoonkiosk.test.visualacuity.VisualAcuityViewModel
@@ -30,7 +31,6 @@ fun ShortDistanceVisualAcuityTestContent(
     LaunchedEffect(true) {
         visualAcuityViewModel.init()
     }
-    FaceDetection()
     val measuringDistanceContentVisibleState = remember { MutableTransitionState(true) }
     measuringDistanceContentVisibleState.targetState = visualAcuityViewModel.isMeasuringDistanceContentVisible.collectAsState().value
     val coveredEyeCheckingContentVisibleState = remember { MutableTransitionState(false) }
@@ -56,7 +56,7 @@ fun ShortDistanceVisualAcuityTestContent(
                     visualAcuityViewModel.updateIsMeasuringDistanceContentVisible(false)
                     visualAcuityViewModel.updateIsCoveredEyeCheckingContentVisible(true)
                 },
-                selectedTestType = TestType.AmslerGrid
+                selectedTestType = TestType.ShortDistanceVisualAcuity
             )
             CoveredEyeCheckingContent(
                 coveredEyeCheckingContentVisibleState = coveredEyeCheckingContentVisibleState,

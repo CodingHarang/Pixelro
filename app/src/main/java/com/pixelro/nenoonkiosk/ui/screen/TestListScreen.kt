@@ -58,7 +58,7 @@ fun TestListScreen(
     LaunchedEffect(true) {
         while(true) {
 //            yield()
-            delay(5000)
+            delay(8000)
             pagerState.animateScrollToPage(
                 page = (pagerState.currentPage + 1),
                 animationSpec = tween(1000)
@@ -88,12 +88,12 @@ fun TestListScreen(
                     .fillMaxSize(),
                 contentAlignment = Alignment.CenterStart
             ) {
-                Image(
-                    modifier = Modifier
-                        .width(28.dp),
-                    painter = painterResource(id = R.drawable.icon_back_black),
-                    contentDescription = ""
-                )
+//                Image(
+//                    modifier = Modifier
+//                        .width(28.dp),
+//                    painter = painterResource(id = R.drawable.icon_back_black),
+//                    contentDescription = ""
+//                )
             }
             Box(
                 modifier = Modifier
@@ -220,17 +220,18 @@ fun Advertisement(
         Box(
             modifier = Modifier
                 .fillMaxSize(),
-            contentAlignment = Alignment.BottomCenter
+            contentAlignment = Alignment.Center
         ) {
             Image(
                 modifier = Modifier
+                    .fillMaxSize()
                     .clip(
                         shape = RoundedCornerShape(8.dp)
                     ),
                 painter = painterResource(id = when(idx % 3) {
-                    0 -> R.drawable.ad_1
-                    1 -> R.drawable.ad_2
-                    else -> R.drawable.ad_3
+                    0 -> R.drawable.shinhanbank2
+                    1 -> R.drawable.shinhanbank3
+                    else -> R.drawable.shinhanbank1
                 }),
                 contentDescription = ""
             )

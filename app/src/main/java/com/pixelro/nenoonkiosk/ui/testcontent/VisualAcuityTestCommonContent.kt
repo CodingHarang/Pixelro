@@ -40,6 +40,7 @@ fun VisualAcuityTestCommonContent(
         enter = AnimationProvider.enterTransition,
         exit = AnimationProvider.exitTransition
     ) {
+        FaceDetection()
         VisualAcuityTestContent(
             toResultScreen = toResultScreen
         )

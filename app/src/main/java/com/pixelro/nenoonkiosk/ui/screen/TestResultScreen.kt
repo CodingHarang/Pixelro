@@ -69,6 +69,7 @@ import com.pixelro.nenoonkiosk.test.visualacuity.shortdistance.ShortDistanceVisu
 import com.pixelro.nenoonkiosk.test.visualacuity.shortdistance.ShortVisualAcuityTestResult
 import com.pixelro.nenoonkiosk.ui.testresultcontent.ChildrenVisualAcuityTestResultContent
 import com.pixelro.nenoonkiosk.ui.testresultcontent.LongDistanceVisualAcuityTestResultContent
+import kotlinx.coroutines.coroutineScope
 import kotlinx.coroutines.launch
 import mangoslab.nemonicsdk.nemonicWrapper
 
@@ -86,10 +87,6 @@ fun TestResultScreen(
     }
     LaunchedEffect(true) {
         testResultViewModel.sendResultToServer(
-            testType = testType,
-            testResult = testResult
-        )
-        testResultViewModel.makePrintImage(
             testType = testType,
             testResult = testResult
         )
@@ -139,35 +136,38 @@ fun TestResultScreen(
 
     val printerMacAddress = testResultViewModel.printerMacAddress.collectAsState().value
 
-    fun printResult(
+    suspend fun printResult(
         testType: TestType,
-        printString: String
+        testResult: Any?
     ) {
-        val mNemonicWrapper = nemonicWrapper(context)
-        mNemonicWrapper.enableLastPageCut(true)
-        mNemonicWrapper.setTimeoutConstant(500)
-        mNemonicWrapper.setBrightnessLevel(200)
-        mNemonicWrapper.setContrastLevel(0)
-        val nCopies = 1
+        coroutineScope {
+            launch {
+                val mNemonicWrapper = nemonicWrapper(context)
+                mNemonicWrapper.enableLastPageCut(true)
+                mNemonicWrapper.setTimeoutConstant(500)
+                mNemonicWrapper.setBrightnessLevel(200)
+                mNemonicWrapper.setContrastLevel(0)
+                val nCopies = 1
 
-        val resources = context.resources
-        val logoImg = Bitmap.createScaledBitmap(
-            BitmapFactory.decodeResource(
-                resources,
-                R.drawable.pixelro_logo_black
-            ), 240, 80, false
-        )
-
-        val bm = textAsBitmap(testType, printString, logoImg)
-        val nResult = 0
-        val nPrintWidth = 576
-        val nPaperHeight = ((bm.height.toFloat() / bm.width.toFloat()) * 576).toInt()
-        if (printerMacAddress != "") {
-            mNemonicWrapper.openPrinter(printerMacAddress)
-            mNemonicWrapper.print(bm, nPrintWidth, nPaperHeight, nCopies)
-            mNemonicWrapper.closePrinter()
-        } else {
-            Toast.makeText(context, "연결된 프린터가 없습니다.", Toast.LENGTH_SHORT).show()
+                val resources = context.resources
+                val logoImg = Bitmap.createScaledBitmap(
+                    BitmapFactory.decodeResource(
+                        resources,
+                        R.drawable.pixelro_logo_black
+                    ), 240, 80, false
+                )
+                val bm = textAsBitmap(testType, testResult, logoImg)
+                val nResult = 0
+                val nPrintWidth = 576
+                val nPaperHeight = ((bm.height.toFloat() / bm.width.toFloat()) * 576).toInt()
+                if (printerMacAddress != "") {
+                    mNemonicWrapper.openPrinter(printerMacAddress)
+                    mNemonicWrapper.print(bm, nPrintWidth, nPaperHeight, nCopies)
+                    mNemonicWrapper.closePrinter()
+                } else {
+                    Toast.makeText(context, "연결된 프린터가 없습니다.", Toast.LENGTH_SHORT).show()
+                }
+            }
         }
     }
 
@@ -323,7 +323,7 @@ fun TestResultScreen(
                                 bluetoothAdapter.startDiscovery()
                                 printResult(
                                     testType = testType,
-                                    printString = printString
+                                    testResult = testResult
                                 )
                             }
                         },
