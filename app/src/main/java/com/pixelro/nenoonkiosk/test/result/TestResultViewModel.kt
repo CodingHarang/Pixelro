@@ -7,6 +7,7 @@ import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.viewModelScope
 import com.harang.data.api.NenoonKioskApi
 import com.harang.domain.model.SendAmslerGridTestResultRequest
+import com.harang.domain.model.SendAmslerGridTestResultResponse
 import com.harang.domain.model.SendMChartTestResultRequest
 import com.harang.domain.model.SendPresbyopiaTestResultRequest
 import com.harang.domain.model.SendShortVisualAcuityTestResultRequest
@@ -20,6 +21,8 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
+import retrofit2.HttpException
+import java.io.IOException
 import javax.inject.Inject
 
 @HiltViewModel
@@ -46,20 +49,26 @@ class TestResultViewModel @Inject constructor(
                 TestType.Presbyopia -> {
                     testResult as PresbyopiaTestResult
                     val request = SendPresbyopiaTestResultRequest(testResult.firstDistance, testResult.secondDistance, testResult.thirdDistance, testResult.avgDistance, testResult.age)
-                    val response = api.sendPresbyopiaTestResult(request)
-                    Log.e(
-                        "response",
-                        "code: ${response.code()}\nbody: ${response.body()}\nerrorbody: ${response.errorBody()}\n"
-                    )
+                    val response = try {
+                        api.sendPresbyopiaTestResult(request)
+                    } catch (e: IOException) {
+                        e.printStackTrace()
+                    } catch(e: HttpException) {
+                        e.printStackTrace()
+                        "failed"
+                    }
                 }
                 TestType.ShortDistanceVisualAcuity -> {
                     testResult as ShortVisualAcuityTestResult
                     val request = SendShortVisualAcuityTestResultRequest(testResult.leftEye, testResult.rightEye)
-                    val response = api.sendShortVisualAcuityTestResult(request)
-                    Log.e(
-                        "response",
-                        "code: ${response.code()}\nbody: ${response.body()}\nerrorbody: ${response.errorBody()}\n"
-                    )
+                    val response = try {
+                        api.sendShortVisualAcuityTestResult(request)
+                    } catch (e: IOException) {
+                        e.printStackTrace()
+                    } catch(e: HttpException) {
+                        e.printStackTrace()
+                        "failed"
+                    }
                 }
                 TestType.LongDistanceVisualAcuity -> {
 
@@ -70,20 +79,27 @@ class TestResultViewModel @Inject constructor(
                 TestType.AmslerGrid -> {
                     testResult as AmslerGridTestResult
                     val request = SendAmslerGridTestResultRequest(testResult.leftEyeDisorderType.toString(), testResult.rightEyeDisorderType.toString())
-                    val response = api.sendAmslerGridResult(request)
-                    Log.e(
-                        "response",
-                        "code: ${response.code()}\nbody: ${response.body()}\nerrorbody: ${response.errorBody()}\n"
-                    )
+                    val response = try {
+                        api.sendAmslerGridResult(request)
+                    } catch (e: IOException) {
+                        e.printStackTrace()
+                    } catch(e: HttpException) {
+                        e.printStackTrace()
+                        "failed"
+                    }
+
                 }
                 TestType.MChart -> {
                     testResult as MChartTestResult
                     val request = SendMChartTestResultRequest(testResult.leftEyeVertical, testResult.leftEyeHorizontal, testResult.rightEyeVertical, testResult.rightEyeHorizontal)
-                    val response = api.sendMChartTestResult(request)
-                    Log.e(
-                        "response",
-                        "code: ${response.code()}\nbody: ${response.body()}\nerrorbody: ${response.errorBody()}\n"
-                    )
+                    val response = try {
+                        api.sendMChartTestResult(request)
+                    } catch (e: IOException) {
+                        e.printStackTrace()
+                    } catch(e: HttpException) {
+                        e.printStackTrace()
+                        "failed"
+                    }
                 }
             }
         }

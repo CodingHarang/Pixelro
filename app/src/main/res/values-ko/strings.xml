@@ -51,7 +51,7 @@
     <string name="result_screen_age">나이</string>
     <string name="presbyopia_result_hoffstetter1">"안구 나이는 "</string>
     <string name="measuring_distance_content_description1">머리가 가운데에 보이도록 위치해주세요</string>
-    <string name="measuring_distance_content_description2">테스트 도중 측정 거리가 달라지면 시력 검사 값이 달라질 수 있습니다.</string>
+    <string name="measuring_distance_content_description2">왼쪽 눈을 가려주세요</string>
     <string name="visual_acuity_test_common_content_distance">측정 거리</string>
     <string name="short_distance_visual_acuity_test_result_content_result">근거리 시력 검사 결과</string>
     <string name="short_distance_visual_acuity_test_result_distance">측정 거리</string>
@@ -136,4 +136,6 @@
     <string name="amsler_grid_test_description">가운데 검은 점을 바라보고\n이상이 있거나 왜곡되어 보이는 부분을 선택해주세요</string>
     <string name="mchart_test_description">아래의 선이 곧은 선으로 보이는지\n휘어진 선으로 보이는지 선택해주세요</string>
     <string name="survey_title">초기 문진표 작성</string>
+    <string name="measuring_distance_content_description3">오른쪽 눈을 가려주세요</string>
+    <string name="measuring_distance_content_description4">거리를 확인해주세요</string>
 </resources>

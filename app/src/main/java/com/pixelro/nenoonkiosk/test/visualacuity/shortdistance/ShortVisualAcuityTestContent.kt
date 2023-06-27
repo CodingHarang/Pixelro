@@ -35,8 +35,6 @@ fun ShortDistanceVisualAcuityTestContent(
     }
     val measuringDistanceContentVisibleState = remember { MutableTransitionState(true) }
     measuringDistanceContentVisibleState.targetState = visualAcuityViewModel.isMeasuringDistanceContentVisible.collectAsState().value
-    val coveredEyeCheckingContentVisibleState = remember { MutableTransitionState(false) }
-    coveredEyeCheckingContentVisibleState.targetState = visualAcuityViewModel.isCoveredEyeCheckingContentVisible.collectAsState().value
     val visualAcuityContentVisibleState = remember { MutableTransitionState(false) }
     visualAcuityContentVisibleState.targetState = visualAcuityViewModel.isVisualAcuityContentVisible.collectAsState().value
     Column(
@@ -56,17 +54,9 @@ fun ShortDistanceVisualAcuityTestContent(
                 measuringDistanceContentVisibleState = measuringDistanceContentVisibleState,
                 toNextContent = {
                     visualAcuityViewModel.updateIsMeasuringDistanceContentVisible(false)
-                    visualAcuityViewModel.updateIsCoveredEyeCheckingContentVisible(true)
-                },
-                selectedTestType = TestType.ShortDistanceVisualAcuity,
-                isLeftEye = visualAcuityViewModel.isLeftEye.collectAsState().value
-            )
-            CoveredEyeCheckingContent(
-                coveredEyeCheckingContentVisibleState = coveredEyeCheckingContentVisibleState,
-                toNextContent = {
-                    visualAcuityViewModel.updateIsCoveredEyeCheckingContentVisible(false)
                     visualAcuityViewModel.updateIsVisualAcuityContentVisible(true)
                 },
+                selectedTestType = TestType.ShortDistanceVisualAcuity,
                 isLeftEye = visualAcuityViewModel.isLeftEye.collectAsState().value
             )
             VisualAcuityTestCommonContent(

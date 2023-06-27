@@ -164,9 +164,21 @@ fun MeasuringDistanceContent(
                     Text(
                         modifier = Modifier
                             .padding(start = 40.dp, end = 40.dp, bottom = 20.dp),
-                        text = StringProvider.getString(R.string.measuring_distance_content_description1),
-                        color = Color(0xffffffff),
-                        fontSize = 30.sp
+                        text = when(faceDetectionViewModel.isFaceDetected.collectAsState().value) {
+                            true -> when(isLeftEye) {
+                                true -> when(faceDetectionViewModel.isLeftEyeCovered.collectAsState().value && faceDetectionViewModel.isNenoonTextDetected.collectAsState().value) {
+                                    true -> StringProvider.getString(R.string.measuring_distance_content_description4)
+                                    false -> StringProvider.getString(R.string.measuring_distance_content_description2)
+                                }
+                                false -> when(faceDetectionViewModel.isRightEyeCovered.collectAsState().value && faceDetectionViewModel.isNenoonTextDetected.collectAsState().value) {
+                                    true -> StringProvider.getString(R.string.measuring_distance_content_description4)
+                                    false -> StringProvider.getString(R.string.measuring_distance_content_description3)
+                                }
+                            }
+                            false -> StringProvider.getString(R.string.measuring_distance_content_description1)
+                        },
+                            color = Color(0xffffffff),
+                            fontSize = 36.sp
                     )
                 }
             }
@@ -242,6 +254,7 @@ fun MeasuringDistanceContent(
 //                        else -> (-100.0..100.0)
                     }
                 ) {
+                    faceDetectionViewModel.updateIsDistanceOK(true)
                     Box(
                         modifier = Modifier
                             .fillMaxWidth()
@@ -270,6 +283,8 @@ fun MeasuringDistanceContent(
                             textAlign = TextAlign.Center
                         )
                     }
+                } else {
+                    faceDetectionViewModel.updateIsDistanceOK(false)
                 }
             }
         }

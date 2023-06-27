@@ -137,6 +137,8 @@
     <string name="amsler_grid_test_description">str</string>
     <string name="mchart_test_description">str</string>
     <string name="survey_title">survey_title</string>
+    <string name="measuring_distance_content_description3">오른쪽 눈을 가려주세요</string>
+    <string name="measuring_distance_content_description4">거리를 확인해주세요</string>
     <!--    <string name=""></string>-->
     <!--    <string name=""></string>-->
 </resources>

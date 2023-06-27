@@ -168,7 +168,7 @@ class VisualAcuityViewModel @Inject constructor(
             _sightLevel.update { 1 }
         }
         _isVisualAcuityContentVisible.update { false }
-        _isCoveredEyeCheckingContentVisible.update { true }
+        _isMeasuringDistanceContentVisible.update { true }
         if (!_isLeftEye.value) {
             toResultScreen()
         } else {

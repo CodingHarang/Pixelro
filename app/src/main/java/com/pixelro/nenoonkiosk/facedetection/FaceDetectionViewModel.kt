@@ -57,6 +57,15 @@ class FaceDetectionViewModel @Inject constructor(
     val rightEyeOpenProbability: StateFlow<Float> = _rightEyeOpenProbability
     private val _isFaceDetected = MutableStateFlow(false)
     val isFaceDetected: StateFlow<Boolean> = _isFaceDetected
+    private val _isNenoonTextDetected = MutableStateFlow(false)
+    val isNenoonTextDetected: StateFlow<Boolean> = _isNenoonTextDetected
+    private val _isDistanceOK = MutableStateFlow(false)
+    val isDistanceOK: StateFlow<Boolean> = _isDistanceOK
+    private val _isLeftEyeCovered = MutableStateFlow(false)
+    val isLeftEyeCovered: StateFlow<Boolean> = _isLeftEyeCovered
+    private val _isRightEyeCovered = MutableStateFlow(false)
+    val isRightEyeCovered: StateFlow<Boolean> = _isRightEyeCovered
+
 //    private val _bitmap = MutableStateFlow(Bitmap.createBitmap(100, 100, Bitmap.Config.ARGB_8888))
 //    val bitmap: StateFlow<Bitmap> = _bitmap
 
@@ -126,21 +135,33 @@ class FaceDetectionViewModel @Inject constructor(
         _isFaceDetected.update { isFaceDetected }
     }
 
+    fun updateIsDistanceOK(isDistanceOK: Boolean) {
+        _isDistanceOK.update { isDistanceOK }
+    }
+
     fun updateInputImageSize(x: Float, y: Float) {
         _inputImageSizeX.update { x }
         _inputImageSizeY.update { y }
     }
 
+    fun updateIsNenoonTextDetected(isNenoonTextDetected: Boolean) {
+        _isNenoonTextDetected.update { isNenoonTextDetected }
+    }
+
     private fun updateScreenToFaceDistance() {
-        if((rightEyePosition.value.x - leftEyePosition.value.y) != 0f && GlobalValue.lensSize.width != 0f) {
-            _screenToFaceDistance.update {
-                val prev = _screenToFaceDistance.value
-                val dist = 1.1f * (GlobalValue.focalLength * 63) * inputImageSizeX.value / ((rightEyePosition.value.x - leftEyePosition.value.x) * (GlobalValue.lensSize.width))
-                if(dist > 600f || dist < 1f) prev
-                else dist
+        if(!isNenoonTextDetected.value) {
+            if((rightEyePosition.value.x - leftEyePosition.value.y) != 0f && GlobalValue.lensSize.width != 0f) {
+                _screenToFaceDistance.update {
+                    val prev = _screenToFaceDistance.value
+                    val dist = 1.1f * (GlobalValue.focalLength * 63) * inputImageSizeX.value / ((rightEyePosition.value.x - leftEyePosition.value.x) * (GlobalValue.lensSize.width))
+                    if(dist > 600f || dist < 1f) prev
+                    else dist
+                }
+            } else {
+                return
             }
         } else {
-            return
+            _screenToFaceDistance.update { (_distance.value).toFloat() * 10f }
         }
     }
 
@@ -155,10 +176,17 @@ class FaceDetectionViewModel @Inject constructor(
         textBox: Rect?
     ) {
         _textBox.update { textBox }
+        if(((_textBox.value?.right?.toFloat() ?: 0f) + (_textBox.value?.left?.toFloat() ?: 0f)) / 2 > 960) {
+            _isLeftEyeCovered.update { true }
+            _isRightEyeCovered.update { false }
+        } else {
+            _isLeftEyeCovered.update { false }
+            _isRightEyeCovered.update { true }
+        }
         _distance.update { 11400 / ((_textBox.value?.right?.toFloat() ?: 0f) - (_textBox.value?.left?.toFloat() ?: 0f)) }
-        Log.e("distance", "너비: ${12000 / ((_textBox.value?.right?.toFloat() ?: 0f) - (_textBox.value?.left?.toFloat() ?: 0f))}\n" +
-                "높이: ${3000 / ((_textBox.value?.bottom?.toFloat() ?: 0f) - (_textBox.value?.top?.toFloat() ?: 0f))}"
-        )
+//        Log.e("distance", "너비: ${12000 / ((_textBox.value?.right?.toFloat() ?: 0f) - (_textBox.value?.left?.toFloat() ?: 0f))}\n" +
+//                "높이: ${3000 / ((_textBox.value?.bottom?.toFloat() ?: 0f) - (_textBox.value?.top?.toFloat() ?: 0f))}"
+//        )
     }
 
 

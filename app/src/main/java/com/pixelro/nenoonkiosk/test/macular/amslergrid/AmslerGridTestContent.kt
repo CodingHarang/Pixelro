@@ -51,8 +51,6 @@ fun AmslerGridTestContent(
     }
     val measuringDistanceContentVisibleState = remember { MutableTransitionState(true) }
     measuringDistanceContentVisibleState.targetState = amslerGridViewModel.isMeasuringDistanceContentVisible.collectAsState().value
-    val coveredEyeCheckingContentVisibleState = remember { MutableTransitionState(false) }
-    coveredEyeCheckingContentVisibleState.targetState = amslerGridViewModel.isCoveredEyeCheckingContentVisible.collectAsState().value
     val amslerGridContentVisibleState = remember { MutableTransitionState(false) }
     amslerGridContentVisibleState.targetState = amslerGridViewModel.isAmslerGridContentVisible.collectAsState().value
     val macularDegenerationTypeVisibleState = remember { MutableTransitionState(false) }
@@ -74,18 +72,10 @@ fun AmslerGridTestContent(
                 measuringDistanceContentVisibleState = measuringDistanceContentVisibleState,
                 toNextContent = {
                     amslerGridViewModel.updateIsMeasuringDistanceContentVisible(false)
-                    amslerGridViewModel.updateIsCoveredEyeCheckingContentVisible(true)
-                },
-                selectedTestType = TestType.AmslerGrid,
-                isLeftEye = amslerGridViewModel.isLeftEye.collectAsState().value
-            )
-            CoveredEyeCheckingContent(
-                coveredEyeCheckingContentVisibleState = coveredEyeCheckingContentVisibleState,
-                toNextContent = {
-                    amslerGridViewModel.updateIsCoveredEyeCheckingContentVisible(false)
                     amslerGridViewModel.updateIsAmslerGridContentVisible(true)
                     amslerGridViewModel.updateIsMacularDegenerationTypeVisible(false)
                 },
+                selectedTestType = TestType.AmslerGrid,
                 isLeftEye = amslerGridViewModel.isLeftEye.collectAsState().value
             )
             AmslerGridContent(
@@ -251,7 +241,7 @@ fun AmslerGridContent(
                             if (isLeft) {
                                 amslerGridViewModel.updateIsLeftEye(false)
                                 amslerGridViewModel.updateLeftSelectedArea()
-                                amslerGridViewModel.updateIsCoveredEyeCheckingContentVisible(true)
+                                amslerGridViewModel.updateIsMeasuringDistanceContentVisible(true)
                                 amslerGridViewModel.updateIsAmslerGridContentVisible(false)
                             } else {
                                 amslerGridViewModel.updateRightSelectedArea()

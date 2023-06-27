@@ -51,8 +51,6 @@ fun MChartTestContent(
     }
     val measuringDistanceContentVisibleState = remember { MutableTransitionState(true) }
     measuringDistanceContentVisibleState.targetState = mChartViewModel.isMeasuringDistanceContentVisible.collectAsState().value
-    val coveredEyeCheckingContentVisibleState = remember { MutableTransitionState(false) }
-    coveredEyeCheckingContentVisibleState.targetState = mChartViewModel.isCoveredEyeCheckingContentVisible.collectAsState().value
     val mChartContentVisibleState = remember { MutableTransitionState(false) }
     mChartContentVisibleState.targetState = mChartViewModel.isMChartContentVisible.collectAsState().value
 
@@ -73,17 +71,9 @@ fun MChartTestContent(
                 measuringDistanceContentVisibleState = measuringDistanceContentVisibleState,
                 toNextContent = {
                     mChartViewModel.updateIsMeasuringDistanceContentVisible(false)
-                    mChartViewModel.updateIsCoveredEyeCheckingContentVisible(true)
-                },
-                selectedTestType = TestType.MChart,
-                isLeftEye = mChartViewModel.isLeftEye.collectAsState().value
-            )
-            CoveredEyeCheckingContent(
-                coveredEyeCheckingContentVisibleState = coveredEyeCheckingContentVisibleState,
-                toNextContent = {
-                    mChartViewModel.updateIsCoveredEyeCheckingContentVisible(false)
                     mChartViewModel.updateIsMChartContentVisible(true)
                 },
+                selectedTestType = TestType.MChart,
                 isLeftEye = mChartViewModel.isLeftEye.collectAsState().value
             )
             MChartContent(
@@ -189,7 +179,7 @@ fun MChartContent(
                                     mChartViewModel.updateLeftHorizontalValue()
                                     mChartViewModel.toNextMChartTest()
                                     mChartViewModel.updateIsMChartContentVisible(false)
-                                    mChartViewModel.updateIsCoveredEyeCheckingContentVisible(true)
+                                    mChartViewModel.updateIsMeasuringDistanceContentVisible(true)
                                 } else if (isVertical) {
                                     mChartViewModel.updateRightVerticalValue()
                                     mChartViewModel.updateCurrentLevel(0)

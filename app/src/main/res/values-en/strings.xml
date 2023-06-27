@@ -137,4 +137,6 @@
     <string name="amsler_grid_test_description">Look at the black dot in the middle and choose the part that looks abnormal or distorted</string>
     <string name="mchart_test_description">Please choose from the bottom whether\nthe line below is straight or bent</string>
     <string name="survey_title">str</string>
+    <string name="measuring_distance_content_description3">str</string>
+    <string name="measuring_distance_content_description4">str</string>
 </resources>

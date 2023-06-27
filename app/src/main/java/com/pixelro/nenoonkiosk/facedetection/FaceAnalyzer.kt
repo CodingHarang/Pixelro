@@ -23,6 +23,7 @@ class MyFaceAnalyzer(
     val updateInputImageSize: (Float, Float) -> Unit,
     val updateTextRecognitionData: (Rect?) -> Unit,
     val updateIsFaceDetected: (Boolean) -> Unit,
+    val updateIsNenoonTextDetected: (Boolean) -> Unit
 //    val updateBitmap: (Bitmap) -> Unit,
 ) : ImageAnalysis.Analyzer {
 
@@ -56,16 +57,23 @@ class MyFaceAnalyzer(
 //            updateInputImageSize(mediaImage.width.toFloat(), mediaImage.height.toFloat())
             // Text Recognition
             recognizer.process(image).addOnSuccessListener { result ->
+                if (result.textBlocks.size == 0) {
+                    updateIsNenoonTextDetected(false)
+                }
                 for (block in result.textBlocks) {
                     for (line in block.lines) {
+                        var isNenoonTextExists = false
                         for (element in line.elements) {
                             if (element.text == "NENOON") {
-                                Log.e(
-                                    "textRecognition",
-                                    "NENOON, ${element.boundingBox?.left}, ${element.boundingBox?.top}"
-                                )
+                                isNenoonTextExists = true
                                 updateTextRecognitionData(element.boundingBox)
                             }
+                        }
+//                        Log.e("isNenoonTextDetected", isNenoonTextExists.toString())
+                        if (isNenoonTextExists) {
+                            updateIsNenoonTextDetected(true)
+                        } else {
+                            updateIsNenoonTextDetected(false)
                         }
                     }
                 }
@@ -77,7 +85,7 @@ class MyFaceAnalyzer(
 
             // Face Detection
             detector.process(image).addOnSuccessListener { faces ->
-                Log.e("eyeface", faces.size.toString())
+//                Log.e("eyeface", faces.size.toString())
                 if (faces.size == 0) {
                     updateIsFaceDetected(false)
                     return@addOnSuccessListener
