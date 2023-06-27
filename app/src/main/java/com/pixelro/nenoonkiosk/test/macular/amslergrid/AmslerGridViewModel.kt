@@ -17,8 +17,6 @@ class AmslerGridViewModel @Inject constructor(
 
     private val _isMeasuringDistanceContentVisible = MutableStateFlow(true)
     val isMeasuringDistanceContentVisible: StateFlow<Boolean> = _isMeasuringDistanceContentVisible
-    private val _isCoveredEyeCheckingContentVisible = MutableStateFlow(false)
-    val isCoveredEyeCheckingContentVisible: StateFlow<Boolean> = _isCoveredEyeCheckingContentVisible
     private val _isAmslerGridContentVisible = MutableStateFlow(false)
     val isAmslerGridContentVisible: StateFlow<Boolean> = _isAmslerGridContentVisible
     private val _isMacularDegenerationTypeVisible = MutableStateFlow(false)
@@ -46,10 +44,6 @@ class AmslerGridViewModel @Inject constructor(
 
     fun updateIsMeasuringDistanceContentVisible(visible: Boolean) {
         _isMeasuringDistanceContentVisible.update { visible }
-    }
-
-    fun updateIsCoveredEyeCheckingContentVisible(visible: Boolean) {
-        _isCoveredEyeCheckingContentVisible.update { visible }
     }
 
     fun updateIsAmslerGridContentVisible(visible: Boolean) {
@@ -133,6 +127,22 @@ class AmslerGridViewModel @Inject constructor(
     }
 
     fun init() {
-
+        _isMeasuringDistanceContentVisible.update { true }
+        _isAmslerGridContentVisible.update { false }
+        _isMacularDegenerationTypeVisible.update { false }
+        _isLeftEye.update { true }
+        _currentSelectedArea.update {
+            listOf(
+                MacularDisorderType.Normal,
+                MacularDisorderType.Normal,
+                MacularDisorderType.Normal,
+                MacularDisorderType.Normal,
+                MacularDisorderType.Normal,
+                MacularDisorderType.Normal,
+                MacularDisorderType.Normal,
+                MacularDisorderType.Normal,
+                MacularDisorderType.Normal
+            )
+        }
     }
 }

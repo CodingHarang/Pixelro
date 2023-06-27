@@ -225,7 +225,7 @@ fun MChartContent(
                                         mChartViewModel.updateLeftHorizontalValue()
                                         mChartViewModel.toNextMChartTest()
                                         mChartViewModel.updateIsMChartContentVisible(false)
-                                        mChartViewModel.updateIsCoveredEyeCheckingContentVisible(true)
+                                        mChartViewModel.updateIsMeasuringDistanceContentVisible(true)
                                     } else if (isVertical) {
                                         mChartViewModel.updateRightVerticalValue()
                                         mChartViewModel.updateCurrentLevel(0)

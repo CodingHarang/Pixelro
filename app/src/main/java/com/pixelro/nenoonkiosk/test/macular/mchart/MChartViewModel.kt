@@ -20,8 +20,6 @@ class MChartViewModel @Inject constructor(
 
     private val _isMeasuringDistanceContentVisible = MutableStateFlow(true)
     val isMeasuringDistanceContentVisible: StateFlow<Boolean> = _isMeasuringDistanceContentVisible
-    private val _isCoveredEyeCheckingContentVisible = MutableStateFlow(false)
-    val isCoveredEyeCheckingContentVisible: StateFlow<Boolean> = _isCoveredEyeCheckingContentVisible
     private val _isMChartContentVisible = MutableStateFlow(false)
     val isMChartContentVisible: StateFlow<Boolean> = _isMChartContentVisible
     private val _isLeftEye = MutableStateFlow(true)
@@ -39,10 +37,6 @@ class MChartViewModel @Inject constructor(
 
     fun updateIsMeasuringDistanceContentVisible(visible: Boolean) {
         _isMeasuringDistanceContentVisible.update { visible }
-    }
-
-    fun updateIsCoveredEyeCheckingContentVisible(visible: Boolean) {
-        _isCoveredEyeCheckingContentVisible.update { visible }
     }
 
     fun updateIsMChartContentVisible(visible: Boolean) {
@@ -120,7 +114,6 @@ class MChartViewModel @Inject constructor(
         _isVertical.update { true }
         _currentLevel.update { 0 }
         _isMeasuringDistanceContentVisible.update { true }
-        _isCoveredEyeCheckingContentVisible.update { false }
         _isMChartContentVisible.update { false }
         _mChartImageId.update { R.drawable.mchart_0_0 }
     }
