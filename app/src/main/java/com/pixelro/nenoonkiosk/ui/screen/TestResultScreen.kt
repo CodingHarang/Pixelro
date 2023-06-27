@@ -91,7 +91,7 @@ fun TestResultScreen(
             testResult = testResult
         )
     }
-    val composableScope = rememberCoroutineScope()
+    val coroutineScope = rememberCoroutineScope()
     val context = LocalContext.current
     val bluetoothManager =
         getSystemService(context, BluetoothManager::class.java) as BluetoothManager
@@ -136,38 +136,34 @@ fun TestResultScreen(
 
     val printerMacAddress = testResultViewModel.printerMacAddress.collectAsState().value
 
-    suspend fun printResult(
+    fun printResult(
         testType: TestType,
         testResult: Any?
     ) {
-        coroutineScope {
-            launch {
-                val mNemonicWrapper = nemonicWrapper(context)
-                mNemonicWrapper.enableLastPageCut(true)
-                mNemonicWrapper.setTimeoutConstant(500)
-                mNemonicWrapper.setBrightnessLevel(200)
-                mNemonicWrapper.setContrastLevel(0)
-                val nCopies = 1
+        val mNemonicWrapper = nemonicWrapper(context)
+        mNemonicWrapper.enableLastPageCut(true)
+        mNemonicWrapper.setTimeoutConstant(500)
+        mNemonicWrapper.setBrightnessLevel(200)
+        mNemonicWrapper.setContrastLevel(0)
+        val nCopies = 1
 
-                val resources = context.resources
-                val logoImg = Bitmap.createScaledBitmap(
-                    BitmapFactory.decodeResource(
-                        resources,
-                        R.drawable.pixelro_logo_black
-                    ), 240, 80, false
-                )
-                val bm = textAsBitmap(testType, testResult, logoImg)
-                val nResult = 0
-                val nPrintWidth = 576
-                val nPaperHeight = ((bm.height.toFloat() / bm.width.toFloat()) * 576).toInt()
-                if (printerMacAddress != "") {
-                    mNemonicWrapper.openPrinter(printerMacAddress)
-                    mNemonicWrapper.print(bm, nPrintWidth, nPaperHeight, nCopies)
-                    mNemonicWrapper.closePrinter()
-                } else {
-                    Toast.makeText(context, "연결된 프린터가 없습니다.", Toast.LENGTH_SHORT).show()
-                }
-            }
+        val resources = context.resources
+        val logoImg = Bitmap.createScaledBitmap(
+            BitmapFactory.decodeResource(
+                resources,
+                R.drawable.pixelro_logo_black
+            ), 240, 80, false
+        )
+        val bm = textAsBitmap(testType, testResult, logoImg)
+        val nResult = 0
+        val nPrintWidth = 576
+        val nPaperHeight = ((bm.height.toFloat() / bm.width.toFloat()) * 576).toInt()
+        if (printerMacAddress != "") {
+            mNemonicWrapper.openPrinter(printerMacAddress)
+            mNemonicWrapper.print(bm, nPrintWidth, nPaperHeight, nCopies)
+            mNemonicWrapper.closePrinter()
+        } else {
+            Toast.makeText(context, "연결된 프린터가 없습니다.", Toast.LENGTH_SHORT).show()
         }
     }
 
@@ -319,7 +315,7 @@ fun TestResultScreen(
                             shape = RoundedCornerShape(8.dp)
                         )
                         .clickable {
-                            composableScope.launch {
+                            coroutineScope.launch {
                                 bluetoothAdapter.startDiscovery()
                                 printResult(
                                     testType = testType,
