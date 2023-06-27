@@ -1,7 +1,13 @@
 package com.pixelro.nenoonkiosk.facedetection
 
+import androidx.activity.compose.BackHandler
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.core.MutableTransitionState
+import androidx.compose.animation.core.RepeatMode
+import androidx.compose.animation.core.animateFloat
+import androidx.compose.animation.core.infiniteRepeatable
+import androidx.compose.animation.core.keyframes
+import androidx.compose.animation.core.rememberInfiniteTransition
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
@@ -19,8 +25,10 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.ColorFilter
@@ -42,6 +50,7 @@ fun MeasuringDistanceContent(
     measuringDistanceContentVisibleState: MutableTransitionState<Boolean>,
     toNextContent: () -> Unit,
     selectedTestType: TestType,
+    isLeftEye: Boolean,
     faceDetectionViewModel: FaceDetectionViewModel = hiltViewModel()
 ) {
     AnimatedVisibility(
@@ -49,6 +58,16 @@ fun MeasuringDistanceContent(
         enter = AnimationProvider.enterTransition,
         exit = AnimationProvider.exitTransition
     ) {
+        val transition = rememberInfiniteTransition()
+        val shiftVal by transition.animateFloat(
+            initialValue = 0f, targetValue = 1f, animationSpec = infiniteRepeatable(
+                animation = keyframes {
+                    durationMillis = 1000
+                    delayMillis = 500
+                },
+                repeatMode = RepeatMode.Reverse
+            )
+        )
         Column(
             modifier = Modifier,
             horizontalAlignment = Alignment.CenterHorizontally
@@ -68,7 +87,7 @@ fun MeasuringDistanceContent(
 //                    bitmap = viewModel.bitmap.collectAsState().value.asImageBitmap(),
 //                    contentDescription = ""
 //                )
-                    if (measuringDistanceContentVisibleState.currentState) {
+                    if (measuringDistanceContentVisibleState.targetState) {
                         FaceDetectionWithPreview()
                     }
                     Box(
@@ -79,7 +98,8 @@ fun MeasuringDistanceContent(
                                 color = Color(0xff000000)
                             )
                     )
-                    CustomShape()
+                    // eye tracking red dot
+//                    CustomShape()
                 }
                 Box(
                     modifier = Modifier
@@ -102,24 +122,35 @@ fun MeasuringDistanceContent(
 //                        painter = painterResource(id = R.drawable.eyecover),
 //                        contentDescription = null,
 //                    )
-                    Image(
-                        modifier = Modifier
-                            .offset(
-                                x = (650 - (faceDetectionViewModel.rightEyePosition.collectAsState().value.x / 2.2f)).dp,
-                                y = (faceDetectionViewModel.leftEyePosition.collectAsState().value.y / 2.2f - 500).dp
-                            ),
-                        painter = painterResource(id = R.drawable.eyecover),
-                        contentDescription = null,
-                    )
-                    Image(
-                        modifier = Modifier
-                            .offset(
-                                x = (450 - (faceDetectionViewModel.rightEyePosition.collectAsState().value.x / 2.2f)).dp,
-                                y = (faceDetectionViewModel.leftEyePosition.collectAsState().value.y / 2.2f - 500).dp
-                            ),
-                        painter = painterResource(id = R.drawable.eyecover),
-                        contentDescription = null,
-                    )
+                    if (faceDetectionViewModel.isFaceDetected.collectAsState().value) {
+                        if (isLeftEye) {
+                            Image(
+                                modifier = Modifier
+                                    .width((200 * 300 / faceDetectionViewModel.screenToFaceDistance.collectAsState().value).dp)
+                                    .height((400 * 300 / faceDetectionViewModel.screenToFaceDistance.collectAsState().value).dp)
+                                    .offset(
+                                        x = (430 - (faceDetectionViewModel.rightEyePosition.collectAsState().value.x / 2.25f)).dp,
+                                        y = (faceDetectionViewModel.rightEyePosition.collectAsState().value.y / 2.25f - 500).dp
+                                    )
+                                    .alpha(shiftVal),
+                                painter = painterResource(id = R.drawable.eyecover),
+                                contentDescription = null,
+                            )
+                        } else {
+                            Image(
+                                modifier = Modifier
+                                    .width(200.dp)
+                                    .height(400.dp)
+                                    .offset(
+                                        x = (430 - (faceDetectionViewModel.leftEyePosition.collectAsState().value.x / 2.25f)).dp,
+                                        y = (faceDetectionViewModel.leftEyePosition.collectAsState().value.y / 2.25f - 500).dp
+                                    )
+                                    .alpha(shiftVal),
+                                painter = painterResource(id = R.drawable.eyecover),
+                                contentDescription = null,
+                            )
+                        }
+                    }
                 }
                 Box(
                     modifier = Modifier
@@ -160,15 +191,16 @@ fun MeasuringDistanceContent(
                     Text(
                         modifier = Modifier
                             .padding(bottom = (GlobalValue.navigationBarPadding + 220).dp),
-                        color = when(selectedTestType) {
+                        color = when (selectedTestType) {
                             TestType.ShortDistanceVisualAcuity -> {
-                                when(faceDetectionViewModel.screenToFaceDistance.collectAsState().value) {
+                                when (faceDetectionViewModel.screenToFaceDistance.collectAsState().value) {
                                     in 370.0..430.0 -> Color(0xffffffff)
                                     else -> Color(0xFF6D6D6D)
                                 }
                             }
+
                             else -> {
-                                when(faceDetectionViewModel.screenToFaceDistance.collectAsState().value) {
+                                when (faceDetectionViewModel.screenToFaceDistance.collectAsState().value) {
                                     in 270.0..330.0 -> Color(0xffffffff)
                                     else -> Color(0xFF6D6D6D)
                                 }
@@ -193,7 +225,7 @@ fun MeasuringDistanceContent(
                         contentAlignment = Alignment.Center
                     ) {
                         Text(
-                            text = when(selectedTestType) {
+                            text = when (selectedTestType) {
                                 TestType.ShortDistanceVisualAcuity -> StringProvider.getString(R.string.adjust_distance_40cm)
                                 else -> StringProvider.getString(R.string.adjust_distance_30cm)
                             },
@@ -203,12 +235,13 @@ fun MeasuringDistanceContent(
                         )
                     }
                 }
-                if(faceDetectionViewModel.screenToFaceDistance.collectAsState().value in when(selectedTestType) {
+                if (faceDetectionViewModel.screenToFaceDistance.collectAsState().value in when (selectedTestType) {
                         TestType.ShortDistanceVisualAcuity -> (370.0..430.0)
                         else -> (270.0..330.0)
 //                        TestType.ShortDistanceVisualAcuity -> (-100.0..100.0)
 //                        else -> (-100.0..100.0)
-                    }) {
+                    }
+                ) {
                     Box(
                         modifier = Modifier
                             .fillMaxWidth()

@@ -1,5 +1,8 @@
 package com.pixelro.nenoonkiosk.test.macular.amslergrid
 
+import android.app.Activity
+import android.view.KeyEvent
+import androidx.activity.compose.BackHandler
 import androidx.compose.animation.*
 import androidx.compose.animation.core.MutableTransitionState
 import androidx.compose.foundation.Canvas
@@ -19,6 +22,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.input.pointer.pointerInput
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
@@ -72,7 +76,8 @@ fun AmslerGridTestContent(
                     amslerGridViewModel.updateIsMeasuringDistanceContentVisible(false)
                     amslerGridViewModel.updateIsCoveredEyeCheckingContentVisible(true)
                 },
-                selectedTestType = TestType.AmslerGrid
+                selectedTestType = TestType.AmslerGrid,
+                isLeftEye = amslerGridViewModel.isLeftEye.collectAsState().value
             )
             CoveredEyeCheckingContent(
                 coveredEyeCheckingContentVisibleState = coveredEyeCheckingContentVisibleState,

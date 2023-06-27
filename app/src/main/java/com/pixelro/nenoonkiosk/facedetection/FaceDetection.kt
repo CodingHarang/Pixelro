@@ -79,7 +79,8 @@ fun FaceDetectionScreenContent(
                                 viewModel::updateFaceDetectionData,
                                 viewModel::updateFaceContourData,
                                 viewModel::updateInputImageSize,
-                                viewModel::updateTextRecognitionData
+                                viewModel::updateTextRecognitionData,
+                                viewModel::updateIsFaceDetected
 //                                viewModel::updateBitmap
                             )
                         )
@@ -124,7 +125,8 @@ fun FaceDetectionScreenContentWithPreview(
                                         viewModel::updateFaceDetectionData,
                                         viewModel::updateFaceContourData,
                                         viewModel::updateInputImageSize,
-                                        viewModel::updateTextRecognitionData
+                                        viewModel::updateTextRecognitionData,
+                                        viewModel::updateIsFaceDetected
 //                                    viewModel::updateBitmap
                                     )
                                 )

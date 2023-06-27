@@ -1,11 +1,13 @@
 package com.pixelro.nenoonkiosk.test.visualacuity.shortdistance
 
+import androidx.activity.compose.BackHandler
 import androidx.compose.animation.core.MutableTransitionState
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.DisposableEffect
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.remember
@@ -56,7 +58,8 @@ fun ShortDistanceVisualAcuityTestContent(
                     visualAcuityViewModel.updateIsMeasuringDistanceContentVisible(false)
                     visualAcuityViewModel.updateIsCoveredEyeCheckingContentVisible(true)
                 },
-                selectedTestType = TestType.ShortDistanceVisualAcuity
+                selectedTestType = TestType.ShortDistanceVisualAcuity,
+                isLeftEye = visualAcuityViewModel.isLeftEye.collectAsState().value
             )
             CoveredEyeCheckingContent(
                 coveredEyeCheckingContentVisibleState = coveredEyeCheckingContentVisibleState,

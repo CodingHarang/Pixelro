@@ -55,6 +55,8 @@ class FaceDetectionViewModel @Inject constructor(
     val leftEyeOpenProbability: StateFlow<Float> = _leftEyeOpenProbability
     private val _rightEyeOpenProbability = MutableStateFlow(0f)
     val rightEyeOpenProbability: StateFlow<Float> = _rightEyeOpenProbability
+    private val _isFaceDetected = MutableStateFlow(false)
+    val isFaceDetected: StateFlow<Boolean> = _isFaceDetected
 //    private val _bitmap = MutableStateFlow(Bitmap.createBitmap(100, 100, Bitmap.Config.ARGB_8888))
 //    val bitmap: StateFlow<Bitmap> = _bitmap
 
@@ -120,6 +122,10 @@ class FaceDetectionViewModel @Inject constructor(
         }
     }
 
+    fun updateIsFaceDetected(isFaceDetected: Boolean) {
+        _isFaceDetected.update { isFaceDetected }
+    }
+
     fun updateInputImageSize(x: Float, y: Float) {
         _inputImageSizeX.update { x }
         _inputImageSizeY.update { y }
@@ -154,6 +160,7 @@ class FaceDetectionViewModel @Inject constructor(
                 "높이: ${3000 / ((_textBox.value?.bottom?.toFloat() ?: 0f) - (_textBox.value?.top?.toFloat() ?: 0f))}"
         )
     }
+
 
 
     // Covered Eye Checking

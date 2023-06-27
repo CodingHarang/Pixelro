@@ -1,5 +1,6 @@
 package com.pixelro.nenoonkiosk.test.macular.mchart
 
+import androidx.activity.compose.BackHandler
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.core.MutableTransitionState
 import androidx.compose.foundation.Image
@@ -74,7 +75,8 @@ fun MChartTestContent(
                     mChartViewModel.updateIsMeasuringDistanceContentVisible(false)
                     mChartViewModel.updateIsCoveredEyeCheckingContentVisible(true)
                 },
-                selectedTestType = TestType.MChart
+                selectedTestType = TestType.MChart,
+                isLeftEye = mChartViewModel.isLeftEye.collectAsState().value
             )
             CoveredEyeCheckingContent(
                 coveredEyeCheckingContentVisibleState = coveredEyeCheckingContentVisibleState,
