@@ -123,7 +123,7 @@ fun MeasuringDistanceContent(
 //                        contentDescription = null,
 //                    )
                     if (faceDetectionViewModel.isFaceDetected.collectAsState().value) {
-                        if (isLeftEye) {
+                        if (!isLeftEye) {
                             Image(
                                 modifier = Modifier
                                     .width((200 * 300 / faceDetectionViewModel.screenToFaceDistance.collectAsState().value).dp)
