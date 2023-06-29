@@ -80,23 +80,23 @@ fun VisualAcuityTestListContent(
             modifier = Modifier
                 .height(20.dp)
         )
-        EyeTestSelectableBox(
-            title = StringProvider.getString(R.string.long_visual_acuity_name),
-            description = StringProvider.getString(R.string.long_visual_acuity_short_description),
-            onClickMethod = {
-                toTestScreen(TestType.LongDistanceVisualAcuity)
-            }
-        )
-        Spacer(
-            modifier = Modifier
-                .height(20.dp)
-        )
-        EyeTestSelectableBox(
-            title = StringProvider.getString(R.string.children_visual_acuity_name),
-            description = StringProvider.getString(R.string.children_visual_acuity_short_description),
-            onClickMethod = {
-                toTestScreen(TestType.ShortDistanceVisualAcuity)
-            }
-        )
+//        EyeTestSelectableBox(
+//            title = StringProvider.getString(R.string.long_visual_acuity_name),
+//            description = StringProvider.getString(R.string.long_visual_acuity_short_description),
+//            onClickMethod = {
+//                toTestScreen(TestType.LongDistanceVisualAcuity)
+//            }
+//        )
+//        Spacer(
+//            modifier = Modifier
+//                .height(20.dp)
+//        )
+//        EyeTestSelectableBox(
+//            title = StringProvider.getString(R.string.children_visual_acuity_name),
+//            description = StringProvider.getString(R.string.children_visual_acuity_short_description),
+//            onClickMethod = {
+//                toTestScreen(TestType.ShortDistanceVisualAcuity)
+//            }
+//        )
     }
 }

@@ -12,6 +12,7 @@ import android.util.Log
 import androidx.camera.core.ImageAnalysis
 import androidx.camera.core.ImageProxy
 import com.google.mlkit.vision.common.InputImage
+import com.google.mlkit.vision.face.Face
 import com.google.mlkit.vision.face.FaceDetectorOptions
 import com.google.mlkit.vision.face.FaceLandmark
 import com.google.mlkit.vision.text.TextRecognition
@@ -30,17 +31,16 @@ class MyFaceAnalyzer(
     private var lastAnalysisTime = -1L
 
     private val realTimeOpts =
-        FaceDetectorOptions.Builder().setContourMode(FaceDetectorOptions.CONTOUR_MODE_ALL)
-            .setPerformanceMode(FaceDetectorOptions.PERFORMANCE_MODE_ACCURATE)
+        FaceDetectorOptions.Builder().setPerformanceMode(FaceDetectorOptions.PERFORMANCE_MODE_ACCURATE)
             .setLandmarkMode(FaceDetectorOptions.LANDMARK_MODE_ALL)
             .setClassificationMode(FaceDetectorOptions.CLASSIFICATION_MODE_ALL)
-            .setMinFaceSize(0.2f)
+            .setMinFaceSize(0.3f)
             .enableTracking()
             .build()
+
     private val detector = com.google.mlkit.vision.face.FaceDetection.getClient(realTimeOpts)
-
-
     private val recognizer = TextRecognition.getClient(TextRecognizerOptions.DEFAULT_OPTIONS)
+    private var noFaceCount = 0
 
     @SuppressLint("UnsafeOptInUsageError")
     override fun analyze(imageProxy: ImageProxy) {
@@ -61,21 +61,19 @@ class MyFaceAnalyzer(
                     updateIsNenoonTextDetected(false)
                 }
                 for (block in result.textBlocks) {
+                    var isNenoonTextExists = false
                     for (line in block.lines) {
-                        var isNenoonTextExists = false
-                        for (element in line.elements) {
-                            if (element.text == "NENOON") {
+                        if (line.text == "NENOON" || line.text == "NE NOON") {
                                 isNenoonTextExists = true
-                                updateTextRecognitionData(element.boundingBox)
+                                updateTextRecognitionData(line.boundingBox)
                             }
                         }
-//                        Log.e("isNenoonTextDetected", isNenoonTextExists.toString())
                         if (isNenoonTextExists) {
                             updateIsNenoonTextDetected(true)
+                            break
                         } else {
                             updateIsNenoonTextDetected(false)
                         }
-                    }
                 }
             }.addOnFailureListener {
                 it.printStackTrace()
@@ -86,43 +84,68 @@ class MyFaceAnalyzer(
             // Face Detection
             detector.process(image).addOnSuccessListener { faces ->
 //                Log.e("eyeface", faces.size.toString())
-                if (faces.size == 0) {
-                    updateIsFaceDetected(false)
-                    return@addOnSuccessListener
-                } else {
-                    updateIsFaceDetected(true)
-                }
+//                if (faces.size == 0) {
+//                    noFaceCount++
+//                    if(noFaceCount > 10) {
+//                        updateIsFaceDetected(false)
+//                    }
+//                    Log.e("faceNum", "no face detected")
+//                    return@addOnSuccessListener
+//                } else {
+//                    noFaceCount = 0
+//                    Log.e("faceNum", "face detected")
+//                }
+                var centerFace: Face? = null
                 for (face in faces) {
-                    val boundingBox = face.boundingBox
-                    val rotX = face.headEulerAngleX
-                    val rotY = face.headEulerAngleY
-                    val rotZ = face.headEulerAngleZ
                     val leftEyePosition = face.getLandmark(FaceLandmark.LEFT_EYE)?.position
                     val rightEyePosition = face.getLandmark(FaceLandmark.RIGHT_EYE)?.position
-                    val leftEyeOpenProbability = face.leftEyeOpenProbability
-                    val rightEyeOpenProbability = face.rightEyeOpenProbability
+                    if (leftEyePosition != null && rightEyePosition != null) {
+                        if (leftEyePosition.x > 500f && rightEyePosition.x < 1420f && leftEyePosition.y > 700f && rightEyePosition.y > 700f && rightEyePosition.x - leftEyePosition.x > 150f) {
+                            centerFace = face
+                            break
+                        }
+                    }
+                }
+
+                if(centerFace != null) {
+                    noFaceCount = 0
+                    updateIsFaceDetected(true)
+                    val boundingBox = centerFace.boundingBox
+                    val rotX = centerFace.headEulerAngleX
+                    val rotY = centerFace.headEulerAngleY
+                    val rotZ = centerFace.headEulerAngleZ
+                    val leftEyePosition = centerFace.getLandmark(FaceLandmark.LEFT_EYE)?.position
+                    val rightEyePosition = centerFace.getLandmark(FaceLandmark.RIGHT_EYE)?.position
+                    val leftEyeOpenProbability = centerFace.leftEyeOpenProbability
+                    val rightEyeOpenProbability = centerFace.rightEyeOpenProbability
 
 //                    Log.e(
 //                        "eyePosition",
 //                        "leftEyePosition: $leftEyePosition\nrightEyePosition: $rightEyePosition"
 //                    )
                     if (leftEyePosition != null && rightEyePosition != null) {
-                        if (leftEyePosition.x > 470f && rightEyePosition.x < 1470f && leftEyePosition.y > 700f && rightEyePosition.y > 700f) {
-                            leftEyePosition.x = leftEyePosition.x + 20f
-                            updateFaceDetectionData(
-                                boundingBox,
-                                leftEyePosition,
-                                rightEyePosition,
-                                rotX,
-                                rotY,
-                                rotZ,
-                                leftEyeOpenProbability,
-                                rightEyeOpenProbability
-                            )
-                        } else {
-                            updateIsFaceDetected(false)
-                        }
+                        updateFaceDetectionData(
+                            boundingBox,
+                            leftEyePosition,
+                            rightEyePosition,
+                            rotX,
+                            rotY,
+                            rotZ,
+                            leftEyeOpenProbability,
+                            rightEyeOpenProbability
+                        )
+                        Log.e("faceNum", "${centerFace.trackingId}, ${leftEyePosition.x}, ${leftEyePosition.y} ${rightEyePosition.x}, ${rightEyePosition.y}")
+                        return@addOnSuccessListener
+                    } else {
+                        updateIsFaceDetected(false)
                     }
+                } else {
+                    noFaceCount++
+                    if(noFaceCount > 10) {
+                        updateIsFaceDetected(false)
+                    }
+                }
+
 //                    val leftEyeContour = face.getContour(FaceContour.LEFT_EYE)?.points
 //                    val rightEyeContour = face.getContour(FaceContour.RIGHT_EYE)?.points
 //                    val upperLipTopContour = face.getContour(FaceContour.UPPER_LIP_TOP)?.points
@@ -133,7 +156,6 @@ class MyFaceAnalyzer(
 //                    if (leftEyeContour != null && rightEyeContour != null && upperLipTopContour != null && upperLipBottomContour != null && lowerLipTopContour != null && lowerLipBottomContour != null && faceContour != null) {
 //                        updateFaceContourData(leftEyeContour, rightEyeContour, upperLipTopContour, upperLipBottomContour, lowerLipTopContour, lowerLipBottomContour, faceContour, image.width.toFloat(), image.height.toFloat())
 //                    }
-                }
             }.addOnFailureListener {
                 it.printStackTrace()
             }.addOnCompleteListener {

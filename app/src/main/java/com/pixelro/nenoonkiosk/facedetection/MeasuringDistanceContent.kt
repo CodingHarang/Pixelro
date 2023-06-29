@@ -252,7 +252,7 @@ fun MeasuringDistanceContent(
                         else -> (270.0..330.0)
 //                        TestType.ShortDistanceVisualAcuity -> (-100.0..100.0)
 //                        else -> (-100.0..100.0)
-                    }
+                    } && faceDetectionViewModel.isNenoonTextDetected.collectAsState().value
                 ) {
                     faceDetectionViewModel.updateIsDistanceOK(true)
                     Box(

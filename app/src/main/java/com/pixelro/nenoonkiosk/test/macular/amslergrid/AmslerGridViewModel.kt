@@ -19,8 +19,8 @@ class AmslerGridViewModel @Inject constructor(
     val isMeasuringDistanceContentVisible: StateFlow<Boolean> = _isMeasuringDistanceContentVisible
     private val _isAmslerGridContentVisible = MutableStateFlow(false)
     val isAmslerGridContentVisible: StateFlow<Boolean> = _isAmslerGridContentVisible
-    private val _isMacularDegenerationTypeVisible = MutableStateFlow(false)
-    val isMacularDegenerationTypeVisible: StateFlow<Boolean> = _isMacularDegenerationTypeVisible
+//    private val _isMacularDegenerationTypeVisible = MutableStateFlow(false)
+//    val isMacularDegenerationTypeVisible: StateFlow<Boolean> = _isMacularDegenerationTypeVisible
     private val _isLeftEye = MutableStateFlow(true)
     val isLeftEye: StateFlow<Boolean> = _isLeftEye
     private val _currentSelectedPosition = MutableStateFlow(Offset(0f, 0f))
@@ -50,9 +50,9 @@ class AmslerGridViewModel @Inject constructor(
         _isAmslerGridContentVisible.update { visible }
     }
 
-    fun updateIsMacularDegenerationTypeVisible(visible: Boolean) {
-        _isMacularDegenerationTypeVisible.update { visible }
-    }
+//    fun updateIsMacularDegenerationTypeVisible(visible: Boolean) {
+//        _isMacularDegenerationTypeVisible.update { visible }
+//    }
 
     fun updateIsLeftEye(isLeft: Boolean) {
         _isLeftEye.update { isLeft }
@@ -89,27 +89,20 @@ class AmslerGridViewModel @Inject constructor(
                         tmpList.toList()
                     }
                 } else {
-                    _isMacularDegenerationTypeVisible.update { true }
+                    updateCurrentSelectedArea()
                 }
                 return
             }
         }
     }
 
-    fun updateCurrentSelectedArea(idx: Int) {
+    private fun updateCurrentSelectedArea() {
         val position = _currentSelectedPosition.value
         _currentSelectedArea.update {
             val tmpList = it.toMutableList()
             for(i in 0..8) {
                 if(position.x in ((i % 3) * 300f)..((i % 3) * 300f + 299f) && position.y in ((i / 3) * 300f)..((i / 3) * 300f + 299f)) {
-                    when(idx) {
-                        0 -> { tmpList[i] = MacularDisorderType.Distorted
-                        }
-                        1 -> { tmpList[i] = MacularDisorderType.Blacked
-                        }
-                        else -> { tmpList[i] = MacularDisorderType.Whited
-                        }
-                    }
+                    tmpList[i] = MacularDisorderType.Distorted
                 }
             }
             tmpList.toList()
@@ -129,7 +122,7 @@ class AmslerGridViewModel @Inject constructor(
     fun init() {
         _isMeasuringDistanceContentVisible.update { true }
         _isAmslerGridContentVisible.update { false }
-        _isMacularDegenerationTypeVisible.update { false }
+//        _isMacularDegenerationTypeVisible.update { false }
         _isLeftEye.update { true }
         _currentSelectedArea.update {
             listOf(

@@ -60,7 +60,7 @@ class PresbyopiaViewModel @Inject constructor(
                 age = entry.y.toInt()
             }
         }
-        age -= 15
+        age -= 20
         Log.e("presbyopiaResult", "firstDistance: ${firstDistance}\nsecondDistance: ${secondDistance}\nthirdDistance: ${thirdDistance}\n${avgDistance}\nage: $age")
         return PresbyopiaTestResult(firstDistance, secondDistance, thirdDistance, avgDistance, age)
     }

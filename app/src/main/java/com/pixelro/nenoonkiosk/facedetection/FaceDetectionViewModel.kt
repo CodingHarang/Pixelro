@@ -183,7 +183,7 @@ class FaceDetectionViewModel @Inject constructor(
             _isLeftEyeCovered.update { false }
             _isRightEyeCovered.update { true }
         }
-        _distance.update { 11400 / ((_textBox.value?.right?.toFloat() ?: 0f) - (_textBox.value?.left?.toFloat() ?: 0f)) }
+        _distance.update { 12000 / 4.8f * 2.3f / ((_textBox.value?.right?.toFloat() ?: 0f) - (_textBox.value?.left?.toFloat() ?: 0f)) }
 //        Log.e("distance", "너비: ${12000 / ((_textBox.value?.right?.toFloat() ?: 0f) - (_textBox.value?.left?.toFloat() ?: 0f))}\n" +
 //                "높이: ${3000 / ((_textBox.value?.bottom?.toFloat() ?: 0f) - (_textBox.value?.top?.toFloat() ?: 0f))}"
 //        )

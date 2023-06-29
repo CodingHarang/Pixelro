@@ -49,7 +49,7 @@ fun TestScreen(
     }
     val systemUiController = rememberSystemUiController()
     DisposableEffect(true) {
-        viewModel.updateScreenSaverTimerValue(90)
+        viewModel.updateScreenSaverTimerValue(2147483647)
 //        systemUiController.setNavigationBarColor(
 //            color = Color(0x00000000),
 //            darkIcons = false
