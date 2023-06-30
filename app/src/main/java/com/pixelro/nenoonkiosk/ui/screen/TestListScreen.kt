@@ -45,8 +45,9 @@ import kotlinx.coroutines.delay
 fun TestListScreen(
     toTestScreen: (TestType) -> Unit,
     toSettingsScreen: () -> Unit,
-    navController: NavHostController = rememberAnimatedNavController(),
-    viewModel: NenoonViewModel
+    toSurveyScreen: () -> Unit,
+    viewModel: NenoonViewModel,
+    navController: NavHostController = rememberAnimatedNavController()
 ) {
 //    BackHandler(enabled = true) {
 //        viewModel.resetScreenSaverTimer()
@@ -83,17 +84,25 @@ fun TestListScreen(
                 .fillMaxWidth()
                 .height(40.dp)
         ) {
-            Box(
+            Row(
                 modifier = Modifier
-                    .fillMaxSize(),
-                contentAlignment = Alignment.CenterStart
+                    .fillMaxHeight()
+                    .clickable {
+                        toSurveyScreen()
+                    },
+                verticalAlignment = Alignment.CenterVertically
             ) {
-//                Image(
-//                    modifier = Modifier
-//                        .width(28.dp),
-//                    painter = painterResource(id = R.drawable.icon_back_black),
-//                    contentDescription = ""
-//                )
+                Image(
+                    modifier = Modifier
+                        .width(28.dp),
+                    painter = painterResource(id = R.drawable.icon_back_black),
+                    contentDescription = ""
+                )
+                Text(
+                    text = "문진하러 가기",
+                    fontSize = 24.sp,
+                    fontWeight = FontWeight.Medium
+                )
             }
             Box(
                 modifier = Modifier

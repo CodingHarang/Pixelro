@@ -22,6 +22,7 @@ import androidx.core.content.ContextCompat
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.google.accompanist.permissions.ExperimentalPermissionsApi
 import com.google.accompanist.permissions.rememberMultiplePermissionsState
+import java.util.concurrent.Executors
 
 @OptIn(ExperimentalPermissionsApi::class)
 @Composable
@@ -59,7 +60,7 @@ fun FaceDetectionWithPreview() {
 fun FaceDetectionScreenContent(
     viewModel: FaceDetectionViewModel = hiltViewModel()
 ) {
-    Log.e("faceDetection", "faceDetectionOnly")
+//    Log.e("faceDetection", "faceDetectionOnly")
     val lifecycleOwner = LocalLifecycleOwner.current
     val context = LocalContext.current
     val cameraProviderFuture = remember { ProcessCameraProvider.getInstance(context) }
@@ -99,7 +100,7 @@ fun FaceDetectionScreenContent(
 fun FaceDetectionScreenContentWithPreview(
     viewModel: FaceDetectionViewModel = hiltViewModel()
 ) {
-    Log.e("faceDetection", "faceDetectionWithPreview")
+//    Log.e("faceDetection", "faceDetectionWithPreview")
 //    if(visibleState.targetState) {
         val lifecycleOwner = LocalLifecycleOwner.current
         val context = LocalContext.current
@@ -111,6 +112,7 @@ fun FaceDetectionScreenContentWithPreview(
                 factory = { context ->
                     val previewView = PreviewView(context)
                     previewView.scaleType = PreviewView.ScaleType.FILL_END
+//                    val executor = Executors.newFixedThreadPool(2)
                     val executor = ContextCompat.getMainExecutor(context)
                     cameraProviderFuture.addListener({
                         val cameraProvider = cameraProviderFuture.get()
@@ -122,7 +124,7 @@ fun FaceDetectionScreenContentWithPreview(
                             .setBackpressureStrategy(ImageAnalysis.STRATEGY_KEEP_ONLY_LATEST)
                             .setImageQueueDepth(5).build().apply {
                                 setAnalyzer(
-                                    executor, MyFaceAnalyzer(
+                                    Executors.newSingleThreadExecutor(), MyFaceAnalyzer(
                                         viewModel::updateFaceDetectionData,
                                         viewModel::updateFaceContourData,
                                         viewModel::updateInputImageSize,

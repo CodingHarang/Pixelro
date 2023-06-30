@@ -99,7 +99,7 @@ fun MeasuringDistanceContent(
                             )
                     )
                     // eye tracking red dot
-//                    CustomShape()
+                    CustomShape()
                 }
                 Box(
                     modifier = Modifier
@@ -165,7 +165,7 @@ fun MeasuringDistanceContent(
                         modifier = Modifier
                             .padding(start = 40.dp, end = 40.dp, bottom = 20.dp),
                         text = when(faceDetectionViewModel.isFaceDetected.collectAsState().value) {
-                            true -> when(isLeftEye) {
+                            true -> when(!isLeftEye) {
                                 true -> when(faceDetectionViewModel.isLeftEyeCovered.collectAsState().value && faceDetectionViewModel.isNenoonTextDetected.collectAsState().value) {
                                     true -> StringProvider.getString(R.string.measuring_distance_content_description4)
                                     false -> StringProvider.getString(R.string.measuring_distance_content_description2)

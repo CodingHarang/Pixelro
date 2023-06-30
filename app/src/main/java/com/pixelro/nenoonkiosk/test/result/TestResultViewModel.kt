@@ -9,8 +9,11 @@ import com.harang.data.api.NenoonKioskApi
 import com.harang.domain.model.SendAmslerGridTestResultRequest
 import com.harang.domain.model.SendAmslerGridTestResultResponse
 import com.harang.domain.model.SendMChartTestResultRequest
+import com.harang.domain.model.SendMChartTestResultResponse
 import com.harang.domain.model.SendPresbyopiaTestResultRequest
+import com.harang.domain.model.SendPresbyopiaTestResultResponse
 import com.harang.domain.model.SendShortVisualAcuityTestResultRequest
+import com.harang.domain.model.SendShortVisualAcuityTestResultResponse
 import com.pixelro.nenoonkiosk.data.TestType
 import com.pixelro.nenoonkiosk.test.macular.amslergrid.AmslerGridTestResult
 import com.pixelro.nenoonkiosk.test.macular.mchart.MChartTestResult
@@ -22,6 +25,7 @@ import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import retrofit2.HttpException
+import retrofit2.Response
 import java.io.IOException
 import javax.inject.Inject
 
@@ -48,14 +52,16 @@ class TestResultViewModel @Inject constructor(
                 }
                 TestType.Presbyopia -> {
                     testResult as PresbyopiaTestResult
+                    Log.e("", testResult.toString())
                     val request = SendPresbyopiaTestResultRequest(testResult.firstDistance, testResult.secondDistance, testResult.thirdDistance, testResult.avgDistance, testResult.age)
                     val response = try {
                         api.sendPresbyopiaTestResult(request)
                     } catch (e: IOException) {
                         e.printStackTrace()
+                        null
                     } catch(e: HttpException) {
                         e.printStackTrace()
-                        "failed"
+                        null
                     }
                 }
                 TestType.ShortDistanceVisualAcuity -> {
@@ -65,9 +71,10 @@ class TestResultViewModel @Inject constructor(
                         api.sendShortVisualAcuityTestResult(request)
                     } catch (e: IOException) {
                         e.printStackTrace()
+                        null
                     } catch(e: HttpException) {
                         e.printStackTrace()
-                        "failed"
+                        null
                     }
                 }
                 TestType.LongDistanceVisualAcuity -> {
@@ -83,9 +90,10 @@ class TestResultViewModel @Inject constructor(
                         api.sendAmslerGridResult(request)
                     } catch (e: IOException) {
                         e.printStackTrace()
+                        null
                     } catch(e: HttpException) {
                         e.printStackTrace()
-                        "failed"
+                        null
                     }
 
                 }
@@ -96,9 +104,10 @@ class TestResultViewModel @Inject constructor(
                         api.sendMChartTestResult(request)
                     } catch (e: IOException) {
                         e.printStackTrace()
+                        null
                     } catch(e: HttpException) {
                         e.printStackTrace()
-                        "failed"
+                        null
                     }
                 }
             }

@@ -17,6 +17,10 @@ import com.google.mlkit.vision.face.FaceDetectorOptions
 import com.google.mlkit.vision.face.FaceLandmark
 import com.google.mlkit.vision.text.TextRecognition
 import com.google.mlkit.vision.text.latin.TextRecognizerOptions
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.coroutineScope
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.runBlocking
 
 class MyFaceAnalyzer(
     val updateFaceDetectionData: (Rect, PointF?, PointF?, Float, Float, Float, Float?, Float?) -> Unit,
@@ -49,6 +53,7 @@ class MyFaceAnalyzer(
             imageProxy.close()
             return
         }
+
         lastAnalysisTime = now
         // original image
         val mediaImage = imageProxy.image
@@ -56,6 +61,7 @@ class MyFaceAnalyzer(
             val image = InputImage.fromMediaImage(mediaImage, imageProxy.imageInfo.rotationDegrees)
 //            updateInputImageSize(mediaImage.width.toFloat(), mediaImage.height.toFloat())
             // Text Recognition
+            Log.e("analysisprocess1", Thread.currentThread().name)
             recognizer.process(image).addOnSuccessListener { result ->
                 if (result.textBlocks.size == 0) {
                     updateIsNenoonTextDetected(false)
@@ -64,16 +70,16 @@ class MyFaceAnalyzer(
                     var isNenoonTextExists = false
                     for (line in block.lines) {
                         if (line.text == "NENOON" || line.text == "NE NOON") {
-                                isNenoonTextExists = true
-                                updateTextRecognitionData(line.boundingBox)
-                            }
+                            isNenoonTextExists = true
+                            updateTextRecognitionData(line.boundingBox)
                         }
-                        if (isNenoonTextExists) {
-                            updateIsNenoonTextDetected(true)
-                            break
-                        } else {
-                            updateIsNenoonTextDetected(false)
-                        }
+                    }
+                    if (isNenoonTextExists) {
+                        updateIsNenoonTextDetected(true)
+                        break
+                    } else {
+                        updateIsNenoonTextDetected(false)
+                    }
                 }
             }.addOnFailureListener {
                 it.printStackTrace()
@@ -99,6 +105,10 @@ class MyFaceAnalyzer(
                 for (face in faces) {
                     val leftEyePosition = face.getLandmark(FaceLandmark.LEFT_EYE)?.position
                     val rightEyePosition = face.getLandmark(FaceLandmark.RIGHT_EYE)?.position
+//                    Log.e(
+//                        "eyePosition",
+//                        "leftEyePosition: ${leftEyePosition?.x}\nrightEyePosition: ${rightEyePosition?.x}"
+//                    )
                     if (leftEyePosition != null && rightEyePosition != null) {
                         if (leftEyePosition.x > 500f && rightEyePosition.x < 1420f && leftEyePosition.y > 700f && rightEyePosition.y > 700f && rightEyePosition.x - leftEyePosition.x > 150f) {
                             centerFace = face
@@ -134,7 +144,7 @@ class MyFaceAnalyzer(
                             leftEyeOpenProbability,
                             rightEyeOpenProbability
                         )
-                        Log.e("faceNum", "${centerFace.trackingId}, ${leftEyePosition.x}, ${leftEyePosition.y} ${rightEyePosition.x}, ${rightEyePosition.y}")
+//                        Log.e("faceNum", "${centerFace.trackingId}, ${leftEyePosition.x}, ${leftEyePosition.y} ${rightEyePosition.x}, ${rightEyePosition.y}")
                         return@addOnSuccessListener
                     } else {
                         updateIsFaceDetected(false)
@@ -178,6 +188,4 @@ class MyFaceAnalyzer(
 //        val imageReader = ImageReader.newInstance(resizedBitmap.width, resizedBitmap.height, ImageFormat.YUV_420_888, 1)
 //        val resizedImage = imageReader.acquireLatestImage()
 //        val inputResizedImage = InputImage.fromBitmap(croppedBitmap, imageProxy.imageInfo.rotationDegrees)
-
-
 }

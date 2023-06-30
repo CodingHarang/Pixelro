@@ -38,10 +38,6 @@ class VisualAcuityViewModel @Inject constructor(
         _isMeasuringDistanceContentVisible.update { visible }
     }
 
-    fun updateIsCoveredEyeCheckingContentVisible(visible: Boolean) {
-        _isCoveredEyeCheckingContentVisible.update { visible }
-    }
-
     fun updateIsVisualAcuityContentVisible(visible: Boolean) {
         _isVisualAcuityContentVisible.update { visible }
     }

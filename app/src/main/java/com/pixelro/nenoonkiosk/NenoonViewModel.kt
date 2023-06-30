@@ -1,6 +1,7 @@
 package com.pixelro.nenoonkiosk
 
 import android.Manifest
+import android.annotation.SuppressLint
 import android.app.Application
 import android.bluetooth.BluetoothManager
 import android.content.Context
@@ -8,11 +9,13 @@ import android.content.IntentSender
 import android.content.pm.PackageManager
 import android.location.LocationManager
 import android.net.Uri
+import android.os.Build
 import android.provider.Settings
 import android.util.Log
 import android.util.SizeF
 import androidx.core.content.ContextCompat
 import androidx.core.content.ContextCompat.getSystemService
+import androidx.core.content.PackageManagerCompat
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.viewModelScope
 import androidx.media3.common.MediaItem
@@ -39,6 +42,8 @@ import com.pixelro.nenoonkiosk.test.visualacuity.children.ChildrenVisualAcuityTe
 import com.pixelro.nenoonkiosk.test.visualacuity.longdistance.LongVisualAcuityTestResult
 import com.pixelro.nenoonkiosk.test.visualacuity.shortdistance.ShortVisualAcuityTestResult
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.CoroutineName
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -48,6 +53,7 @@ import java.io.File
 import java.util.Locale
 import javax.inject.Inject
 
+@SuppressLint("HardwareIds")
 @HiltViewModel
 class NenoonViewModel @Inject constructor(
     application: Application,
@@ -55,11 +61,12 @@ class NenoonViewModel @Inject constructor(
 ) : AndroidViewModel(application) {
 
     private fun checkBackgroundStatus() {
-        viewModelScope.launch {
+        viewModelScope.launch(CoroutineName("checkBackgroundStatus")) {
             while (true) {
                 if (_isResumed.value) {
                     // Check screen saver timer
-                    _screenSaverTimer.update { _screenSaverTimer.value - 1 }
+                    Log.e("threadName", Thread.currentThread().name)
+                    _screenSaverTimer.update { _screenSaverTimer.value - 0 }
 //                    Log.e("screenSaver", "${_screenSaverTimer.value}")
                     if (_screenSaverTimer.value < 0) {
                         _isScreenSaverOn.update { true }
@@ -72,6 +79,19 @@ class NenoonViewModel @Inject constructor(
                 delay(1000)
             }
         }
+        viewModelScope.launch(Dispatchers.Default) {
+            while(true) {
+                delay(1000)
+                Log.e("threadName", Thread.currentThread().name)
+            }
+        }
+//        viewModelScope.launch(Dispatchers.Default) {
+//            while(true) {
+////                delay(1000)
+//                Log.e("threadName", Thread.currentThread().name)
+//                Log.e("third", "third")
+//            }
+//        }
     }
 
     // signIn
@@ -321,5 +341,11 @@ class NenoonViewModel @Inject constructor(
         exoPlayer.prepare()
         exoPlayer.repeatMode = Player.REPEAT_MODE_ONE
 //        exoPlayer.playWhenReady = true
+        viewModelScope.launch {
+//            val context = getApplication<Application>().applicationContext
+//            val intent = context.packageManager.getLaunchIntentForPackage("com.teamviewer.host.market")
+//            context.startActivity(intent)
+            Log.e("serial", Build.SERIAL)
+        }
     }
 }
