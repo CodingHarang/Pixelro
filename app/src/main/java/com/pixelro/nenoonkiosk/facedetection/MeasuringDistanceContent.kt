@@ -99,7 +99,7 @@ fun MeasuringDistanceContent(
                             )
                     )
                     // eye tracking red dot
-                    CustomShape()
+//                    CustomShape()
                 }
                 Box(
                     modifier = Modifier

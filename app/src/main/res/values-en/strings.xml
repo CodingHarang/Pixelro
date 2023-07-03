@@ -52,7 +52,7 @@
     <string name="result_screen_age">age</string>
     <string name="presbyopia_result_hoffstetter1">"Age of your eyes are"</string>
     <string name="measuring_distance_content_description1">Please put your head in the center</string>
-    <string name="measuring_distance_content_description2">If the measurement distance changes during the test, the value of the eye examination may change.</string>
+    <string name="measuring_distance_content_description2">Please cover your left eye</string>
     <string name="visual_acuity_test_common_content_distance">measure distance</string>
     <string name="short_distance_visual_acuity_test_result_content_result">Visual acuity test result</string>
     <string name="short_distance_visual_acuity_test_result_distance">measured distance</string>
@@ -137,6 +137,6 @@
     <string name="amsler_grid_test_description">Look at the black dot in the middle and choose the part that looks abnormal or distorted</string>
     <string name="mchart_test_description">Please choose from the bottom whether\nthe line below is straight or bent</string>
     <string name="survey_title">str</string>
-    <string name="measuring_distance_content_description3">str</string>
-    <string name="measuring_distance_content_description4">str</string>
+    <string name="measuring_distance_content_description3">Please cover your right eye</string>
+    <string name="measuring_distance_content_description4">Please adjust the distance</string>
 </resources>

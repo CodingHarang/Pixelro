@@ -84,26 +84,26 @@ fun TestListScreen(
                 .fillMaxWidth()
                 .height(40.dp)
         ) {
-            Row(
-                modifier = Modifier
-                    .fillMaxHeight()
-                    .clickable {
-                        toSurveyScreen()
-                    },
-                verticalAlignment = Alignment.CenterVertically
-            ) {
-                Image(
-                    modifier = Modifier
-                        .width(28.dp),
-                    painter = painterResource(id = R.drawable.icon_back_black),
-                    contentDescription = ""
-                )
-                Text(
-                    text = "문진하러 가기",
-                    fontSize = 24.sp,
-                    fontWeight = FontWeight.Medium
-                )
-            }
+//            Row(
+//                modifier = Modifier
+//                    .fillMaxHeight()
+//                    .clickable {
+//                        toSurveyScreen()
+//                    },
+//                verticalAlignment = Alignment.CenterVertically
+//            ) {
+//                Image(
+//                    modifier = Modifier
+//                        .width(28.dp),
+//                    painter = painterResource(id = R.drawable.icon_back_black),
+//                    contentDescription = ""
+//                )
+//                Text(
+//                    text = "문진하러 가기",
+//                    fontSize = 24.sp,
+//                    fontWeight = FontWeight.Medium
+//                )
+//            }
             Box(
                 modifier = Modifier
                     .fillMaxSize(),
