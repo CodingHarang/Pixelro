@@ -66,7 +66,7 @@ class NenoonViewModel @Inject constructor(
                 if (_isResumed.value) {
                     // Check screen saver timer
                     Log.e("threadName", Thread.currentThread().name)
-                    _screenSaverTimer.update { _screenSaverTimer.value - 0 }
+                    _screenSaverTimer.update { _screenSaverTimer.value - 1 }
 //                    Log.e("screenSaver", "${_screenSaverTimer.value}")
                     if (_screenSaverTimer.value < 0) {
                         _isScreenSaverOn.update { true }
