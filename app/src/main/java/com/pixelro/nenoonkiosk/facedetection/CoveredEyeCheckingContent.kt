@@ -37,58 +37,58 @@ fun CoveredEyeCheckingContent(
     isLeftEye: Boolean,
     faceDetectionViewModel: FaceDetectionViewModel = hiltViewModel()
 ) {
-    AnimatedVisibility(
-        visibleState = coveredEyeCheckingContentVisibleState,
-        enter = AnimationProvider.enterTransition,
-        exit = AnimationProvider.exitTransition
-    ) {
-        FaceDetection()
-        LaunchedEffect(true) {
-            faceDetectionViewModel.initializeCoveredEyeChecking(isLeftEye) { toNextContent() }
-        }
-        Column(
-            modifier = Modifier,
-            horizontalAlignment = Alignment.CenterHorizontally
-        ) {
-            Text(
-                modifier = Modifier
-                    .padding(top = 100.dp, bottom = 100.dp),
-                text = when(isLeftEye) {
-                    true -> StringProvider.getString(R.string.covered_eye_checking_left_description)
-                    else -> StringProvider.getString(R.string.covered_eye_checking_right_description)
-                },
-                color = Color(0xffffffff),
-                fontSize = 40.sp,
-                fontWeight = FontWeight.Bold,
-                textAlign = TextAlign.Center
-            )
-            Image(
-                modifier = Modifier
-                    .graphicsLayer {
-                        this.rotationY = when (isLeftEye) {
-                            true -> 0f
-                            else -> 180f
-                        }
-                    }
-                    .width(600.dp)
-                    .height(600.dp)
-                    .padding(bottom = 40.dp),
-                painter = painterResource(id = R.drawable.img_right_eye_covered),
-                contentDescription = ""
-            )
-            Text(
-                text = StringProvider.getString(R.string.covered_eye_checking_description),
-                color = Color(0xffffffff),
-                fontSize = 20.sp
-            )
-            if(faceDetectionViewModel.isTimerShowing.collectAsState().value) {
-                Text(
-                    text = "${faceDetectionViewModel.leftTime.collectAsState().value.toInt()}",
-                    color = Color(0xffffffff),
-                    fontSize = 80.sp,
-                    fontWeight = FontWeight.Bold
-                )
-            }
-        }
-    }
+//    AnimatedVisibility(
+//        visibleState = coveredEyeCheckingContentVisibleState,
+//        enter = AnimationProvider.enterTransition,
+//        exit = AnimationProvider.exitTransition
+//    ) {
+//        FaceDetection()
+//        LaunchedEffect(true) {
+//            faceDetectionViewModel.initializeCoveredEyeChecking(isLeftEye) { toNextContent() }
+//        }
+//        Column(
+//            modifier = Modifier,
+//            horizontalAlignment = Alignment.CenterHorizontally
+//        ) {
+//            Text(
+//                modifier = Modifier
+//                    .padding(top = 100.dp, bottom = 100.dp),
+//                text = when(isLeftEye) {
+//                    true -> StringProvider.getString(R.string.covered_eye_checking_left_description)
+//                    else -> StringProvider.getString(R.string.covered_eye_checking_right_description)
+//                },
+//                color = Color(0xffffffff),
+//                fontSize = 40.sp,
+//                fontWeight = FontWeight.Bold,
+//                textAlign = TextAlign.Center
+//            )
+//            Image(
+//                modifier = Modifier
+//                    .graphicsLayer {
+//                        this.rotationY = when (isLeftEye) {
+//                            true -> 0f
+//                            else -> 180f
+//                        }
+//                    }
+//                    .width(600.dp)
+//                    .height(600.dp)
+//                    .padding(bottom = 40.dp),
+//                painter = painterResource(id = R.drawable.img_right_eye_covered),
+//                contentDescription = ""
+//            )
+//            Text(
+//                text = StringProvider.getString(R.string.covered_eye_checking_description),
+//                color = Color(0xffffffff),
+//                fontSize = 20.sp
+//            )
+//            if(faceDetectionViewModel.isTimerShowing.collectAsState().value) {
+//                Text(
+//                    text = "${faceDetectionViewModel.leftTime.collectAsState().value.toInt()}",
+//                    color = Color(0xffffffff),
+//                    fontSize = 80.sp,
+//                    fontWeight = FontWeight.Bold
+//                )
+//            }
+//        }
+//    }
 }

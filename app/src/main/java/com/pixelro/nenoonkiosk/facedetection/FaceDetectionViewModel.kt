@@ -63,8 +63,9 @@ class FaceDetectionViewModel @Inject constructor(
     val isLeftEyeCovered: StateFlow<Boolean> = _isLeftEyeCovered
     private val _isRightEyeCovered = MutableStateFlow(false)
     val isRightEyeCovered: StateFlow<Boolean> = _isRightEyeCovered
-    private val _noNenoonTextCount = MutableStateFlow(0)
-    val noNenoonTextCount: StateFlow<Int> = _noNenoonTextCount
+    private val _isNenoonTextDetected = MutableStateFlow(false)
+    val isNenoonTextDetected: StateFlow<Boolean> = _isNenoonTextDetected
+    private var count = 0
 
 //    private val _bitmap = MutableStateFlow(Bitmap.createBitmap(100, 100, Bitmap.Config.ARGB_8888))
 //    val bitmap: StateFlow<Bitmap> = _bitmap
@@ -145,16 +146,12 @@ class FaceDetectionViewModel @Inject constructor(
     }
 
     fun updateIsNenoonTextDetected(isNenoonTextDetected: Boolean) {
-        if (isNenoonTextDetected) _noNenoonTextCount.update { 0 }
-        else _noNenoonTextCount.update {
-            if (it + 1 > 100) 100
-            else it + 1
-        }
-        Log.e("nenoon", "noNenoonTextCount: ${_noNenoonTextCount.value}")
+        count = 15
+        _isNenoonTextDetected.update { isNenoonTextDetected }
     }
 
     private fun updateScreenToFaceDistance() {
-        if(_noNenoonTextCount.value > 6) {
+        if(!_isNenoonTextDetected.value) {
             if((rightEyePosition.value.x - leftEyePosition.value.y) != 0f && GlobalValue.lensSize.width != 0f) {
                 _screenToFaceDistance.update {
                     val prev = _screenToFaceDistance.value
@@ -199,49 +196,56 @@ class FaceDetectionViewModel @Inject constructor(
 
 
     // Covered Eye Checking
-    private val _leftTime = MutableStateFlow(0f)
-    val leftTime: StateFlow<Float> = _leftTime
-    private val _isTimerShowing = MutableStateFlow(false)
-    val isTimerShowing: StateFlow<Boolean> = _isTimerShowing
+//    private val _leftTime = MutableStateFlow(0f)
+//    val leftTime: StateFlow<Float> = _leftTime
+//    private val _isTimerShowing = MutableStateFlow(false)
+//    val isTimerShowing: StateFlow<Boolean> = _isTimerShowing
+//
+//    fun initializeCoveredEyeChecking(isLeftEye: Boolean, toNextContent: () -> Unit) {
+//        _leftTime.update { 5f }
+//        _isTimerShowing.update { false }
+//        viewModelScope.launch {
+//            var count = 0
+//            when(isLeftEye) {
+//                true -> {
+//                    while(count < 4) {
+//                        if (_leftEyeOpenProbability.value < 0.5f) count++
+////                        Log.e("probability", "${leftEyeOpenProbability.value}, ${rightEyeOpenProbability.value}")
+//                        delay(500)
+//                    }
+//                    _isTimerShowing.update { true }
+//                    startTimer { toNextContent() }
+//                }
+//                false -> {
+//                    while(count < 4) {
+//                        if (_rightEyeOpenProbability.value < 0.5f) count++
+////                        Log.e("probability", "${leftEyeOpenProbability.value}, ${rightEyeOpenProbability.value}")
+//                        delay(500)
+//                    }
+//                    _isTimerShowing.update { true }
+//                    startTimer { toNextContent() }
+//                }
+//            }
+//        }
+//    }
 
-    fun initializeCoveredEyeChecking(isLeftEye: Boolean, toNextContent: () -> Unit) {
-        _leftTime.update { 5f }
-        _isTimerShowing.update { false }
+    private fun startTimer() {
         viewModelScope.launch {
-            var count = 0
-            when(isLeftEye) {
-                true -> {
-                    while(count < 4) {
-                        if (_leftEyeOpenProbability.value < 0.5f) count++
-//                        Log.e("probability", "${leftEyeOpenProbability.value}, ${rightEyeOpenProbability.value}")
-                        delay(500)
-                    }
-                    _isTimerShowing.update { true }
-                    startTimer { toNextContent() }
-                }
-                false -> {
-                    while(count < 4) {
-                        if (_rightEyeOpenProbability.value < 0.5f) count++
-//                        Log.e("probability", "${leftEyeOpenProbability.value}, ${rightEyeOpenProbability.value}")
-                        delay(500)
-                    }
-                    _isTimerShowing.update { true }
-                    startTimer { toNextContent() }
+            while(true) {
+                delay(100)
+//                Log.e("count", "$count")
+                count--
+                if (count < 0) {
+                    _isNenoonTextDetected.update { false }
+                    count = 0
+                } else {
+                    _isNenoonTextDetected.update { true }
                 }
             }
         }
     }
 
-    private fun startTimer(toNextContent: () -> Unit) {
-        viewModelScope.launch {
-            var count = 0
-            _leftTime.update { 3.5f }
-            while(count < 6) {
-                delay(500)
-                count++
-                _leftTime.update { (it - 0.5f) }
-            }
-            toNextContent()
-        }
+    init {
+        startTimer()
     }
 }

@@ -27,7 +27,8 @@ fun EyeTestSelectableBox(
     title: String,
     description: String,
     onClickMethod: () -> Unit,
-    expanded: Boolean
+    isDone: Boolean
+//    expanded: Boolean
 ) {
     Card(
         elevation = CardDefaults.cardElevation(0.dp),
@@ -61,18 +62,12 @@ fun EyeTestSelectableBox(
                     modifier = Modifier
                         .padding(start = 28.dp, top = 20.dp, end = 80.dp),
                     fontSize = 32.sp,
-                    fontWeight = FontWeight.Bold
+                    fontWeight = FontWeight.Bold,
+                    color = when(isDone) {
+                        true -> Color(0xff999999)
+                        false -> Color(0xff000000)
+                    }
                 )
-                if (expanded) {
-                    Text(
-                        description,
-                        modifier = Modifier
-                            .height(60.dp)
-                            .padding(start = 28.dp, top = 8.dp, end = 80.dp),
-                        fontSize = 20.sp,
-                        color = Color(0xff919191)
-                    )
-                }
                 Spacer(
                     modifier = Modifier
                         .height(20.dp)

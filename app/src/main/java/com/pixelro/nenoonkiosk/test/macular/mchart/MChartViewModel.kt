@@ -55,7 +55,7 @@ class MChartViewModel @Inject constructor(
     fun toNextMChartTest() {
         _isLeftEye.update { false }
         viewModelScope.launch {
-            delay(750)
+            delay(450)
             updateCurrentLevel(0)
             updateIsVertical(true)
         }

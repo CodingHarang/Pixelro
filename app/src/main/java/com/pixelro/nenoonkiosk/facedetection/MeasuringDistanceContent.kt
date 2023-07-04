@@ -75,11 +75,11 @@ fun MeasuringDistanceContent(
                 repeatMode = RepeatMode.Reverse
             )
         )
-        var isDescriptionDialogShowing by remember { mutableStateOf(true) }
-        if(isDescriptionDialogShowing) {
+        var isDialogShowing by remember { mutableStateOf(true) }
+        if(isDialogShowing && isLeftEye) {
             MeasuringDistanceDialog(
                 onDismissRequest = {
-                    isDescriptionDialogShowing = false
+                    isDialogShowing = false
                 }
             )
         }
@@ -145,8 +145,8 @@ fun MeasuringDistanceContent(
                         if (!isLeftEye) {
                             Image(
                                 modifier = Modifier
-                                    .width((300 * 300 / faceDetectionViewModel.screenToFaceDistance.collectAsState().value).dp)
-                                    .height((600 * 300 / faceDetectionViewModel.screenToFaceDistance.collectAsState().value).dp)
+                                    .width((400 * 300 / faceDetectionViewModel.screenToFaceDistance.collectAsState().value).dp)
+                                    .height((800 * 300 / faceDetectionViewModel.screenToFaceDistance.collectAsState().value).dp)
                                     .offset(
                                         x = (350 - (faceDetectionViewModel.rightEyePosition.collectAsState().value.x / 1.5f)).dp,
                                         y = (faceDetectionViewModel.rightEyePosition.collectAsState().value.y / 1.5f - 530).dp
@@ -158,8 +158,8 @@ fun MeasuringDistanceContent(
                         } else {
                             Image(
                                 modifier = Modifier
-                                    .width((300 * 300 / faceDetectionViewModel.screenToFaceDistance.collectAsState().value).dp)
-                                    .height((600 * 300 / faceDetectionViewModel.screenToFaceDistance.collectAsState().value).dp)
+                                    .width((400 * 300 / faceDetectionViewModel.screenToFaceDistance.collectAsState().value).dp)
+                                    .height((800 * 300 / faceDetectionViewModel.screenToFaceDistance.collectAsState().value).dp)
                                     .offset(
                                         x = (370 - (faceDetectionViewModel.leftEyePosition.collectAsState().value.x / 1.5f)).dp,
                                         y = (faceDetectionViewModel.leftEyePosition.collectAsState().value.y / 1.5f - 530).dp
@@ -185,7 +185,7 @@ fun MeasuringDistanceContent(
                             .padding(start = 20.dp, end = 20.dp, bottom = 20.dp),
                         text = when(faceDetectionViewModel.isFaceDetected.collectAsState().value) {
                             true -> when(!isLeftEye) {
-                                true -> when(faceDetectionViewModel.isLeftEyeCovered.collectAsState().value && faceDetectionViewModel.noNenoonTextCount.collectAsState().value < 6) {
+                                true -> when(faceDetectionViewModel.isLeftEyeCovered.collectAsState().value && faceDetectionViewModel.isNenoonTextDetected.collectAsState().value) {
                                     true -> {
                                         when(faceDetectionViewModel.isDistanceOK.collectAsState().value) {
                                             true -> StringProvider.getString(R.string.measuring_distance_content_description5)
@@ -194,7 +194,7 @@ fun MeasuringDistanceContent(
                                     }
                                     false -> StringProvider.getString(R.string.measuring_distance_content_description2)
                                 }
-                                false -> when(faceDetectionViewModel.isRightEyeCovered.collectAsState().value && faceDetectionViewModel.noNenoonTextCount.collectAsState().value < 6) {
+                                false -> when(faceDetectionViewModel.isRightEyeCovered.collectAsState().value && faceDetectionViewModel.isNenoonTextDetected.collectAsState().value) {
                                     true -> {
                                         when (faceDetectionViewModel.isDistanceOK.collectAsState().value) {
                                             true -> StringProvider.getString(R.string.measuring_distance_content_description5)
@@ -282,7 +282,7 @@ fun MeasuringDistanceContent(
                         else -> (246.0..355.0)
 //                        TestType.ShortDistanceVisualAcuity -> (-100.0..100.0)
 //                        else -> (-100.0..100.0)
-                    } && faceDetectionViewModel.noNenoonTextCount.collectAsState().value < 10
+                    } && faceDetectionViewModel.isNenoonTextDetected.collectAsState().value
                     && when(!isLeftEye) {
                         true -> faceDetectionViewModel.isLeftEyeCovered.collectAsState().value
                         false -> faceDetectionViewModel.isRightEyeCovered.collectAsState().value

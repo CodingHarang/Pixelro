@@ -4,6 +4,7 @@ import androidx.compose.animation.ExperimentalAnimationApi
 import androidx.compose.foundation.layout.*
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.isTraceInProgress
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.hilt.navigation.compose.hiltViewModel
@@ -52,7 +53,7 @@ fun NenoonApp(
                     modifier = Modifier
                         .fillMaxSize(),
                     navController = mainNavController,
-                    startDestination = GlobalConstants.ROUTE_TEST_LIST,
+                    startDestination = GlobalConstants.ROUTE_SURVEY,
                     contentAlignment = Alignment.TopCenter
                 ) {
                     // 문진표 작성 화면
@@ -64,6 +65,7 @@ fun NenoonApp(
                         SurveyScreen(
                             toTestListScreen = {
                                 mainNavController.navigate(GlobalConstants.ROUTE_TEST_LIST)
+                                viewModel.initializeTestDoneStatus()
                                 viewModel.surveyData = it
                             }
                         )
@@ -76,6 +78,7 @@ fun NenoonApp(
                         exitTransition = { AnimationProvider.exitTransition }
                     ) {
                         TestListScreen(
+                            checkIsTestDone = viewModel::checkIsTestDone,
                             toTestScreen = {
                                 viewModel.updateSelectedTestType(it)
                                 mainNavController.navigate(GlobalConstants.ROUTE_TEST_CONTENT)
@@ -86,7 +89,10 @@ fun NenoonApp(
                             toSurveyScreen = {
                                 mainNavController.navigate(GlobalConstants.ROUTE_SURVEY)
                             },
-                            viewModel = viewModel
+                            isPresbyopiaDone = viewModel.isPresbyopiaTestDone.collectAsState().value,
+                            isShortVisualAcuityDone = viewModel.isShortVisualAcuityTestDone.collectAsState().value,
+                            isAmslerGridDone = viewModel.isAmslerGridTestDone.collectAsState().value,
+                            isMChartDone = viewModel.isMChartTestDone.collectAsState().value
                         )
                     }
 
@@ -194,6 +200,14 @@ fun NenoonApp(
                         enterTransition = { AnimationProvider.enterTransition },
                         exitTransition = { AnimationProvider.exitTransition }
                     ) {
+                        when (viewModel.selectedTestType.collectAsState().value) {
+                            TestType.Presbyopia -> viewModel.updateIsPresbyopiaTestDone(true)
+                            TestType.ShortDistanceVisualAcuity -> viewModel.updateIsShortVisualAcuityTestDone(true)
+                            TestType.AmslerGrid -> viewModel.updateIsAmslerGridTestDone(true)
+                            TestType.MChart -> viewModel.updateIsMChartTestDone(true)
+                            else -> {
+                            }
+                        }
                         TestResultScreen(
                             testType = viewModel.selectedTestType.collectAsState().value,
                             testResult = when (
@@ -206,7 +220,7 @@ fun NenoonApp(
                                 TestType.MChart -> viewModel.mChartTestResult
                                 TestType.None -> null
                             },
-                            navController = mainNavController
+                            navController = mainNavController,
                         )
                     }
                 }

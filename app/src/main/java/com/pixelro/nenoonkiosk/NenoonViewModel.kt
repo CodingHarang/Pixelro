@@ -81,19 +81,6 @@ class NenoonViewModel @Inject constructor(
                 delay(1000)
             }
         }
-        viewModelScope.launch(Dispatchers.Default) {
-            while(true) {
-                delay(1000)
-//                Log.e("threadName", Thread.currentThread().name)
-            }
-        }
-//        viewModelScope.launch(Dispatchers.Default) {
-//            while(true) {
-////                delay(1000)
-//                Log.e("threadName", Thread.currentThread().name)
-//                Log.e("third", "third")
-//            }
-//        }
     }
 
     // signIn
@@ -269,12 +256,6 @@ class NenoonViewModel @Inject constructor(
     val isShowingSplashScreen: StateFlow<Boolean> = _isShowingSplashScreen
     private val _selectedTestType = MutableStateFlow(TestType.None)
     val selectedTestType: StateFlow<TestType> = _selectedTestType
-    private val _selectedTestName = MutableStateFlow("")
-    val selectedTestName: StateFlow<String> = _selectedTestName
-    private val _selectedTestDescription = MutableStateFlow("")
-    val selectedTestDescription: StateFlow<String> = _selectedTestDescription
-    private val _selectedTestMenuDescription = MutableStateFlow("")
-    val selectedTestMenuDescription: StateFlow<String> = _selectedTestMenuDescription
 
     private fun showSplashScreen() {
         viewModelScope.launch {
@@ -295,32 +276,64 @@ class NenoonViewModel @Inject constructor(
 
     fun updateSelectedTestType(testType: TestType) {
         _selectedTestType.update { testType }
-        _selectedTestName.update {
-            when (testType) {
-                TestType.Presbyopia -> StringProvider.getString(R.string.presbyopia_name1)
-                TestType.ShortDistanceVisualAcuity -> StringProvider.getString(R.string.short_visual_acuity_name)
-                TestType.LongDistanceVisualAcuity -> StringProvider.getString(R.string.long_visual_acuity_name)
-                TestType.ChildrenVisualAcuity -> StringProvider.getString(R.string.children_visual_acuity_name)
-                TestType.AmslerGrid -> StringProvider.getString(R.string.amsler_grid_name)
-                else -> StringProvider.getString(R.string.mchart_name)
-            }
-        }
-        _selectedTestDescription.update {
-            when (testType) {
-                TestType.Presbyopia -> StringProvider.getString(R.string.presbyopia_long_description)
-                TestType.ShortDistanceVisualAcuity -> StringProvider.getString(R.string.short_visual_acuity_long_description)
-                TestType.LongDistanceVisualAcuity -> StringProvider.getString(R.string.long_visual_acuity_long_description)
-                TestType.ChildrenVisualAcuity -> StringProvider.getString(R.string.children_visual_acuity_long_desciption)
-                TestType.AmslerGrid -> StringProvider.getString(R.string.amsler_grid_long_description)
-                else -> StringProvider.getString(R.string.mchart_long_description)
-            }
-        }
     }
 
     // Survey Data
     var surveyData = SurveyData()
 
     // Test Result
+    private val _isPresbyopiaTestDone = MutableStateFlow(false)
+    val isPresbyopiaTestDone: StateFlow<Boolean> = _isPresbyopiaTestDone
+    private val _isShortVisualAcuityTestDone = MutableStateFlow(false)
+    val isShortVisualAcuityTestDone: StateFlow<Boolean> = _isShortVisualAcuityTestDone
+    private val _isAmslerGridTestDone = MutableStateFlow(false)
+    val isAmslerGridTestDone: StateFlow<Boolean> = _isAmslerGridTestDone
+    private val _isMChartTestDone = MutableStateFlow(false)
+    val isMChartTestDone: StateFlow<Boolean> = _isMChartTestDone
+
+    fun updateIsPresbyopiaTestDone(isDone: Boolean) {
+        _isPresbyopiaTestDone.update { isDone }
+    }
+
+    fun updateIsShortVisualAcuityTestDone(isDone: Boolean) {
+        _isShortVisualAcuityTestDone.update { isDone }
+    }
+
+    fun updateIsAmslerGridTestDone(isDone: Boolean) {
+        _isAmslerGridTestDone.update { isDone }
+    }
+
+    fun updateIsMChartTestDone(isDone: Boolean) {
+        _isMChartTestDone.update { isDone }
+    }
+
+    fun initializeTestDoneStatus() {
+        _isPresbyopiaTestDone.update { false }
+        _isShortVisualAcuityTestDone.update { false }
+        _isAmslerGridTestDone.update { false }
+        _isMChartTestDone.update { false }
+    }
+
+    fun checkIsTestDone(testType: TestType): Boolean {
+        when(testType) {
+            TestType.Presbyopia -> {
+                return _isPresbyopiaTestDone.value
+            }
+            TestType.ShortDistanceVisualAcuity -> {
+                return _isShortVisualAcuityTestDone.value
+            }
+            TestType.AmslerGrid -> {
+                return _isAmslerGridTestDone.value
+            }
+            TestType.MChart -> {
+                return _isMChartTestDone.value
+            }
+            else -> {
+                return false
+            }
+        }
+    }
+
     var presbyopiaTestResult = PresbyopiaTestResult()
     var shortVisualAcuityTestResult = ShortVisualAcuityTestResult()
     var longVisualAcuityTestResult = LongVisualAcuityTestResult()

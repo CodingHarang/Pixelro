@@ -53,10 +53,10 @@ class MyFaceAnalyzer(
     @SuppressLint("UnsafeOptInUsageError")
     override fun analyze(imageProxy: ImageProxy) {
         val now = SystemClock.uptimeMillis()
-        if (lastAnalysisTime != -1L && now - lastAnalysisTime < 200f) {
-            imageProxy.close()
-            return
-        }
+//        if (lastAnalysisTime != -1L && now - lastAnalysisTime < 200f) {
+//            imageProxy.close()
+//            return
+//        }
         var isNenoonTextDetected = false
         lastAnalysisTime = now
         // original image
@@ -69,10 +69,6 @@ class MyFaceAnalyzer(
             recognizer.process(image).addOnSuccessListener(executor) { result ->
 
 //                Log.e("analysisprocess1", Thread.currentThread().name)
-
-                if (result.textBlocks.size == 0) {
-                    updateIsNenoonTextDetected(false)
-                }
                 for (block in result.textBlocks) {
                     for (line in block.lines) {
                         if (line.text == "NENOON" || line.text == "NE NOON") {
@@ -83,15 +79,12 @@ class MyFaceAnalyzer(
                     if (isNenoonTextDetected) {
                         updateIsNenoonTextDetected(true)
                         break
-                    } else {
-                        updateIsNenoonTextDetected(false)
                     }
                 }
             }.addOnFailureListener {
-                updateIsNenoonTextDetected(false)
                 it.printStackTrace()
             }.addOnCompleteListener {
-                imageProxy.close()
+//                imageProxy.close()
             }
 
 

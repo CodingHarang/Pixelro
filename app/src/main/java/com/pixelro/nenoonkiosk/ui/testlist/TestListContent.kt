@@ -30,20 +30,31 @@ import com.pixelro.nenoonkiosk.data.TestType
 @OptIn(ExperimentalAnimationApi::class)
 @Composable
 fun TestListContent(
-    toTestScreen: (TestType) -> Unit
+    checkIsTestDone: (TestType) -> Boolean,
+    showSurveyRecommendationDialog: () -> Unit,
+    toTestScreen: (TestType) -> Unit,
+    isPresbyopiaDone: Boolean,
+    isShortVisualAcuityDone: Boolean,
+    isAmslerGridDone: Boolean,
+    isMChartDone: Boolean,
 ) {
-    val isPresbyopiaExpanded = remember { mutableStateOf(false) }
-    val isShortVisualAcuityExpanded = remember { mutableStateOf(false) }
-    val isAmslerChartExpanded = remember { mutableStateOf(false) }
-    val isMChartExpanded = remember { mutableStateOf(false) }
+//    val isPresbyopiaExpanded = remember { mutableStateOf(false) }
+//    val isShortVisualAcuityExpanded = remember { mutableStateOf(false) }
+//    val isAmslerChartExpanded = remember { mutableStateOf(false) }
+//    val isMChartExpanded = remember { mutableStateOf(false) }
     EyeTestSelectableBox(
         title = StringProvider.getString(R.string.presbyopia_name1),
         description = StringProvider.getString(R.string.presbyopia_short_description),
         onClickMethod = {
-            toTestScreen(TestType.Presbyopia)
+            if (checkIsTestDone(TestType.Presbyopia)) {
+                showSurveyRecommendationDialog()
+            } else {
+                toTestScreen(TestType.Presbyopia)
+            }
 //            isPresbyopiaExpanded.value = !isPresbyopiaExpanded.value
         },
-        expanded = isPresbyopiaExpanded.value
+        isDone = isPresbyopiaDone,
+//        expanded = isPresbyopiaExpanded.value
     )
     Spacer(
         modifier = Modifier
@@ -53,9 +64,14 @@ fun TestListContent(
         title = StringProvider.getString(R.string.short_visual_acuity_name),
         description = StringProvider.getString(R.string.short_visual_acuity_short_description),
         onClickMethod = {
-            toTestScreen(TestType.ShortDistanceVisualAcuity)
+            if (checkIsTestDone(TestType.ShortDistanceVisualAcuity)) {
+                showSurveyRecommendationDialog()
+            } else {
+                toTestScreen(TestType.ShortDistanceVisualAcuity)
+            }
         },
-        expanded = isShortVisualAcuityExpanded.value
+        isDone = isShortVisualAcuityDone
+//        expanded = isShortVisualAcuityExpanded.value
     )
     Spacer(
         modifier = Modifier
@@ -64,8 +80,15 @@ fun TestListContent(
     EyeTestSelectableBox(
         title = StringProvider.getString(R.string.amsler_grid_name),
         description = StringProvider.getString(R.string.amsler_grid_short_description),
-        onClickMethod = { toTestScreen(TestType.AmslerGrid) },
-        expanded = isAmslerChartExpanded.value
+        onClickMethod = {
+            if (checkIsTestDone(TestType.AmslerGrid)) {
+                showSurveyRecommendationDialog()
+            } else {
+                toTestScreen(TestType.AmslerGrid)
+            }
+        },
+        isDone = isAmslerGridDone
+//        expanded = isAmslerChartExpanded.value
     )
     Spacer(
         modifier = Modifier
@@ -74,8 +97,15 @@ fun TestListContent(
     EyeTestSelectableBox(
         title = StringProvider.getString(R.string.mchart_name),
         description = StringProvider.getString(R.string.mchart_short_description),
-        onClickMethod = { toTestScreen(TestType.MChart) },
-        expanded = isMChartExpanded.value
+        onClickMethod = {
+            if (checkIsTestDone(TestType.MChart)) {
+                showSurveyRecommendationDialog()
+            } else {
+                toTestScreen(TestType.MChart)
+            }
+        },
+        isDone = isMChartDone
+//        expanded = isMChartExpanded.value
     )
 //    AnimatedNavHost(
 //        navController = navController,
