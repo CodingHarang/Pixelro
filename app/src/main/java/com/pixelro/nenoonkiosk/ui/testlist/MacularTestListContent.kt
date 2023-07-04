@@ -69,19 +69,19 @@ fun MacularTestListContent(
                 color = Color(0xFFAAAAAA)
             )
         }
-        EyeTestSelectableBox(
-            title = StringProvider.getString(R.string.amsler_grid_name),
-            description = StringProvider.getString(R.string.amsler_grid_short_description),
-            onClickMethod = { toTestScreen(TestType.AmslerGrid) }
-        )
-        Spacer(
-            modifier = Modifier
-                .height(20.dp)
-        )
-        EyeTestSelectableBox(
-            title = StringProvider.getString(R.string.mchart_name),
-            description = StringProvider.getString(R.string.mchart_short_description),
-            onClickMethod = { toTestScreen(TestType.MChart) }
-        )
+//        EyeTestSelectableBox(
+//            title = StringProvider.getString(R.string.amsler_grid_name),
+//            description = StringProvider.getString(R.string.amsler_grid_short_description),
+//            onClickMethod = { toTestScreen(TestType.AmslerGrid) }
+//        )
+//        Spacer(
+//            modifier = Modifier
+//                .height(20.dp)
+//        )
+//        EyeTestSelectableBox(
+//            title = StringProvider.getString(R.string.mchart_name),
+//            description = StringProvider.getString(R.string.mchart_short_description),
+//            onClickMethod = { toTestScreen(TestType.MChart) }
+//        )
     }
 }

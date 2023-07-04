@@ -65,8 +65,10 @@ class NenoonViewModel @Inject constructor(
             while (true) {
                 if (_isResumed.value) {
                     // Check screen saver timer
-                    Log.e("threadName", Thread.currentThread().name)
-                    _screenSaverTimer.update { _screenSaverTimer.value - 1 }
+
+//                    Log.e("threadName", Thread.currentThread().name)
+                    _screenSaverTimer.update { _screenSaverTimer.value - 0 }
+
 //                    Log.e("screenSaver", "${_screenSaverTimer.value}")
                     if (_screenSaverTimer.value < 0) {
                         _isScreenSaverOn.update { true }
@@ -82,7 +84,7 @@ class NenoonViewModel @Inject constructor(
         viewModelScope.launch(Dispatchers.Default) {
             while(true) {
                 delay(1000)
-                Log.e("threadName", Thread.currentThread().name)
+//                Log.e("threadName", Thread.currentThread().name)
             }
         }
 //        viewModelScope.launch(Dispatchers.Default) {

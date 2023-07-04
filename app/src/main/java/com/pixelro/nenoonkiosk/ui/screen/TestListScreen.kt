@@ -22,6 +22,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.SpanStyle
 import androidx.compose.ui.text.buildAnnotatedString
@@ -141,7 +142,7 @@ fun TestListScreen(
                 )
         )
         HorizontalPager(
-            contentPadding = PaddingValues(40.dp),
+            contentPadding = PaddingValues(start = 40.dp, top = 20.dp, end = 40.dp, bottom = 20.dp),
             pageSpacing = 40.dp,
             state = pagerState,
             pageCount = 100000,
@@ -149,9 +150,7 @@ fun TestListScreen(
             Advertisement(it)
         }
         TestListContent(
-            toTestScreen = toTestScreen,
-            navController = navController,
-            viewModel = viewModel
+            toTestScreen = toTestScreen
         )
         Box(
             modifier = Modifier
@@ -233,7 +232,7 @@ fun Advertisement(
         ) {
             Image(
                 modifier = Modifier
-                    .fillMaxSize()
+                    .fillMaxWidth()
                     .clip(
                         shape = RoundedCornerShape(8.dp)
                     ),
@@ -242,6 +241,7 @@ fun Advertisement(
                     1 -> R.drawable.ad_2
                     else -> R.drawable.ad_3
                 }),
+                contentScale = ContentScale.FillWidth,
                 contentDescription = ""
             )
         }

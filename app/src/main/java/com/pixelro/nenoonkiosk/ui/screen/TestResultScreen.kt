@@ -86,7 +86,7 @@ fun TestResultScreen(
 //        viewModel.resetScreenSaverTimer()
     }
     LaunchedEffect(true) {
-        Log.e("threadName", Thread.currentThread().name)
+//        Log.e("threadName", Thread.currentThread().name)
         testResultViewModel.sendResultToServer(
             testType = testType,
             testResult = testResult

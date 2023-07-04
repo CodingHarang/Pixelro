@@ -17,10 +17,13 @@ import com.google.mlkit.vision.face.FaceDetectorOptions
 import com.google.mlkit.vision.face.FaceLandmark
 import com.google.mlkit.vision.text.TextRecognition
 import com.google.mlkit.vision.text.latin.TextRecognizerOptions
+import kotlinx.coroutines.DelicateCoroutinesApi
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.coroutineScope
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.newSingleThreadContext
 import kotlinx.coroutines.runBlocking
+import java.util.concurrent.Executor
 
 class MyFaceAnalyzer(
     val updateFaceDetectionData: (Rect, PointF?, PointF?, Float, Float, Float, Float?, Float?) -> Unit,
@@ -28,7 +31,8 @@ class MyFaceAnalyzer(
     val updateInputImageSize: (Float, Float) -> Unit,
     val updateTextRecognitionData: (Rect?) -> Unit,
     val updateIsFaceDetected: (Boolean) -> Unit,
-    val updateIsNenoonTextDetected: (Boolean) -> Unit
+    val updateIsNenoonTextDetected: (Boolean) -> Unit,
+    private val executor: Executor
 //    val updateBitmap: (Bitmap) -> Unit,
 ) : ImageAnalysis.Analyzer {
 
@@ -53,28 +57,30 @@ class MyFaceAnalyzer(
             imageProxy.close()
             return
         }
-
+        var isNenoonTextDetected = false
         lastAnalysisTime = now
         // original image
         val mediaImage = imageProxy.image
         if (mediaImage != null) {
             val image = InputImage.fromMediaImage(mediaImage, imageProxy.imageInfo.rotationDegrees)
+            Log.e("imageSize", "imagewidth : ${image.width}, image height : ${image.height}")
 //            updateInputImageSize(mediaImage.width.toFloat(), mediaImage.height.toFloat())
             // Text Recognition
-            Log.e("analysisprocess1", Thread.currentThread().name)
-            recognizer.process(image).addOnSuccessListener { result ->
+            recognizer.process(image).addOnSuccessListener(executor) { result ->
+
+//                Log.e("analysisprocess1", Thread.currentThread().name)
+
                 if (result.textBlocks.size == 0) {
                     updateIsNenoonTextDetected(false)
                 }
                 for (block in result.textBlocks) {
-                    var isNenoonTextExists = false
                     for (line in block.lines) {
                         if (line.text == "NENOON" || line.text == "NE NOON") {
-                            isNenoonTextExists = true
+                            isNenoonTextDetected = true
                             updateTextRecognitionData(line.boundingBox)
                         }
                     }
-                    if (isNenoonTextExists) {
+                    if (isNenoonTextDetected) {
                         updateIsNenoonTextDetected(true)
                         break
                     } else {
@@ -82,13 +88,18 @@ class MyFaceAnalyzer(
                     }
                 }
             }.addOnFailureListener {
+                updateIsNenoonTextDetected(false)
                 it.printStackTrace()
             }.addOnCompleteListener {
                 imageProxy.close()
             }
 
+
             // Face Detection
-            detector.process(image).addOnSuccessListener { faces ->
+            detector.process(image).addOnSuccessListener(executor) { faces ->
+
+//                Log.e("analysisprocess2", Thread.currentThread().name)
+
 //                Log.e("eyeface", faces.size.toString())
 //                if (faces.size == 0) {
 //                    noFaceCount++
@@ -110,7 +121,7 @@ class MyFaceAnalyzer(
 //                        "leftEyePosition: ${leftEyePosition?.x}\nrightEyePosition: ${rightEyePosition?.x}"
 //                    )
                     if (leftEyePosition != null && rightEyePosition != null) {
-                        if (leftEyePosition.x > 500f && rightEyePosition.x < 1420f && leftEyePosition.y > 700f && rightEyePosition.y > 700f && rightEyePosition.x - leftEyePosition.x > 150f) {
+                        if (leftEyePosition.x > 500f && leftEyePosition.x < 960f && rightEyePosition.x < 1420f && rightEyePosition.x > 960f && leftEyePosition.y > 700f && rightEyePosition.y > 700f && rightEyePosition.x - leftEyePosition.x > 150f) {
                             centerFace = face
                             break
                         }
@@ -118,6 +129,7 @@ class MyFaceAnalyzer(
                 }
 
                 if(centerFace != null) {
+
                     noFaceCount = 0
                     updateIsFaceDetected(true)
                     val boundingBox = centerFace.boundingBox
@@ -151,7 +163,7 @@ class MyFaceAnalyzer(
                     }
                 } else {
                     noFaceCount++
-                    if(noFaceCount > 10) {
+                    if(noFaceCount > 6) {
                         updateIsFaceDetected(false)
                     }
                 }

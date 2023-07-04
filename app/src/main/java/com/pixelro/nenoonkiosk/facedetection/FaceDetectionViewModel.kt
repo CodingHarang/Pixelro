@@ -57,14 +57,14 @@ class FaceDetectionViewModel @Inject constructor(
     val rightEyeOpenProbability: StateFlow<Float> = _rightEyeOpenProbability
     private val _isFaceDetected = MutableStateFlow(false)
     val isFaceDetected: StateFlow<Boolean> = _isFaceDetected
-    private val _isNenoonTextDetected = MutableStateFlow(false)
-    val isNenoonTextDetected: StateFlow<Boolean> = _isNenoonTextDetected
     private val _isDistanceOK = MutableStateFlow(false)
     val isDistanceOK: StateFlow<Boolean> = _isDistanceOK
     private val _isLeftEyeCovered = MutableStateFlow(false)
     val isLeftEyeCovered: StateFlow<Boolean> = _isLeftEyeCovered
     private val _isRightEyeCovered = MutableStateFlow(false)
     val isRightEyeCovered: StateFlow<Boolean> = _isRightEyeCovered
+    private val _noNenoonTextCount = MutableStateFlow(0)
+    val noNenoonTextCount: StateFlow<Int> = _noNenoonTextCount
 
 //    private val _bitmap = MutableStateFlow(Bitmap.createBitmap(100, 100, Bitmap.Config.ARGB_8888))
 //    val bitmap: StateFlow<Bitmap> = _bitmap
@@ -145,11 +145,13 @@ class FaceDetectionViewModel @Inject constructor(
     }
 
     fun updateIsNenoonTextDetected(isNenoonTextDetected: Boolean) {
-        _isNenoonTextDetected.update { isNenoonTextDetected }
+        if (isNenoonTextDetected) _noNenoonTextCount.update { 0 }
+        else _noNenoonTextCount.update { it + 1 }
+//        Log.e("nenoon", "noNenoonTextCount: ${_noNenoonTextCount.value}")
     }
 
     private fun updateScreenToFaceDistance() {
-        if(!isNenoonTextDetected.value) {
+        if(_noNenoonTextCount.value > 6) {
             if((rightEyePosition.value.x - leftEyePosition.value.y) != 0f && GlobalValue.lensSize.width != 0f) {
                 _screenToFaceDistance.update {
                     val prev = _screenToFaceDistance.value
@@ -161,7 +163,7 @@ class FaceDetectionViewModel @Inject constructor(
                 return
             }
         } else {
-            _screenToFaceDistance.update { (_distance.value).toFloat() * 10f }
+            _screenToFaceDistance.update { _distance.value * 10f }
         }
     }
 
@@ -175,6 +177,7 @@ class FaceDetectionViewModel @Inject constructor(
     fun updateTextRecognitionData(
         textBox: Rect?
     ) {
+
         _textBox.update { textBox }
         if(((_textBox.value?.right?.toFloat() ?: 0f) + (_textBox.value?.left?.toFloat() ?: 0f)) / 2 > 960) {
             _isLeftEyeCovered.update { true }
@@ -184,6 +187,7 @@ class FaceDetectionViewModel @Inject constructor(
             _isRightEyeCovered.update { true }
         }
         _distance.update { 12000 / 4.8f * 2.3f / ((_textBox.value?.right?.toFloat() ?: 0f) - (_textBox.value?.left?.toFloat() ?: 0f)) }
+        _screenToFaceDistance.update { _distance.value * 10f }
 //        Log.e("distance", "너비: ${12000 / ((_textBox.value?.right?.toFloat() ?: 0f) - (_textBox.value?.left?.toFloat() ?: 0f))}\n" +
 //                "높이: ${3000 / ((_textBox.value?.bottom?.toFloat() ?: 0f) - (_textBox.value?.top?.toFloat() ?: 0f))}"
 //        )
@@ -206,7 +210,7 @@ class FaceDetectionViewModel @Inject constructor(
                 true -> {
                     while(count < 4) {
                         if (_leftEyeOpenProbability.value < 0.5f) count++
-                        Log.e("probability", "${leftEyeOpenProbability.value}, ${rightEyeOpenProbability.value}")
+//                        Log.e("probability", "${leftEyeOpenProbability.value}, ${rightEyeOpenProbability.value}")
                         delay(500)
                     }
                     _isTimerShowing.update { true }
@@ -215,7 +219,7 @@ class FaceDetectionViewModel @Inject constructor(
                 false -> {
                     while(count < 4) {
                         if (_rightEyeOpenProbability.value < 0.5f) count++
-                        Log.e("probability", "${leftEyeOpenProbability.value}, ${rightEyeOpenProbability.value}")
+//                        Log.e("probability", "${leftEyeOpenProbability.value}, ${rightEyeOpenProbability.value}")
                         delay(500)
                     }
                     _isTimerShowing.update { true }
