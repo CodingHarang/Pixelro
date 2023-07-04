@@ -21,6 +21,7 @@ import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
@@ -103,27 +104,34 @@ fun PresbyopiaTestContent(
         modifier = Modifier.fillMaxSize(),
         contentAlignment = Alignment.BottomCenter
     ) {
-        Text(
+        Box(
             modifier = Modifier
                 .padding(
                     start = 40.dp,
                     end = 40.dp,
-                    bottom = (100).dp
+                    bottom = 40.dp
                 )
                 .fillMaxWidth()
+                .height(80.dp)
+                .clip(
+                    RoundedCornerShape(8.dp)
+                )
                 .background(
                     color = Color(0xff1d71e1),
-                    shape = RoundedCornerShape(8.dp)
+                    shape = RoundedCornerShape(topStart = 8.dp, topEnd = 8.dp)
                 )
                 .clickable {
                     presbyopiaViewModel.moveToNextStep(distance) { toResultScreen(presbyopiaViewModel.getPresbyopiaTestResult()) }
-                }
-                .padding(20.dp),
-            text = StringProvider.getString(R.string.next),
-            textAlign = TextAlign.Center,
-            fontSize = 24.sp,
-            color = Color(0xffffffff)
-        )
+                },
+            contentAlignment = Alignment.Center
+        ) {
+            Text(
+                text = StringProvider.getString(R.string.next),
+                fontSize = 40.sp,
+                color = Color(0xffffffff),
+                fontWeight = FontWeight.Medium
+            )
+        }
     }
 }
 

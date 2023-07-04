@@ -296,6 +296,7 @@ fun TestResultScreen(
         )
         Box(
             modifier = Modifier
+                .padding(bottom = 40.dp)
                 .fillMaxSize(),
             contentAlignment = Alignment.BottomCenter
         ) {

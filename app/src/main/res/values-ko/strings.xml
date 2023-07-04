@@ -44,7 +44,7 @@
     <string name="test_predescription_speech_buttle_text1">이곳을 터치하여</string>
     <string name="test_predescription_speech_buttle_text2">\n검사 방법</string>    <string name="test_predescription_speech_buttle_text3">을 확인 후 진행바랍니다.</string>
     <string name="result_screen_print">결과 프린트하기</string>
-    <string name="result_screen_go_back">메인 메뉴로 돌아가기</string>
+    <string name="result_screen_go_back">검사 목록으로 돌아가기</string>
     <string name="covered_eye_checking_right_description">왼쪽 눈을 가리고\n오른쪽 눈을 검사하겠습니다\n눈가리개로 왼쪽 눈을 가려주세요</string>
     <string name="covered_eye_checking_left_description">오른쪽 눈을 가리고\n왼쪽 눈을 검사하겠습니다\n눈가리개로 오른쪽 눈을 가려주세요</string>
     <string name="result_screen_distance">거리</string>

@@ -20,6 +20,8 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.platform.LocalContext
+import androidx.core.view.WindowCompat
+import androidx.core.view.WindowInsetsControllerCompat
 import com.google.accompanist.systemuicontroller.rememberSystemUiController
 import com.pixelro.nenoonkiosk.data.GlobalValue
 import com.pixelro.nenoonkiosk.data.SharedPreferencesManager
@@ -70,11 +72,14 @@ class MainActivity : ComponentActivity() {
         val navigationBarResourceId =
             resources.getIdentifier("navigation_bar_height", "dimen", "android")
         GlobalValue.statusBarPadding = resources.getDimension(statusBarResourceId)
-        GlobalValue.navigationBarPadding = resources.getDimension(navigationBarResourceId)
+//        GlobalValue.navigationBarPadding = resources.getDimension(navigationBarResourceId)
+        GlobalValue.navigationBarPadding = 0f
         Log.e("padding", "${GlobalValue.statusBarPadding}, ${GlobalValue.navigationBarPadding}")
 
         window.addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON)
-
+        WindowCompat.getInsetsController(window, window.decorView).apply {
+            systemBarsBehavior = WindowInsetsControllerCompat.BEHAVIOR_SHOW_TRANSIENT_BARS_BY_SWIPE
+        }
         setContent {
             NenoonKioskTheme {
                 Surface(
@@ -87,9 +92,10 @@ class MainActivity : ComponentActivity() {
                     systemUiController.setStatusBarColor(
                         color = Color(0x00000000)
                     )
-                    systemUiController.setNavigationBarColor(
-                        color = Color(0x00000000)
-                    )
+//                    systemUiController.setNavigationBarColor(
+//                        color = Color(0x00000000)
+//                    )
+                    systemUiController.isNavigationBarVisible = false
                     val context = LocalContext.current
                     val configuration = LocalConfiguration.current
                     LaunchedEffect(true) {
