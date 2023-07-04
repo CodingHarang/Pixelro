@@ -15,6 +15,7 @@ import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
@@ -26,10 +27,14 @@ import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.draw.rotate
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.ColorFilter
 import androidx.compose.ui.res.painterResource
@@ -37,6 +42,8 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.compose.ui.window.Dialog
+import androidx.compose.ui.window.DialogProperties
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.pixelro.nenoonkiosk.R
 import com.pixelro.nenoonkiosk.data.AnimationProvider
@@ -62,12 +69,20 @@ fun MeasuringDistanceContent(
         val shiftVal by transition.animateFloat(
             initialValue = 0f, targetValue = 1f, animationSpec = infiniteRepeatable(
                 animation = keyframes {
-                    durationMillis = 1000
-                    delayMillis = 500
+                    durationMillis = 700
+                    delayMillis = 0
                 },
                 repeatMode = RepeatMode.Reverse
             )
         )
+        var isDescriptionDialogShowing by remember { mutableStateOf(true) }
+        if(isDescriptionDialogShowing) {
+            MeasuringDistanceDialog(
+                onDismissRequest = {
+                    isDescriptionDialogShowing = false
+                }
+            )
+        }
         Box(
             modifier = Modifier
                 .fillMaxSize(),
@@ -130,11 +145,11 @@ fun MeasuringDistanceContent(
                         if (!isLeftEye) {
                             Image(
                                 modifier = Modifier
-                                    .width((200 * 300 / faceDetectionViewModel.screenToFaceDistance.collectAsState().value).dp)
-                                    .height((400 * 300 / faceDetectionViewModel.screenToFaceDistance.collectAsState().value).dp)
+                                    .width((300 * 300 / faceDetectionViewModel.screenToFaceDistance.collectAsState().value).dp)
+                                    .height((600 * 300 / faceDetectionViewModel.screenToFaceDistance.collectAsState().value).dp)
                                     .offset(
-                                        x = (430 - (faceDetectionViewModel.rightEyePosition.collectAsState().value.x / 2.25f)).dp,
-                                        y = (faceDetectionViewModel.rightEyePosition.collectAsState().value.y / 2.25f - 500).dp
+                                        x = (350 - (faceDetectionViewModel.rightEyePosition.collectAsState().value.x / 1.5f)).dp,
+                                        y = (faceDetectionViewModel.rightEyePosition.collectAsState().value.y / 1.5f - 530).dp
                                     )
                                     .alpha(shiftVal),
                                 painter = painterResource(id = R.drawable.occluder),
@@ -143,11 +158,11 @@ fun MeasuringDistanceContent(
                         } else {
                             Image(
                                 modifier = Modifier
-                                    .width((200 * 300 / faceDetectionViewModel.screenToFaceDistance.collectAsState().value).dp)
-                                    .height((400 * 300 / faceDetectionViewModel.screenToFaceDistance.collectAsState().value).dp)
+                                    .width((300 * 300 / faceDetectionViewModel.screenToFaceDistance.collectAsState().value).dp)
+                                    .height((600 * 300 / faceDetectionViewModel.screenToFaceDistance.collectAsState().value).dp)
                                     .offset(
-                                        x = (430 - (faceDetectionViewModel.leftEyePosition.collectAsState().value.x / 2.25f)).dp,
-                                        y = (faceDetectionViewModel.leftEyePosition.collectAsState().value.y / 2.25f - 500).dp
+                                        x = (370 - (faceDetectionViewModel.leftEyePosition.collectAsState().value.x / 1.5f)).dp,
+                                        y = (faceDetectionViewModel.leftEyePosition.collectAsState().value.y / 1.5f - 530).dp
                                     )
                                     .alpha(shiftVal),
                                 painter = painterResource(id = R.drawable.occluder),
@@ -221,14 +236,14 @@ fun MeasuringDistanceContent(
                         color = when (selectedTestType) {
                             TestType.ShortDistanceVisualAcuity -> {
                                 when (faceDetectionViewModel.screenToFaceDistance.collectAsState().value) {
-                                    in 350.0..460.0 -> Color(0xffffffff)
+                                    in 346.0..455.0 -> Color(0xffffffff)
                                     else -> Color(0xFF6D6D6D)
                                 }
                             }
 
                             else -> {
                                 when (faceDetectionViewModel.screenToFaceDistance.collectAsState().value) {
-                                    in 250.0..360.0 -> Color(0xffffffff)
+                                    in 246.0..355.0 -> Color(0xffffffff)
                                     else -> Color(0xFF6D6D6D)
                                 }
                             }
@@ -263,12 +278,15 @@ fun MeasuringDistanceContent(
                     }
                 }
                 if (faceDetectionViewModel.screenToFaceDistance.collectAsState().value in when (selectedTestType) {
-                        TestType.ShortDistanceVisualAcuity -> (350.0..460.0)
-                        else -> (250.0..360.0)
+                        TestType.ShortDistanceVisualAcuity -> (346.0..455.0)
+                        else -> (246.0..355.0)
 //                        TestType.ShortDistanceVisualAcuity -> (-100.0..100.0)
 //                        else -> (-100.0..100.0)
                     } && faceDetectionViewModel.noNenoonTextCount.collectAsState().value < 10
-                    && !isLeftEye == faceDetectionViewModel.isLeftEyeCovered.collectAsState().value
+                    && when(!isLeftEye) {
+                        true -> faceDetectionViewModel.isLeftEyeCovered.collectAsState().value
+                        false -> faceDetectionViewModel.isRightEyeCovered.collectAsState().value
+                    }
                 ) {
                     faceDetectionViewModel.updateIsDistanceOK(true)
                     Box(
@@ -305,6 +323,72 @@ fun MeasuringDistanceContent(
                 } else {
                     faceDetectionViewModel.updateIsDistanceOK(false)
                 }
+            }
+        }
+    }
+}
+
+@Composable
+fun MeasuringDistanceDialog(
+    onDismissRequest: () -> Unit
+) {
+    Dialog(
+        onDismissRequest = onDismissRequest,
+        properties = DialogProperties()
+    ) {
+        Column(
+            modifier = Modifier
+                .width(800.dp)
+                .height(1000.dp)
+                .background(
+                    color = Color(0xffffffff),
+                    shape = RoundedCornerShape(8.dp)
+                ),
+            horizontalAlignment = Alignment.CenterHorizontally
+        ) {
+            Text(
+                modifier = Modifier
+                    .padding(start = 20.dp, top = 20.dp, end = 20.dp, bottom = 8.dp)
+                    .fillMaxWidth(),
+                text = "본 검사에서는 아래의 이미지와 같은\n전용 눈가리개를 사용합니다.\n눈가리개를 집어주세요.",
+                fontSize = 32.sp,
+                fontWeight = FontWeight.Bold
+            )
+            Image(
+                modifier = Modifier
+                    .width(350.dp)
+                    .height(700.dp)
+                    .offset(x = 0.dp, y = 0.dp)
+                    .rotate(-25f),
+                painter = painterResource(id = R.drawable.occluder2),
+                contentDescription = null
+            )
+            Box(
+                modifier = Modifier
+                    .fillMaxSize(),
+                contentAlignment = Alignment.BottomCenter
+            ) {
+                Text(
+                    modifier = Modifier
+                        .padding(start = 20.dp, top = 8.dp, end = 20.dp, bottom = 20.dp)
+                        .fillMaxWidth()
+                        .clip(
+                            shape = RoundedCornerShape(8.dp)
+                        )
+                        .border(
+                            border = BorderStroke(1.dp, Color(0xffc3c3c3)),
+                            shape = RoundedCornerShape(8.dp)
+                        )
+                        .clickable {
+                            onDismissRequest()
+                        }
+                        .padding(20.dp),
+                    text = "확인했습니다",
+                    fontSize = 30.sp,
+                    color = Color(0xff1d71e1),
+                    fontWeight = FontWeight.Medium,
+                    textAlign = TextAlign.Center
+                )
             }
         }
     }

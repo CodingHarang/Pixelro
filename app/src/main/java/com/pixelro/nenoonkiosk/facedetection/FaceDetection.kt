@@ -74,7 +74,7 @@ fun FaceDetectionScreenContent(
                 val cameraSelector = CameraSelector.Builder()
                     .requireLensFacing(CameraSelector.LENS_FACING_FRONT).build()
                 val imageAnalysis = ImageAnalysis.Builder()
-                    .setTargetResolution(Size(1200, 1200))
+                    .setTargetResolution(Size(1000, 1000))
                     .setBackpressureStrategy(ImageAnalysis.STRATEGY_KEEP_ONLY_LATEST)
                     .setImageQueueDepth(5).build().apply {
                         setAnalyzer(
@@ -123,7 +123,7 @@ fun FaceDetectionScreenContentWithPreview(
                             it.setSurfaceProvider(previewView.surfaceProvider)
                         }
                         val imageAnalysis = ImageAnalysis.Builder()
-                            .setTargetResolution(Size(1400, 1400))
+                            .setTargetResolution(Size(1000, 1000))
                             .setBackpressureStrategy(ImageAnalysis.STRATEGY_KEEP_ONLY_LATEST)
                             .setImageQueueDepth(5).build().apply {
                                 setAnalyzer(

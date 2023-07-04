@@ -78,14 +78,14 @@ fun EyeTestSelectableBox(
                         .height(20.dp)
                 )
             }
-//            Image(
-//                modifier = Modifier
-//                    .padding(end = 40.dp)
-//                    .width(24.dp)
-//                    .rotate(270f),
-//                painter = painterResource(id = R.drawable.icon_back_black),
-//                contentDescription = ""
-//            )
+            Image(
+                modifier = Modifier
+                    .padding(end = 40.dp)
+                    .width(24.dp)
+                    .rotate(180f),
+                painter = painterResource(id = R.drawable.icon_back_black),
+                contentDescription = ""
+            )
         }
     }
 }

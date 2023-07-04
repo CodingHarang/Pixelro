@@ -41,16 +41,16 @@ fun CustomShape(
             color = Color(0xFFFF0000),
             radius = 3f,
             center = Offset(
-                (size.width - (leftEyePosition.x)) / 1.5f + 450f,
-                leftEyePosition.y / 1.5f - 350
+                (size.width - (leftEyePosition.x)) / 1.5f + 210f,
+                leftEyePosition.y / 1.5f + 40f
             )
         )
         drawCircle(
             color = Color(0xFFFF0000),
             radius = 3f,
             center = Offset(
-                (size.width - (rightEyePosition.x)) / 1.5f + 450f,
-                rightEyePosition.y / 1.5f - 350
+                (size.width - (rightEyePosition.x)) / 1.5f + 130f,
+                rightEyePosition.y / 1.5f + 40f
             )
         )
 //        for (point in leftEyeContour) {

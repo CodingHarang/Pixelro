@@ -63,7 +63,7 @@ class MyFaceAnalyzer(
         val mediaImage = imageProxy.image
         if (mediaImage != null) {
             val image = InputImage.fromMediaImage(mediaImage, imageProxy.imageInfo.rotationDegrees)
-            Log.e("imageSize", "imagewidth : ${image.width}, image height : ${image.height}")
+//            Log.e("imageSize", "imagewidth : ${image.width}, image height : ${image.height}")
 //            updateInputImageSize(mediaImage.width.toFloat(), mediaImage.height.toFloat())
             // Text Recognition
             recognizer.process(image).addOnSuccessListener(executor) { result ->
@@ -116,12 +116,9 @@ class MyFaceAnalyzer(
                 for (face in faces) {
                     val leftEyePosition = face.getLandmark(FaceLandmark.LEFT_EYE)?.position
                     val rightEyePosition = face.getLandmark(FaceLandmark.RIGHT_EYE)?.position
-//                    Log.e(
-//                        "eyePosition",
-//                        "leftEyePosition: ${leftEyePosition?.x}\nrightEyePosition: ${rightEyePosition?.x}"
-//                    )
+//                    Log.e("eyePosition", "leftEyePosition: ${leftEyePosition?.x}\nrightEyePosition: ${rightEyePosition?.x}")
                     if (leftEyePosition != null && rightEyePosition != null) {
-                        if (leftEyePosition.x > 500f && leftEyePosition.x < 960f && rightEyePosition.x < 1420f && rightEyePosition.x > 960f && leftEyePosition.y > 700f && rightEyePosition.y > 700f && rightEyePosition.x - leftEyePosition.x > 150f) {
+                        if (leftEyePosition.x > 260f && leftEyePosition.x < 544f && rightEyePosition.x < 804f && rightEyePosition.x > 544f && leftEyePosition.y > 400f && rightEyePosition.y > 400f && rightEyePosition.x - leftEyePosition.x > 130f) {
                             centerFace = face
                             break
                         }

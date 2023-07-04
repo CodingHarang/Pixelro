@@ -146,8 +146,11 @@ class FaceDetectionViewModel @Inject constructor(
 
     fun updateIsNenoonTextDetected(isNenoonTextDetected: Boolean) {
         if (isNenoonTextDetected) _noNenoonTextCount.update { 0 }
-        else _noNenoonTextCount.update { it + 1 }
-//        Log.e("nenoon", "noNenoonTextCount: ${_noNenoonTextCount.value}")
+        else _noNenoonTextCount.update {
+            if (it + 1 > 100) 100
+            else it + 1
+        }
+        Log.e("nenoon", "noNenoonTextCount: ${_noNenoonTextCount.value}")
     }
 
     private fun updateScreenToFaceDistance() {
@@ -155,7 +158,7 @@ class FaceDetectionViewModel @Inject constructor(
             if((rightEyePosition.value.x - leftEyePosition.value.y) != 0f && GlobalValue.lensSize.width != 0f) {
                 _screenToFaceDistance.update {
                     val prev = _screenToFaceDistance.value
-                    val dist = 1.1f * (GlobalValue.focalLength * 63) * inputImageSizeX.value / ((rightEyePosition.value.x - leftEyePosition.value.x) * (GlobalValue.lensSize.width))
+                    val dist = 1.1f * (GlobalValue.focalLength * 63) * inputImageSizeX.value / ((rightEyePosition.value.x - leftEyePosition.value.x) * (GlobalValue.lensSize.width)) / 1920f * 1088f
                     if(dist > 600f || dist < 1f) prev
                     else dist
                 }
@@ -179,14 +182,14 @@ class FaceDetectionViewModel @Inject constructor(
     ) {
 
         _textBox.update { textBox }
-        if(((_textBox.value?.right?.toFloat() ?: 0f) + (_textBox.value?.left?.toFloat() ?: 0f)) / 2 > 960) {
+        if(((_textBox.value?.right?.toFloat() ?: 0f) + (_textBox.value?.left?.toFloat() ?: 0f)) / 2 > 544) {
             _isLeftEyeCovered.update { true }
             _isRightEyeCovered.update { false }
         } else {
             _isLeftEyeCovered.update { false }
             _isRightEyeCovered.update { true }
         }
-        _distance.update { 12000 / 4.8f * 2.3f / ((_textBox.value?.right?.toFloat() ?: 0f) - (_textBox.value?.left?.toFloat() ?: 0f)) }
+        _distance.update { 12000 / 4.8f * 2.3f / ((_textBox.value?.right?.toFloat() ?: 0f) - (_textBox.value?.left?.toFloat() ?: 0f)) / 1920f * 1088f }
         _screenToFaceDistance.update { _distance.value * 10f }
 //        Log.e("distance", "너비: ${12000 / ((_textBox.value?.right?.toFloat() ?: 0f) - (_textBox.value?.left?.toFloat() ?: 0f))}\n" +
 //                "높이: ${3000 / ((_textBox.value?.bottom?.toFloat() ?: 0f) - (_textBox.value?.top?.toFloat() ?: 0f))}"
