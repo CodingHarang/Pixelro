@@ -1,5 +1,6 @@
 package com.pixelro.nenoonkiosk.ui.testlist
 
+import androidx.compose.animation.animateContentSize
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.border
@@ -25,25 +26,26 @@ import com.pixelro.nenoonkiosk.R
 fun EyeTestSelectableBox(
     title: String,
     description: String,
-    onClickMethod: () -> Unit
+    onClickMethod: () -> Unit,
+    expanded: Boolean
 ) {
     Card(
         elevation = CardDefaults.cardElevation(0.dp),
         modifier = Modifier
             .padding(start = 40.dp, end = 40.dp)
             .fillMaxWidth()
-            .height(160.dp)
             .border(
                 border = BorderStroke(1.dp, Color(0xffc3c3c3)),
                 shape = RoundedCornerShape(8.dp)
-            ),
+            )
+            .animateContentSize(),
         colors = CardDefaults.cardColors(
             containerColor = Color(0xFFFFFFFF)
         )
     ) {
         Box(
             modifier = Modifier
-                .fillMaxSize()
+                .fillMaxWidth()
                 .clickable {
                     onClickMethod()
                 },
@@ -51,32 +53,39 @@ fun EyeTestSelectableBox(
         ) {
             Column(
                 modifier = Modifier
-                    .fillMaxSize(),
+                    .fillMaxWidth(),
                 verticalArrangement = Arrangement.Center
             ) {
                 Text(
                     text = title,
                     modifier = Modifier
-                        .padding(start = 40.dp, bottom = 8.dp),
-                    fontSize = 24.sp,
+                        .padding(start = 28.dp, top = 20.dp, end = 80.dp),
+                    fontSize = 32.sp,
                     fontWeight = FontWeight.Bold
                 )
-                Text(
-                    description,
+                if (expanded) {
+                    Text(
+                        description,
+                        modifier = Modifier
+                            .height(60.dp)
+                            .padding(start = 28.dp, top = 8.dp, end = 80.dp),
+                        fontSize = 20.sp,
+                        color = Color(0xff919191)
+                    )
+                }
+                Spacer(
                     modifier = Modifier
-                        .padding(start = 40.dp, end = 80.dp),
-                    fontSize = 20.sp,
-                    color = Color(0xff919191)
+                        .height(20.dp)
                 )
             }
-            Image(
-                modifier = Modifier
-                    .padding(end = 40.dp)
-                    .width(24.dp)
-                    .rotate(180f),
-                painter = painterResource(id = R.drawable.icon_back_black),
-                contentDescription = ""
-            )
+//            Image(
+//                modifier = Modifier
+//                    .padding(end = 40.dp)
+//                    .width(24.dp)
+//                    .rotate(270f),
+//                painter = painterResource(id = R.drawable.icon_back_black),
+//                contentDescription = ""
+//            )
         }
     }
 }

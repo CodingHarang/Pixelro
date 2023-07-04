@@ -69,13 +69,13 @@ fun VisualAcuityTestListContent(
                 color = Color(0xFFAAAAAA)
             )
         }
-        EyeTestSelectableBox(
-            title = StringProvider.getString(R.string.short_visual_acuity_name),
-            description = StringProvider.getString(R.string.short_visual_acuity_short_description),
-            onClickMethod = {
-                toTestScreen(TestType.ShortDistanceVisualAcuity)
-            }
-        )
+//        EyeTestSelectableBox(
+//            title = StringProvider.getString(R.string.short_visual_acuity_name),
+//            description = StringProvider.getString(R.string.short_visual_acuity_short_description),
+//            onClickMethod = {
+//                toTestScreen(TestType.ShortDistanceVisualAcuity)
+//            }
+//        )
         Spacer(
             modifier = Modifier
                 .height(20.dp)

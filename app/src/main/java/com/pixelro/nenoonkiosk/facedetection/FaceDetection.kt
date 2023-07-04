@@ -22,6 +22,7 @@ import androidx.core.content.ContextCompat
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.google.accompanist.permissions.ExperimentalPermissionsApi
 import com.google.accompanist.permissions.rememberMultiplePermissionsState
+import kotlinx.coroutines.newSingleThreadContext
 import java.util.concurrent.Executors
 
 @OptIn(ExperimentalPermissionsApi::class)
@@ -67,6 +68,7 @@ fun FaceDetectionScreenContent(
     Box() {
         LaunchedEffect(true) {
             val executor = ContextCompat.getMainExecutor(context)
+            val executor1 = Executors.newSingleThreadExecutor()
             cameraProviderFuture.addListener({
                 val cameraProvider = cameraProviderFuture.get()
                 val cameraSelector = CameraSelector.Builder()
@@ -76,13 +78,14 @@ fun FaceDetectionScreenContent(
                     .setBackpressureStrategy(ImageAnalysis.STRATEGY_KEEP_ONLY_LATEST)
                     .setImageQueueDepth(5).build().apply {
                         setAnalyzer(
-                            executor, MyFaceAnalyzer(
+                            executor1, MyFaceAnalyzer(
                                 viewModel::updateFaceDetectionData,
                                 viewModel::updateFaceContourData,
                                 viewModel::updateInputImageSize,
                                 viewModel::updateTextRecognitionData,
                                 viewModel::updateIsFaceDetected,
-                                viewModel::updateIsNenoonTextDetected
+                                viewModel::updateIsNenoonTextDetected,
+                                executor1
 //                                viewModel::updateBitmap
                             )
                         )
@@ -112,25 +115,26 @@ fun FaceDetectionScreenContentWithPreview(
                 factory = { context ->
                     val previewView = PreviewView(context)
                     previewView.scaleType = PreviewView.ScaleType.FILL_END
-//                    val executor = Executors.newFixedThreadPool(2)
                     val executor = ContextCompat.getMainExecutor(context)
+                    val executor1 = Executors.newSingleThreadExecutor()
                     cameraProviderFuture.addListener({
                         val cameraProvider = cameraProviderFuture.get()
                         val preview = Preview.Builder().build().also {
                             it.setSurfaceProvider(previewView.surfaceProvider)
                         }
                         val imageAnalysis = ImageAnalysis.Builder()
-                            .setTargetResolution(Size(1200, 1200))
+                            .setTargetResolution(Size(1400, 1400))
                             .setBackpressureStrategy(ImageAnalysis.STRATEGY_KEEP_ONLY_LATEST)
                             .setImageQueueDepth(5).build().apply {
                                 setAnalyzer(
-                                    Executors.newSingleThreadExecutor(), MyFaceAnalyzer(
+                                    executor1, MyFaceAnalyzer(
                                         viewModel::updateFaceDetectionData,
                                         viewModel::updateFaceContourData,
                                         viewModel::updateInputImageSize,
                                         viewModel::updateTextRecognitionData,
                                         viewModel::updateIsFaceDetected,
-                                        viewModel::updateIsNenoonTextDetected
+                                        viewModel::updateIsNenoonTextDetected,
+                                        executor1
 //                                    viewModel::updateBitmap
                                     )
                                 )

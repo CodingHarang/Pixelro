@@ -68,9 +68,10 @@ fun MeasuringDistanceContent(
                 repeatMode = RepeatMode.Reverse
             )
         )
-        Column(
-            modifier = Modifier,
-            horizontalAlignment = Alignment.CenterHorizontally
+        Box(
+            modifier = Modifier
+                .fillMaxSize(),
+            contentAlignment = Alignment.TopCenter
         ) {
             Box(
                 modifier = Modifier
@@ -109,6 +110,9 @@ fun MeasuringDistanceContent(
                     contentAlignment = Alignment.Center
                 ) {
                     Image(
+                        modifier = Modifier
+                            .width(400.dp)
+                            .height(600.dp),
                         painter = painterResource(id = R.drawable.face_frame),
                         contentDescription = "",
                         colorFilter = ColorFilter.tint(Color(0xff1d71e1))
@@ -133,20 +137,20 @@ fun MeasuringDistanceContent(
                                         y = (faceDetectionViewModel.rightEyePosition.collectAsState().value.y / 2.25f - 500).dp
                                     )
                                     .alpha(shiftVal),
-                                painter = painterResource(id = R.drawable.eyecover),
+                                painter = painterResource(id = R.drawable.occluder),
                                 contentDescription = null,
                             )
                         } else {
                             Image(
                                 modifier = Modifier
-                                    .width(200.dp)
-                                    .height(400.dp)
+                                    .width((200 * 300 / faceDetectionViewModel.screenToFaceDistance.collectAsState().value).dp)
+                                    .height((400 * 300 / faceDetectionViewModel.screenToFaceDistance.collectAsState().value).dp)
                                     .offset(
                                         x = (430 - (faceDetectionViewModel.leftEyePosition.collectAsState().value.x / 2.25f)).dp,
                                         y = (faceDetectionViewModel.leftEyePosition.collectAsState().value.y / 2.25f - 500).dp
                                     )
                                     .alpha(shiftVal),
-                                painter = painterResource(id = R.drawable.eyecover),
+                                painter = painterResource(id = R.drawable.occluder),
                                 contentDescription = null,
                             )
                         }
@@ -163,34 +167,45 @@ fun MeasuringDistanceContent(
                 ) {
                     Text(
                         modifier = Modifier
-                            .padding(start = 40.dp, end = 40.dp, bottom = 20.dp),
+                            .padding(start = 20.dp, end = 20.dp, bottom = 20.dp),
                         text = when(faceDetectionViewModel.isFaceDetected.collectAsState().value) {
                             true -> when(!isLeftEye) {
-                                true -> when(faceDetectionViewModel.isLeftEyeCovered.collectAsState().value && faceDetectionViewModel.isNenoonTextDetected.collectAsState().value) {
-                                    true -> StringProvider.getString(R.string.measuring_distance_content_description4)
+                                true -> when(faceDetectionViewModel.isLeftEyeCovered.collectAsState().value && faceDetectionViewModel.noNenoonTextCount.collectAsState().value < 6) {
+                                    true -> {
+                                        when(faceDetectionViewModel.isDistanceOK.collectAsState().value) {
+                                            true -> StringProvider.getString(R.string.measuring_distance_content_description5)
+                                            false -> StringProvider.getString(R.string.measuring_distance_content_description4)
+                                        }
+                                    }
                                     false -> StringProvider.getString(R.string.measuring_distance_content_description2)
                                 }
-                                false -> when(faceDetectionViewModel.isRightEyeCovered.collectAsState().value && faceDetectionViewModel.isNenoonTextDetected.collectAsState().value) {
-                                    true -> StringProvider.getString(R.string.measuring_distance_content_description4)
+                                false -> when(faceDetectionViewModel.isRightEyeCovered.collectAsState().value && faceDetectionViewModel.noNenoonTextCount.collectAsState().value < 6) {
+                                    true -> {
+                                        when (faceDetectionViewModel.isDistanceOK.collectAsState().value) {
+                                            true -> StringProvider.getString(R.string.measuring_distance_content_description5)
+                                            false -> StringProvider.getString(R.string.measuring_distance_content_description4)
+                                        }
+                                    }
                                     false -> StringProvider.getString(R.string.measuring_distance_content_description3)
                                 }
                             }
                             false -> StringProvider.getString(R.string.measuring_distance_content_description1)
                         },
-                            color = Color(0xffffffff),
-                            fontSize = 36.sp
+                        color = Color(0xffffffff),
+                        fontSize = 40.sp,
+                        fontWeight = FontWeight.ExtraBold
                     )
                 }
             }
-
             Box(
                 modifier = Modifier
+//                    .padding(top = 740.dp)
                     .fillMaxSize(),
                 contentAlignment = Alignment.BottomCenter
             ) {
                 Box(
                     modifier = Modifier
-                        .fillMaxSize(),
+                        .fillMaxWidth(),
                     contentAlignment = Alignment.BottomCenter
                 ) {
                     Text(
@@ -206,14 +221,14 @@ fun MeasuringDistanceContent(
                         color = when (selectedTestType) {
                             TestType.ShortDistanceVisualAcuity -> {
                                 when (faceDetectionViewModel.screenToFaceDistance.collectAsState().value) {
-                                    in 370.0..430.0 -> Color(0xffffffff)
+                                    in 350.0..460.0 -> Color(0xffffffff)
                                     else -> Color(0xFF6D6D6D)
                                 }
                             }
 
                             else -> {
                                 when (faceDetectionViewModel.screenToFaceDistance.collectAsState().value) {
-                                    in 270.0..330.0 -> Color(0xffffffff)
+                                    in 250.0..360.0 -> Color(0xffffffff)
                                     else -> Color(0xFF6D6D6D)
                                 }
                             }
@@ -233,7 +248,7 @@ fun MeasuringDistanceContent(
                                 border = BorderStroke(1.dp, Color(0xffffffff)),
                                 shape = RoundedCornerShape(50)
                             )
-                            .padding(start = 20.dp, top = 12.dp, end = 20.dp, bottom = 12.dp),
+                            .padding(start = 20.dp, top = 8.dp, end = 20.dp, bottom = 12.dp),
                         contentAlignment = Alignment.Center
                     ) {
                         Text(
@@ -241,23 +256,25 @@ fun MeasuringDistanceContent(
                                 TestType.ShortDistanceVisualAcuity -> StringProvider.getString(R.string.adjust_distance_40cm)
                                 else -> StringProvider.getString(R.string.adjust_distance_30cm)
                             },
-                            fontSize = 24.sp,
+                            fontSize = 32.sp,
                             color = Color(0xffffffff),
                             textAlign = TextAlign.Center
                         )
                     }
                 }
                 if (faceDetectionViewModel.screenToFaceDistance.collectAsState().value in when (selectedTestType) {
-                        TestType.ShortDistanceVisualAcuity -> (370.0..430.0)
-                        else -> (270.0..330.0)
+                        TestType.ShortDistanceVisualAcuity -> (350.0..460.0)
+                        else -> (250.0..360.0)
 //                        TestType.ShortDistanceVisualAcuity -> (-100.0..100.0)
 //                        else -> (-100.0..100.0)
-                    } && faceDetectionViewModel.isNenoonTextDetected.collectAsState().value
+                    } && faceDetectionViewModel.noNenoonTextCount.collectAsState().value < 10
+                    && !isLeftEye == faceDetectionViewModel.isLeftEyeCovered.collectAsState().value
                 ) {
                     faceDetectionViewModel.updateIsDistanceOK(true)
                     Box(
                         modifier = Modifier
                             .fillMaxWidth()
+                            .height(160.dp)
                             .padding(
                                 start = 40.dp,
                                 end = 40.dp,
@@ -272,15 +289,17 @@ fun MeasuringDistanceContent(
                             )
                             .clickable {
                                 toNextContent()
-                            }
-                            .padding(20.dp),
+                            },
                         contentAlignment = Alignment.Center
                     ) {
                         Text(
+                            modifier = Modifier
+                                .padding(bottom = 4.dp),
                             text = StringProvider.getString(R.string.test_predescription_screen_start),
-                            fontSize = 24.sp,
+                            fontSize = 40.sp,
                             color = Color(0xffffffff),
-                            textAlign = TextAlign.Center
+                            textAlign = TextAlign.Center,
+                            fontWeight = FontWeight.Medium
                         )
                     }
                 } else {

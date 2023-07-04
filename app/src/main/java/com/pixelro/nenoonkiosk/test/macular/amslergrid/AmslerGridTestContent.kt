@@ -19,6 +19,7 @@ import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
 import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.input.pointer.pointerInput
@@ -113,9 +114,9 @@ fun AmslerGridContent(
 
             Text(
                 modifier = Modifier
-                    .padding(top = 20.dp, bottom = 20.dp),
+                    .padding(start = 20.dp, top = 20.dp, end = 20.dp, bottom = 20.dp),
                 text = StringProvider.getString(R.string.amsler_grid_test_description),
-                fontSize = 28.sp,
+                fontSize = 32.sp,
                 color = Color(0xffffffff),
                 fontWeight = FontWeight.Medium
             )
@@ -225,14 +226,18 @@ fun AmslerGridContent(
                     .fillMaxSize(),
                 contentAlignment = Alignment.BottomCenter
             ) {
-                Text(
+                Box(
                     modifier = Modifier
+                        .fillMaxWidth()
+                        .height(160.dp)
                         .padding(
                             start = 40.dp,
                             end = 40.dp,
                             bottom = GlobalValue.navigationBarPadding.dp
                         )
-                        .fillMaxWidth()
+                        .clip(
+                            shape = RoundedCornerShape(8.dp)
+                        )
                         .background(
                             color = Color(0xff1d71e1),
                             shape = RoundedCornerShape(8.dp)
@@ -248,13 +253,19 @@ fun AmslerGridContent(
                                 amslerGridViewModel.updateIsAmslerGridContentVisible(false)
                                 toResultScreen(amslerGridViewModel.getAmslerGridTestResult())
                             }
-                        }
-                        .padding(20.dp),
-                    text = StringProvider.getString(R.string.amsler_grid_test_content_done),
-                    fontSize = 24.sp,
-                    color = Color(0xffffffff),
-                    textAlign = TextAlign.Center
-                )
+                        },
+                    contentAlignment = Alignment.Center
+                ) {
+                    Text(
+                        modifier = Modifier
+                            .padding(bottom = 4.dp),
+                        text = StringProvider.getString(R.string.amsler_grid_test_content_done),
+                        fontSize = 40.sp,
+                        color = Color(0xffffffff),
+                        textAlign = TextAlign.Center,
+                        fontWeight = FontWeight.Medium,
+                    )
+                }
             }
         }
     }

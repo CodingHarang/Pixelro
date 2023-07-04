@@ -20,28 +20,28 @@ fun MainTestListContent(
     Column(
         modifier = Modifier.padding(bottom = 40.dp)
     ) {
-        EyeTestSelectableBox(
-            title = StringProvider.getString(R.string.presbyopia_name1),
-            description = StringProvider.getString(R.string.presbyopia_short_description),
-            onClickMethod = { toTestScreen(TestType.Presbyopia) }
-        )
-        Spacer(
-            modifier = Modifier
-                .height(20.dp)
-        )
-        EyeTestSelectableBox(
-            title = StringProvider.getString(R.string.visual_acuity_name),
-            description = StringProvider.getString(R.string.visual_acuity_short_description),
-            onClickMethod = toVisualAcuityTestList
-        )
-        Spacer(
-            modifier = Modifier
-                .height(20.dp)
-        )
-        EyeTestSelectableBox(
-            title = StringProvider.getString(R.string.macular_degeneration_name),
-            description = StringProvider.getString(R.string.macular_degeneration_short_script),
-            onClickMethod = toMacularDegenerationTestList
-        )
+//        EyeTestSelectableBox(
+//            title = StringProvider.getString(R.string.presbyopia_name1),
+//            description = StringProvider.getString(R.string.presbyopia_short_description),
+//            onClickMethod = { toTestScreen(TestType.Presbyopia) }
+//        )
+//        Spacer(
+//            modifier = Modifier
+//                .height(20.dp)
+//        )
+//        EyeTestSelectableBox(
+//            title = StringProvider.getString(R.string.visual_acuity_name),
+//            description = StringProvider.getString(R.string.visual_acuity_short_description),
+//            onClickMethod = toVisualAcuityTestList
+//        )
+//        Spacer(
+//            modifier = Modifier
+//                .height(20.dp)
+//        )
+//        EyeTestSelectableBox(
+//            title = StringProvider.getString(R.string.macular_degeneration_name),
+//            description = StringProvider.getString(R.string.macular_degeneration_short_script),
+//            onClickMethod = toMacularDegenerationTestList
+//        )
     }
 }
