@@ -45,6 +45,14 @@ class SurveyViewModel @Inject constructor(
         _surveyDiabetes.update { type }
     }
 
+    fun initSurvey() {
+        _surveyAge.update { SurveyAge.None }
+        _surveySex.update { SurveySex.None }
+        _surveyGlass.update { SurveyGlass.None }
+        _surveySurgery.update { SurveySurgery.None }
+        _surveyDiabetes.update { SurveyDiabetes.None }
+    }
+
     fun checkSurveyIsDone(): Boolean {
         if (surveyAge.value == SurveyAge.None) {
             Toast.makeText(getApplication(), "나이를 선택해주세요", Toast.LENGTH_SHORT).show()
@@ -77,5 +85,9 @@ class SurveyViewModel @Inject constructor(
             surveySurgery = surveySurgery.value,
             surveyDiabetes = surveyDiabetes.value
         )
+    }
+
+    init {
+        initSurvey()
     }
 }

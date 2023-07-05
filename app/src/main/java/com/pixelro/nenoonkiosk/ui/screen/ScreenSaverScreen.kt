@@ -18,6 +18,7 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.DisposableEffect
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
@@ -45,7 +46,8 @@ import com.pixelro.nenoonkiosk.data.GlobalValue
 @androidx.annotation.OptIn(androidx.media3.common.util.UnstableApi::class)
 @Composable
 fun ScreenSaverScreen(
-    viewModel: NenoonViewModel
+    viewModel: NenoonViewModel,
+    toSurveyScreen: () -> Unit
 ) {
     val transition = rememberInfiniteTransition()
     val shiftVal by transition.animateFloat(
@@ -56,6 +58,9 @@ fun ScreenSaverScreen(
             repeatMode = RepeatMode.Reverse
         )
     )
+    LaunchedEffect(true) {
+        toSurveyScreen()
+    }
     val text = buildAnnotatedString {
         append("화면을 ")
         withAnnotation("squiggles", annotation = "ignored") {

@@ -42,7 +42,12 @@ fun NenoonApp(
     } else {
         // Screen Saver
         if (viewModel.isScreenSaverOn.collectAsState().value) {
-            ScreenSaverScreen(viewModel)
+            ScreenSaverScreen(
+                viewModel,
+                toSurveyScreen = {
+                    mainNavController.popBackStack(GlobalConstants.ROUTE_SURVEY, false)
+                }
+            )
         } else {
             // Permission Request Screen
             if (!viewModel.isAllPermissionsGranted.collectAsState().value) {
@@ -87,7 +92,7 @@ fun NenoonApp(
                                 mainNavController.navigate(GlobalConstants.ROUTE_SETTINGS)
                             },
                             toSurveyScreen = {
-                                mainNavController.navigate(GlobalConstants.ROUTE_SURVEY)
+                                mainNavController.popBackStack(GlobalConstants.ROUTE_SURVEY, false)
                             },
                             isPresbyopiaDone = viewModel.isPresbyopiaTestDone.collectAsState().value,
                             isShortVisualAcuityDone = viewModel.isShortVisualAcuityTestDone.collectAsState().value,
