@@ -1,10 +1,16 @@
 package com.pixelro.nenoonkiosk.ui.screen
 
+import android.app.Activity
+import android.view.KeyEvent
+import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
+import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
@@ -21,6 +27,8 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
@@ -40,6 +48,8 @@ fun SettingsScreen(
     viewModel: NenoonViewModel
 ) {
     val isLanguageSelectDialogShowing = viewModel.isLanguageSelectDialogShowing
+    val context = LocalContext.current
+
     if(isLanguageSelectDialogShowing.collectAsState().value) {
         LanguageSelectDialog(
             updateLanguage = {
@@ -60,6 +70,31 @@ fun SettingsScreen(
                 .height(40.dp),
             contentAlignment = Alignment.Center
         ) {
+            Box(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .clickable(
+                        indication = null,
+                        interactionSource = remember { MutableInteractionSource() }
+                    ) {
+                        (context as Activity).dispatchKeyEvent(
+                            KeyEvent(
+                                KeyEvent.ACTION_DOWN,
+                                KeyEvent.KEYCODE_BACK
+                            )
+                        )
+                        context.dispatchKeyEvent(KeyEvent(KeyEvent.ACTION_UP, KeyEvent.KEYCODE_BACK))
+                    },
+                contentAlignment = Alignment.CenterStart
+            ) {
+                Image(
+                    modifier = Modifier
+                        .padding(start = 40.dp, top = 4.dp)
+                        .width(28.dp),
+                    painter = painterResource(id = R.drawable.icon_back_black),
+                    contentDescription = ""
+                )
+            }
             Text(
                 textAlign = TextAlign.Center,
                 text = StringProvider.getString(R.string.settings_title),

@@ -50,7 +50,7 @@
     <string name="result_screen_distance">거리</string>
     <string name="result_screen_age">나이</string>
     <string name="presbyopia_result_hoffstetter1">"안구 나이는 "</string>
-    <string name="measuring_distance_content_description1">머리가 가운데에 보이도록 위치해주세요</string>
+    <string name="measuring_distance_content_description1">얼굴을 가운데 그림에 맞춰주세요</string>
     <string name="measuring_distance_content_description2">눈가리개로 왼쪽 눈을 가려주세요</string>
     <string name="visual_acuity_test_common_content_distance">측정 거리</string>
     <string name="short_distance_visual_acuity_test_result_content_result">근거리 시력 검사 결과</string>
@@ -104,7 +104,7 @@
     <string name="presbyopia_result_years_old">세 입니다.</string>
     <string name="adjust_distance_40cm">거리를 35~45cm로 조정해주세요</string>
     <string name="adjust_distance_30cm">거리를 25~35cm로 조정해주세요</string>
-    <string name="amsler_grid_test_description">가운데 검은 점을 바라보고 이상하게 보이는 부분 또는\n왜곡되어 보이는 부분을 손으로 눌러 선택해주세요.\n선택을 완료했다면 아래의 \'완료\' 버튼을 눌러주세요.</string>
+    <string name="amsler_grid_test_description">가운데 검은 점을 바라보고 이상하게 보이는 부분 또는\n왜곡되어 보이는 부분을 손으로 눌러 선택해주세요.\n선택을 완료했거나 이상하게 보이는 부분이 없다면\n아래의 \'완료\' 버튼을 눌러주세요.</string>
     <string name="mchart_test_description">아래의 선이 곧은 선으로 보이는지\n휘어진 선으로 보이는지 선택해주세요</string>
     <string name="survey_title">문진표 작성</string>
     <string name="measuring_distance_content_description3">눈가리개로 오른쪽 눈을 가려주세요</string>

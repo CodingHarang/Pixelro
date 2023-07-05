@@ -33,6 +33,7 @@ class VisualAcuityViewModel @Inject constructor(
     val randomList: StateFlow<MutableList<Int>> = _randomList
     private var _ansNum = MutableStateFlow(0)
     val ansNum: StateFlow<Int> = _ansNum
+    private var wrongCount = 0f
 
     fun updateIsMeasuringDistanceContentVisible(visible: Boolean) {
         _isMeasuringDistanceContentVisible.update { visible }
@@ -57,6 +58,7 @@ class VisualAcuityViewModel @Inject constructor(
 
     fun processAnswerSelected(
         idx: Int,
+        handleWrong: (Float) -> Unit,
         toResultScreen: () -> Unit
     ) {
         var isEnd = false
@@ -72,8 +74,15 @@ class VisualAcuityViewModel @Inject constructor(
                 if (sightHistory[_sightLevel.value]!!.first == 1 && sightHistory[_sightLevel.value]!!.second == 0) {
                     // if level == 10
                     if (_sightLevel.value == 10) {
-                        isEnd = true
-                        moveToNextStep(toResultScreen)
+                        viewModelScope.launch {
+                            handleWrong(1.2f)
+                            delay(500)
+                            isEnd = true
+                            moveToNextStep(
+                                handleWrong,
+                                toResultScreen
+                            )
+                        }
                     } else {
                         _sightLevel.update { it + 1 }
 //                        if(_sightLevel.value > 10) moveToRightVisualAcuityTest(toResultScreen)
@@ -81,6 +90,8 @@ class VisualAcuityViewModel @Inject constructor(
                 }
             } // if wrong
             else {
+                wrongCount++
+                handleWrong(wrongCount / (wrongCount + 1f))
                 sightHistory[_sightLevel.value] = Pair(
                     sightHistory[_sightLevel.value]!!.first,
                     sightHistory[_sightLevel.value]!!.second + 1
@@ -88,39 +99,29 @@ class VisualAcuityViewModel @Inject constructor(
             }
         } // choose question mark
         else {
+            wrongCount++
+            handleWrong(wrongCount / (wrongCount + 1f))
             sightHistory[_sightLevel.value] = Pair(
                 sightHistory[_sightLevel.value]!!.first,
                 sightHistory[_sightLevel.value]!!.second + 1
             )
         }
-
+        Log.e("wrongCount", "$wrongCount")
         // if 3th trial
         if (sightHistory[_sightLevel.value]!!.first + sightHistory[_sightLevel.value]!!.second >= 3) {
             // if correct >= 2
             if (sightHistory[_sightLevel.value]!!.first >= 2) {
-                // if next level trial >= 3
-                if (sightHistory[_sightLevel.value + 1]!!.first + sightHistory[_sightLevel.value + 1]!!.second >= 3) {
-                    isEnd = true
-                    moveToNextStep(toResultScreen)
-                } // to next level
-                else {
-                    _sightLevel.update { it + 1 }
-                }
+                _sightLevel.update { it + 1 }
             } // if correct < 1
             else {
-                // if level == 1
-                if (_sightLevel.value == 1) {
+                viewModelScope.launch {
+                    handleWrong(1.2f)
+                    delay(500)
                     isEnd = true
-                    moveToNextStep(toResultScreen)
-                } // level--
-                else {
-                    // if prev level trial >= 3
-                    if (sightHistory[_sightLevel.value - 1]!!.first + sightHistory[_sightLevel.value - 1]!!.second >= 3) {
-                        isEnd = true
-                        moveToNextStep(toResultScreen)
-                    } else {
-                        _sightLevel.update { it - 1 }
-                    }
+                    moveToNextStep(
+                        handleWrong,
+                        toResultScreen
+                    )
                 }
             }
         }
@@ -140,8 +141,11 @@ class VisualAcuityViewModel @Inject constructor(
     }
 
     private fun moveToNextStep(
+        handleWrong: (Float) -> Unit,
         toResultScreen: () -> Unit
     ) {
+        wrongCount = 0f
+        handleWrong(0.1f)
         if (_isLeftEye.value) {
             sightHistory = mutableMapOf(
                 1 to Pair(0, 0),
@@ -160,7 +164,7 @@ class VisualAcuityViewModel @Inject constructor(
             rightEyeSightValue = _sightLevel.value
         }
         viewModelScope.launch {
-            delay(700)
+            delay(450)
             _sightLevel.update { 1 }
         }
         _isVisualAcuityContentVisible.update { false }
@@ -195,6 +199,7 @@ class VisualAcuityViewModel @Inject constructor(
     }
 
     fun init() {
+        wrongCount = 0f
         _isLeftEye.update { true }
         _sightLevel.update { 1 }
         updateRandomList()

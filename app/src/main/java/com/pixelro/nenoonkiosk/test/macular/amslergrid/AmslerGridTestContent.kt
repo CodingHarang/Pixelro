@@ -228,13 +228,13 @@ fun AmslerGridContent(
             ) {
                 Box(
                     modifier = Modifier
-                        .fillMaxWidth()
-                        .height(160.dp)
                         .padding(
                             start = 40.dp,
                             end = 40.dp,
-                            bottom = GlobalValue.navigationBarPadding.dp
+                            bottom = 40.dp
                         )
+                        .fillMaxWidth()
+                        .height(80.dp)
                         .clip(
                             shape = RoundedCornerShape(8.dp)
                         )

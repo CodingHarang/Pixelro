@@ -2,12 +2,15 @@ package com.pixelro.nenoonkiosk.ui.testcontent
 
 import androidx.compose.animation.*
 import androidx.compose.animation.core.MutableTransitionState
+import androidx.compose.animation.core.animateFloatAsState
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material.LinearProgressIndicator
 import androidx.compose.material.Text
+import androidx.compose.material3.ProgressIndicatorDefaults
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -55,21 +58,17 @@ fun VisualAcuityTestContent(
     val randomList = visualAcuityViewModel.randomList.collectAsState().value
     val ansNum = visualAcuityViewModel.ansNum.collectAsState().value
     val sightLevel = visualAcuityViewModel.sightLevel.collectAsState().value
+    var progress by remember { mutableStateOf(0.1f) }
+    val animatedProgress by animateFloatAsState(
+        targetValue = progress,
+        animationSpec = ProgressIndicatorDefaults.ProgressAnimationSpec
+    )
 
     Column(
         modifier = Modifier
             .fillMaxWidth(),
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
-        Text(
-            modifier = Modifier
-                .padding(top = 100.dp),
-            text = StringProvider.getString(R.string.visual_acuity_test_common_content_description),
-            fontSize = 28.sp,
-            color = Color(0xffffffff),
-            fontWeight = FontWeight.Medium,
-            textAlign = TextAlign.Center
-        )
         Box(
             modifier = Modifier
                 .padding(top = 40.dp)
@@ -83,109 +82,105 @@ fun VisualAcuityTestContent(
         ) {
             Image(
                 imageVector = ImageVector.vectorResource(id =
-                when(ansNum) {
-                    2 -> when(sightLevel) {
-                        1 -> R.drawable._50cm_2_1
-                        2 -> R.drawable._50cm_2_2
-                        3 -> R.drawable._50cm_2_3
-                        4 -> R.drawable._50cm_2_4
-                        5 -> R.drawable._50cm_2_5
-                        6 -> R.drawable._50cm_2_6
-                        7 -> R.drawable._50cm_2_7
-                        8 -> R.drawable._50cm_2_8
-                        9 -> R.drawable._50cm_2_9
-                        else -> R.drawable._50cm_2_10
+                    when(ansNum) {
+                        2 -> when(sightLevel) {
+                            1 -> R.drawable._50cm_2_1
+                            2 -> R.drawable._50cm_2_2
+                            3 -> R.drawable._50cm_2_3
+                            4 -> R.drawable._50cm_2_4
+                            5 -> R.drawable._50cm_2_5
+                            6 -> R.drawable._50cm_2_6
+                            7 -> R.drawable._50cm_2_7
+                            8 -> R.drawable._50cm_2_8
+                            9 -> R.drawable._50cm_2_9
+                            else -> R.drawable._50cm_2_10
+                        }
+                        3 -> when(sightLevel) {
+                            1 -> R.drawable._50cm_3_1
+                            2 -> R.drawable._50cm_3_2
+                            3 -> R.drawable._50cm_3_3
+                            4 -> R.drawable._50cm_3_4
+                            5 -> R.drawable._50cm_3_5
+                            6 -> R.drawable._50cm_3_6
+                            7 -> R.drawable._50cm_3_7
+                            8 -> R.drawable._50cm_3_8
+                            9 -> R.drawable._50cm_3_9
+                            else -> R.drawable._50cm_3_10
+                        }
+                        4 -> when(sightLevel) {
+                            1 -> R.drawable._50cm_4_1
+                            2 -> R.drawable._50cm_4_2
+                            3 -> R.drawable._50cm_4_3
+                            4 -> R.drawable._50cm_4_4
+                            5 -> R.drawable._50cm_4_5
+                            6 -> R.drawable._50cm_4_6
+                            7 -> R.drawable._50cm_4_7
+                            8 -> R.drawable._50cm_4_8
+                            9 -> R.drawable._50cm_4_9
+                            else -> R.drawable._50cm_4_10
+                        }
+                        5 -> when(sightLevel) {
+                            1 -> R.drawable._50cm_5_1
+                            2 -> R.drawable._50cm_5_2
+                            3 -> R.drawable._50cm_5_3
+                            4 -> R.drawable._50cm_5_4
+                            5 -> R.drawable._50cm_5_5
+                            6 -> R.drawable._50cm_5_6
+                            7 -> R.drawable._50cm_5_7
+                            8 -> R.drawable._50cm_5_8
+                            9 -> R.drawable._50cm_5_9
+                            else -> R.drawable._50cm_5_10
+                        }
+                        6 -> when(sightLevel) {
+                            1 -> R.drawable._50cm_6_1
+                            2 -> R.drawable._50cm_6_2
+                            3 -> R.drawable._50cm_6_3
+                            4 -> R.drawable._50cm_6_4
+                            5 -> R.drawable._50cm_6_5
+                            6 -> R.drawable._50cm_6_6
+                            7 -> R.drawable._50cm_6_7
+                            8 -> R.drawable._50cm_6_8
+                            9 -> R.drawable._50cm_6_9
+                            else -> R.drawable._50cm_6_10
+                        }
+                        else -> when(sightLevel) {
+                            1 -> R.drawable._50cm_7_1
+                            2 -> R.drawable._50cm_7_2
+                            3 -> R.drawable._50cm_7_3
+                            4 -> R.drawable._50cm_7_4
+                            5 -> R.drawable._50cm_7_5
+                            6 -> R.drawable._50cm_7_6
+                            7 -> R.drawable._50cm_7_7
+                            8 -> R.drawable._50cm_7_8
+                            9 -> R.drawable._50cm_7_9
+                            else -> R.drawable._50cm_7_10
+                        }
                     }
-                    3 -> when(sightLevel) {
-                        1 -> R.drawable._50cm_3_1
-                        2 -> R.drawable._50cm_3_2
-                        3 -> R.drawable._50cm_3_3
-                        4 -> R.drawable._50cm_3_4
-                        5 -> R.drawable._50cm_3_5
-                        6 -> R.drawable._50cm_3_6
-                        7 -> R.drawable._50cm_3_7
-                        8 -> R.drawable._50cm_3_8
-                        9 -> R.drawable._50cm_3_9
-                        else -> R.drawable._50cm_3_10
-                    }
-                    4 -> when(sightLevel) {
-                        1 -> R.drawable._50cm_4_1
-                        2 -> R.drawable._50cm_4_2
-                        3 -> R.drawable._50cm_4_3
-                        4 -> R.drawable._50cm_4_4
-                        5 -> R.drawable._50cm_4_5
-                        6 -> R.drawable._50cm_4_6
-                        7 -> R.drawable._50cm_4_7
-                        8 -> R.drawable._50cm_4_8
-                        9 -> R.drawable._50cm_4_9
-                        else -> R.drawable._50cm_4_10
-                    }
-                    5 -> when(sightLevel) {
-                        1 -> R.drawable._50cm_5_1
-                        2 -> R.drawable._50cm_5_2
-                        3 -> R.drawable._50cm_5_3
-                        4 -> R.drawable._50cm_5_4
-                        5 -> R.drawable._50cm_5_5
-                        6 -> R.drawable._50cm_5_6
-                        7 -> R.drawable._50cm_5_7
-                        8 -> R.drawable._50cm_5_8
-                        9 -> R.drawable._50cm_5_9
-                        else -> R.drawable._50cm_5_10
-                    }
-                    6 -> when(sightLevel) {
-                        1 -> R.drawable._50cm_6_1
-                        2 -> R.drawable._50cm_6_2
-                        3 -> R.drawable._50cm_6_3
-                        4 -> R.drawable._50cm_6_4
-                        5 -> R.drawable._50cm_6_5
-                        6 -> R.drawable._50cm_6_6
-                        7 -> R.drawable._50cm_6_7
-                        8 -> R.drawable._50cm_6_8
-                        9 -> R.drawable._50cm_6_9
-                        else -> R.drawable._50cm_6_10
-                    }
-                    else -> when(sightLevel) {
-                        1 -> R.drawable._50cm_7_1
-                        2 -> R.drawable._50cm_7_2
-                        3 -> R.drawable._50cm_7_3
-                        4 -> R.drawable._50cm_7_4
-                        5 -> R.drawable._50cm_7_5
-                        6 -> R.drawable._50cm_7_6
-                        7 -> R.drawable._50cm_7_7
-                        8 -> R.drawable._50cm_7_8
-                        9 -> R.drawable._50cm_7_9
-                        else -> R.drawable._50cm_7_10
-                    }
-                }
                 ),
                 contentDescription = ""
             )
         }
+        Text(
+            modifier = Modifier
+                .padding(top = 40.dp),
+            text = StringProvider.getString(R.string.visual_acuity_test_common_content_description),
+            fontSize = 40.sp,
+            color = Color(0xffffffff),
+            fontWeight = FontWeight.Medium,
+            textAlign = TextAlign.Center
+        )
         Spacer(
             modifier = Modifier
                 .height(20.dp)
         )
-        Row(
+        LinearProgressIndicator(
             modifier = Modifier
-                .padding(top = 20.dp, bottom = 20.dp),
-            horizontalArrangement = Arrangement.Center,
-            verticalAlignment = Alignment.CenterVertically
-        ) {
-//                Text(
-//                    modifier = Modifier
-//                        .padding(end = 20.dp),
-//                    text = StringProvider.getString(R.string.visual_acuity_test_common_content_distance)
-//                            + ": ${viewModel.testDistance.collectAsState().value / 10}cm",
-//                    fontSize = 30.sp,
-//                    color = Color(0xffffffff)
-//                )
-//                Text(
-//                    text = StringProvider.getString(R.string.test_screen_current_distance) + "${(viewModel.screenToFaceDistance.collectAsState().value / 10).roundToInt()}cm",
-//                    fontSize = 30.sp,
-//                    color = Color(0xffffffff),
-//                    fontWeight = FontWeight.Bold
-//                )
-        }
+                .padding(bottom = 20.dp)
+                .width(490.dp)
+                .height(20.dp),
+            progress = animatedProgress,
+            color = Color(0xff1d71e1),
+        )
         Row() {
             // 1
             Box(
@@ -201,7 +196,16 @@ fun VisualAcuityTestContent(
                             shape = RoundedCornerShape(8.dp)
                         )
                         .clickable {
-                            visualAcuityViewModel.processAnswerSelected(0) { toResultScreen(visualAcuityViewModel.getVisualAcuityTestResult()) }
+                            visualAcuityViewModel.processAnswerSelected(
+                                idx = 0,
+                                handleWrong = {
+                                    progress = it
+                                }
+                            ) {
+                                toResultScreen(
+                                    visualAcuityViewModel.getVisualAcuityTestResult()
+                                )
+                            }
                         },
                     contentAlignment = Alignment.Center
                 ) {
@@ -237,7 +241,16 @@ fun VisualAcuityTestContent(
                             shape = RoundedCornerShape(8.dp)
                         )
                         .clickable {
-                            visualAcuityViewModel.processAnswerSelected(1) { toResultScreen(visualAcuityViewModel.getVisualAcuityTestResult()) }
+                            visualAcuityViewModel.processAnswerSelected(
+                                1,
+                                handleWrong = {
+                                    progress = it
+                                }
+                            ) {
+                                toResultScreen(
+                                    visualAcuityViewModel.getVisualAcuityTestResult()
+                                )
+                            }
                         },
                     contentAlignment = Alignment.Center
                 ) {
@@ -273,7 +286,16 @@ fun VisualAcuityTestContent(
                             shape = RoundedCornerShape(8.dp)
                         )
                         .clickable {
-                            visualAcuityViewModel.processAnswerSelected(2) { toResultScreen(visualAcuityViewModel.getVisualAcuityTestResult()) }
+                            visualAcuityViewModel.processAnswerSelected(
+                                2,
+                                handleWrong = {
+                                    progress = it
+                                }
+                            ) {
+                                toResultScreen(
+                                    visualAcuityViewModel.getVisualAcuityTestResult()
+                                )
+                            }
                         },
                     contentAlignment = Alignment.Center
                 ) {
@@ -295,32 +317,45 @@ fun VisualAcuityTestContent(
                     )
                 }
             }
-            // 4
+        }
+        // 4
+        Box(
+            modifier = Modifier
+                .padding(10.dp)
+        ) {
             Box(
                 modifier = Modifier
-                    .padding(10.dp)
-            ) {
-                Box(
-                    modifier = Modifier
-                        .height(150.dp)
-                        .width(150.dp)
-                        .background(
-                            color = Color(0xffffffff),
-                            shape = RoundedCornerShape(8.dp)
-                        )
-                        .clickable {
-                            visualAcuityViewModel.processAnswerSelected(3) { toResultScreen(visualAcuityViewModel.getVisualAcuityTestResult()) }
-                        },
-                    contentAlignment = Alignment.Center
-                ) {
-                    Image(
-                        modifier = Modifier
-                            .padding(10.dp)
-                            .height(150.dp),
-                        imageVector = ImageVector.vectorResource(id = R.drawable.question_mark),
-                        contentDescription = ""
+                    .height(150.dp)
+                    .width(490.dp)
+                    .background(
+                        color = Color(0xffffffff),
+                        shape = RoundedCornerShape(8.dp)
                     )
-                }
+                    .clickable {
+                        visualAcuityViewModel.processAnswerSelected(
+                            3,
+                            handleWrong = {
+                                progress = it
+                            }
+                        ) {
+                            toResultScreen(
+                                visualAcuityViewModel.getVisualAcuityTestResult()
+                            )
+                        }
+                    },
+                contentAlignment = Alignment.Center
+            ) {
+                Text(
+                    text = "안보임",
+                    fontSize = 60.sp,
+                )
+//                Image(
+//                    modifier = Modifier
+//                        .padding(10.dp)
+//                        .height(150.dp),
+//                    imageVector = ImageVector.vectorResource(id = R.drawable.question_mark),
+//                    contentDescription = ""
+//                )
             }
         }
     }

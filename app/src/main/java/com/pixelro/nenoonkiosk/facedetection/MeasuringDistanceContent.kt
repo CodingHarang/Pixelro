@@ -225,14 +225,14 @@ fun MeasuringDistanceContent(
                 ) {
                     Text(
                         modifier = Modifier
-                            .padding(bottom = (GlobalValue.navigationBarPadding + 324).dp),
+                            .padding(bottom = (GlobalValue.navigationBarPadding + 384).dp),
                         text = StringProvider.getString(R.string.test_screen_current_distance),
                         color = Color(0xffffffff),
                         fontSize = 24.sp
                     )
                     Text(
                         modifier = Modifier
-                            .padding(bottom = (GlobalValue.navigationBarPadding + 220).dp),
+                            .padding(bottom = (GlobalValue.navigationBarPadding + 280).dp),
                         color = when (selectedTestType) {
                             TestType.ShortDistanceVisualAcuity -> {
                                 when (faceDetectionViewModel.screenToFaceDistance.collectAsState().value) {
@@ -257,7 +257,7 @@ fun MeasuringDistanceContent(
                             .padding(
                                 start = 40.dp,
                                 end = 40.dp,
-                                bottom = (GlobalValue.navigationBarPadding + 140).dp
+                                bottom = (GlobalValue.navigationBarPadding + 200).dp
                             )
                             .border(
                                 border = BorderStroke(1.dp, Color(0xffffffff)),
@@ -291,13 +291,13 @@ fun MeasuringDistanceContent(
                     faceDetectionViewModel.updateIsDistanceOK(true)
                     Box(
                         modifier = Modifier
-                            .fillMaxWidth()
-                            .height(160.dp)
                             .padding(
                                 start = 40.dp,
                                 end = 40.dp,
-                                bottom = GlobalValue.navigationBarPadding.dp
+                                bottom = 40.dp
                             )
+                            .fillMaxWidth()
+                            .height(80.dp)
                             .clip(
                                 shape = RoundedCornerShape(8.dp)
                             )
@@ -311,8 +311,6 @@ fun MeasuringDistanceContent(
                         contentAlignment = Alignment.Center
                     ) {
                         Text(
-                            modifier = Modifier
-                                .padding(bottom = 4.dp),
                             text = StringProvider.getString(R.string.test_predescription_screen_start),
                             fontSize = 40.sp,
                             color = Color(0xffffffff),
