@@ -76,6 +76,8 @@ fun SurveyScreen(
                     color = Color(0xffdddddd)
                 )
         )
+
+        // 나이 질문
         Column(
             modifier = Modifier
                 .padding(start = 40.dp, top = 20.dp, end = 40.dp)
@@ -90,267 +92,131 @@ fun SurveyScreen(
             )
             Column() {
                 Row() {
-                    Box(
-                        modifier = Modifier
-                            .clip(
-                                shape = RoundedCornerShape(50)
+                    for (idx in 1..4) {
+                        Box(
+                            modifier = Modifier
+                                .clip(
+                                    shape = RoundedCornerShape(8.dp)
+                                )
+                                .weight(1f)
+                                .height(60.dp)
+                                .border(
+                                    border = BorderStroke(
+                                        width = 1.dp,
+                                        color = when (idx to surveyViewModel.surveyAge.collectAsState().value) {
+                                            1 to SurveyAge.First,
+                                            2 to SurveyAge.Second,
+                                            3 to SurveyAge.Third,
+                                            4 to SurveyAge.Fourth -> Color(0xff1d71e1)
+                                            else -> Color(0xffc3c3c3)
+                                        }
+                                    ),
+                                    shape = RoundedCornerShape(8.dp)
+                                )
+                                .clickable {
+                                    surveyViewModel.updateSurveyAge(
+                                        when(idx) {
+                                            1 -> SurveyAge.First
+                                            2 -> SurveyAge.Second
+                                            3 -> SurveyAge.Third
+                                            else -> SurveyAge.Fourth
+                                        }
+                                    )
+                                },
+                            contentAlignment = Alignment.Center
+                        ) {
+                            Text(
+                                text = when (idx) {
+                                    1 -> "9세 이하"
+                                    2 -> "10세~19세"
+                                    3 -> "20세~29세"
+                                    else -> "30세~39세"
+                                },
+                                fontSize = 28.sp,
+                                color = when (idx to surveyViewModel.surveyAge.collectAsState().value) {
+                                    1 to SurveyAge.First,
+                                    2 to SurveyAge.Second,
+                                    3 to SurveyAge.Third,
+                                    4 to SurveyAge.Fourth -> Color(0xff1d71e1)
+                                    else -> Color(0xffc3c3c3)
+                                }
                             )
-                            .width(160.dp)
-                            .height(60.dp)
-                            .border(
-                                border = BorderStroke(
-                                    width = 1.dp,
-                                    color = when (surveyViewModel.surveyAge.collectAsState().value) {
-                                        SurveyAge.First -> Color(0xff1d71e1)
-                                        else -> Color(0xffc3c3c3)
-                                    }
-                                ),
-                                shape = RoundedCornerShape(50)
+                        }
+                        when (idx < 4) {
+                            true -> Spacer(
+                                modifier = Modifier
+                                    .width(20.dp)
                             )
-                            .clickable {
-                                surveyViewModel.updateSurveyAge(SurveyAge.First)
-                            },
-                        contentAlignment = Alignment.Center
-                    ) {
-                        Text(
-                            text = "9세 이하",
-                            fontSize = 28.sp,
-                            color = when(surveyViewModel.surveyAge.collectAsState().value) {
-                                SurveyAge.First -> Color(0xff1d71e1)
-                                else -> Color(0xffc3c3c3)
-                            }
-                        )
-                    }
-                    Box(
-                        modifier = Modifier
-                            .padding(start = 20.dp)
-                            .clip(
-                                shape = RoundedCornerShape(50)
-                            )
-                            .width(160.dp)
-                            .height(60.dp)
-                            .border(
-                                border = BorderStroke(
-                                    width = 1.dp,
-                                    color = when (surveyViewModel.surveyAge.collectAsState().value) {
-                                        SurveyAge.Second -> Color(0xff1d71e1)
-                                        else -> Color(0xffc3c3c3)
-                                    }
-                                ),
-                                shape = RoundedCornerShape(50)
-                            )
-                            .clickable {
-                                surveyViewModel.updateSurveyAge(SurveyAge.Second)
-                            },
-                        contentAlignment = Alignment.Center
-                    ) {
-                        Text(
-                            text = "10 ~ 14세",
-                            fontSize = 28.sp,
-                            color = when(surveyViewModel.surveyAge.collectAsState().value) {
-                                SurveyAge.Second -> Color(0xff1d71e1)
-                                else -> Color(0xffc3c3c3)
-                            }
-                        )
-                    }
-                    Box(
-                        modifier = Modifier
-                            .padding(start = 20.dp)
-                            .clip(
-                                shape = RoundedCornerShape(50)
-                            )
-                            .width(160.dp)
-                            .height(60.dp)
-                            .border(
-                                border = BorderStroke(
-                                    width = 1.dp,
-                                    color = when (surveyViewModel.surveyAge.collectAsState().value) {
-                                        SurveyAge.Third -> Color(0xff1d71e1)
-                                        else -> Color(0xffc3c3c3)
-                                    }
-                                ),
-                                shape = RoundedCornerShape(50)
-                            )
-                            .clickable {
-                                surveyViewModel.updateSurveyAge(SurveyAge.Third)
-                            },
-                        contentAlignment = Alignment.Center
-                    ) {
-                        Text(
-                            text = "15 ~ 19세",
-                            fontSize = 28.sp,
-                            color = when(surveyViewModel.surveyAge.collectAsState().value) {
-                                SurveyAge.Third -> Color(0xff1d71e1)
-                                else -> Color(0xffc3c3c3)
-                            }
-                        )
-                    }
-                    Box(
-                        modifier = Modifier
-                            .padding(start = 20.dp)
-                            .clip(
-                                shape = RoundedCornerShape(50)
-                            )
-                            .width(160.dp)
-                            .height(60.dp)
-                            .border(
-                                border = BorderStroke(
-                                    width = 1.dp,
-                                    color = when (surveyViewModel.surveyAge.collectAsState().value) {
-                                        SurveyAge.Fourth -> Color(0xff1d71e1)
-                                        else -> Color(0xffc3c3c3)
-                                    }
-                                ),
-                                shape = RoundedCornerShape(50)
-                            )
-                            .clickable {
-                                surveyViewModel.updateSurveyAge(SurveyAge.Fourth)
-                            },
-                        contentAlignment = Alignment.Center
-                    ) {
-                        Text(
-                            text = "20 ~ 29세",
-                            fontSize = 28.sp,
-                            color = when(surveyViewModel.surveyAge.collectAsState().value) {
-                                SurveyAge.Fourth -> Color(0xff1d71e1)
-                                else -> Color(0xffc3c3c3)
-                            }
-                        )
+                            false -> {}
+                        }
                     }
                 }
                 Row(
                     modifier = Modifier
                         .padding(top = 20.dp)
                 ) {
-                    Box(
-                        modifier = Modifier
-                            .clip(
-                                shape = RoundedCornerShape(50)
+                    for (idx in 5..8) {
+                        Box(
+                            modifier = Modifier
+                                .clip(
+                                    shape = RoundedCornerShape(8.dp)
+                                )
+                                .weight(1f)
+                                .height(60.dp)
+                                .border(
+                                    border = BorderStroke(
+                                        width = 1.dp,
+                                        color = when (idx to surveyViewModel.surveyAge.collectAsState().value) {
+                                            5 to SurveyAge.Fifth,
+                                            6 to SurveyAge.Sixth,
+                                            7 to SurveyAge.Seventh,
+                                            8 to SurveyAge.Eighth -> Color(0xff1d71e1)
+                                            else -> Color(0xffc3c3c3)
+                                        }
+                                    ),
+                                    shape = RoundedCornerShape(8.dp)
+                                )
+                                .clickable {
+                                    surveyViewModel.updateSurveyAge(
+                                        when(idx) {
+                                            5 -> SurveyAge.Fifth
+                                            6 -> SurveyAge.Sixth
+                                            7 -> SurveyAge.Seventh
+                                            else -> SurveyAge.Eighth
+                                        }
+                                    )
+                                },
+                            contentAlignment = Alignment.Center
+                        ) {
+                            Text(
+                                text = when (idx) {
+                                    5 -> "40세~49세"
+                                    6 -> "50세~59세"
+                                    7 -> "60세~69세"
+                                    else -> "70세 이상"
+                                },
+                                fontSize = 28.sp,
+                                color = when (idx to surveyViewModel.surveyAge.collectAsState().value) {
+                                    5 to SurveyAge.Fifth,
+                                    6 to SurveyAge.Sixth,
+                                    7 to SurveyAge.Seventh,
+                                    8 to SurveyAge.Eighth -> Color(0xff1d71e1)
+                                    else -> Color(0xffc3c3c3)
+                                }
                             )
-                            .width(160.dp)
-                            .height(60.dp)
-                            .border(
-                                border = BorderStroke(
-                                    width = 1.dp,
-                                    color = when (surveyViewModel.surveyAge.collectAsState().value) {
-                                        SurveyAge.Fifth -> Color(0xff1d71e1)
-                                        else -> Color(0xffc3c3c3)
-                                    }
-                                ),
-                                shape = RoundedCornerShape(50)
+                        }
+                        when (idx < 8) {
+                            true -> Spacer(
+                                modifier = Modifier
+                                    .width(20.dp)
                             )
-                            .clickable {
-                                surveyViewModel.updateSurveyAge(SurveyAge.Fifth)
-                            },
-                        contentAlignment = Alignment.Center
-                    ) {
-                        Text(
-                            text = "30 ~ 39세",
-                            fontSize = 28.sp,
-                            color = when(surveyViewModel.surveyAge.collectAsState().value) {
-                                SurveyAge.Fifth -> Color(0xff1d71e1)
-                                else -> Color(0xffc3c3c3)
-                            }
-                        )
-                    }
-                    Box(
-                        modifier = Modifier
-                            .padding(start = 20.dp)
-                            .clip(
-                                shape = RoundedCornerShape(50)
-                            )
-                            .width(160.dp)
-                            .height(60.dp)
-                            .border(
-                                border = BorderStroke(
-                                    width = 1.dp,
-                                    color = when (surveyViewModel.surveyAge.collectAsState().value) {
-                                        SurveyAge.Sixth -> Color(0xff1d71e1)
-                                        else -> Color(0xffc3c3c3)
-                                    }
-                                ),
-                                shape = RoundedCornerShape(50)
-                            )
-                            .clickable {
-                                surveyViewModel.updateSurveyAge(SurveyAge.Sixth)
-                            },
-                        contentAlignment = Alignment.Center
-                    ) {
-                        Text(
-                            text = "40 ~ 49세",
-                            fontSize = 28.sp,
-                            color = when(surveyViewModel.surveyAge.collectAsState().value) {
-                                SurveyAge.Sixth -> Color(0xff1d71e1)
-                                else -> Color(0xffc3c3c3)
-                            }
-                        )
-                    }
-                    Box(
-                        modifier = Modifier
-                            .padding(start = 20.dp)
-                            .clip(
-                                shape = RoundedCornerShape(50)
-                            )
-                            .width(160.dp)
-                            .height(60.dp)
-                            .border(
-                                border = BorderStroke(
-                                    width = 1.dp,
-                                    color = when (surveyViewModel.surveyAge.collectAsState().value) {
-                                        SurveyAge.Seventh -> Color(0xff1d71e1)
-                                        else -> Color(0xffc3c3c3)
-                                    }
-                                ),
-                                shape = RoundedCornerShape(50)
-                            )
-                            .clickable {
-                                surveyViewModel.updateSurveyAge(SurveyAge.Seventh)
-                            },
-                        contentAlignment = Alignment.Center
-                    ) {
-                        Text(
-                            text = "50 ~ 59세",
-                            fontSize = 28.sp,
-                            color = when(surveyViewModel.surveyAge.collectAsState().value) {
-                                SurveyAge.Seventh -> Color(0xff1d71e1)
-                                else -> Color(0xffc3c3c3)
-                            }
-                        )
-                    }
-                    Box(
-                        modifier = Modifier
-                            .padding(start = 20.dp)
-                            .clip(
-                                shape = RoundedCornerShape(50)
-                            )
-                            .width(160.dp)
-                            .height(60.dp)
-                            .border(
-                                border = BorderStroke(
-                                    width = 1.dp,
-                                    color = when (surveyViewModel.surveyAge.collectAsState().value) {
-                                        SurveyAge.Eighth -> Color(0xff1d71e1)
-                                        else -> Color(0xffc3c3c3)
-                                    }
-                                ),
-                                shape = RoundedCornerShape(50)
-                            )
-                            .clickable {
-                                surveyViewModel.updateSurveyAge(SurveyAge.Eighth)
-                            },
-                        contentAlignment = Alignment.Center
-                    ) {
-                        Text(
-                            text = "60세 이상",
-                            fontSize = 28.sp,
-                            color = when(surveyViewModel.surveyAge.collectAsState().value) {
-                                SurveyAge.Eighth -> Color(0xff1d71e1)
-                                else -> Color(0xffc3c3c3)
-                            }
-                        )
+                            false -> {}
+                        }
                     }
                 }
             }
+
+            // 성별 질문
             Text(
                 modifier = Modifier
                     .padding(top = 40.dp, bottom = 20.dp),
@@ -359,73 +225,59 @@ fun SurveyScreen(
                 fontWeight = FontWeight.Medium
             )
             Row() {
-                Box(
-                    modifier = Modifier
-                        .weight(1f)
-                        .clip(
-                            shape = RoundedCornerShape(8.dp)
+                for (idx in 1..2) {
+                    Box(
+                        modifier = Modifier
+                            .weight(1f)
+                            .clip(
+                                shape = RoundedCornerShape(8.dp)
+                            )
+                            .border(
+                                border = BorderStroke(
+                                    width = 1.dp,
+                                    color = when (idx to surveyViewModel.surveySex.collectAsState().value) {
+                                        1 to SurveySex.Man,
+                                        2 to SurveySex.Woman -> Color(0xff1d71e1)
+                                        else -> Color(0xffc3c3c3)
+                                    }
+                                ),
+                                shape = RoundedCornerShape(8.dp)
+                            )
+                            .clickable {
+                                surveyViewModel.updateSurveySex(
+                                    when (idx) {
+                                        1 -> SurveySex.Man
+                                        else -> SurveySex.Woman
+                                    }
+                                )
+                            }
+                            .padding(start = 20.dp, top = 16.dp, end = 20.dp, bottom = 16.dp),
+                        contentAlignment = Alignment.CenterStart
+                    ) {
+                        Text(
+                            text = when (idx) {
+                                1 -> "남자"
+                                else -> "여자"
+                            },
+                            fontSize = 28.sp,
+                            color = when(idx to surveyViewModel.surveySex.collectAsState().value) {
+                                1 to SurveySex.Man,
+                                2 to SurveySex.Woman -> Color(0xff1d71e1)
+                                else -> Color(0xffc3c3c3)
+                            }
                         )
-                        .border(
-                            border = BorderStroke(
-                                width = 1.dp,
-                                color = when (surveyViewModel.surveySex.collectAsState().value) {
-                                    SurveySex.Man -> Color(0xff1d71e1)
-                                    else -> Color(0xffc3c3c3)
-                                }
-                            ),
-                            shape = RoundedCornerShape(8.dp)
+                    }
+                    when (idx < 2) {
+                        true -> Spacer(
+                            modifier = Modifier
+                                .width(20.dp)
                         )
-                        .clickable {
-                            surveyViewModel.updateSurveySex(SurveySex.Man)
-                        }
-                        .padding(start = 20.dp, top = 16.dp, end = 20.dp, bottom = 16.dp),
-                    contentAlignment = Alignment.CenterStart
-                ) {
-                    Text(
-                        text = "남성",
-                        fontSize = 28.sp,
-                        color = when(surveyViewModel.surveySex.collectAsState().value) {
-                            SurveySex.Man -> Color(0xff1d71e1)
-                            else -> Color(0xffc3c3c3)
-                        }
-                    )
-                }
-                Spacer(
-                    modifier = Modifier
-                        .width(20.dp)
-                )
-                Box(
-                    modifier = Modifier
-                        .weight(1f)
-                        .clip(
-                            shape = RoundedCornerShape(8.dp)
-                        )
-                        .border(
-                            border = BorderStroke(
-                                width = 1.dp,
-                                color = when (surveyViewModel.surveySex.collectAsState().value) {
-                                    SurveySex.Woman -> Color(0xff1d71e1)
-                                    else -> Color(0xffc3c3c3)
-                                }
-                            ),
-                            shape = RoundedCornerShape(8.dp)
-                        )
-                        .clickable {
-                            surveyViewModel.updateSurveySex(SurveySex.Woman)
-                        }
-                        .padding(start = 20.dp, top = 16.dp, end = 20.dp, bottom = 16.dp),
-                    contentAlignment = Alignment.CenterStart
-                ) {
-                    Text(
-                        text = "여성",
-                        fontSize = 28.sp,
-                        color = when(surveyViewModel.surveySex.collectAsState().value) {
-                            SurveySex.Woman -> Color(0xff1d71e1)
-                            else -> Color(0xffc3c3c3)
-                        }
-                    )
+                        false -> {}
+                    }
                 }
             }
+
+            // 안경 질문
             Text(
                 modifier = Modifier
                     .padding(top = 40.dp, bottom = 20.dp),
@@ -434,73 +286,59 @@ fun SurveyScreen(
                 fontWeight = FontWeight.Medium
             )
             Row() {
-                Box(
-                    modifier = Modifier
-                        .weight(1f)
-                        .clip(
-                            shape = RoundedCornerShape(8.dp)
+                for (idx in 1..2) {
+                    Box(
+                        modifier = Modifier
+                            .weight(1f)
+                            .clip(
+                                shape = RoundedCornerShape(8.dp)
+                            )
+                            .border(
+                                border = BorderStroke(
+                                    width = 1.dp,
+                                    color = when (idx to surveyViewModel.surveyGlass.collectAsState().value) {
+                                        1 to SurveyGlass.Yes,
+                                        2 to SurveyGlass.No-> Color(0xff1d71e1)
+                                        else -> Color(0xffc3c3c3)
+                                    }
+                                ),
+                                shape = RoundedCornerShape(8.dp)
+                            )
+                            .clickable {
+                                surveyViewModel.updateSurveyGlass(
+                                    when (idx) {
+                                        1 -> SurveyGlass.Yes
+                                        else -> SurveyGlass.No
+                                    }
+                                )
+                            }
+                            .padding(start = 20.dp, top = 16.dp, end = 20.dp, bottom = 16.dp),
+                        contentAlignment = Alignment.CenterStart
+                    ) {
+                        Text(
+                            text = when (idx) {
+                                1 -> "네"
+                                else -> "아니요"
+                            },
+                            fontSize = 28.sp,
+                            color = when(idx to surveyViewModel.surveyGlass.collectAsState().value) {
+                                1 to SurveyGlass.Yes,
+                                2 to SurveyGlass.No-> Color(0xff1d71e1)
+                                else -> Color(0xffc3c3c3)
+                            }
                         )
-                        .border(
-                            border = BorderStroke(
-                                width = 1.dp,
-                                color = when (surveyViewModel.surveyGlass.collectAsState().value) {
-                                    SurveyGlass.No -> Color(0xff1d71e1)
-                                    else -> Color(0xffc3c3c3)
-                                }
-                            ),
-                            shape = RoundedCornerShape(8.dp)
+                    }
+                    when (idx < 2) {
+                        true -> Spacer(
+                            modifier = Modifier
+                                .width(20.dp)
                         )
-                        .clickable {
-                            surveyViewModel.updateSurveyGlass(SurveyGlass.No)
-                        }
-                        .padding(start = 20.dp, top = 16.dp, end = 20.dp, bottom = 16.dp),
-                    contentAlignment = Alignment.CenterStart
-                ) {
-                    Text(
-                        text = "미착용",
-                        fontSize = 28.sp,
-                        color = when(surveyViewModel.surveyGlass.collectAsState().value) {
-                            SurveyGlass.No -> Color(0xff1d71e1)
-                            else -> Color(0xffc3c3c3)
-                        }
-                    )
-                }
-                Spacer(
-                    modifier = Modifier
-                        .width(20.dp)
-                )
-                Box(
-                    modifier = Modifier
-                        .weight(1f)
-                        .clip(
-                            shape = RoundedCornerShape(8.dp)
-                        )
-                        .border(
-                            border = BorderStroke(
-                                width = 1.dp,
-                                color = when (surveyViewModel.surveyGlass.collectAsState().value) {
-                                    SurveyGlass.Yes -> Color(0xff1d71e1)
-                                    else -> Color(0xffc3c3c3)
-                                }
-                            ),
-                            shape = RoundedCornerShape(8.dp)
-                        )
-                        .clickable {
-                            surveyViewModel.updateSurveyGlass(SurveyGlass.Yes)
-                        }
-                        .padding(start = 20.dp, top = 16.dp, end = 20.dp, bottom = 16.dp),
-                    contentAlignment = Alignment.CenterStart
-                ) {
-                    Text(
-                        text = "안경 또는 렌즈 착용",
-                        fontSize = 28.sp,
-                        color = when(surveyViewModel.surveyGlass.collectAsState().value) {
-                            SurveyGlass.Yes -> Color(0xff1d71e1)
-                            else -> Color(0xffc3c3c3)
-                        }
-                    )
+                        false -> {}
+                    }
                 }
             }
+
+            // 수술 질문
             Text(
                 modifier = Modifier
                     .padding(top = 40.dp, bottom = 20.dp),
@@ -509,143 +347,68 @@ fun SurveyScreen(
                 fontWeight = FontWeight.Medium
             )
             Row() {
-                Box(
-                    modifier = Modifier
-                        .weight(1f)
-                        .clip(
-                            shape = RoundedCornerShape(8.dp)
-                        )
-                        .border(
-                            border = BorderStroke(
-                                width = 1.dp,
-                                color = when (surveyViewModel.surveySurgery.collectAsState().value) {
-                                    SurveySurgery.Normal -> Color(0xff1d71e1)
-                                    else -> Color(0xffc3c3c3)
-                                }
-                            ),
-                            shape = RoundedCornerShape(8.dp)
-                        )
-                        .clickable {
-                            surveyViewModel.updateSurveySurgery(SurveySurgery.Normal)
-                        }
-                        .padding(start = 20.dp, top = 16.dp, end = 20.dp, bottom = 16.dp),
-                    contentAlignment = Alignment.CenterStart
-                ) {
-                    Text(
-                        text = "없음",
-                        fontSize = 28.sp,
-                        color = when(surveyViewModel.surveySurgery.collectAsState().value) {
-                            SurveySurgery.Normal -> Color(0xff1d71e1)
-                            else -> Color(0xffc3c3c3)
-                        }
-                    )
-                }
-                Spacer(
-                    modifier = Modifier
-                        .width(20.dp)
-                )
-                Box(
-                    modifier = Modifier
-                        .weight(1f)
-                        .clip(
-                            shape = RoundedCornerShape(8.dp)
-                        )
-                        .border(
-                            border = BorderStroke(
-                                width = 1.dp,
-                                color = when (surveyViewModel.surveySurgery.collectAsState().value) {
-                                    SurveySurgery.LASIK -> Color(0xff1d71e1)
-                                    else -> Color(0xffc3c3c3)
-                                }
-                            ),
-                            shape = RoundedCornerShape(8.dp)
-                        )
-                        .clickable {
-                            surveyViewModel.updateSurveySurgery(SurveySurgery.LASIK)
-                        }
-                        .padding(start = 20.dp, top = 16.dp, end = 20.dp, bottom = 16.dp),
-                    contentAlignment = Alignment.CenterStart
-                ) {
-                    Text(
-                        text = "라식/라섹",
-                        fontSize = 28.sp,
-                        color = when(surveyViewModel.surveySurgery.collectAsState().value) {
-                            SurveySurgery.LASIK -> Color(0xff1d71e1)
-                            else -> Color(0xffc3c3c3)
-                        }
-                    )
-                }
-                Spacer(
-                    modifier = Modifier
-                        .width(20.dp)
-                )
-                Box(
-                    modifier = Modifier
-                        .weight(1f)
-                        .clip(
-                            shape = RoundedCornerShape(8.dp)
-                        )
-                        .border(
-                            border = BorderStroke(
-                                width = 1.dp,
-                                color = when (surveyViewModel.surveySurgery.collectAsState().value) {
-                                    SurveySurgery.Cataract -> Color(0xff1d71e1)
-                                    else -> Color(0xffc3c3c3)
-                                }
-                            ),
-                            shape = RoundedCornerShape(8.dp)
-                        )
-                        .clickable {
-                            surveyViewModel.updateSurveySurgery(SurveySurgery.Cataract)
-                        }
-                        .padding(start = 20.dp, top = 16.dp, end = 20.dp, bottom = 16.dp),
-                    contentAlignment = Alignment.CenterStart
-                ) {
-                    Text(
-                        text = "백내장",
-                        fontSize = 28.sp,
-                        color = when(surveyViewModel.surveySurgery.collectAsState().value) {
-                            SurveySurgery.Cataract -> Color(0xff1d71e1)
-                            else -> Color(0xffc3c3c3)
-                        }
-                    )
-                }
-                Spacer(
+                for (idx in 1..4) {
+                    Box(
                         modifier = Modifier
-                            .width(20.dp)
+                            .weight(1f)
+                            .clip(
+                                shape = RoundedCornerShape(8.dp)
+                            )
+                            .border(
+                                border = BorderStroke(
+                                    width = 1.dp,
+                                    color = when (idx to surveyViewModel.surveySurgery.collectAsState().value) {
+                                        1 to SurveySurgery.Normal,
+                                        2 to SurveySurgery.LASIK,
+                                        3 to SurveySurgery.Cataract,
+                                        4 to SurveySurgery.Etc -> Color(0xff1d71e1)
+                                        else -> Color(0xffc3c3c3)
+                                    }
+                                ),
+                                shape = RoundedCornerShape(8.dp)
+                            )
+                            .clickable {
+                                surveyViewModel.updateSurveySurgery(
+                                    when (idx) {
+                                        1 -> SurveySurgery.Normal
+                                        2 -> SurveySurgery.LASIK
+                                        3 -> SurveySurgery.Cataract
+                                        4 -> SurveySurgery.Etc
+                                        else -> SurveySurgery.None
+                                    }
+                                )
+                            }
+                            .padding(start = 20.dp, top = 16.dp, end = 20.dp, bottom = 16.dp),
+                        contentAlignment = Alignment.CenterStart
+                    ) {
+                        Text(
+                            text = when (idx) {
+                                1 -> "없음"
+                                2 -> "라식/라섹"
+                                3 -> "백내장"
+                                else -> "기타"
+                            },
+                            fontSize = 28.sp,
+                            color = when(idx to surveyViewModel.surveySurgery.collectAsState().value) {
+                                1 to SurveySurgery.Normal,
+                                2 to SurveySurgery.LASIK,
+                                3 to SurveySurgery.Cataract,
+                                4 to SurveySurgery.Etc -> Color(0xff1d71e1)
+                                else -> Color(0xffc3c3c3)
+                            }
                         )
-                Box(
-                    modifier = Modifier
-                        .weight(1f)
-                        .clip(
-                            shape = RoundedCornerShape(8.dp)
+                    }
+                    when (idx < 4) {
+                        true -> Spacer(
+                            modifier = Modifier
+                                .width(20.dp)
                         )
-                        .border(
-                            border = BorderStroke(
-                                width = 1.dp,
-                                color = when (surveyViewModel.surveySurgery.collectAsState().value) {
-                                    SurveySurgery.Etc -> Color(0xff1d71e1)
-                                    else -> Color(0xffc3c3c3)
-                                }
-                            ),
-                            shape = RoundedCornerShape(8.dp)
-                        )
-                        .clickable {
-                            surveyViewModel.updateSurveySurgery(SurveySurgery.Etc)
-                        }
-                        .padding(start = 20.dp, top = 16.dp, end = 20.dp, bottom = 16.dp),
-                    contentAlignment = Alignment.CenterStart
-                ) {
-                    Text(
-                        text = "기타",
-                        fontSize = 28.sp,
-                        color = when(surveyViewModel.surveySurgery.collectAsState().value) {
-                            SurveySurgery.Etc -> Color(0xff1d71e1)
-                            else -> Color(0xffc3c3c3)
-                        }
-                    )
+                        false -> {}
+                    }
                 }
             }
+
+            // 당뇨 질문
             Text(
                 modifier = Modifier
                     .padding(top = 40.dp, bottom = 20.dp),
@@ -654,74 +417,60 @@ fun SurveyScreen(
                 fontWeight = FontWeight.Medium
             )
             Row() {
-                Box(
-                    modifier = Modifier
-                        .weight(1f)
-                        .clip(
-                            shape = RoundedCornerShape(8.dp)
+                for (idx in 1..2) {
+                    Box(
+                        modifier = Modifier
+                            .weight(1f)
+                            .clip(
+                                shape = RoundedCornerShape(8.dp)
+                            )
+                            .border(
+                                border = BorderStroke(
+                                    width = 1.dp,
+                                    color = when (idx to surveyViewModel.surveyDiabetes.collectAsState().value) {
+                                        1 to SurveyDiabetes.Yes,
+                                        2 to SurveyDiabetes.No -> Color(0xff1d71e1)
+                                        else -> Color(0xffc3c3c3)
+                                    }
+                                ),
+                                shape = RoundedCornerShape(8.dp)
+                            )
+                            .clickable {
+                                surveyViewModel.updateSurveyDiabetes(
+                                    when (idx) {
+                                        1 -> SurveyDiabetes.Yes
+                                        else -> SurveyDiabetes.No
+                                    }
+                                )
+                            }
+                            .padding(start = 20.dp, top = 16.dp, end = 20.dp, bottom = 16.dp),
+                        contentAlignment = Alignment.CenterStart
+                    ) {
+                        Text(
+                            text = when(idx) {
+                                1 -> "네"
+                                else -> "아니오"
+                            },
+                            fontSize = 28.sp,
+                            color = when(idx to surveyViewModel.surveyDiabetes.collectAsState().value) {
+                                1 to SurveyDiabetes.Yes,
+                                2 to SurveyDiabetes.No -> Color(0xff1d71e1)
+                                else -> Color(0xffc3c3c3)
+                            }
                         )
-                        .border(
-                            border = BorderStroke(
-                                width = 1.dp,
-                                color = when (surveyViewModel.surveyDiabetes.collectAsState().value) {
-                                    SurveyDiabetes.Yes -> Color(0xff1d71e1)
-                                    else -> Color(0xffc3c3c3)
-                                }
-                            ),
-                            shape = RoundedCornerShape(8.dp)
+                    }
+                    when (idx < 2) {
+                        true -> Spacer(
+                            modifier = Modifier
+                                .width(20.dp)
                         )
-                        .clickable {
-                            surveyViewModel.updateSurveyDiabetes(SurveyDiabetes.Yes)
-                        }
-                        .padding(start = 20.dp, top = 16.dp, end = 20.dp, bottom = 16.dp),
-                    contentAlignment = Alignment.CenterStart
-                ) {
-                    Text(
-                        text = "네",
-                        fontSize = 28.sp,
-                        color = when(surveyViewModel.surveyDiabetes.collectAsState().value) {
-                            SurveyDiabetes.Yes -> Color(0xff1d71e1)
-                            else -> Color(0xffc3c3c3)
-                        }
-                    )
-                }
-                Spacer(
-                    modifier = Modifier
-                        .width(20.dp)
-                )
-                Box(
-                    modifier = Modifier
-                        .weight(1f)
-                        .clip(
-                            shape = RoundedCornerShape(8.dp)
-                        )
-                        .border(
-                            border = BorderStroke(
-                                width = 1.dp,
-                                color = when (surveyViewModel.surveyDiabetes.collectAsState().value) {
-                                    SurveyDiabetes.No -> Color(0xff1d71e1)
-                                    else -> Color(0xffc3c3c3)
-                                }
-                            ),
-                            shape = RoundedCornerShape(8.dp)
-                        )
-                        .clickable {
-                            surveyViewModel.updateSurveyDiabetes(SurveyDiabetes.No)
-                        }
-                        .padding(start = 20.dp, top = 16.dp, end = 20.dp, bottom = 16.dp),
-                    contentAlignment = Alignment.CenterStart
-                ) {
-                    Text(
-                        text = "아니오",
-                        fontSize = 28.sp,
-                        color = when(surveyViewModel.surveyDiabetes.collectAsState().value) {
-                            SurveyDiabetes.No -> Color(0xff1d71e1)
-                            else -> Color(0xffc3c3c3)
-                        }
-                    )
+                        false -> {}
+                    }
                 }
             }
         }
+
+        // 작성 완료 버튼
         Box(
             modifier = Modifier
                 .fillMaxSize(),

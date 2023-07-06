@@ -60,16 +60,16 @@ fun PresbyopiaTestContent(
     thirdItemVisibleState.targetState = isThirdItemVisible
     Text(
         modifier = Modifier
-            .padding(start = 40.dp, top = 120.dp, end = 40.dp)
+            .padding(start = 40.dp, top = 60.dp, end = 40.dp)
             .fillMaxWidth(),
         text = StringProvider.getString(R.string.presbyopia_test_description),
         color = Color(0xffffffff),
-        fontSize = 28.sp
+        fontSize = 32.sp
     )
     Box(
         contentAlignment = Alignment.Center,
         modifier = Modifier
-            .padding(top = 120.dp)
+            .padding(top = 60.dp)
             .height(400.dp)
             .width(400.dp)
             .background(

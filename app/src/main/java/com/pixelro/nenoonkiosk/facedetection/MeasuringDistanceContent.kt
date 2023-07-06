@@ -92,7 +92,8 @@ fun MeasuringDistanceContent(
                 modifier = Modifier
                     .padding(top = 40.dp)
                     .fillMaxWidth()
-                    .height(740.dp)
+                    .height(740.dp),
+                contentAlignment = Alignment.TopCenter
             ) {
                 Box(
                     modifier = Modifier
@@ -106,16 +107,16 @@ fun MeasuringDistanceContent(
                     if (measuringDistanceContentVisibleState.targetState) {
                         FaceDetectionWithPreview()
                     }
-                    Box(
-                        modifier = Modifier
-                            .fillMaxWidth()
-                            .height(60.dp)
-                            .background(
-                                color = Color(0xff000000)
-                            )
-                    )
                     // eye tracking red dot
 //                    CustomShape()
+                    Image(
+                        modifier = Modifier
+                            .width(450.dp)
+                            .height(660.dp),
+                        painter = painterResource(id = R.drawable.face_frame),
+                        contentDescription = "",
+                        colorFilter = ColorFilter.tint(Color(0xff1d71e1))
+                    )
                 }
                 Box(
                     modifier = Modifier
@@ -124,14 +125,6 @@ fun MeasuringDistanceContent(
                         .height(600.dp),
                     contentAlignment = Alignment.Center
                 ) {
-                    Image(
-                        modifier = Modifier
-                            .width(400.dp)
-                            .height(600.dp),
-                        painter = painterResource(id = R.drawable.face_frame),
-                        contentDescription = "",
-                        colorFilter = ColorFilter.tint(Color(0xff1d71e1))
-                    )
 //                    Image(
 //                        modifier = Modifier
 //                            .offset(
@@ -145,11 +138,11 @@ fun MeasuringDistanceContent(
                         if (!isLeftEye) {
                             Image(
                                 modifier = Modifier
-                                    .width((400 * 300 / faceDetectionViewModel.screenToFaceDistance.collectAsState().value).dp)
-                                    .height((800 * 300 / faceDetectionViewModel.screenToFaceDistance.collectAsState().value).dp)
+                                    .width((300 * 300 / faceDetectionViewModel.screenToFaceDistance.collectAsState().value).dp)
+                                    .height((600 * 300 / faceDetectionViewModel.screenToFaceDistance.collectAsState().value).dp)
                                     .offset(
-                                        x = (350 - (faceDetectionViewModel.rightEyePosition.collectAsState().value.x / 1.5f)).dp,
-                                        y = (faceDetectionViewModel.rightEyePosition.collectAsState().value.y / 1.5f - 530).dp
+                                        x = (310 - (faceDetectionViewModel.rightEyePosition.collectAsState().value.x / 1.75f)).dp,
+                                        y = (faceDetectionViewModel.rightEyePosition.collectAsState().value.y / 1.75f - 360).dp
                                     )
                                     .alpha(shiftVal),
                                 painter = painterResource(id = R.drawable.occluder),
@@ -158,11 +151,11 @@ fun MeasuringDistanceContent(
                         } else {
                             Image(
                                 modifier = Modifier
-                                    .width((400 * 300 / faceDetectionViewModel.screenToFaceDistance.collectAsState().value).dp)
-                                    .height((800 * 300 / faceDetectionViewModel.screenToFaceDistance.collectAsState().value).dp)
+                                    .width((300 * 300 / faceDetectionViewModel.screenToFaceDistance.collectAsState().value).dp)
+                                    .height((600 * 300 / faceDetectionViewModel.screenToFaceDistance.collectAsState().value).dp)
                                     .offset(
-                                        x = (370 - (faceDetectionViewModel.leftEyePosition.collectAsState().value.x / 1.5f)).dp,
-                                        y = (faceDetectionViewModel.leftEyePosition.collectAsState().value.y / 1.5f - 530).dp
+                                        x = (310 - (faceDetectionViewModel.leftEyePosition.collectAsState().value.x / 1.75f)).dp,
+                                        y = (faceDetectionViewModel.leftEyePosition.collectAsState().value.y / 1.75f - 360).dp
                                     )
                                     .alpha(shiftVal),
                                 painter = painterResource(id = R.drawable.occluder),
@@ -280,8 +273,6 @@ fun MeasuringDistanceContent(
                 if (faceDetectionViewModel.screenToFaceDistance.collectAsState().value in when (selectedTestType) {
                         TestType.ShortDistanceVisualAcuity -> (346.0..455.0)
                         else -> (246.0..355.0)
-//                        TestType.ShortDistanceVisualAcuity -> (-100.0..100.0)
-//                        else -> (-100.0..100.0)
                     } && faceDetectionViewModel.isNenoonTextDetected.collectAsState().value
                     && when(!isLeftEye) {
                         true -> faceDetectionViewModel.isLeftEyeCovered.collectAsState().value

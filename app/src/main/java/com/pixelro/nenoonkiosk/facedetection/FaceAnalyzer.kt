@@ -27,13 +27,10 @@ import java.util.concurrent.Executor
 
 class MyFaceAnalyzer(
     val updateFaceDetectionData: (Rect, PointF?, PointF?, Float, Float, Float, Float?, Float?) -> Unit,
-    val updateFaceContourData: (List<PointF>, List<PointF>, List<PointF>, List<PointF>, List<PointF>, List<PointF>, List<PointF>, Float, Float) -> Unit,
-    val updateInputImageSize: (Float, Float) -> Unit,
     val updateTextRecognitionData: (Rect?) -> Unit,
     val updateIsFaceDetected: (Boolean) -> Unit,
     val updateIsNenoonTextDetected: (Boolean) -> Unit,
     private val executor: Executor
-//    val updateBitmap: (Bitmap) -> Unit,
 ) : ImageAnalysis.Analyzer {
 
     private var lastAnalysisTime = -1L
@@ -53,22 +50,16 @@ class MyFaceAnalyzer(
     @SuppressLint("UnsafeOptInUsageError")
     override fun analyze(imageProxy: ImageProxy) {
         val now = SystemClock.uptimeMillis()
-//        if (lastAnalysisTime != -1L && now - lastAnalysisTime < 200f) {
-//            imageProxy.close()
-//            return
-//        }
         var isNenoonTextDetected = false
         lastAnalysisTime = now
+
         // original image
         val mediaImage = imageProxy.image
         if (mediaImage != null) {
             val image = InputImage.fromMediaImage(mediaImage, imageProxy.imageInfo.rotationDegrees)
-//            Log.e("imageSize", "imagewidth : ${image.width}, image height : ${image.height}")
-//            updateInputImageSize(mediaImage.width.toFloat(), mediaImage.height.toFloat())
             // Text Recognition
             recognizer.process(image).addOnSuccessListener(executor) { result ->
 
-//                Log.e("analysisprocess1", Thread.currentThread().name)
                 for (block in result.textBlocks) {
                     for (line in block.lines) {
                         if (line.text == "NENOON" || line.text == "NE NOON") {
@@ -84,34 +75,18 @@ class MyFaceAnalyzer(
             }.addOnFailureListener {
                 it.printStackTrace()
             }.addOnCompleteListener {
-//                imageProxy.close()
             }
 
 
             // Face Detection
             detector.process(image).addOnSuccessListener(executor) { faces ->
-
-//                Log.e("analysisprocess2", Thread.currentThread().name)
-
-//                Log.e("eyeface", faces.size.toString())
-//                if (faces.size == 0) {
-//                    noFaceCount++
-//                    if(noFaceCount > 10) {
-//                        updateIsFaceDetected(false)
-//                    }
-//                    Log.e("faceNum", "no face detected")
-//                    return@addOnSuccessListener
-//                } else {
-//                    noFaceCount = 0
-//                    Log.e("faceNum", "face detected")
-//                }
                 var centerFace: Face? = null
                 for (face in faces) {
                     val leftEyePosition = face.getLandmark(FaceLandmark.LEFT_EYE)?.position
                     val rightEyePosition = face.getLandmark(FaceLandmark.RIGHT_EYE)?.position
 //                    Log.e("eyePosition", "leftEyePosition: ${leftEyePosition?.x}\nrightEyePosition: ${rightEyePosition?.x}")
                     if (leftEyePosition != null && rightEyePosition != null) {
-                        if (leftEyePosition.x > 260f && leftEyePosition.x < 544f && rightEyePosition.x < 804f && rightEyePosition.x > 544f && leftEyePosition.y > 400f && rightEyePosition.y > 400f && rightEyePosition.x - leftEyePosition.x > 130f) {
+                        if (leftEyePosition.x > 260f && leftEyePosition.x < 544f && rightEyePosition.x < 804f && rightEyePosition.x > 544f && leftEyePosition.y > 400f && rightEyePosition.y > 400f && rightEyePosition.x - leftEyePosition.x > 100f) {
                             centerFace = face
                             break
                         }
@@ -131,10 +106,6 @@ class MyFaceAnalyzer(
                     val leftEyeOpenProbability = centerFace.leftEyeOpenProbability
                     val rightEyeOpenProbability = centerFace.rightEyeOpenProbability
 
-//                    Log.e(
-//                        "eyePosition",
-//                        "leftEyePosition: $leftEyePosition\nrightEyePosition: $rightEyePosition"
-//                    )
                     if (leftEyePosition != null && rightEyePosition != null) {
                         updateFaceDetectionData(
                             boundingBox,
@@ -146,7 +117,6 @@ class MyFaceAnalyzer(
                             leftEyeOpenProbability,
                             rightEyeOpenProbability
                         )
-//                        Log.e("faceNum", "${centerFace.trackingId}, ${leftEyePosition.x}, ${leftEyePosition.y} ${rightEyePosition.x}, ${rightEyePosition.y}")
                         return@addOnSuccessListener
                     } else {
                         updateIsFaceDetected(false)
@@ -183,7 +153,7 @@ class MyFaceAnalyzer(
 //        val rotatedImage = Bitmap.createBitmap(bitmap, 0, 0, bitmap.width - 300, bitmap.height, matrix, true)
 //
 //        updateBitmap(rotatedImage)
-        // resized image
+    // resized image
 //        val bitmap = imageProxy.toBitmap()
 //        val resizedBitmap = Bitmap.createScaledBitmap(bitmap, bitmap.width * 2, bitmap.height * 2, false)
 //        val croppedBitmap = Bitmap.createBitmap(resizedBitmap, resizedBitmap.width / 4, resizedBitmap.height / 4, resizedBitmap.width / 2, resizedBitmap.height / 2)

@@ -23,9 +23,9 @@ class FaceDetectionViewModel @Inject constructor(
 ) : AndroidViewModel(application) {
     private val _screenToFaceDistance = MutableStateFlow(0f)
     val screenToFaceDistance: StateFlow<Float> = _screenToFaceDistance
-    private val _inputImageSizeX = MutableStateFlow(1920f)
+    private val _inputImageSizeX = MutableStateFlow(1088f)
     val inputImageSizeX: StateFlow<Float> = _inputImageSizeX
-    private val _inputImageSizeY = MutableStateFlow(1920f)
+    private val _inputImageSizeY = MutableStateFlow(1088f)
     val inputImageSizeY: StateFlow<Float> = _inputImageSizeY
     private val _rightEyePosition = MutableStateFlow(PointF(0f, 0f))
     val rightEyePosition: StateFlow<PointF> = _rightEyePosition
@@ -146,7 +146,7 @@ class FaceDetectionViewModel @Inject constructor(
     }
 
     fun updateIsNenoonTextDetected(isNenoonTextDetected: Boolean) {
-        count = 15
+        count = 10
         _isNenoonTextDetected.update { isNenoonTextDetected }
     }
 
@@ -155,7 +155,7 @@ class FaceDetectionViewModel @Inject constructor(
             if((rightEyePosition.value.x - leftEyePosition.value.y) != 0f && GlobalValue.lensSize.width != 0f) {
                 _screenToFaceDistance.update {
                     val prev = _screenToFaceDistance.value
-                    val dist = 1.1f * (GlobalValue.focalLength * 63) * inputImageSizeX.value / ((rightEyePosition.value.x - leftEyePosition.value.x) * (GlobalValue.lensSize.width)) / 1920f * 1088f
+                    val dist = 1.1f * (GlobalValue.focalLength * 63) * inputImageSizeX.value / ((rightEyePosition.value.x - leftEyePosition.value.x) * (GlobalValue.lensSize.width))
                     if(dist > 600f || dist < 1f) prev
                     else dist
                 }
@@ -172,7 +172,6 @@ class FaceDetectionViewModel @Inject constructor(
     val textBox: StateFlow<Rect?> = _textBox
 
     private val _distance = MutableStateFlow(0f)
-    val distance: StateFlow<Float> = _distance
 
     fun updateTextRecognitionData(
         textBox: Rect?
@@ -186,48 +185,9 @@ class FaceDetectionViewModel @Inject constructor(
             _isLeftEyeCovered.update { false }
             _isRightEyeCovered.update { true }
         }
-        _distance.update { 12000 / 4.8f * 2.3f / ((_textBox.value?.right?.toFloat() ?: 0f) - (_textBox.value?.left?.toFloat() ?: 0f)) / 1920f * 1088f }
+        _distance.update { 3200 / ((_textBox.value?.right?.toFloat() ?: 0f) - (_textBox.value?.left?.toFloat() ?: 0f)) }
         _screenToFaceDistance.update { _distance.value * 10f }
-//        Log.e("distance", "너비: ${12000 / ((_textBox.value?.right?.toFloat() ?: 0f) - (_textBox.value?.left?.toFloat() ?: 0f))}\n" +
-//                "높이: ${3000 / ((_textBox.value?.bottom?.toFloat() ?: 0f) - (_textBox.value?.top?.toFloat() ?: 0f))}"
-//        )
     }
-
-
-
-    // Covered Eye Checking
-//    private val _leftTime = MutableStateFlow(0f)
-//    val leftTime: StateFlow<Float> = _leftTime
-//    private val _isTimerShowing = MutableStateFlow(false)
-//    val isTimerShowing: StateFlow<Boolean> = _isTimerShowing
-//
-//    fun initializeCoveredEyeChecking(isLeftEye: Boolean, toNextContent: () -> Unit) {
-//        _leftTime.update { 5f }
-//        _isTimerShowing.update { false }
-//        viewModelScope.launch {
-//            var count = 0
-//            when(isLeftEye) {
-//                true -> {
-//                    while(count < 4) {
-//                        if (_leftEyeOpenProbability.value < 0.5f) count++
-////                        Log.e("probability", "${leftEyeOpenProbability.value}, ${rightEyeOpenProbability.value}")
-//                        delay(500)
-//                    }
-//                    _isTimerShowing.update { true }
-//                    startTimer { toNextContent() }
-//                }
-//                false -> {
-//                    while(count < 4) {
-//                        if (_rightEyeOpenProbability.value < 0.5f) count++
-////                        Log.e("probability", "${leftEyeOpenProbability.value}, ${rightEyeOpenProbability.value}")
-//                        delay(500)
-//                    }
-//                    _isTimerShowing.update { true }
-//                    startTimer { toNextContent() }
-//                }
-//            }
-//        }
-//    }
 
     private fun startTimer() {
         viewModelScope.launch {
