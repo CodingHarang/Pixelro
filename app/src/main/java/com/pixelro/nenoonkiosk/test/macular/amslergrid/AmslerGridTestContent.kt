@@ -1,6 +1,7 @@
 package com.pixelro.nenoonkiosk.test.macular.amslergrid
 
 import android.app.Activity
+import android.util.Log
 import android.view.KeyEvent
 import androidx.activity.compose.BackHandler
 import androidx.compose.animation.*
@@ -56,6 +57,7 @@ fun AmslerGridTestContent(
     amslerGridContentVisibleState.targetState = amslerGridViewModel.isAmslerGridContentVisible.collectAsState().value
 //    val macularDegenerationTypeVisibleState = remember { MutableTransitionState(false) }
 //    macularDegenerationTypeVisibleState.targetState = amslerGridViewModel.isMacularDegenerationTypeVisible.collectAsState().value
+
     Column(
         modifier = Modifier
             .fillMaxSize()
@@ -101,6 +103,12 @@ fun AmslerGridContent(
         enter = AnimationProvider.enterTransition,
         exit = AnimationProvider.exitTransition
     ) {
+        LaunchedEffect(true) {
+            amslerGridViewModel.startBlinking()
+        }
+        val isBlinkingDone = amslerGridViewModel.isBlinkingDone.collectAsState().value
+        val isDotShowing = amslerGridViewModel.isDotShowing.collectAsState().value
+        val isFaceCenter = amslerGridViewModel.isFaceCenter.collectAsState().value
         FaceDetection()
         Column(
             modifier = Modifier
@@ -114,8 +122,15 @@ fun AmslerGridContent(
 
             Text(
                 modifier = Modifier
-                    .padding(start = 20.dp, top = 20.dp, end = 20.dp, bottom = 20.dp),
-                text = StringProvider.getString(R.string.amsler_grid_test_description),
+                    .padding(start = 20.dp, top = 20.dp, end = 20.dp, bottom = 20.dp)
+                    .height(160.dp),
+                text = when (!isBlinkingDone) {
+                    true -> "아래의 깜빡이는 점을 봐주세요"
+                    false -> when (isFaceCenter) {
+                        true -> "이상하게 보이거나 왜곡되어 보이는 부분을 손으로 눌러 선택해주세요. 선택을 완료했거나 이상한 부분이 없다면 아래의 \'완료\' 버튼을 눌러주세요."
+                        false -> "가운데의 검은 점을 봐주세요"
+                    }
+                },
                 fontSize = 32.sp,
                 color = Color(0xffffffff),
                 fontWeight = FontWeight.Medium
@@ -143,16 +158,24 @@ fun AmslerGridContent(
                         .width(600.dp)
                         .height(600.dp)
                 ) {
-                    drawCircle(
-                        color = Color(0xff000000),
-                        radius = 50f,
-                        center = Offset(450f, 450f)
-                    )
-                    drawCircle(
-                        color = Color(0xff0000ff),
-                        radius = 20f,
-                        center = Offset(450f - (400f * tan(rotY * 0.0174533)).toFloat(), 450f - (400f * tan((rotX + 10) * 0.0174533)).toFloat())
-                    )
+                    if (isDotShowing) {
+                        drawCircle(
+                            color = Color(0xff000000),
+                            radius = 50f,
+                            center = Offset(450f, 450f)
+                        )
+                    }
+                    if (!isFaceCenter) {
+                        drawCircle(
+                            color = Color(0xff0000ff),
+                            radius = 20f,
+                            center = Offset(450f - (400f * tan(rotY * 0.0174533)).toFloat(), 450f - (400f * tan((rotX + 10) * 0.0174533)).toFloat())
+                        )
+                    }
+                    if (isBlinkingDone && !isFaceCenter && 450f - (400f * tan(rotY * 0.0174533)).toFloat() > 400f && 450f - (400f * tan(rotY * 0.0174533)).toFloat() < 500f
+                            && 450f - (400f * tan((rotX + 10) * 0.0174533)).toFloat() > 400f && 450f - (400f * tan((rotX + 10) * 0.0174533)).toFloat() < 500f) {
+                        amslerGridViewModel.updateIsFaceCenter(true)
+                    }
                 }
                 Column(
                     modifier = Modifier

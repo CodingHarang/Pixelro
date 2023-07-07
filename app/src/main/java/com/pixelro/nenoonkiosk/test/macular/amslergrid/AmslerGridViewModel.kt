@@ -4,10 +4,13 @@ import android.app.Application
 import android.util.Log
 import androidx.compose.ui.geometry.Offset
 import androidx.lifecycle.AndroidViewModel
+import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.update
+import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
@@ -41,6 +44,24 @@ class AmslerGridViewModel @Inject constructor(
     val leftSelectedArea: StateFlow<List<MacularDisorderType>> = _leftSelectedArea
     private val _rightSelectedArea = MutableStateFlow(listOf<MacularDisorderType>())
     val rightSelectedArea: StateFlow<List<MacularDisorderType>> = _rightSelectedArea
+    private val _isBlinkingDone = MutableStateFlow(false)
+    val isBlinkingDone: StateFlow<Boolean> = _isBlinkingDone
+    private val _isDotShowing = MutableStateFlow(true)
+    val isDotShowing: StateFlow<Boolean> = _isDotShowing
+    private val _isFaceCenter = MutableStateFlow(false)
+    val isFaceCenter: StateFlow<Boolean> = _isFaceCenter
+
+    fun updateIsBlinkingDone(isDone: Boolean) {
+        _isBlinkingDone.update { isDone }
+    }
+
+    fun updateIsDotShowing(isShowing: Boolean) {
+        _isDotShowing.update { isShowing }
+    }
+
+    fun updateIsFaceCenter(isCenter: Boolean) {
+        _isFaceCenter.update { isCenter }
+    }
 
     fun updateIsMeasuringDistanceContentVisible(visible: Boolean) {
         _isMeasuringDistanceContentVisible.update { visible }
@@ -59,6 +80,12 @@ class AmslerGridViewModel @Inject constructor(
     }
 
     fun updateLeftSelectedArea() {
+        viewModelScope.launch {
+            delay(450)
+            _isBlinkingDone.update { false }
+            _isDotShowing.update { true }
+            _isFaceCenter.update { false }
+        }
         _leftSelectedArea.update { currentSelectedArea.value }
         _currentSelectedArea.update {
             val tmpList = it.toMutableList()
@@ -119,7 +146,22 @@ class AmslerGridViewModel @Inject constructor(
         )
     }
 
+    fun startBlinking() {
+        var count = 16
+        viewModelScope.launch {
+            while(count > 0) {
+                _isDotShowing.update { !it }
+                delay(250)
+                count--
+            }
+            _isBlinkingDone.update { true }
+        }
+    }
+
     fun init() {
+        _isBlinkingDone.update { false }
+        _isDotShowing.update { true }
+        _isFaceCenter.update { false }
         _isMeasuringDistanceContentVisible.update { true }
         _isAmslerGridContentVisible.update { false }
 //        _isMacularDegenerationTypeVisible.update { false }

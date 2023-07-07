@@ -213,8 +213,7 @@ fun TestResultScreen(
         when (testType) {
             TestType.Presbyopia -> {
                 PresbyopiaTestResultContent(
-                    testResult = testResult as PresbyopiaTestResult,
-                    navController = navController
+                    testResult = testResult as PresbyopiaTestResult
                 )
             }
 

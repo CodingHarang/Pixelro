@@ -58,7 +58,7 @@ fun NenoonApp(
                     modifier = Modifier
                         .fillMaxSize(),
                     navController = mainNavController,
-                    startDestination = GlobalConstants.ROUTE_TEST_LIST,
+                    startDestination = GlobalConstants.ROUTE_SURVEY,
                     contentAlignment = Alignment.TopCenter
                 ) {
                     // 문진표 작성 화면

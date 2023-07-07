@@ -24,7 +24,7 @@ class PresbyopiaViewModel @Inject constructor(
 //    private val _isThirdItemVisible = MutableStateFlow(false)
 //    val isThirdItemVisible: StateFlow<Boolean> = _isThirdItemVisible
     private val _isMovedTo40cm = MutableStateFlow(false)
-    val isMovedTo50cm: StateFlow<Boolean> = _isMovedTo40cm
+    val isMovedTo40cm: StateFlow<Boolean> = _isMovedTo40cm
     private val _isUnder25cm = MutableStateFlow(false)
     val isUnder25cm: StateFlow<Boolean> = _isUnder25cm
     private val _isNumberShowing = MutableStateFlow(true)
@@ -48,28 +48,34 @@ class PresbyopiaViewModel @Inject constructor(
     fun moveToNextStep(dist: Float, handleProgress: (Float) -> Unit, toResultScreen: () -> Unit) {
         when (_tryCount.value) {
             0 -> {
-                _isMovedTo40cm.update { false }
-                _isUnder25cm.update { false }
-                _isNumberShowing.update { true }
-                _isBlinkingDone.update { false }
-                firstDistance = dist / 10
+                firstDistance = if (_isUnder25cm.value) 20f
+                else dist / 10
+
                 _tryCount.update { it + 1 }
                 handleProgress(0.33f)
-            }
-            1 -> {
                 _isMovedTo40cm.update { false }
                 _isUnder25cm.update { false }
                 _isNumberShowing.update { true }
                 _isBlinkingDone.update { false }
-                secondDistance = dist / 10
+            }
+            1 -> {
+                secondDistance = if (_isUnder25cm.value) 20f
+                else dist / 10
+
                 _tryCount.update { it + 1 }
                 handleProgress(0.66f)
+                _isMovedTo40cm.update { false }
+                _isUnder25cm.update { false }
+                _isNumberShowing.update { true }
+                _isBlinkingDone.update { false }
             }
             else -> {
                 viewModelScope.launch {
+                    thirdDistance = if (_isUnder25cm.value) 20f
+                    else dist / 10
+
                     handleProgress(1.2f)
                     delay(500)
-                    thirdDistance = dist / 10
                     toResultScreen()
                 }
             }
@@ -78,7 +84,7 @@ class PresbyopiaViewModel @Inject constructor(
 
     fun blinkNumber() {
         viewModelScope.launch {
-            var count = 16
+            var count = 12
             while (count > 0) {
                 _isNumberShowing.update { !it }
                 delay(250)
@@ -100,7 +106,6 @@ class PresbyopiaViewModel @Inject constructor(
                 age = entry.y.toInt()
             }
         }
-        age -= 20
         Log.e("presbyopiaResult", "firstDistance: ${firstDistance}\nsecondDistance: ${secondDistance}\nthirdDistance: ${thirdDistance}\n${avgDistance}\nage: $age")
         return PresbyopiaTestResult(firstDistance, secondDistance, thirdDistance, avgDistance, age)
     }

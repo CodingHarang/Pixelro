@@ -25,9 +25,11 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.lifecycle.viewmodel.compose.viewModel
 import com.pixelro.nenoonkiosk.R
 import com.pixelro.nenoonkiosk.data.GlobalValue
 import com.pixelro.nenoonkiosk.data.StringProvider
@@ -108,6 +110,7 @@ fun SurveyScreen(
                                             2 to SurveyAge.Second,
                                             3 to SurveyAge.Third,
                                             4 to SurveyAge.Fourth -> Color(0xff1d71e1)
+
                                             else -> Color(0xffc3c3c3)
                                         }
                                     ),
@@ -115,7 +118,7 @@ fun SurveyScreen(
                                 )
                                 .clickable {
                                     surveyViewModel.updateSurveyAge(
-                                        when(idx) {
+                                        when (idx) {
                                             1 -> SurveyAge.First
                                             2 -> SurveyAge.Second
                                             3 -> SurveyAge.Third
@@ -171,6 +174,7 @@ fun SurveyScreen(
                                             6 to SurveyAge.Sixth,
                                             7 to SurveyAge.Seventh,
                                             8 to SurveyAge.Eighth -> Color(0xff1d71e1)
+
                                             else -> Color(0xffc3c3c3)
                                         }
                                     ),
@@ -178,7 +182,7 @@ fun SurveyScreen(
                                 )
                                 .clickable {
                                     surveyViewModel.updateSurveyAge(
-                                        when(idx) {
+                                        when (idx) {
                                             5 -> SurveyAge.Fifth
                                             6 -> SurveyAge.Sixth
                                             7 -> SurveyAge.Seventh
@@ -238,6 +242,7 @@ fun SurveyScreen(
                                     color = when (idx to surveyViewModel.surveySex.collectAsState().value) {
                                         1 to SurveySex.Man,
                                         2 to SurveySex.Woman -> Color(0xff1d71e1)
+
                                         else -> Color(0xffc3c3c3)
                                     }
                                 ),
@@ -298,7 +303,8 @@ fun SurveyScreen(
                                     width = 1.dp,
                                     color = when (idx to surveyViewModel.surveyGlass.collectAsState().value) {
                                         1 to SurveyGlass.Yes,
-                                        2 to SurveyGlass.No-> Color(0xff1d71e1)
+                                        2 to SurveyGlass.No -> Color(0xff1d71e1)
+
                                         else -> Color(0xffc3c3c3)
                                     }
                                 ),
@@ -362,6 +368,7 @@ fun SurveyScreen(
                                         2 to SurveySurgery.LASIK,
                                         3 to SurveySurgery.Cataract,
                                         4 to SurveySurgery.Etc -> Color(0xff1d71e1)
+
                                         else -> Color(0xffc3c3c3)
                                     }
                                 ),
@@ -430,6 +437,7 @@ fun SurveyScreen(
                                     color = when (idx to surveyViewModel.surveyDiabetes.collectAsState().value) {
                                         1 to SurveyDiabetes.Yes,
                                         2 to SurveyDiabetes.No -> Color(0xff1d71e1)
+
                                         else -> Color(0xffc3c3c3)
                                     }
                                 ),

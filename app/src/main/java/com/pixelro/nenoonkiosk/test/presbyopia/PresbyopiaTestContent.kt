@@ -67,7 +67,7 @@ fun PresbyopiaTestContent(
 //    secondItemVisibleState.targetState = isSecondItemVisible
 //    val thirdItemVisibleState = remember { MutableTransitionState(false) }
 //    thirdItemVisibleState.targetState = isThirdItemVisible
-    val isMovedTo40cm = presbyopiaViewModel.isMovedTo50cm.collectAsState().value
+    val isMovedTo40cm = presbyopiaViewModel.isMovedTo40cm.collectAsState().value
     val isUnder25cm = presbyopiaViewModel.isUnder25cm.collectAsState().value
     val isBlinkingDone = presbyopiaViewModel.isBlinkingDone.collectAsState().value
     val tryCount = presbyopiaViewModel.tryCount.collectAsState().value
@@ -77,7 +77,7 @@ fun PresbyopiaTestContent(
         targetValue = progress,
         animationSpec = ProgressIndicatorDefaults.ProgressAnimationSpec
     )
-    if (distance > 390f && !isMovedTo40cm) {
+    if (distance > 400f && !isMovedTo40cm) {
         presbyopiaViewModel.blinkNumber()
         presbyopiaViewModel.updateIsMovedTo50cm(true)
     }
@@ -101,7 +101,7 @@ fun PresbyopiaTestContent(
             },
             color = Color(0xffffffff),
             fontSize = when (!isMovedTo40cm) {
-                true -> 44.sp
+                true -> 48.sp
                 false -> when(isBlinkingDone) {
                     true -> 36.sp
                     false -> 48.sp
@@ -149,44 +149,44 @@ fun PresbyopiaTestContent(
                         textAlign = TextAlign.Center
                     )
                 } else {
-                    Row() {
-                        Image(
-                            painter = painterResource(id = R.drawable.accommodation_1),
-                            contentDescription = null
-                        )
-                        Image(
-                            painter = painterResource(id = R.drawable.accommodation_2),
-                            contentDescription = null
-                        )
-                        Image(
-                            painter = painterResource(id = R.drawable.accommodation_3),
-                            contentDescription = null
-                        )
-                    }
-                    Row() {
-                        Image(
-                            painter = painterResource(id = R.drawable.accommodation_4),
-                            contentDescription = null
-                        )
-                        Image(
-                            painter = painterResource(id = R.drawable.accommodation_5),
-                            contentDescription = null
-                        )
-                        Image(
-                            painter = painterResource(id = R.drawable.accommodation_6),
-                            contentDescription = null
-                        )
-                    }
-//                    Text(
-//                        text = "2  3  4  5",
-//                        fontWeight = FontWeight.ExtraBold,
-//                        fontSize = 120.sp
-//                    )
-//                    Text(
-//                        text = "6  7  8  9",
-//                        fontWeight = FontWeight.ExtraBold,
-//                        fontSize = 80.sp
-//                    )
+//                    Row() {
+//                        Image(
+//                            painter = painterResource(id = R.drawable.accommodation_1),
+//                            contentDescription = null
+//                        )
+//                        Image(
+//                            painter = painterResource(id = R.drawable.accommodation_2),
+//                            contentDescription = null
+//                        )
+//                        Image(
+//                            painter = painterResource(id = R.drawable.accommodation_3),
+//                            contentDescription = null
+//                        )
+//                    }
+//                    Row() {
+//                        Image(
+//                            painter = painterResource(id = R.drawable.accommodation_4),
+//                            contentDescription = null
+//                        )
+//                        Image(
+//                            painter = painterResource(id = R.drawable.accommodation_5),
+//                            contentDescription = null
+//                        )
+//                        Image(
+//                            painter = painterResource(id = R.drawable.accommodation_6),
+//                            contentDescription = null
+//                        )
+//                    }
+                    Text(
+                        text = "2  3  4  5",
+                        fontWeight = FontWeight.Bold,
+                        fontSize = 60.sp
+                    )
+                    Text(
+                        text = "6  7  8  9",
+                        fontWeight = FontWeight.Bold,
+                        fontSize = 40.sp
+                    )
                 }
             }
         }
