@@ -56,8 +56,7 @@ import javax.inject.Inject
 @SuppressLint("HardwareIds")
 @HiltViewModel
 class NenoonViewModel @Inject constructor(
-    application: Application,
-    private val api: NenoonKioskApi
+    application: Application
 ) : AndroidViewModel(application) {
 
     private fun checkBackgroundStatus() {
