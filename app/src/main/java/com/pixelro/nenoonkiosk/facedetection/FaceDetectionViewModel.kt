@@ -68,29 +68,35 @@ class FaceDetectionViewModel @Inject constructor(
     private var count = 0
 
     // TTS 전용 변수
-    private val _isOccluderPickedDone = MutableStateFlow(false)
-    val isOccluderPickedDone: StateFlow<Boolean> = _isOccluderPickedDone
-    private val _isFaceDetectedDone = MutableStateFlow(false)
-    val isFaceDetectedDone: StateFlow<Boolean> = _isFaceDetectedDone
-    private val _isEyeCoveredDone = MutableStateFlow(false)
-    val isEyeCoveredDone: StateFlow<Boolean> = _isEyeCoveredDone
-    private val _isDistanceMeasuredDone = MutableStateFlow(false)
-    val isDistanceMeasuredDone: StateFlow<Boolean> = _isDistanceMeasuredDone
+    private val _isOccluderPickedTTSDone = MutableStateFlow(true)
+    val isOccluderPickedTTSDone: StateFlow<Boolean> = _isOccluderPickedTTSDone
+    private val _isFaceDetectedTTSDone = MutableStateFlow(true)
+    val isFaceDetectedTTSDone: StateFlow<Boolean> = _isFaceDetectedTTSDone
+    private val _isEyeCoveredTTSDone = MutableStateFlow(true)
+    val isEyeCoveredTTSDone: StateFlow<Boolean> = _isEyeCoveredTTSDone
+    private val _isDistanceMeasuredTTSDone = MutableStateFlow(true)
+    val isDistanceMeasuredTTSDone: StateFlow<Boolean> = _isDistanceMeasuredTTSDone
+    private val _isPressStartButtonTTSDone = MutableStateFlow(true)
+    val isPressStartButtonTTSDone: StateFlow<Boolean> = _isPressStartButtonTTSDone
 
-    fun updateIsOccluderPickedDone(isPicked: Boolean) {
-        _isOccluderPickedDone.update { isPicked }
+    fun updateIsOccluderPickedTTSDone(isDone: Boolean) {
+        _isOccluderPickedTTSDone.update { isDone }
     }
 
-    fun updateIsFaceDetectedDone(isCentered: Boolean) {
-        _isFaceDetectedDone.update { isCentered }
+    fun updateIsFaceDetectedTTSDone(isDone: Boolean) {
+        _isFaceDetectedTTSDone.update { isDone }
     }
 
-    fun updateIsEyeCoveredDone(isCovered: Boolean) {
-        _isEyeCoveredDone.update { isCovered }
+    fun updateIsEyeCoveredTTSDone(isDone: Boolean) {
+        _isEyeCoveredTTSDone.update { isDone }
     }
 
-    fun updateIsDistanceMeasuredDone(isMeasured: Boolean) {
-        _isDistanceMeasuredDone.update { isMeasured }
+    fun updateIsDistanceMeasuredTTSDone(isDone: Boolean) {
+        _isDistanceMeasuredTTSDone.update { isDone }
+    }
+
+    fun updateIsPressStartButtonTTSDone(isDone: Boolean) {
+        _isPressStartButtonTTSDone.update { isDone }
     }
 
 //    private val _bitmap = MutableStateFlow(Bitmap.createBitmap(100, 100, Bitmap.Config.ARGB_8888))

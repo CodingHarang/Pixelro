@@ -1,6 +1,7 @@
 package com.pixelro.nenoonkiosk.facedetection
 
 import android.speech.tts.TextToSpeech
+import android.util.Log
 import androidx.activity.compose.BackHandler
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.core.MutableTransitionState
@@ -68,40 +69,54 @@ fun MeasuringDistanceContent(
         enter = AnimationProvider.enterTransition,
         exit = AnimationProvider.exitTransition
     ) {
-        LaunchedEffect(true) {
-            faceDetectionViewModel.updateIsOccluderPickedDone(false)
-            faceDetectionViewModel.updateIsFaceDetected(false)
-            faceDetectionViewModel.updateIsEyeCoveredDone(false)
-            faceDetectionViewModel.updateIsDistanceMeasuredDone(false)
+        LaunchedEffect(isLeftEye) {
+            if (isLeftEye) {
+                faceDetectionViewModel.updateIsOccluderPickedTTSDone(false)
+            }
+            faceDetectionViewModel.updateIsFaceDetectedTTSDone(false)
+            faceDetectionViewModel.updateIsEyeCoveredTTSDone(false)
+            faceDetectionViewModel.updateIsDistanceMeasuredTTSDone(false)
+            faceDetectionViewModel.updateIsPressStartButtonTTSDone(false)
         }
         if (
-            faceDetectionViewModel.isOccluderPickedDone.collectAsState().value
-            && !faceDetectionViewModel.isFaceDetectedDone.collectAsState().value
-            && faceDetectionViewModel.isFaceDetected.collectAsState().value
+            faceDetectionViewModel.isOccluderPickedTTSDone.collectAsState().value
+            && !faceDetectionViewModel.isFaceDetectedTTSDone.collectAsState().value
+            && !TTS.tts.isSpeaking
         ) {
-            faceDetectionViewModel.updateIsFaceDetectedDone(true)
+            faceDetectionViewModel.updateIsFaceDetectedTTSDone(true)
+            TTS.speechTTS("화면을 보고 얼굴을 가운데 그림에 맞춰주세요.", TextToSpeech.QUEUE_ADD)
+        }
+        if (
+            faceDetectionViewModel.isFaceDetectedTTSDone.collectAsState().value
+            && faceDetectionViewModel.isFaceDetected.collectAsState().value
+            && !faceDetectionViewModel.isEyeCoveredTTSDone.collectAsState().value
+            && !TTS.tts.isSpeaking
+        ) {
+            faceDetectionViewModel.updateIsEyeCoveredTTSDone(true)
             when (isLeftEye) {
                 true -> TTS.speechTTS("눈가리개로 오른쪽 눈을 가려주세요.", TextToSpeech.QUEUE_ADD)
                 false -> TTS.speechTTS("눈가리개로 왼쪽 눈을 가려주세요.", TextToSpeech.QUEUE_ADD)
             }
         }
         if (
-            faceDetectionViewModel.isFaceDetectedDone.collectAsState().value
-            && !faceDetectionViewModel.isEyeCoveredDone.collectAsState().value
+            faceDetectionViewModel.isEyeCoveredTTSDone.collectAsState().value
             && when (isLeftEye) {
                 true -> faceDetectionViewModel.isRightEyeCovered.collectAsState().value
                 false -> faceDetectionViewModel.isLeftEyeCovered.collectAsState().value
             }
+            && !faceDetectionViewModel.isDistanceMeasuredTTSDone.collectAsState().value
+            && !TTS.tts.isSpeaking
         ) {
-            faceDetectionViewModel.updateIsEyeCoveredDone(true)
+            faceDetectionViewModel.updateIsDistanceMeasuredTTSDone(true)
             TTS.speechTTS("눈을 가린 채로 거리를 확인해주세요.", TextToSpeech.QUEUE_ADD)
         }
         if (
-            faceDetectionViewModel.isEyeCoveredDone.collectAsState().value
-            && !faceDetectionViewModel.isDistanceMeasuredDone.collectAsState().value
+            faceDetectionViewModel.isDistanceMeasuredTTSDone.collectAsState().value
             && faceDetectionViewModel.isDistanceOK.collectAsState().value
+            && !faceDetectionViewModel.isPressStartButtonTTSDone.collectAsState().value
+            && !TTS.tts.isSpeaking
         ) {
-            faceDetectionViewModel.updateIsDistanceMeasuredDone(true)
+            faceDetectionViewModel.updateIsPressStartButtonTTSDone(true)
             TTS.speechTTS("아래의 검사 시작 버튼을 눌러주세요.", TextToSpeech.QUEUE_ADD)
         }
         val transition = rememberInfiniteTransition()
@@ -143,9 +158,7 @@ fun MeasuringDistanceContent(
 //                    bitmap = viewModel.bitmap.collectAsState().value.asImageBitmap(),
 //                    contentDescription = ""
 //                )
-                    if (measuringDistanceContentVisibleState.targetState) {
-                        FaceDetectionWithPreview()
-                    }
+                    FaceDetectionWithPreview(measuringDistanceContentVisibleState.targetState)
                     // eye tracking red dot
 //                    CustomShape()
                     Image(
@@ -412,8 +425,7 @@ fun MeasuringDistanceDialog(
                             shape = RoundedCornerShape(8.dp)
                         )
                         .clickable {
-                            TTS.speechTTS("얼굴을 카메라 가운데 그림에 맞춰주세요.", TextToSpeech.QUEUE_ADD)
-                            faceDetectionViewModel.updateIsOccluderPickedDone(true)
+                            faceDetectionViewModel.updateIsOccluderPickedTTSDone(true)
                             onDismissRequest()
                         }
                         .padding(20.dp),

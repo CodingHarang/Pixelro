@@ -1,10 +1,12 @@
 package com.pixelro.nenoonkiosk.test.macular.amslergrid
 
 import android.app.Application
+import android.speech.tts.TextToSpeech
 import android.util.Log
 import androidx.compose.ui.geometry.Offset
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.viewModelScope
+import com.pixelro.nenoonkiosk.TTS
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -51,6 +53,20 @@ class AmslerGridViewModel @Inject constructor(
     private val _isFaceCenter = MutableStateFlow(false)
     val isFaceCenter: StateFlow<Boolean> = _isFaceCenter
 
+    //TTS 전용 변수
+    private val _isLookAtTheDotTTSDone = MutableStateFlow(true)
+    val isLookAtTheDotTTSDone: StateFlow<Boolean> = _isLookAtTheDotTTSDone
+    private val _isSelectTTSDone = MutableStateFlow(true)
+    val isSelectTTSDone: StateFlow<Boolean> = _isSelectTTSDone
+
+    fun updateIsLookAtTheDotTTSDone(isDone: Boolean) {
+        _isLookAtTheDotTTSDone.update { isDone }
+    }
+
+    fun updateIsSelectTTSDone(isDone: Boolean) {
+        _isSelectTTSDone.update { isDone }
+    }
+
     fun updateIsBlinkingDone(isDone: Boolean) {
         _isBlinkingDone.update { isDone }
     }
@@ -80,6 +96,7 @@ class AmslerGridViewModel @Inject constructor(
     }
 
     fun updateLeftSelectedArea() {
+        TTS.speechTTS("오른쪽 눈 검사를 시작하겠습니다.", TextToSpeech.QUEUE_ADD)
         viewModelScope.launch {
             delay(450)
             _isBlinkingDone.update { false }

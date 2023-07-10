@@ -45,7 +45,9 @@ fun FaceDetection() {
 
 @OptIn(ExperimentalPermissionsApi::class)
 @Composable
-fun FaceDetectionWithPreview() {
+fun FaceDetectionWithPreview(
+    isPreviewShowing: Boolean
+) {
 
     val permissionState = rememberMultiplePermissionsState(
         permissions = listOf(
@@ -56,7 +58,9 @@ fun FaceDetectionWithPreview() {
     LaunchedEffect(Unit) {
         permissionState.launchMultiplePermissionRequest()
     }
-    FaceDetectionScreenContentWithPreview()
+    FaceDetectionScreenContentWithPreview(
+        isPreviewShowing = isPreviewShowing
+    )
 }
 
 @Composable
@@ -101,6 +105,7 @@ fun FaceDetectionScreenContent(
 
 @Composable
 fun FaceDetectionScreenContentWithPreview(
+    isPreviewShowing: Boolean,
     viewModel: FaceDetectionViewModel = hiltViewModel()
 ) {
 //    Log.e("faceDetection", "faceDetectionWithPreview")
@@ -109,44 +114,46 @@ fun FaceDetectionScreenContentWithPreview(
     val context = LocalContext.current
     val cameraProviderFuture = remember { ProcessCameraProvider.getInstance(context) }
     Surface() {
-        AndroidView(
-            modifier = Modifier
-                .width(600.dp)
-                .height(800.dp),
-            factory = { context ->
-                val previewView = PreviewView(context)
-                previewView.scaleType = PreviewView.ScaleType.FILL_END
-                val executor = ContextCompat.getMainExecutor(context)
-                val executor1 = Executors.newSingleThreadExecutor()
-                cameraProviderFuture.addListener({
-                    val cameraProvider = cameraProviderFuture.get()
-                    val preview = Preview.Builder().build().also {
-                        it.setSurfaceProvider(previewView.surfaceProvider)
-                    }
-                    val imageAnalysis = ImageAnalysis.Builder()
-                        .setTargetResolution(Size(1000, 1000))
-                        .setBackpressureStrategy(ImageAnalysis.STRATEGY_KEEP_ONLY_LATEST)
-                        .setImageQueueDepth(5).build().apply {
-                            setAnalyzer(
-                                executor1, MyFaceAnalyzer(
-                                    viewModel::updateFaceDetectionData,
-                                    viewModel::updateTextRecognitionData,
-                                    viewModel::updateIsFaceDetected,
-                                    viewModel::updateIsNenoonTextDetected,
-                                    executor1
-//                                    viewModel::updateBitmap
-                                )
-                            )
+        if (isPreviewShowing) {
+            AndroidView(
+                modifier = Modifier
+                    .width(600.dp)
+                    .height(800.dp),
+                factory = { context ->
+                    val previewView = PreviewView(context)
+                    previewView.scaleType = PreviewView.ScaleType.FILL_END
+                    val executor = ContextCompat.getMainExecutor(context)
+                    val executor1 = Executors.newSingleThreadExecutor()
+                    cameraProviderFuture.addListener({
+                        val cameraProvider = cameraProviderFuture.get()
+                        val preview = Preview.Builder().build().also {
+                            it.setSurfaceProvider(previewView.surfaceProvider)
                         }
-                    val cameraSelector = CameraSelector.Builder()
-                        .requireLensFacing(CameraSelector.LENS_FACING_FRONT).build()
-                    cameraProvider.unbindAll()
-                    cameraProvider.bindToLifecycle(
-                        lifecycleOwner, cameraSelector, preview, imageAnalysis)
-                }, executor)
-                previewView
-            }
-        )
+                        val imageAnalysis = ImageAnalysis.Builder()
+                            .setTargetResolution(Size(1000, 1000))
+                            .setBackpressureStrategy(ImageAnalysis.STRATEGY_KEEP_ONLY_LATEST)
+                            .setImageQueueDepth(5).build().apply {
+                                setAnalyzer(
+                                    executor1, MyFaceAnalyzer(
+                                        viewModel::updateFaceDetectionData,
+                                        viewModel::updateTextRecognitionData,
+                                        viewModel::updateIsFaceDetected,
+                                        viewModel::updateIsNenoonTextDetected,
+                                        executor1
+//                                    viewModel::updateBitmap
+                                    )
+                                )
+                            }
+                        val cameraSelector = CameraSelector.Builder()
+                            .requireLensFacing(CameraSelector.LENS_FACING_FRONT).build()
+                        cameraProvider.unbindAll()
+                        cameraProvider.bindToLifecycle(
+                            lifecycleOwner, cameraSelector, preview, imageAnalysis)
+                    }, executor)
+                    previewView
+                }
+            )
+        }
     }
 //    }
 }

@@ -66,7 +66,7 @@ fun VisualAcuityTestContent(
         animationSpec = ProgressIndicatorDefaults.ProgressAnimationSpec
     )
     LaunchedEffect(true) {
-        TTS.speechTTS("근거리 시력 검사를 시작하겠습니다. 아래의 세 시표 중 위 시표와 동일하게 보이는 것을 선택해주세요. 만약 시표가 잘 보이지 않는다면 아래의 안보임 버튼을 눌러주세요.", TextToSpeech.QUEUE_ADD)
+        TTS.speechTTS("검사를 시작하겠습니다. 아래의 세 시표 중, 위 시표와 동일하게 보이는 것을 선택해주세요. 시표가 잘 보이지 않는다면 아래의 안보임 버튼을 눌러주세요.", TextToSpeech.QUEUE_ADD)
     }
     Column(
         modifier = Modifier

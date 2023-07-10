@@ -1,6 +1,7 @@
 package com.pixelro.nenoonkiosk.test.macular.amslergrid
 
 import android.app.Activity
+import android.speech.tts.TextToSpeech
 import android.util.Log
 import android.view.KeyEvent
 import androidx.activity.compose.BackHandler
@@ -32,6 +33,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.pixelro.nenoonkiosk.R
+import com.pixelro.nenoonkiosk.TTS
 import com.pixelro.nenoonkiosk.data.AnimationProvider
 import com.pixelro.nenoonkiosk.data.GlobalValue
 import com.pixelro.nenoonkiosk.data.StringProvider
@@ -105,10 +107,25 @@ fun AmslerGridContent(
     ) {
         LaunchedEffect(true) {
             amslerGridViewModel.startBlinking()
+            amslerGridViewModel.updateIsLookAtTheDotTTSDone(false)
+            amslerGridViewModel.updateIsSelectTTSDone(false)
         }
         val isBlinkingDone = amslerGridViewModel.isBlinkingDone.collectAsState().value
         val isDotShowing = amslerGridViewModel.isDotShowing.collectAsState().value
         val isFaceCenter = amslerGridViewModel.isFaceCenter.collectAsState().value
+        if (!amslerGridViewModel.isLookAtTheDotTTSDone.collectAsState().value) {
+            amslerGridViewModel.updateIsLookAtTheDotTTSDone(true)
+            Log.e("tts", "tts")
+            TTS.speechTTS("검사를 시작하겠습니다. 아래의 깜빡이는 점을 봐주세요", TextToSpeech.QUEUE_ADD)
+        }
+        if (
+            amslerGridViewModel.isLookAtTheDotTTSDone.collectAsState().value
+            && isFaceCenter
+            && !amslerGridViewModel.isSelectTTSDone.collectAsState().value
+        ) {
+            amslerGridViewModel.updateIsSelectTTSDone(true)
+            TTS.speechTTS("이상하게 보이거나 왜곡되어 보이는 부분을, 손으로 눌러 선택해주세요. 선택을 완료했거나 이상한 부분이 없다면 아래의 완료 버튼을 눌러주세요.", TextToSpeech.QUEUE_ADD)
+        }
         FaceDetection()
         Column(
             modifier = Modifier
@@ -127,11 +144,17 @@ fun AmslerGridContent(
                 text = when (!isBlinkingDone) {
                     true -> "아래의 깜빡이는 점을 봐주세요"
                     false -> when (isFaceCenter) {
-                        true -> "이상하게 보이거나 왜곡되어 보이는 부분을 손으로 눌러 선택해주세요. 선택을 완료했거나 이상한 부분이 없다면 아래의 \'완료\' 버튼을 눌러주세요."
+                        true -> "이상하게 보이거나 왜곡되어 보이는 부분을 손으로 눌러 선택해주세요. 선택을 완료했거나 이상한 부분이 없다면, 아래의 완료 버튼을 눌러주세요."
                         false -> "가운데의 검은 점을 봐주세요"
                     }
                 },
-                fontSize = 32.sp,
+                fontSize = when (!isBlinkingDone) {
+                    true -> 40.sp
+                    false -> when (isFaceCenter) {
+                        true -> 32.sp
+                        false -> 40.sp
+                    }
+                },
                 color = Color(0xffffffff),
                 fontWeight = FontWeight.Medium
             )

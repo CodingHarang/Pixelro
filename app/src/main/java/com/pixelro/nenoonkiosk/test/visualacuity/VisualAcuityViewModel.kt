@@ -170,12 +170,12 @@ class VisualAcuityViewModel @Inject constructor(
             _sightLevel.update { 1 }
         }
         _isVisualAcuityContentVisible.update { false }
-        _isMeasuringDistanceContentVisible.update { true }
         if (!_isLeftEye.value) {
             TTS.speechTTS("검사가 완료되었습니다. 결과가 나올 때 까지 잠시 기다려주세요.", TextToSpeech.QUEUE_ADD)
             toResultScreen()
         } else {
             TTS.speechTTS("오른쪽 눈 검사를 시작하겠습니다.", TextToSpeech.QUEUE_ADD)
+            _isMeasuringDistanceContentVisible.update { true }
             _isLeftEye.update { false }
         }
     }
