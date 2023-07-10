@@ -1,9 +1,11 @@
 package com.pixelro.nenoonkiosk.test.visualacuity
 
 import android.app.Application
+import android.speech.tts.TextToSpeech
 import android.util.Log
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.viewModelScope
+import com.pixelro.nenoonkiosk.TTS
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -170,8 +172,10 @@ class VisualAcuityViewModel @Inject constructor(
         _isVisualAcuityContentVisible.update { false }
         _isMeasuringDistanceContentVisible.update { true }
         if (!_isLeftEye.value) {
+            TTS.speechTTS("검사가 완료되었습니다. 결과가 나올 때 까지 잠시 기다려주세요.", TextToSpeech.QUEUE_ADD)
             toResultScreen()
         } else {
+            TTS.speechTTS("오른쪽 눈 검사를 시작하겠습니다.", TextToSpeech.QUEUE_ADD)
             _isLeftEye.update { false }
         }
     }

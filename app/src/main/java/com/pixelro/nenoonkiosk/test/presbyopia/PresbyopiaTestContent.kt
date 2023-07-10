@@ -27,6 +27,7 @@ import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -40,10 +41,13 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.pixelro.nenoonkiosk.R
+import com.pixelro.nenoonkiosk.TTS
 import com.pixelro.nenoonkiosk.data.AnimationProvider
 import com.pixelro.nenoonkiosk.data.StringProvider
 import com.pixelro.nenoonkiosk.facedetection.FaceDetection
 import com.pixelro.nenoonkiosk.facedetection.FaceDetectionViewModel
+import kotlinx.coroutines.coroutineScope
+import kotlinx.coroutines.launch
 import java.util.Locale
 import kotlin.math.roundToInt
 
@@ -55,6 +59,7 @@ fun PresbyopiaTestContent(
 ) {
     LaunchedEffect(Unit) {
         presbyopiaViewModel.init()
+        TTS.speechTTS("조절력 검사를 시작하겠습니다. 화면으로부터 40~60cm 사이로 거리를 조정해주세요.", TextToSpeech.QUEUE_ADD)
     }
     FaceDetection()
     val distance = faceDetectionViewModel.screenToFaceDistance.collectAsState().value
@@ -71,17 +76,22 @@ fun PresbyopiaTestContent(
     val isUnder25cm = presbyopiaViewModel.isUnder25cm.collectAsState().value
     val isBlinkingDone = presbyopiaViewModel.isBlinkingDone.collectAsState().value
     val tryCount = presbyopiaViewModel.tryCount.collectAsState().value
-
+    val coroutineScope = rememberCoroutineScope()
     var progress by remember { mutableStateOf(0.1f) }
     val animatedProgress by animateFloatAsState(
         targetValue = progress,
         animationSpec = ProgressIndicatorDefaults.ProgressAnimationSpec
     )
-    if (distance > 400f && !isMovedTo40cm) {
+    if (distance > 400f && !isMovedTo40cm && !TTS.tts.isSpeaking) {
         presbyopiaViewModel.blinkNumber()
-        presbyopiaViewModel.updateIsMovedTo50cm(true)
+        presbyopiaViewModel.updateIsMovedTo40cm(true)
     }
     if (distance < 250f && !isUnder25cm && isMovedTo40cm) {
+        when (tryCount) {
+            0 -> TTS.speechTTS("다음 측정을 실시합니다. 아래의 다음 버튼을 눌러주세요", TextToSpeech.QUEUE_ADD)
+            1 -> TTS.speechTTS("다음 측정을 실시합니다. 아래의 다음 버튼을 눌러주세요", TextToSpeech.QUEUE_ADD)
+            else -> TTS.speechTTS("검사를 모두 완료했습니다. 아래의 다음 버튼을 눌러주세요", TextToSpeech.QUEUE_ADD)
+        }
         presbyopiaViewModel.updateIsUnder25cm(true)
     }
     Box(
@@ -93,7 +103,7 @@ fun PresbyopiaTestContent(
     ) {
         Text(
             text = when (!isMovedTo40cm) {
-                true -> "화면에서 40cm 이상 멀어지세요"
+                true -> "화면으로부터 40~60cm 사이로 거리를 조정해주세요"
                 false -> when(isBlinkingDone) {
                     true -> "조금씩 앞으로 오다가 숫자가 흐릿해지는\n지점에서 멈추고 아래의 '다음'을 눌러주세요"
                     false -> "아래의 깜빡이는 숫자를 봐주세요"
@@ -142,7 +152,7 @@ fun PresbyopiaTestContent(
                         text = when (tryCount) {
                             0 -> "두 번째 측정을 실시합니다\n아래의 '다음'을 눌러주세요"
                             1 -> "세 번째 측정을 실시합니다\n아래의 '다음'을 눌러주세요"
-                            else -> "검사가 종료되었습니다\n아래의 '다음'을 눌러주세요"
+                            else -> "검사가 완료되었습니다\n아래의 '다음'을 눌러주세요"
                         },
                         fontSize = 44.sp,
                         fontWeight = FontWeight.Bold,

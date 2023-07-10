@@ -67,6 +67,32 @@ class FaceDetectionViewModel @Inject constructor(
     val isNenoonTextDetected: StateFlow<Boolean> = _isNenoonTextDetected
     private var count = 0
 
+    // TTS 전용 변수
+    private val _isOccluderPickedDone = MutableStateFlow(false)
+    val isOccluderPickedDone: StateFlow<Boolean> = _isOccluderPickedDone
+    private val _isFaceDetectedDone = MutableStateFlow(false)
+    val isFaceDetectedDone: StateFlow<Boolean> = _isFaceDetectedDone
+    private val _isEyeCoveredDone = MutableStateFlow(false)
+    val isEyeCoveredDone: StateFlow<Boolean> = _isEyeCoveredDone
+    private val _isDistanceMeasuredDone = MutableStateFlow(false)
+    val isDistanceMeasuredDone: StateFlow<Boolean> = _isDistanceMeasuredDone
+
+    fun updateIsOccluderPickedDone(isPicked: Boolean) {
+        _isOccluderPickedDone.update { isPicked }
+    }
+
+    fun updateIsFaceDetectedDone(isCentered: Boolean) {
+        _isFaceDetectedDone.update { isCentered }
+    }
+
+    fun updateIsEyeCoveredDone(isCovered: Boolean) {
+        _isEyeCoveredDone.update { isCovered }
+    }
+
+    fun updateIsDistanceMeasuredDone(isMeasured: Boolean) {
+        _isDistanceMeasuredDone.update { isMeasured }
+    }
+
 //    private val _bitmap = MutableStateFlow(Bitmap.createBitmap(100, 100, Bitmap.Config.ARGB_8888))
 //    val bitmap: StateFlow<Bitmap> = _bitmap
 

@@ -1,15 +1,20 @@
 package com.pixelro.nenoonkiosk.test.presbyopia
 
 import android.app.Application
+import android.speech.tts.TextToSpeech
+import android.speech.tts.Voice
 import android.util.Log
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.viewModelScope
+import androidx.lifecycle.viewmodel.compose.viewModel
+import com.pixelro.nenoonkiosk.TTS
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
+import java.util.Locale
 import javax.inject.Inject
 
 @HiltViewModel
@@ -36,8 +41,22 @@ class PresbyopiaViewModel @Inject constructor(
     private var firstDistance = 0f
     private var secondDistance = 0f
     private var thirdDistance = 0f
+    private lateinit var tts: TextToSpeech
 
-    fun updateIsMovedTo50cm(isMoved: Boolean) {
+    fun speechTTS(string: String) {
+        tts = TextToSpeech(getApplication()) {
+            if (it == TextToSpeech.SUCCESS) {
+                tts.language = Locale.KOREAN
+            }
+            tts.stop()
+            tts.language = Locale.KOREAN
+            tts.setSpeechRate(1.0f)
+            tts.speak(string, TextToSpeech.QUEUE_FLUSH, null, null)
+            tts.shutdown()
+        }
+    }
+
+    fun updateIsMovedTo40cm(isMoved: Boolean) {
         _isMovedTo40cm.update { isMoved }
     }
 
@@ -57,6 +76,9 @@ class PresbyopiaViewModel @Inject constructor(
                 _isUnder25cm.update { false }
                 _isNumberShowing.update { true }
                 _isBlinkingDone.update { false }
+                viewModelScope.launch {
+                    TTS.speechTTS("두번째 측정을 시작하겠습니다. 화면으로부터 40~60cm 사이로 거리를 조정해주세요.", TextToSpeech.QUEUE_ADD)
+                }
             }
             1 -> {
                 secondDistance = if (_isUnder25cm.value) 20f
@@ -68,6 +90,9 @@ class PresbyopiaViewModel @Inject constructor(
                 _isUnder25cm.update { false }
                 _isNumberShowing.update { true }
                 _isBlinkingDone.update { false }
+                viewModelScope.launch {
+                    TTS.speechTTS("세번째 측정을 시작하겠습니다. 화면으로부터 40~60cm 사이로 거리를 조정해주세요.", TextToSpeech.QUEUE_ADD)
+                }
             }
             else -> {
                 viewModelScope.launch {
@@ -75,6 +100,7 @@ class PresbyopiaViewModel @Inject constructor(
                     else dist / 10
 
                     handleProgress(1.2f)
+                    TTS.speechTTS("결과가 나올 때 까지 잠시 기다려주세요.", TextToSpeech.QUEUE_ADD)
                     delay(500)
                     toResultScreen()
                 }
@@ -85,12 +111,17 @@ class PresbyopiaViewModel @Inject constructor(
     fun blinkNumber() {
         viewModelScope.launch {
             var count = 12
+            while (TTS.tts.isSpeaking) {
+                delay(100)
+            }
+            TTS.speechTTS("아래의 깜빡이는 숫자를 봐주세요.", TextToSpeech.QUEUE_ADD)
             while (count > 0) {
                 _isNumberShowing.update { !it }
                 delay(250)
                 count--
             }
             _isBlinkingDone.update { true }
+            TTS.speechTTS("조금씩 앞으로 오다가 숫자가 흐릿해지는 지점에서 멈추고, 아래의 다음 버튼을 눌러주세요", TextToSpeech.QUEUE_ADD)
         }
     }
 

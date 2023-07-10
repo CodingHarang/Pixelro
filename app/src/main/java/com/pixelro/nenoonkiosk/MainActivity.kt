@@ -49,6 +49,7 @@ class MainActivity : ComponentActivity() {
     @SuppressLint("InternalInsetResource", "DiscouragedApi")
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        TTS.initTTS()
         if (SharedPreferencesManager.getString("language") == "") {
             SharedPreferencesManager.putString("language", "en")
             NenoonKioskApplication.applicationContext().resources.configuration.setLocale(Locale("en"))
@@ -129,6 +130,12 @@ class MainActivity : ComponentActivity() {
     override fun onBackPressed() {
         viewModel.resetScreenSaverTimer()
         super.onBackPressed()
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        TTS.tts.stop()
+        TTS.destroyTTS()
     }
 }
 

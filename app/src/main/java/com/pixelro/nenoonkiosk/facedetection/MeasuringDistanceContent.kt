@@ -1,5 +1,6 @@
 package com.pixelro.nenoonkiosk.facedetection
 
+import android.speech.tts.TextToSpeech
 import androidx.activity.compose.BackHandler
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.core.MutableTransitionState
@@ -25,6 +26,7 @@ import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -46,6 +48,7 @@ import androidx.compose.ui.window.Dialog
 import androidx.compose.ui.window.DialogProperties
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.pixelro.nenoonkiosk.R
+import com.pixelro.nenoonkiosk.TTS
 import com.pixelro.nenoonkiosk.data.AnimationProvider
 import com.pixelro.nenoonkiosk.data.GlobalValue
 import com.pixelro.nenoonkiosk.data.StringProvider
@@ -65,6 +68,42 @@ fun MeasuringDistanceContent(
         enter = AnimationProvider.enterTransition,
         exit = AnimationProvider.exitTransition
     ) {
+        LaunchedEffect(true) {
+            faceDetectionViewModel.updateIsOccluderPickedDone(false)
+            faceDetectionViewModel.updateIsFaceDetected(false)
+            faceDetectionViewModel.updateIsEyeCoveredDone(false)
+            faceDetectionViewModel.updateIsDistanceMeasuredDone(false)
+        }
+        if (
+            faceDetectionViewModel.isOccluderPickedDone.collectAsState().value
+            && !faceDetectionViewModel.isFaceDetectedDone.collectAsState().value
+            && faceDetectionViewModel.isFaceDetected.collectAsState().value
+        ) {
+            faceDetectionViewModel.updateIsFaceDetectedDone(true)
+            when (isLeftEye) {
+                true -> TTS.speechTTS("눈가리개로 오른쪽 눈을 가려주세요.", TextToSpeech.QUEUE_ADD)
+                false -> TTS.speechTTS("눈가리개로 왼쪽 눈을 가려주세요.", TextToSpeech.QUEUE_ADD)
+            }
+        }
+        if (
+            faceDetectionViewModel.isFaceDetectedDone.collectAsState().value
+            && !faceDetectionViewModel.isEyeCoveredDone.collectAsState().value
+            && when (isLeftEye) {
+                true -> faceDetectionViewModel.isRightEyeCovered.collectAsState().value
+                false -> faceDetectionViewModel.isLeftEyeCovered.collectAsState().value
+            }
+        ) {
+            faceDetectionViewModel.updateIsEyeCoveredDone(true)
+            TTS.speechTTS("눈을 가린 채로 거리를 확인해주세요.", TextToSpeech.QUEUE_ADD)
+        }
+        if (
+            faceDetectionViewModel.isEyeCoveredDone.collectAsState().value
+            && !faceDetectionViewModel.isDistanceMeasuredDone.collectAsState().value
+            && faceDetectionViewModel.isDistanceOK.collectAsState().value
+        ) {
+            faceDetectionViewModel.updateIsDistanceMeasuredDone(true)
+            TTS.speechTTS("아래의 검사 시작 버튼을 눌러주세요.", TextToSpeech.QUEUE_ADD)
+        }
         val transition = rememberInfiniteTransition()
         val shiftVal by transition.animateFloat(
             initialValue = 0f, targetValue = 1f, animationSpec = infiniteRepeatable(
@@ -319,12 +358,16 @@ fun MeasuringDistanceContent(
 
 @Composable
 fun MeasuringDistanceDialog(
-    onDismissRequest: () -> Unit
+    onDismissRequest: () -> Unit,
+    faceDetectionViewModel: FaceDetectionViewModel = hiltViewModel(),
 ) {
     Dialog(
         onDismissRequest = onDismissRequest,
         properties = DialogProperties()
     ) {
+        LaunchedEffect(true) {
+            TTS.speechTTS("본 검사에서는 아래의 이미지와 같은 전용 눈가리개를 사용합니다. 눈가리개를 집어주세요.", TextToSpeech.QUEUE_ADD)
+        }
         Column(
             modifier = Modifier
                 .width(800.dp)
@@ -369,6 +412,8 @@ fun MeasuringDistanceDialog(
                             shape = RoundedCornerShape(8.dp)
                         )
                         .clickable {
+                            TTS.speechTTS("얼굴을 카메라 가운데 그림에 맞춰주세요.", TextToSpeech.QUEUE_ADD)
+                            faceDetectionViewModel.updateIsOccluderPickedDone(true)
                             onDismissRequest()
                         }
                         .padding(20.dp),

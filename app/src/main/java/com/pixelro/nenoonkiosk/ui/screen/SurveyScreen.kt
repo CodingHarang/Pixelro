@@ -93,7 +93,7 @@ fun SurveyScreen(
                 fontWeight = FontWeight.Medium
             )
             Column() {
-                Row() {
+                Row {
                     for (idx in 1..4) {
                         Box(
                             modifier = Modifier
