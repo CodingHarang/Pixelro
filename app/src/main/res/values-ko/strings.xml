@@ -110,4 +110,27 @@
     <string name="measuring_distance_content_description3">눈가리개로 오른쪽 눈을 가려주세요</string>
     <string name="measuring_distance_content_description4">눈을 가린 채로 거리를 확인해주세요</string>
     <string name="measuring_distance_content_description5">아래의 \'검사 시작\' 버튼을 눌러주세요</string>
+    <string name="yes">예</string>
+    <string name="no">아니오</string>
+    <string name="dementia_title">치매 자가진단</string>
+    <string name="dementia_survey_question1">자신의 기억력에 문제가 있다고 생각하십니까?</string>
+    <string name="dementia_survey_question2">자신의 기억력이 10년 전보다 나빠졌다고 생각하십니까?</string>
+    <string name="dementia_survey_question3">자신의 기억력이 같은 또래의 다른 사람들에 비해 나쁘다고 생각하십니까?</string>
+    <string name="dementia_survey_question4">기억력 저하로 인해 일상생활에 불편을 느끼십니까?</string>
+    <string name="dementia_survey_question5">최근에 일어난 일을 기억하는 것이 어렵습니까?</string>
+    <string name="dementia_survey_question6">며칠 전에 나눈 대화 내용을 기억하기 어렵습니까?</string>
+    <string name="dementia_survey_question7">며칠 전에 한 약속을 기억하기 어렵습니까?</string>
+    <string name="dementia_survey_question8">친한 사람의 이름을 기억하기 어렵습니까?</string>
+    <string name="dementia_survey_question9">물건 둔 곳을 기억하기 어렵습니까?</string>
+    <string name="dementia_survey_question10">이전에 둔 곳을 기억하기 어렵습니까?</string>
+    <string name="dementia_survey_question11">집 근처에서 길을 잃은 적이 있습니까?</string>
+    <string name="dementia_survey_question12">가게에서 2~3가지 물건을 사려고 할 때 물건이름을 기억하기 어렵습니까?</string>
+    <string name="dementia_survey_question13">가스불이나 전기불 끄는 것을 기억하기 어렵습니까?</string>
+    <string name="dementia_survey_question14">자주 사용하는 전화번호(자신 혹은 자녀의 집)를 기억하기 어렵습니까?</string>
+    <string name="dementia_result_title">치매 자가진단 결과</string>
+    <string name="go_to_first_page">처음으로</string>
+    <string name="eye_test">안건강 검진</string>
+    <string name="dementia_test">치매 검진</string>
+    <string name="dementia_result_wording1">"자가진단 검사 결과는 "</string>
+    <string name="dementia_result_wording2">개 입니다.</string>
 </resources>

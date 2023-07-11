@@ -93,6 +93,27 @@ fun TestScreen(
                 Box(
                     modifier = Modifier
                         .fillMaxSize(),
+                    contentAlignment = Alignment.Center
+                ) {
+                    Text(
+                        text = when(selectedTestType) {
+                            TestType.Presbyopia -> StringProvider.getString(R.string.presbyopia_name1)
+                            TestType.ShortDistanceVisualAcuity -> StringProvider.getString(R.string.short_visual_acuity_name)
+                            TestType.LongDistanceVisualAcuity -> StringProvider.getString(R.string.long_visual_acuity_name)
+                            TestType.ChildrenVisualAcuity -> StringProvider.getString(R.string.children_visual_acuity_name)
+                            TestType.AmslerGrid -> StringProvider.getString(R.string.amsler_grid_name)
+                            TestType.MChart -> StringProvider.getString(R.string.mchart_name)
+                            TestType.Dementia -> StringProvider.getString(R.string.dementia_title)
+                            else -> ""
+                        },
+                        color = Color(0xffffffff),
+                        fontSize = 24.sp,
+                        fontWeight = FontWeight.Medium
+                    )
+                }
+                Box(
+                    modifier = Modifier
+                        .fillMaxSize(),
                     contentAlignment = Alignment.CenterStart
                 ) {
                     Image(
@@ -114,26 +135,6 @@ fun TestScreen(
                             },
                         painter = painterResource(id = R.drawable.close_button),
                         contentDescription = ""
-                    )
-                }
-                Box(
-                    modifier = Modifier
-                        .fillMaxSize(),
-                    contentAlignment = Alignment.Center
-                ) {
-                    Text(
-                        text = when(selectedTestType) {
-                            TestType.Presbyopia -> StringProvider.getString(R.string.presbyopia_name1)
-                            TestType.ShortDistanceVisualAcuity -> StringProvider.getString(R.string.short_visual_acuity_name)
-                            TestType.LongDistanceVisualAcuity -> StringProvider.getString(R.string.long_visual_acuity_name)
-                            TestType.ChildrenVisualAcuity -> StringProvider.getString(R.string.children_visual_acuity_name)
-                            TestType.AmslerGrid -> StringProvider.getString(R.string.amsler_grid_name)
-                            TestType.MChart -> StringProvider.getString(R.string.mchart_name)
-                            else -> ""
-                        },
-                        color = Color(0xffffffff),
-                        fontSize = 24.sp,
-                        fontWeight = FontWeight.Medium
                     )
                 }
             }
