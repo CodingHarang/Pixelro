@@ -134,4 +134,5 @@
     <string name="dementia_test">DEMENTIA TEST</string>
     <string name="dementia_result_wording1">Score of Dementia self test is</string>
     <string name="dementia_result_wording2">Points.</string>
+    <string name="home">HOME</string>
 </resources>

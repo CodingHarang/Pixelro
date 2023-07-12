@@ -86,6 +86,7 @@
     <string name="test_list">test_list</string>
     <string name="presbyopia_test_description">str</string>
     <string name="next">next</string>
+    <string name="home">home</string>
     <string name="presbyopia_result_near_point_accommodation">npa</string>
     <string name="presbyopia_result_hoffstetter2">str</string>
     <string name="covered_eye_checking_description">str</string>

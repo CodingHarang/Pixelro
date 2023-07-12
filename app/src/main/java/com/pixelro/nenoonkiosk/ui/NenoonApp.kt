@@ -110,6 +110,9 @@ fun NenoonApp(
                         exitTransition = { AnimationProvider.exitTransition }
                     ) {
                         SurveyScreen(
+                            toPrimaryScreen = {
+                                mainNavController.navigate(GlobalConstants.ROUTE_PRIMARY_TEST_LIST)
+                            },
                             toTestListScreen = {
                                 mainNavController.navigate(GlobalConstants.ROUTE_TEST_LIST)
                                 viewModel.initializeTestDoneStatus()
@@ -136,6 +139,7 @@ fun NenoonApp(
                             toSurveyScreen = {
                                 mainNavController.popBackStack(GlobalConstants.ROUTE_SURVEY, false)
                             },
+
                             isPresbyopiaDone = viewModel.isPresbyopiaTestDone.collectAsState().value,
                             isShortVisualAcuityDone = viewModel.isShortVisualAcuityTestDone.collectAsState().value,
                             isAmslerGridDone = viewModel.isAmslerGridTestDone.collectAsState().value,
