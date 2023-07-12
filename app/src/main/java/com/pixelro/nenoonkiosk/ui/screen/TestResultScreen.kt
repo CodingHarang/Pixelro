@@ -55,6 +55,8 @@ import com.pixelro.nenoonkiosk.data.GlobalConstants
 import com.pixelro.nenoonkiosk.data.GlobalValue
 import com.pixelro.nenoonkiosk.data.StringProvider
 import com.pixelro.nenoonkiosk.data.TestType
+import com.pixelro.nenoonkiosk.test.dementia.DementiaTestResult
+import com.pixelro.nenoonkiosk.test.dementia.DementiaTestResultContent
 import com.pixelro.nenoonkiosk.test.macular.amslergrid.AmslerGridTestResult
 import com.pixelro.nenoonkiosk.test.macular.amslergrid.AmslerGridTestResultContent
 import com.pixelro.nenoonkiosk.test.macular.mchart.MChartTestResult
@@ -194,6 +196,7 @@ fun TestResultScreen(
                     TestType.ChildrenVisualAcuity -> StringProvider.getString(R.string.children_visual_acuity_result_title)
                     TestType.AmslerGrid -> StringProvider.getString(R.string.amsler_grid_result_title)
                     TestType.MChart -> StringProvider.getString(R.string.mchart_result_title)
+                    TestType.Dementia -> StringProvider.getString(R.string.dementia_result_title)
                     else -> {
                         "None TestResultScreen"
                     }
@@ -249,6 +252,13 @@ fun TestResultScreen(
             TestType.MChart -> {
                 MChartTestResultContent(
                     testResult = testResult as MChartTestResult,
+                    navController = navController
+                )
+            }
+
+            TestType.Dementia -> {
+                DementiaTestResultContent(
+                    testResult = testResult as DementiaTestResult,
                     navController = navController
                 )
             }
@@ -360,7 +370,10 @@ fun TestResultScreen(
                             shape = RoundedCornerShape(8.dp)
                         )
                         .clickable {
-                            navController.popBackStack(GlobalConstants.ROUTE_TEST_LIST, false)
+                            when(testType) {
+                                TestType.Dementia -> navController.navigate(GlobalConstants.ROUTE_PRIMARY_TEST_LIST)
+                                else -> navController.popBackStack(GlobalConstants.ROUTE_TEST_LIST, false)
+                            }
                         },
                     contentAlignment = Alignment.Center
                 ) {

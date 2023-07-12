@@ -13,9 +13,9 @@ import android.os.Build
 import android.provider.Settings
 import android.util.Log
 import android.util.SizeF
+import android.widget.Toast
 import androidx.core.content.ContextCompat
 import androidx.core.content.ContextCompat.getSystemService
-import androidx.core.content.PackageManagerCompat
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.viewModelScope
 import androidx.media3.common.MediaItem
@@ -32,9 +32,12 @@ import com.google.android.gms.tasks.Task
 import com.harang.data.api.NenoonKioskApi
 import com.pixelro.nenoonkiosk.data.GlobalValue
 import com.pixelro.nenoonkiosk.data.SharedPreferencesManager
-import com.pixelro.nenoonkiosk.data.StringProvider
 import com.pixelro.nenoonkiosk.data.TestType
+import com.pixelro.nenoonkiosk.test.dementia.DementiaData
+import com.pixelro.nenoonkiosk.test.dementia.DementiaViewModel
+import com.pixelro.nenoonkiosk.login.LoginData
 import com.pixelro.nenoonkiosk.survey.SurveyData
+import com.pixelro.nenoonkiosk.test.dementia.DementiaTestResult
 import com.pixelro.nenoonkiosk.test.macular.amslergrid.AmslerGridTestResult
 import com.pixelro.nenoonkiosk.test.macular.mchart.MChartTestResult
 import com.pixelro.nenoonkiosk.test.presbyopia.PresbyopiaTestResult
@@ -43,7 +46,6 @@ import com.pixelro.nenoonkiosk.test.visualacuity.longdistance.LongVisualAcuityTe
 import com.pixelro.nenoonkiosk.test.visualacuity.shortdistance.ShortVisualAcuityTestResult
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.CoroutineName
-import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -85,9 +87,34 @@ class NenoonViewModel @Inject constructor(
     // signIn
     private val _inputSignInId = MutableStateFlow("")
     val inputSignInId: StateFlow<String> = _inputSignInId
+    private val _inputSignInPassword = MutableStateFlow("")
+    val inputSignInPassword: StateFlow<String> = _inputSignInPassword
 
     fun updateInputSignInId(id: String) {
         _inputSignInId.update { id }
+    }
+    fun updateInputSignInPassword(id: String) {
+        _inputSignInPassword.update { id }
+    }
+
+    fun checkLoginIsDone(): Boolean {
+        if (inputSignInId.value == "") {
+            Toast.makeText(getApplication(), "아이디를 입력해주세요", Toast.LENGTH_SHORT).show()
+            return false
+        }
+        if (inputSignInPassword.value == "") {
+            Toast.makeText(getApplication(), "비밀번호를 입력해주세요", Toast.LENGTH_SHORT).show()
+            return false
+        }
+        return true
+    }
+
+    fun retrieveLoginData(): LoginData {
+        return LoginData(
+            id = inputSignInId.value,
+            password = inputSignInPassword.value,
+
+            )
     }
 
     // Settings
@@ -277,6 +304,14 @@ class NenoonViewModel @Inject constructor(
         _selectedTestType.update { testType }
     }
 
+    // Login Data
+    var loginData = LoginData()
+
+//    var dementiaData = DementiaData(scores = mapOf(DementiaScore.One to true, DementiaScore.Two to false))
+    var dementiaData = DementiaData(
+        scores = List(14) { DementiaViewModel.DementiaAnswer.None }
+    )
+
     // Survey Data
     var surveyData = SurveyData()
 
@@ -339,6 +374,7 @@ class NenoonViewModel @Inject constructor(
     var childrenVisualAcuityTestResult = ChildrenVisualAcuityTestResult()
     var amslerGridTestResult = AmslerGridTestResult()
     var mChartTestResult = MChartTestResult()
+    var dementiaTestResult = DementiaTestResult(scores = List(14) { DementiaViewModel.DementiaAnswer.None })
 
     init {
 //        viewModelScope.launch {

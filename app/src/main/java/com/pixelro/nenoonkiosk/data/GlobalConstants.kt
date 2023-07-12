@@ -1,7 +1,9 @@
 package com.pixelro.nenoonkiosk.data
 
 object GlobalConstants {
+    const val ROUTE_PRIMARY_TEST_LIST = "PrimaryTestList"
     const val ROUTE_SURVEY = "Servey"
+    const val ROUTE_LOGIN = "Login"
     const val ROUTE_TEST_LIST = "MainTestList"
     const val ROUTE_MAIN_TEST_LIST = "MainTestList"
     const val ROUTE_VISUAL_ACUITY_TEST_LIST = "VisualAcuityTestList"
@@ -9,6 +11,7 @@ object GlobalConstants {
 
     const val ROUTE_SETTINGS = "Settings"
 
+    const val ROUTE_DEMENTIA = "Dementia"
     const val ROUTE_PRESBYOPIA_TEST = "PresbyopiaTest"
     const val ROUTE_SHORT_VISUAL_ACUITY_TEST = "VisualAcuityTestList/ShortDistanceVisualAcuityTest"
     const val ROUTE_LONG_VISUAL_ACUITY_TEST = "VisualAcuityTestList/LongDistanceVisualAcuityTest"
@@ -19,6 +22,11 @@ object GlobalConstants {
     const val ROUTE_TEST_CONTENT = "TestContent"
     const val ROUTE_TEST_PRE_DESCRIPTION = "TestPreDescription"
     const val ROUTE_TEST_RESULT = "TestResult"
+    const val ROUTE_DEMENTIA_RESULT = "DementiaResult"
+
+    const val ROUTE_WEBVIEW1 = "WebviewPage1"
+    const val ROUTE_WEBVIEW2 = "WebviewPage2"
+    const val ROUTE_WEBVIEW3 = "WebviewPage3"
 
     const val PREFERENCE_NAME = "nenoon_kiosk_shared_preferences"
 }

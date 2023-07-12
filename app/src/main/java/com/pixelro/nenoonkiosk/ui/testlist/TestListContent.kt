@@ -51,7 +51,7 @@ fun TestListContent(
             .weight(1f)
         EyeTestSelectableBox(
             modifier = modifier,
-            title = "노안 조절력 검사\n(안구 나이 검사)",
+            title = StringProvider.getString(R.string.presbyopia_name1),
             description = StringProvider.getString(R.string.presbyopia_short_description),
             onClickMethod = {
                 if (checkIsTestDone(TestType.Presbyopia)) {
@@ -119,6 +119,7 @@ fun TestListContent(
 //        expanded = isMChartExpanded.value
         )
     }
+
 //    AnimatedNavHost(
 //        navController = navController,
 //        startDestination = GlobalConstants.ROUTE_MAIN_TEST_LIST,

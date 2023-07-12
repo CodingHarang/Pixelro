@@ -1,6 +1,7 @@
 package com.pixelro.nenoonkiosk.ui.screen
 
 import androidx.compose.foundation.BorderStroke
+import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
@@ -8,6 +9,7 @@ import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
@@ -23,6 +25,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
@@ -44,6 +47,7 @@ import com.pixelro.nenoonkiosk.survey.SurveyViewModel
 @Composable
 fun SurveyScreen(
     toTestListScreen: (SurveyData) -> Unit,
+    toPrimaryScreen: () -> Unit,
     surveyViewModel: SurveyViewModel = hiltViewModel()
 ) {
     LaunchedEffect(true) {
@@ -63,6 +67,30 @@ fun SurveyScreen(
                 .height(40.dp),
             contentAlignment = Alignment.Center
         ) {
+            //Add home button
+                Row(
+                    modifier = Modifier
+                        .fillMaxHeight()
+                        .align(Alignment.CenterStart)
+                        .clickable {
+                            toPrimaryScreen()
+                        },
+                    verticalAlignment = Alignment.CenterVertically
+                ) {
+                    Image(
+                        modifier = Modifier
+                            .padding(top = 4.dp, start = 20.dp, end = 4.dp)
+                            .width(28.dp),
+                        painter = painterResource(id = R.drawable.home_button),
+                        contentDescription = ""
+                    )
+                    Text(
+                        text = StringProvider.getString(R.string.home),
+                        fontSize = 24.sp,
+                        fontWeight = FontWeight.Medium
+                    )
+                }
+
             Text(
                 textAlign = TextAlign.Center,
                 text = StringProvider.getString(R.string.survey_title),

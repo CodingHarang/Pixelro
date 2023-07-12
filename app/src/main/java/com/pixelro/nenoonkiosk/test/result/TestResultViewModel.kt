@@ -15,6 +15,7 @@ import com.harang.domain.model.SendPresbyopiaTestResultResponse
 import com.harang.domain.model.SendShortVisualAcuityTestResultRequest
 import com.harang.domain.model.SendShortVisualAcuityTestResultResponse
 import com.pixelro.nenoonkiosk.data.TestType
+import com.pixelro.nenoonkiosk.test.dementia.DementiaTestResult
 import com.pixelro.nenoonkiosk.test.macular.amslergrid.AmslerGridTestResult
 import com.pixelro.nenoonkiosk.test.macular.mchart.MChartTestResult
 import com.pixelro.nenoonkiosk.test.presbyopia.PresbyopiaTestResult
@@ -109,6 +110,19 @@ class TestResultViewModel @Inject constructor(
                         e.printStackTrace()
                         null
                     }
+                }
+                TestType.Dementia -> {
+//                    testResult as DementiaTestResult
+//                    val request = SendDementiaTestResultRequest(testResult.leftEyeVertical, testResult.leftEyeHorizontal, testResult.rightEyeVertical, testResult.rightEyeHorizontal)
+//                    val response = try {
+//                        api.sendMChartTestResult(request)
+//                    } catch (e: IOException) {
+//                        e.printStackTrace()
+//                        null
+//                    } catch(e: HttpException) {
+//                        e.printStackTrace()
+//                        null
+//                    }
                 }
             }
         }
