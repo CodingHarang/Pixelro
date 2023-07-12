@@ -7,6 +7,7 @@ import androidx.compose.animation.fadeIn
 import androidx.compose.animation.fadeOut
 import androidx.compose.animation.slideIn
 import androidx.compose.animation.slideOut
+import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
@@ -42,71 +43,82 @@ fun TestListContent(
 //    val isShortVisualAcuityExpanded = remember { mutableStateOf(false) }
 //    val isAmslerChartExpanded = remember { mutableStateOf(false) }
 //    val isMChartExpanded = remember { mutableStateOf(false) }
-    EyeTestSelectableBox(
-        title = StringProvider.getString(R.string.presbyopia_name1),
-        description = StringProvider.getString(R.string.presbyopia_short_description),
-        onClickMethod = {
-            if (checkIsTestDone(TestType.Presbyopia)) {
-                showSurveyRecommendationDialog()
-            } else {
-                toTestScreen(TestType.Presbyopia)
-            }
+    Column(
+        modifier = Modifier
+            .padding(bottom = 120.dp)
+    ) {
+        val modifier = Modifier
+            .weight(1f)
+        EyeTestSelectableBox(
+            modifier = modifier,
+            title = "노안 조절력 검사\n(안구 나이 검사)",
+            description = StringProvider.getString(R.string.presbyopia_short_description),
+            onClickMethod = {
+                if (checkIsTestDone(TestType.Presbyopia)) {
+                    showSurveyRecommendationDialog()
+                } else {
+                    toTestScreen(TestType.Presbyopia)
+                }
 //            isPresbyopiaExpanded.value = !isPresbyopiaExpanded.value
-        },
-        isDone = isPresbyopiaDone,
+            },
+            isDone = isPresbyopiaDone,
 //        expanded = isPresbyopiaExpanded.value
-    )
-    Spacer(
-        modifier = Modifier
-            .height(20.dp)
-    )
-    EyeTestSelectableBox(
-        title = StringProvider.getString(R.string.short_visual_acuity_name),
-        description = StringProvider.getString(R.string.short_visual_acuity_short_description),
-        onClickMethod = {
-            if (checkIsTestDone(TestType.ShortDistanceVisualAcuity)) {
-                showSurveyRecommendationDialog()
-            } else {
-                toTestScreen(TestType.ShortDistanceVisualAcuity)
-            }
-        },
-        isDone = isShortVisualAcuityDone
+        )
+        Spacer(
+            modifier = Modifier
+                .height(20.dp)
+        )
+        EyeTestSelectableBox(
+            modifier = modifier,
+            title = StringProvider.getString(R.string.short_visual_acuity_name),
+            description = StringProvider.getString(R.string.short_visual_acuity_short_description),
+            onClickMethod = {
+                if (checkIsTestDone(TestType.ShortDistanceVisualAcuity)) {
+                    showSurveyRecommendationDialog()
+                } else {
+                    toTestScreen(TestType.ShortDistanceVisualAcuity)
+                }
+            },
+            isDone = isShortVisualAcuityDone
 //        expanded = isShortVisualAcuityExpanded.value
-    )
-    Spacer(
-        modifier = Modifier
-            .height(20.dp)
-    )
-    EyeTestSelectableBox(
-        title = StringProvider.getString(R.string.amsler_grid_name),
-        description = StringProvider.getString(R.string.amsler_grid_short_description),
-        onClickMethod = {
-            if (checkIsTestDone(TestType.AmslerGrid)) {
-                showSurveyRecommendationDialog()
-            } else {
-                toTestScreen(TestType.AmslerGrid)
-            }
-        },
-        isDone = isAmslerGridDone
+        )
+        Spacer(
+            modifier = Modifier
+                .height(20.dp)
+        )
+        EyeTestSelectableBox(
+            modifier = modifier,
+            title = StringProvider.getString(R.string.amsler_grid_name),
+            description = StringProvider.getString(R.string.amsler_grid_short_description),
+            onClickMethod = {
+                if (checkIsTestDone(TestType.AmslerGrid)) {
+                    showSurveyRecommendationDialog()
+                } else {
+                    toTestScreen(TestType.AmslerGrid)
+                }
+            },
+            isDone = isAmslerGridDone
 //        expanded = isAmslerChartExpanded.value
-    )
-    Spacer(
-        modifier = Modifier
-            .height(20.dp)
-    )
-    EyeTestSelectableBox(
-        title = StringProvider.getString(R.string.mchart_name),
-        description = StringProvider.getString(R.string.mchart_short_description),
-        onClickMethod = {
-            if (checkIsTestDone(TestType.MChart)) {
-                showSurveyRecommendationDialog()
-            } else {
-                toTestScreen(TestType.MChart)
-            }
-        },
-        isDone = isMChartDone
+        )
+        Spacer(
+            modifier = Modifier
+                .height(20.dp)
+        )
+        EyeTestSelectableBox(
+            modifier = modifier,
+            title = StringProvider.getString(R.string.mchart_name),
+            description = StringProvider.getString(R.string.mchart_short_description),
+            onClickMethod = {
+                if (checkIsTestDone(TestType.MChart)) {
+                    showSurveyRecommendationDialog()
+                } else {
+                    toTestScreen(TestType.MChart)
+                }
+            },
+            isDone = isMChartDone
 //        expanded = isMChartExpanded.value
-    )
+        )
+    }
 //    AnimatedNavHost(
 //        navController = navController,
 //        startDestination = GlobalConstants.ROUTE_MAIN_TEST_LIST,

@@ -73,6 +73,7 @@ fun MeasuringDistanceContent(
             if (isLeftEye) {
                 faceDetectionViewModel.updateIsOccluderPickedTTSDone(false)
             }
+            Log.e("launched effect", "isLeftEye: $isLeftEye")
             faceDetectionViewModel.updateIsFaceDetectedTTSDone(false)
             faceDetectionViewModel.updateIsEyeCoveredTTSDone(false)
             faceDetectionViewModel.updateIsDistanceMeasuredTTSDone(false)
@@ -116,7 +117,9 @@ fun MeasuringDistanceContent(
             && !faceDetectionViewModel.isPressStartButtonTTSDone.collectAsState().value
             && !TTS.tts.isSpeaking
         ) {
+            Log.e("아래의 검사 시작", "버튼을 눌러주세요")
             faceDetectionViewModel.updateIsPressStartButtonTTSDone(true)
+//            Log.e("아래의 검사 시작", "${!faceDetectionViewModel.isPressStartButtonTTSDone.collectAsState().value}")
             TTS.speechTTS("아래의 검사 시작 버튼을 눌러주세요.", TextToSpeech.QUEUE_ADD)
         }
         val transition = rememberInfiniteTransition()
@@ -270,14 +273,14 @@ fun MeasuringDistanceContent(
                 ) {
                     Text(
                         modifier = Modifier
-                            .padding(bottom = (GlobalValue.navigationBarPadding + 384).dp),
+                            .padding(bottom = (GlobalValue.navigationBarPadding + 284).dp),
                         text = StringProvider.getString(R.string.test_screen_current_distance),
                         color = Color(0xffffffff),
                         fontSize = 24.sp
                     )
                     Text(
                         modifier = Modifier
-                            .padding(bottom = (GlobalValue.navigationBarPadding + 280).dp),
+                            .padding(bottom = (GlobalValue.navigationBarPadding + 100).dp),
                         color = when (selectedTestType) {
                             TestType.ShortDistanceVisualAcuity -> {
                                 when (faceDetectionViewModel.screenToFaceDistance.collectAsState().value) {
@@ -294,7 +297,7 @@ fun MeasuringDistanceContent(
                             }
                         },
                         text = "${(faceDetectionViewModel.screenToFaceDistance.collectAsState().value / 10).roundToInt()}cm",
-                        fontSize = 68.sp,
+                        fontSize = 140.sp,
                         fontWeight = FontWeight.Bold
                     )
                     Box(
@@ -302,7 +305,7 @@ fun MeasuringDistanceContent(
                             .padding(
                                 start = 40.dp,
                                 end = 40.dp,
-                                bottom = (GlobalValue.navigationBarPadding + 200).dp
+                                bottom = (GlobalValue.navigationBarPadding + 340).dp
                             )
                             .border(
                                 border = BorderStroke(1.dp, Color(0xffffffff)),

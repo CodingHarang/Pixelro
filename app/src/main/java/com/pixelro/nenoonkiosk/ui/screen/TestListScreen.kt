@@ -175,71 +175,73 @@ fun TestListScreen(
         ) {
             Advertisement(it)
         }
-        TestListContent(
-            checkIsTestDone = {
-                selectedTest = it
-                checkIsTestDone(it)
-            },
-            showSurveyRecommendationDialog = { isDialogShowing = true },
-            toTestScreen = toTestScreen,
-            isPresbyopiaDone = isPresbyopiaDone,
-            isShortVisualAcuityDone = isShortVisualAcuityDone,
-            isAmslerGridDone = isAmslerGridDone,
-            isMChartDone = isMChartDone,
-        )
-        Box(
-            modifier = Modifier
-                .fillMaxSize(),
-            contentAlignment = Alignment.BottomCenter
-        ) {
-            Row(
+        Box() {
+            TestListContent(
+                checkIsTestDone = {
+                    selectedTest = it
+                    checkIsTestDone(it)
+                },
+                showSurveyRecommendationDialog = { isDialogShowing = true },
+                toTestScreen = toTestScreen,
+                isPresbyopiaDone = isPresbyopiaDone,
+                isShortVisualAcuityDone = isShortVisualAcuityDone,
+                isAmslerGridDone = isAmslerGridDone,
+                isMChartDone = isMChartDone,
+            )
+            Box(
                 modifier = Modifier
-                    .padding(
-                        start = 40.dp,
-                        bottom = (GlobalValue.navigationBarPadding + 40).dp
-                    )
-                    .fillMaxWidth(),
-                verticalAlignment = Alignment.CenterVertically
+                    .fillMaxSize(),
+                contentAlignment = Alignment.BottomCenter
             ) {
-                Image(
+                Row(
                     modifier = Modifier
-                        .padding(end = 20.dp)
-                        .width(44.dp),
-                    painter = painterResource(id = R.drawable.icon_warning),
-                    contentDescription = ""
-                )
-                Text(
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .padding(end = 40.dp),
-                    text = buildAnnotatedString {
-                        withStyle(
-                            style = SpanStyle(
-                                color = Color(0xff999999),
-                                fontSize = 16.sp
-                            )
-                        ) {
-                            append(StringProvider.getString(R.string.test_list_screen_warning1))
+                        .padding(
+                            start = 40.dp,
+                            bottom = (GlobalValue.navigationBarPadding + 40).dp
+                        )
+                        .fillMaxWidth(),
+                    verticalAlignment = Alignment.CenterVertically
+                ) {
+                    Image(
+                        modifier = Modifier
+                            .padding(end = 20.dp)
+                            .width(44.dp),
+                        painter = painterResource(id = R.drawable.icon_warning),
+                        contentDescription = ""
+                    )
+                    Text(
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .padding(end = 40.dp),
+                        text = buildAnnotatedString {
+                            withStyle(
+                                style = SpanStyle(
+                                    color = Color(0xff999999),
+                                    fontSize = 16.sp
+                                )
+                            ) {
+                                append(StringProvider.getString(R.string.test_list_screen_warning1))
+                            }
+                            withStyle(
+                                style = SpanStyle(
+                                    color = Color(0xffff0000),
+                                    fontSize = 16.sp,
+                                    fontWeight = FontWeight.Bold
+                                )
+                            ) {
+                                append(StringProvider.getString(R.string.test_list_screen_warning2))
+                            }
+                            withStyle(
+                                style = SpanStyle(
+                                    color = Color(0xff999999),
+                                    fontSize = 16.sp
+                                )
+                            ) {
+                                append(StringProvider.getString(R.string.test_list_screen_warning3))
+                            }
                         }
-                        withStyle(
-                            style = SpanStyle(
-                                color = Color(0xffff0000),
-                                fontSize = 16.sp,
-                                fontWeight = FontWeight.Bold
-                            )
-                        ) {
-                            append(StringProvider.getString(R.string.test_list_screen_warning2))
-                        }
-                        withStyle(
-                            style = SpanStyle(
-                                color = Color(0xff999999),
-                                fontSize = 16.sp
-                            )
-                        ) {
-                            append(StringProvider.getString(R.string.test_list_screen_warning3))
-                        }
-                    }
-                )
+                    )
+                }
             }
         }
     }

@@ -201,22 +201,23 @@ fun PresbyopiaTestContent(
             }
         }
     }
-    Column(
+    Box (
         modifier = Modifier
             .fillMaxSize(),
-        horizontalAlignment = Alignment.CenterHorizontally,
-        verticalArrangement = Arrangement.Bottom
+        contentAlignment = Alignment.BottomCenter
     ) {
         Text(
             modifier = Modifier
-                .padding(top = 40.dp),
+                .padding(bottom = 304.dp),
             text = StringProvider.getString(R.string.test_screen_current_distance),
             fontSize = 24.sp,
             color = Color(0xffffffff)
         )
         Text(
+            modifier = Modifier
+                .padding(bottom = 120.dp),
             text = "${(faceDetectionViewModel.screenToFaceDistance.collectAsState().value / 10).roundToInt()}cm",
-            fontSize = 68.sp,
+            fontSize = 140.sp,
             fontWeight = FontWeight.Medium,
             color = Color(0xffffffff)
         )

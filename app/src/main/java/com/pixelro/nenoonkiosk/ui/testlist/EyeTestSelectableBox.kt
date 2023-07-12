@@ -24,6 +24,7 @@ import com.pixelro.nenoonkiosk.R
 
 @Composable
 fun EyeTestSelectableBox(
+    modifier: Modifier,
     title: String,
     description: String,
     onClickMethod: () -> Unit,
@@ -32,7 +33,7 @@ fun EyeTestSelectableBox(
 ) {
     Card(
         elevation = CardDefaults.cardElevation(0.dp),
-        modifier = Modifier
+        modifier = modifier
             .padding(start = 40.dp, end = 40.dp)
             .fillMaxWidth()
             .border(
@@ -54,14 +55,15 @@ fun EyeTestSelectableBox(
         ) {
             Column(
                 modifier = Modifier
-                    .fillMaxWidth(),
-                verticalArrangement = Arrangement.Center
+                    .fillMaxWidth()
+                    .fillMaxHeight(),
+                verticalArrangement = Arrangement.Center,
             ) {
                 Text(
                     text = title,
                     modifier = Modifier
                         .padding(start = 28.dp, top = 20.dp, end = 80.dp),
-                    fontSize = 32.sp,
+                    fontSize = 40.sp,
                     fontWeight = FontWeight.Bold,
                     color = when(isDone) {
                         true -> Color(0xff999999)
