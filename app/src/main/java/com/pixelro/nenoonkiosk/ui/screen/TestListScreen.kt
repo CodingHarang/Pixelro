@@ -255,7 +255,6 @@ fun Advertisement(
         modifier = Modifier
             .fillMaxWidth()
             .height(300.dp),
-//            .padding(20.dp),
         elevation = CardDefaults.cardElevation(0.dp),
         colors = CardDefaults.cardColors(
             containerColor = Color(0xffffffff)

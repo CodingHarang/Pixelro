@@ -39,10 +39,6 @@ fun TestListContent(
     isAmslerGridDone: Boolean,
     isMChartDone: Boolean,
 ) {
-//    val isPresbyopiaExpanded = remember { mutableStateOf(false) }
-//    val isShortVisualAcuityExpanded = remember { mutableStateOf(false) }
-//    val isAmslerChartExpanded = remember { mutableStateOf(false) }
-//    val isMChartExpanded = remember { mutableStateOf(false) }
     Column(
         modifier = Modifier
             .padding(bottom = 120.dp)
@@ -52,17 +48,14 @@ fun TestListContent(
         EyeTestSelectableBox(
             modifier = modifier,
             title = "노안 조절력 검사\n(안구 나이 검사)",
-            description = StringProvider.getString(R.string.presbyopia_short_description),
             onClickMethod = {
                 if (checkIsTestDone(TestType.Presbyopia)) {
                     showSurveyRecommendationDialog()
                 } else {
                     toTestScreen(TestType.Presbyopia)
                 }
-//            isPresbyopiaExpanded.value = !isPresbyopiaExpanded.value
             },
             isDone = isPresbyopiaDone,
-//        expanded = isPresbyopiaExpanded.value
         )
         Spacer(
             modifier = Modifier
@@ -71,7 +64,6 @@ fun TestListContent(
         EyeTestSelectableBox(
             modifier = modifier,
             title = StringProvider.getString(R.string.short_visual_acuity_name),
-            description = StringProvider.getString(R.string.short_visual_acuity_short_description),
             onClickMethod = {
                 if (checkIsTestDone(TestType.ShortDistanceVisualAcuity)) {
                     showSurveyRecommendationDialog()
@@ -80,7 +72,6 @@ fun TestListContent(
                 }
             },
             isDone = isShortVisualAcuityDone
-//        expanded = isShortVisualAcuityExpanded.value
         )
         Spacer(
             modifier = Modifier
@@ -89,7 +80,6 @@ fun TestListContent(
         EyeTestSelectableBox(
             modifier = modifier,
             title = StringProvider.getString(R.string.amsler_grid_name),
-            description = StringProvider.getString(R.string.amsler_grid_short_description),
             onClickMethod = {
                 if (checkIsTestDone(TestType.AmslerGrid)) {
                     showSurveyRecommendationDialog()
@@ -98,7 +88,6 @@ fun TestListContent(
                 }
             },
             isDone = isAmslerGridDone
-//        expanded = isAmslerChartExpanded.value
         )
         Spacer(
             modifier = Modifier
@@ -107,7 +96,6 @@ fun TestListContent(
         EyeTestSelectableBox(
             modifier = modifier,
             title = StringProvider.getString(R.string.mchart_name),
-            description = StringProvider.getString(R.string.mchart_short_description),
             onClickMethod = {
                 if (checkIsTestDone(TestType.MChart)) {
                     showSurveyRecommendationDialog()
@@ -116,55 +104,6 @@ fun TestListContent(
                 }
             },
             isDone = isMChartDone
-//        expanded = isMChartExpanded.value
         )
     }
-//    AnimatedNavHost(
-//        navController = navController,
-//        startDestination = GlobalConstants.ROUTE_MAIN_TEST_LIST,
-//        contentAlignment = Alignment.TopCenter
-//    ) {
-//        // 메인 검사 리스트
-//        composable(
-//            route = GlobalConstants.ROUTE_MAIN_TEST_LIST,
-//            enterTransition = { AnimationProvider.enterTransition },
-//            exitTransition = { AnimationProvider.exitTransition }
-//        ) {
-//            MainTestListContent(
-//                toTestScreen = {
-//                    viewModel.updateSelectedTestType(TestType.Presbyopia)
-////                    viewModel.initializePresbyopiaTest()
-//                    toTestScreen(it)
-//                },
-//                toVisualAcuityTestList = { navController.navigate(GlobalConstants.ROUTE_VISUAL_ACUITY_TEST_LIST) },
-//                toMacularDegenerationTestList = { navController.navigate(GlobalConstants.ROUTE_MACULAR_DEGENERATION_TEST_LIST) }
-//            )
-//        }
-//
-//        // 시력 검사 리스트
-//        composable(
-//            GlobalConstants.ROUTE_VISUAL_ACUITY_TEST_LIST,
-//            enterTransition = { AnimationProvider.enterTransition },
-//            exitTransition = { AnimationProvider.exitTransition }
-//        ) {
-//            VisualAcuityTestListContent(
-//                toTestScreen = {
-//                    toTestScreen(it)
-//                }
-//            )
-//        }
-//
-//        // 황반 변성 검사 리스트
-//        composable(
-//            GlobalConstants.ROUTE_MACULAR_DEGENERATION_TEST_LIST,
-//            enterTransition = { AnimationProvider.enterTransition },
-//            exitTransition = { AnimationProvider.exitTransition }
-//        ) {
-//            MacularTestListContent(
-//                toTestScreen = {
-//                    toTestScreen(it)
-//                }
-//            )
-//        }
-//    }
 }

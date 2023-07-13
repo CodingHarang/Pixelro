@@ -26,7 +26,6 @@ import com.pixelro.nenoonkiosk.R
 fun EyeTestSelectableBox(
     modifier: Modifier,
     title: String,
-    description: String,
     onClickMethod: () -> Unit,
     isDone: Boolean
 //    expanded: Boolean
@@ -39,47 +38,35 @@ fun EyeTestSelectableBox(
             .border(
                 border = BorderStroke(1.dp, Color(0xffc3c3c3)),
                 shape = RoundedCornerShape(8.dp)
-            )
-            .animateContentSize(),
+            ),
         colors = CardDefaults.cardColors(
             containerColor = Color(0xFFFFFFFF)
         )
     ) {
         Box(
             modifier = Modifier
-                .fillMaxWidth()
+                .fillMaxSize()
                 .clickable {
                     onClickMethod()
                 },
-            contentAlignment = Alignment.CenterEnd
+            contentAlignment = Alignment.CenterStart
         ) {
-            Column(
+            Text(
+                text = title,
                 modifier = Modifier
-                    .fillMaxWidth()
-                    .fillMaxHeight(),
-                verticalArrangement = Arrangement.Center,
-            ) {
-                Text(
-                    text = title,
-                    modifier = Modifier
-                        .padding(start = 28.dp, top = 20.dp, end = 80.dp),
-                    fontSize = 40.sp,
-                    fontWeight = FontWeight.Bold,
-                    color = when(isDone) {
-                        true -> Color(0xff999999)
-                        false -> Color(0xff000000)
-                    }
-                )
-                Spacer(
-                    modifier = Modifier
-                        .height(20.dp)
-                )
-            }
+                    .padding(start = 28.dp),
+                fontSize = 40.sp,
+                fontWeight = FontWeight.Bold,
+                color = when(isDone) {
+                    true -> Color(0xff999999)
+                    false -> Color(0xff000000)
+                }
+            )
             Image(
                 modifier = Modifier
                     .padding(end = 40.dp)
-                    .width(24.dp)
-                    .rotate(180f),
+                    .rotate(180f)
+                    .align(Alignment.CenterEnd),
                 painter = painterResource(id = R.drawable.icon_back_black),
                 contentDescription = ""
             )
