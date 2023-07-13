@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="app_name">Nenoon Kiosk</string>
-    <string name="presbyopia_name1">Presbyopia Test1</string>
+    <string name="presbyopia_name1">Presbyopia Test</string>
     <string name="visual_acuity_name">Visual Acuity Test</string>
     <string name="short_visual_acuity_name">Short Visual Acuity Test</string>
     <string name="long_visual_acuity_name">Long Visual Acuity Test</string>
@@ -116,6 +116,7 @@
     <string name="measuring_distance_content_description3">오른쪽 눈을 가려주세요</string>
     <string name="measuring_distance_content_description4">거리를 확인해주세요</string>
     <string name="measuring_distance_content_description5">str</string>
+    <string name="dementia_survey_question0">str</string>
     <string name="dementia_survey_question1">str</string>
     <string name="dementia_survey_question2">str</string>
     <string name="dementia_survey_question3">str</string>
@@ -129,7 +130,6 @@
     <string name="dementia_survey_question11">str</string>
     <string name="dementia_survey_question12">str</string>
     <string name="dementia_survey_question13">str</string>
-    <string name="dementia_survey_question14">str</string>
     <string name="dementia_result_wording1">str</string>
     <string name="dementia_result_wording2">str</string>
     <string name="dementia_result_wording3">str</string>

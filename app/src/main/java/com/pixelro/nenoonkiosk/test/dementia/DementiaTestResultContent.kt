@@ -231,7 +231,6 @@ fun DementiaTestResultContent(
         else -> {
             Column() {
 
-//임시======
                 Box(
                     modifier = Modifier
                         .fillMaxWidth()
@@ -245,7 +244,6 @@ fun DementiaTestResultContent(
                         fontWeight = FontWeight.Medium
                     )
                 }
-//==========
 
                 Column(
                     modifier = Modifier

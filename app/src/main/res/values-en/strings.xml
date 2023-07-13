@@ -114,20 +114,20 @@
     <string name="yes">YES</string>
     <string name="no">NO</string>
     <string name="dementia_title">Dementia SelfTest</string>
-    <string name="dementia_survey_question1">Do you think you have problems with your memory?</string>
-    <string name="dementia_survey_question2">Do you think your memory is worse than it was 10 years ago?</string>
-    <string name="dementia_survey_question3">Do you think your memory is worse than other people in your age?</string>
-    <string name="dementia_survey_question4">Do you feel uncomfortable in your daily life due to memory loss?</string>
-    <string name="dementia_survey_question5">Do you have difficulty remembering recent events?</string>
-    <string name="dementia_survey_question6">Do you have trouble remembering a conversation you had a few days ago?</string>
-    <string name="dementia_survey_question7">Do you have a hard time remembering an appointment you made a few days ago?</string>
-    <string name="dementia_survey_question8">Do you have difficulty remembering the names of people you close to?</string>
-    <string name="dementia_survey_question9">Do you have trouble remembering where you left things?</string>
-    <string name="dementia_survey_question10">Do you have trouble on remembering where you previously placed it?</string>
-    <string name="dementia_survey_question11">Have you ever gotten lost near your home?</string>
-    <string name="dementia_survey_question12">Do you have a hard time remembering the names of 2~3 items at the store when you are about to buy them?</string>
-    <string name="dementia_survey_question13">Do you have difficulty remembering to turn off the gas or lights?</string>
-    <string name="dementia_survey_question14">Do you have difficulty remembering frequently used phone numbers (yours or your child\'s home)?</string>
+    <string name="dementia_survey_question0">Do you think you have problems with your memory?</string>
+    <string name="dementia_survey_question1">Do you think your memory is worse than it was 10 years ago?</string>
+    <string name="dementia_survey_question2">Do you think your memory is worse than other people in your age?</string>
+    <string name="dementia_survey_question3">Do you feel uncomfortable in your daily life due to memory loss?</string>
+    <string name="dementia_survey_question4">Do you have difficulty remembering recent events?</string>
+    <string name="dementia_survey_question5">Do you have trouble remembering a conversation you had a few days ago?</string>
+    <string name="dementia_survey_question6">Do you have a hard time remembering an appointment you made a few days ago?</string>
+    <string name="dementia_survey_question7">Do you have difficulty remembering the names of people you close to?</string>
+    <string name="dementia_survey_question8">Do you have trouble remembering where you left things?</string>
+    <string name="dementia_survey_question9">Do you have trouble on remembering where you previously placed it?</string>
+    <string name="dementia_survey_question10">Have you ever gotten lost near your home?</string>
+    <string name="dementia_survey_question11">Do you have a hard time remembering the names of 2~3 items at the store when you are about to buy them?</string>
+    <string name="dementia_survey_question12">Do you have difficulty remembering to turn off the gas or lights?</string>
+    <string name="dementia_survey_question13">Do you have difficulty remembering frequently used phone numbers (yours or your child\'s home)?</string>
     <string name="dementia_result_title">Dementia self test result</string>
     <string name="go_to_first_page">Home</string>
     <string name="eye_test">EYE SIGHT TEST</string>
@@ -141,4 +141,5 @@
     <string name="dementia_result_selection1">Read more about Dementia preventing tip 3.3.3</string>
     <string name="dementia_result_selection2">Korea Central Dementia Center Page</string>
     <string name="submit">SUBMIT</string>
+
 </resources>
