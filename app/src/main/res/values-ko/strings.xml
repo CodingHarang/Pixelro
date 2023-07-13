@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="app_name">내눈 키오스크</string>
-    <string name="presbyopia_name1">노안 조절력 검사 (안구 나이 검사)</string>
+    <string name="presbyopia_name1">노안 조절력 검사\n(안구 나이 검사)</string>
     <string name="visual_acuity_name">시력 검사</string>
     <string name="short_visual_acuity_name">근거리 시력 검사</string>
     <string name="long_visual_acuity_name">원거리 시력 검사</string>
@@ -112,7 +112,7 @@
     <string name="measuring_distance_content_description5">아래의 \'검사 시작\' 버튼을 눌러주세요</string>
     <string name="yes">예</string>
     <string name="no">아니오</string>
-    <string name="dementia_title">치매 자가진단</string>
+    <string name="dementia_title">치매 자가진단 (SMCQ)</string>
     <string name="dementia_survey_question1">자신의 기억력에 문제가 있다고 생각하십니까?</string>
     <string name="dementia_survey_question2">자신의 기억력이 10년 전보다 나빠졌다고 생각하십니까?</string>
     <string name="dementia_survey_question3">자신의 기억력이 같은 또래의 다른 사람들에 비해 나쁘다고 생각하십니까?</string>
@@ -135,4 +135,9 @@
     <string name="dementia_result_wording2">개 입니다.</string>
     <string name="home">홈 화면</string>
     <string name="back_to_survey">문진하러 가기</string>
+    <string name="dementia_result_wording3">운동과 외부 사회 활동을 유지하시고 치매예방수칙 3.3.3을 잘 실천하셔서 치매를 예방하세요.</string>
+    <string name="dementia_result_wording4">가까운 보건소나 치매안심센터를 방문하셔서 더 정확한 치매검진을 받아보시기 바랍니다.</string>
+    <string name="dementia_result_selection1">치매예방수칙 3.3.3 자세히 보기</string>
+    <string name="dementia_result_selection2">중앙치매센터 홈페이지</string>
+    <string name="submit">작성 완료</string>
 </resources>

@@ -1207,6 +1207,7 @@ fun DementiaTestContent(
                         color = Color(0x00000000)
                     )
             )
+
             //작성완료 BOX
             Box(
                 modifier = Modifier
@@ -1236,7 +1237,7 @@ fun DementiaTestContent(
                     contentAlignment = Alignment.Center
                 ) {
                     Text(
-                        text = "작성 완료",
+                        text = StringProvider.getString(R.string.submit),
                         fontSize = 40.sp,
                         color = Color(0xffffffff),
                         fontWeight = FontWeight.Medium,

@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="app_name">Nenoon Kiosk</string>
-    <string name="presbyopia_name1">Presbyopia Test</string>
+    <string name="presbyopia_name1">Presbyopia Test1</string>
     <string name="visual_acuity_name">Visual Acuity Test</string>
     <string name="short_visual_acuity_name">Short Visual Acuity Test</string>
     <string name="long_visual_acuity_name">Long Visual Acuity Test</string>
@@ -132,10 +132,15 @@
     <string name="dementia_survey_question14">str</string>
     <string name="dementia_result_wording1">str</string>
     <string name="dementia_result_wording2">str</string>
+    <string name="dementia_result_wording3">str</string>
+    <string name="dementia_result_wording4">str</string>
+    <string name="dementia_result_selection1">str</string>
+    <string name="dementia_result_selection2">str</string>
     <string name="yes">str</string>
     <string name="no">str</string>
     <string name="eye_test">str</string>
     <string name="dementia_test">str</string>
+    <string name="submit">str</string>
     <!--    <string name=""></string>-->
     <!--    <string name=""></string>-->
 </resources>

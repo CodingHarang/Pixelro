@@ -138,7 +138,7 @@ class NenoonViewModel @Inject constructor(
     private val _screenSaverTimer = MutableStateFlow(30)
     private val _timeValue = MutableStateFlow(30)
 
-    //    val screenSaverTimer: StateFlow<Int> = _screenSaverTimer
+//        val screenSaverTimer: StateFlow<Int> = _screenSaverTimer
     private val _isScreenSaverOn = MutableStateFlow(false)
     val isScreenSaverOn: StateFlow<Boolean> = _isScreenSaverOn
 

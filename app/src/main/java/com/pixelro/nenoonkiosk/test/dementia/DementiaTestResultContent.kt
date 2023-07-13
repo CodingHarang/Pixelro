@@ -26,6 +26,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.compose.ui.viewinterop.AndroidView
@@ -44,6 +45,7 @@ fun DementiaTestResultContent(
     val isWebViewShowing2 = remember { mutableStateOf(false) }
     val isWebViewShowing3 = remember { mutableStateOf(false) }
     val showDementia333 = remember { mutableStateOf(false) }
+
 
     when {
         isWebViewShowing1.value -> {
@@ -229,6 +231,22 @@ fun DementiaTestResultContent(
         else -> {
             Column() {
 
+//임시======
+                Box(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(start = 65.dp, top = 20.dp)
+                ) {
+                    Text(
+                        text = "6점 이상 시(약 43%) 치매 또는 경도인지장애 의심",
+                        color = Color(0xff1d71e1),
+                        textAlign = TextAlign.Center,
+                        fontSize = 30.sp,
+                        fontWeight = FontWeight.Medium
+                    )
+                }
+//==========
+
                 Column(
                     modifier = Modifier
                         .padding(40.dp)
@@ -238,18 +256,18 @@ fun DementiaTestResultContent(
                             shape = RoundedCornerShape(8.dp)
                         )
                         .padding(40.dp)
+
                 ) {
                     Text(
-                        text = StringProvider.getString(R.string.dementia_result_wording1) + " " +testResult.countActiveScore()
-                            .toString() + " " + StringProvider.getString(R.string.dementia_result_wording2),
+                        text = StringProvider.getString(R.string.dementia_result_wording1) + " " +testResult.countActiveScore().toString() + " " + StringProvider.getString(R.string.dementia_result_wording2),
                         fontSize = 40.sp,
                         fontWeight = FontWeight.Medium,
                     )
                     Text(
                         text = when {
-                            testResult.countActiveScore() < 6 -> "운동과 외부 사회 활동을 유지하시고 치매예방수칙 3.3.3을 잘 실천하셔서 치매를 예방하세요."
+                            testResult.countActiveScore() < 6 -> StringProvider.getString(R.string.dementia_result_wording3)
 
-                            testResult.countActiveScore() >= 6 -> "가까운 보건소나 치매안심센터를 방문하셔서 더 정확한 치매검진을 받아보시기 바랍니다."
+                            testResult.countActiveScore() >= 6 -> StringProvider.getString(R.string.dementia_result_wording4)
 
                             else -> "No Dementia Scores"
                         },
@@ -257,9 +275,12 @@ fun DementiaTestResultContent(
                         color = Color(0xff878787)
                     )
                 }
-                Column() {
+                Column(modifier = Modifier.height(400.dp)) {
+                    val modifier = Modifier
+                        .weight(1f)
                     EyeTestSelectableBox(
-                        title = "치매예방수칙 3.3.3 자세히 보기",
+                        modifier = modifier,
+                        title = StringProvider.getString(R.string.dementia_result_selection1),
                         description = "치매예방수칙 3.3.3",
                         onClickMethod = {
                             showDementia333.value = true
@@ -271,7 +292,8 @@ fun DementiaTestResultContent(
                             .height(20.dp)
                     )
                     EyeTestSelectableBox(
-                        title = "중앙치매센터 홈페이지",
+                        modifier = modifier,
+                        title = StringProvider.getString(R.string.dementia_result_selection2),
                         description = "중앙치매센터 홈페이지",
                         onClickMethod = {
                             isWebViewShowing1.value = true

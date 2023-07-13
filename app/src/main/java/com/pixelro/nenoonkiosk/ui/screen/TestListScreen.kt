@@ -274,9 +274,9 @@ fun Advertisement(
                         shape = RoundedCornerShape(8.dp)
                     ),
                 painter = painterResource(id = when(idx % 3) {
-                    0 -> R.drawable.ad_1
-                    1 -> R.drawable.ad_2
-                    else -> R.drawable.ad_3
+                    0 -> R.drawable.lg1
+                    1 -> R.drawable.lg_ads
+                    else -> R.drawable.lg_3
                 }),
                 contentScale = ContentScale.FillWidth,
                 contentDescription = ""

@@ -130,10 +130,15 @@
     <string name="dementia_survey_question14">Do you have difficulty remembering frequently used phone numbers (yours or your child\'s home)?</string>
     <string name="dementia_result_title">Dementia self test result</string>
     <string name="go_to_first_page">Home</string>
-    <string name="eye_test">EYE TEST</string>
-    <string name="dementia_test">DEMENTIA TEST</string>
+    <string name="eye_test">EYE SIGHT TEST</string>
+    <string name="dementia_test">DEMENTIA SELF TEST</string>
     <string name="dementia_result_wording1">Score of Dementia self test is</string>
     <string name="dementia_result_wording2">Points.</string>
     <string name="home">HOME</string>
     <string name="back_to_survey">Back to Survey</string>
+    <string name="dementia_result_wording3">Prevent dementia by staying active, socially active, and practicing dementia prevention tip 3.3.3.</string>
+    <string name="dementia_result_wording4">Please visit the nearest public health center or dementia care center to receive a more accurate dementia checkup.</string>
+    <string name="dementia_result_selection1">Read more about Dementia preventing tip 3.3.3</string>
+    <string name="dementia_result_selection2">Korea Central Dementia Center Page</string>
+    <string name="submit">SUBMIT</string>
 </resources>

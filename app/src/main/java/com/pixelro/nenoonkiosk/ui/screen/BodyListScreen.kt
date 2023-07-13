@@ -11,6 +11,7 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
+
 import androidx.compose.foundation.pager.HorizontalPager
 import androidx.compose.foundation.pager.rememberPagerState
 import androidx.compose.foundation.shape.RoundedCornerShape
@@ -66,6 +67,8 @@ fun BodyListScreen(
     val pagerState = rememberPagerState(
         initialPage = 50000
     )
+
+
     LaunchedEffect(true) {
         while(true) {
 //            yield()
@@ -85,7 +88,9 @@ fun BodyListScreen(
             .background(
                 color = Color(0xffffffff)
             )
+
     ) {
+
         Box(
             modifier = Modifier
                 .padding(
@@ -141,26 +146,33 @@ fun BodyListScreen(
         ) {
             Advertisement2(it)
         }
-        EyeTestSelectableBox(
-            title = StringProvider.getString(R.string.eye_test),
-            description = "",
-            onClickMethod = {
-                toSurveyScreen()
-            },
-            isDone = false
-        )
-        Spacer(
-            modifier = Modifier
-                .height(20.dp)
-        )
-        EyeTestSelectableBox(
-            title = StringProvider.getString(R.string.dementia_test),
-            description = "",
-            onClickMethod = {
-                toDementiaScreen()
-            },
-            isDone = false
-        )
+        Column(modifier = Modifier.height(400.dp)) {
+            val modifier = Modifier
+                .weight(1f)
+            EyeTestSelectableBox(
+                modifier = modifier,
+                title = StringProvider.getString(R.string.eye_test),
+                description = "",
+                onClickMethod = {
+                    toSurveyScreen()
+                },
+                isDone = false
+            )
+            Spacer(
+                modifier = Modifier
+                    .height(20.dp)
+            )
+            EyeTestSelectableBox(
+                modifier = modifier,
+                title = StringProvider.getString(R.string.dementia_test),
+                description = "",
+                onClickMethod = {
+                    toDementiaScreen()
+                },
+                isDone = false
+            )
+        }
+
         Box(
             modifier = Modifier
                 .fillMaxSize(),
@@ -246,9 +258,9 @@ fun Advertisement2(
                         shape = RoundedCornerShape(8.dp)
                     ),
                 painter = painterResource(id = when(idx % 3) {
-                    0 -> R.drawable.ad_1
-                    1 -> R.drawable.ad_2
-                    else -> R.drawable.ad_3
+                    0 -> R.drawable.lg1
+                    1 -> R.drawable.lg_ads
+                    else -> R.drawable.lg_3
                 }),
                 contentScale = ContentScale.FillWidth,
                 contentDescription = ""
