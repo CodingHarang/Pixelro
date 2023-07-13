@@ -73,7 +73,6 @@ class MainActivity : ComponentActivity() {
         val navigationBarResourceId =
             resources.getIdentifier("navigation_bar_height", "dimen", "android")
         GlobalValue.statusBarPadding = resources.getDimension(statusBarResourceId)
-//        GlobalValue.navigationBarPadding = resources.getDimension(navigationBarResourceId)
         GlobalValue.navigationBarPadding = 0f
         Log.e("padding", "${GlobalValue.statusBarPadding}, ${GlobalValue.navigationBarPadding}")
 

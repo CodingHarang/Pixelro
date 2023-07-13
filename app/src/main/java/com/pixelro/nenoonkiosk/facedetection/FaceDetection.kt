@@ -67,7 +67,6 @@ fun FaceDetectionWithPreview(
 fun FaceDetectionScreenContent(
     viewModel: FaceDetectionViewModel = hiltViewModel()
 ) {
-//    Log.e("faceDetection", "faceDetectionOnly")
     val lifecycleOwner = LocalLifecycleOwner.current
     val context = LocalContext.current
     val cameraProviderFuture = remember { ProcessCameraProvider.getInstance(context) }
@@ -90,7 +89,6 @@ fun FaceDetectionScreenContent(
                                 viewModel::updateIsFaceDetected,
                                 viewModel::updateIsNenoonTextDetected,
                                 executor1
-//                                viewModel::updateBitmap
                             )
                         )
                     }
@@ -108,8 +106,6 @@ fun FaceDetectionScreenContentWithPreview(
     isPreviewShowing: Boolean,
     viewModel: FaceDetectionViewModel = hiltViewModel()
 ) {
-//    Log.e("faceDetection", "faceDetectionWithPreview")
-//    if(visibleState.targetState) {
     val lifecycleOwner = LocalLifecycleOwner.current
     val context = LocalContext.current
     val cameraProviderFuture = remember { ProcessCameraProvider.getInstance(context) }
@@ -140,7 +136,6 @@ fun FaceDetectionScreenContentWithPreview(
                                         viewModel::updateIsFaceDetected,
                                         viewModel::updateIsNenoonTextDetected,
                                         executor1
-//                                    viewModel::updateBitmap
                                     )
                                 )
                             }

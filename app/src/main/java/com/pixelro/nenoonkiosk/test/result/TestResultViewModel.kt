@@ -48,7 +48,6 @@ class TestResultViewModel @Inject constructor(
         viewModelScope.launch {
             when(testType) {
                 TestType.None -> {
-                    // do nothing
                 }
                 TestType.Presbyopia -> {
                     testResult as PresbyopiaTestResult

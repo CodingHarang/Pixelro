@@ -53,32 +53,7 @@ fun CustomShape(
                 rightEyePosition.y / 1.5f + 40f
             )
         )
-//        for (point in leftEyeContour) {
-//            drawCircle(
-//                color = Color(0xFFFF0000),
-//                radius = 3f,
-//                center = Offset(size.width - point.x, point.y)
-//            )
-//        }
-//        for (point in rightEyeContour) {
-//            drawCircle(
-//                color = Color(0xFF0000FF),
-//                radius = 3f,
-//                center = Offset(size.width - point.x, point.y)
-//            )
-//        }
 
-        // check start and end of the Canvas
-//        drawCircle(
-//            color = Color(0xFF00FF00),
-//            radius = 10f,
-//            center = Offset(0f, 0f)
-//        )
-//        drawCircle(
-//            color = Color(0xFF00FF00),
-//            radius = 10f,
-//            center = Offset(size.width.toFloat(), size.height.toFloat())
-//        )
         drawRect(
             color = Color(0xFF00FF00),
             topLeft = Offset(

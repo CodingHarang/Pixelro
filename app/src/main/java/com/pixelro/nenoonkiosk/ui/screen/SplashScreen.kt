@@ -27,17 +27,9 @@ fun SplashScreen(
 ) {
     val systemUiController = rememberSystemUiController()
     DisposableEffect(true) {
-//        systemUiController.setNavigationBarColor(
-//            color = Color(0x00000000),
-//            darkIcons = false
-//        )
         systemUiController.systemBarsDarkContentEnabled = false
         onDispose {
             systemUiController.systemBarsDarkContentEnabled = true
-//            systemUiController.setNavigationBarColor(
-//                color = Color(0x00000000),
-//                darkIcons = true
-//            )
         }
     }
     Box(
@@ -69,10 +61,6 @@ fun SplashScreen(
                 painter = painterResource(id = R.drawable.nenoon_logo),
                 contentDescription = ""
             )
-//            Spacer(
-//                modifier = Modifier
-//                    .height(12.dp)
-//            )
             Text(
                 text = StringProvider.getString(R.string.splash_app_name),
                 color = Color(0xffffffff),

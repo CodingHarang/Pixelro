@@ -63,16 +63,11 @@ fun TestListScreen(
     isAmslerGridDone: Boolean,
     isMChartDone: Boolean,
 ) {
-//    BackHandler(enabled = true) {
-//        viewModel.resetScreenSaverTimer()
-//        Log.e("backhandler", "backhandler")
-//    }
     val pagerState = rememberPagerState(
         initialPage = 50000
     )
     LaunchedEffect(true) {
         while(true) {
-//            yield()
             delay(8000)
             pagerState.animateScrollToPage(
                 page = (pagerState.currentPage + 1),

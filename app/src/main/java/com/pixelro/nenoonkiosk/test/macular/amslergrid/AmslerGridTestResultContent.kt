@@ -101,14 +101,6 @@ fun AmslerGridTestResultContent(
                                 Offset(0f, size.height),
                                 strokeWidth
                             )
-//                            drawArc(
-//                                color = Color(0xffc3c3c3),
-//                                startAngle = 180f,
-//                                sweepAngle = 90f,
-//                                useCenter = false,
-//                                size = Size(20f, 20f),
-//                                style = Stroke(width = strokeWidth),
-//                            )
                         }
                 ) {
 

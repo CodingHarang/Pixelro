@@ -61,10 +61,8 @@ fun PermissionRequestScreen(
 
     val writeSettingPermissionRequestLauncher = rememberLauncherForActivityResult(ActivityResultContracts.StartActivityForResult()) {
         if(Settings.System.canWrite(context)) {
-//            viewModel.updateIsWriteSettingsPermissionGranted(true)
             Toast.makeText(context, "시스템 설정 변경 권한이 허용되었습니다.", Toast.LENGTH_SHORT).show()
         } else {
-//            viewModel.updateIsWriteSettingsPermissionGranted(false)
             Toast.makeText(context, "시스템 설정 변경 권한이 허용되지 않았습니다.", Toast.LENGTH_SHORT).show()
         }
     }
@@ -78,19 +76,15 @@ fun PermissionRequestScreen(
                 && result.entries.contains(mapOf(Manifest.permission.BLUETOOTH_ADMIN to true).entries.first())
                 && result.entries.contains(mapOf(Manifest.permission.ACCESS_FINE_LOCATION to true).entries.first())
                 && result.entries.contains(mapOf(Manifest.permission.ACCESS_COARSE_LOCATION to true).entries.first())) {
-//                viewModel.updateIsBluetoothPermissionsGranted(true)
                 Toast.makeText(context, "블루투스 권한이 허용되었습니다.", Toast.LENGTH_SHORT).show()
             } else {
-//                viewModel.updateIsBluetoothPermissionsGranted(false)
                 Toast.makeText(context, "블루투스 권한이 허용되지 않았습니다.", Toast.LENGTH_SHORT).show()
             }
         }
         if(result.keys.contains(Manifest.permission.CAMERA)) {
             if(result.entries.contains(mapOf(Manifest.permission.CAMERA to true).entries.first())) {
-//                viewModel.updateIsCameraPermissionGranted(true)
                 Toast.makeText(context, "카메라 권한이 허용되었습니다.", Toast.LENGTH_SHORT).show()
             } else {
-//                viewModel.updateIsCameraPermissionGranted(false)
                 Toast.makeText(context, "카메라 권한이 허용되지 않았습니다.", Toast.LENGTH_SHORT).show()
             }
         }

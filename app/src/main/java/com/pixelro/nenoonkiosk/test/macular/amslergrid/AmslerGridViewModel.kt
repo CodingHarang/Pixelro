@@ -24,8 +24,6 @@ class AmslerGridViewModel @Inject constructor(
     val isMeasuringDistanceContentVisible: StateFlow<Boolean> = _isMeasuringDistanceContentVisible
     private val _isAmslerGridContentVisible = MutableStateFlow(false)
     val isAmslerGridContentVisible: StateFlow<Boolean> = _isAmslerGridContentVisible
-//    private val _isMacularDegenerationTypeVisible = MutableStateFlow(false)
-//    val isMacularDegenerationTypeVisible: StateFlow<Boolean> = _isMacularDegenerationTypeVisible
     private val _isLeftEye = MutableStateFlow(true)
     val isLeftEye: StateFlow<Boolean> = _isLeftEye
     private val _currentSelectedPosition = MutableStateFlow(Offset(0f, 0f))
@@ -87,9 +85,6 @@ class AmslerGridViewModel @Inject constructor(
         _isAmslerGridContentVisible.update { visible }
     }
 
-//    fun updateIsMacularDegenerationTypeVisible(visible: Boolean) {
-//        _isMacularDegenerationTypeVisible.update { visible }
-//    }
 
     fun updateIsLeftEye(isLeft: Boolean) {
         _isLeftEye.update { isLeft }

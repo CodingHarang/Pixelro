@@ -65,10 +65,8 @@ class NenoonViewModel @Inject constructor(
                 if (_isResumed.value) {
                     // Check screen saver timer
 
-//                    Log.e("threadName", Thread.currentThread().name)
                     _screenSaverTimer.update { _screenSaverTimer.value - 0 }
 
-//                    Log.e("screenSaver", "${_screenSaverTimer.value}")
                     if (_screenSaverTimer.value < 0) {
                         _isScreenSaverOn.update { true }
                     }
@@ -111,7 +109,6 @@ class NenoonViewModel @Inject constructor(
     private val _screenSaverTimer = MutableStateFlow(30)
     private val _timeValue = MutableStateFlow(30)
 
-    //    val screenSaverTimer: StateFlow<Int> = _screenSaverTimer
     private val _isScreenSaverOn = MutableStateFlow(false)
     val isScreenSaverOn: StateFlow<Boolean> = _isScreenSaverOn
 
@@ -341,25 +338,10 @@ class NenoonViewModel @Inject constructor(
     var mChartTestResult = MChartTestResult()
 
     init {
-//        viewModelScope.launch {
-//            val response = api.getTest()
-//            Log.e(
-//                "response",
-//                "code: ${response.code()}\nbody: ${response.body()}\nerrorbody: ${response.errorBody()}\n"
-//            )
-//        }
         showSplashScreen()
         checkBackgroundStatus()
-//        exoPlayer.setMediaItem(MediaItem.fromUri("https://drive.google.com/uc?export=view&id=1vNW4Xia8pG4tfGoao4Nb7hEJtOd9Cg8F"))
         exoPlayer.setMediaItem(MediaItem.fromUri(Uri.fromFile(File("/storage/emulated/0/Download/ad1.mp4"))))
         exoPlayer.prepare()
         exoPlayer.repeatMode = Player.REPEAT_MODE_ONE
-//        exoPlayer.playWhenReady = true
-        viewModelScope.launch {
-//            val context = getApplication<Application>().applicationContext
-//            val intent = context.packageManager.getLaunchIntentForPackage("com.teamviewer.host.market")
-//            context.startActivity(intent)
-            Log.e("serial", Build.SERIAL)
-        }
     }
 }

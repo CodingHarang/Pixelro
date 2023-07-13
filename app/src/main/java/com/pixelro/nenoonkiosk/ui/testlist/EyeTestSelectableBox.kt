@@ -28,7 +28,6 @@ fun EyeTestSelectableBox(
     title: String,
     onClickMethod: () -> Unit,
     isDone: Boolean
-//    expanded: Boolean
 ) {
     Card(
         elevation = CardDefaults.cardElevation(0.dp),

@@ -57,8 +57,6 @@ fun AmslerGridTestContent(
     measuringDistanceContentVisibleState.targetState = amslerGridViewModel.isMeasuringDistanceContentVisible.collectAsState().value
     val amslerGridContentVisibleState = remember { MutableTransitionState(false) }
     amslerGridContentVisibleState.targetState = amslerGridViewModel.isAmslerGridContentVisible.collectAsState().value
-//    val macularDegenerationTypeVisibleState = remember { MutableTransitionState(false) }
-//    macularDegenerationTypeVisibleState.targetState = amslerGridViewModel.isMacularDegenerationTypeVisible.collectAsState().value
 
     Column(
         modifier = Modifier
