@@ -2,7 +2,6 @@ package com.pixelro.nenoonkiosk.test.macular.mchart
 
 import android.speech.tts.TextToSpeech
 import android.util.Log
-import androidx.activity.compose.BackHandler
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.core.MutableTransitionState
 import androidx.compose.foundation.Image
@@ -32,16 +31,12 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
-import com.pixelro.nenoonkiosk.NenoonViewModel
 import com.pixelro.nenoonkiosk.R
 import com.pixelro.nenoonkiosk.TTS
 import com.pixelro.nenoonkiosk.data.AnimationProvider
-import com.pixelro.nenoonkiosk.data.GlobalValue
 import com.pixelro.nenoonkiosk.data.StringProvider
 import com.pixelro.nenoonkiosk.data.TestType
-import com.pixelro.nenoonkiosk.facedetection.CoveredEyeCheckingContent
 import com.pixelro.nenoonkiosk.facedetection.FaceDetection
-import com.pixelro.nenoonkiosk.facedetection.FaceDetectionWithPreview
 import com.pixelro.nenoonkiosk.facedetection.MeasuringDistanceContent
 
 @Composable

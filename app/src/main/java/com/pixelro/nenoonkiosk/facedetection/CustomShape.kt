@@ -26,8 +26,6 @@ fun CustomShape(
     var size by remember { mutableStateOf(IntSize.Zero) }
     val leftEyePosition = viewModel.leftEyePosition.collectAsState().value
     val rightEyePosition = viewModel.rightEyePosition.collectAsState().value
-    val leftEyeContour = viewModel.leftEyeContour.collectAsState().value
-    val rightEyeContour = viewModel.rightEyeContour.collectAsState().value
     val textBox = viewModel.textBox.collectAsState().value
 
     Canvas(

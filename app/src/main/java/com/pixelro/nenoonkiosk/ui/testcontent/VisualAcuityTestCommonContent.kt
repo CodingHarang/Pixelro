@@ -23,17 +23,13 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
-import com.pixelro.nenoonkiosk.NenoonViewModel
 import com.pixelro.nenoonkiosk.R
 import com.pixelro.nenoonkiosk.TTS
 import com.pixelro.nenoonkiosk.data.AnimationProvider
-import com.pixelro.nenoonkiosk.data.GlobalValue
 import com.pixelro.nenoonkiosk.data.StringProvider
-import com.pixelro.nenoonkiosk.data.VisionDisorderType
 import com.pixelro.nenoonkiosk.facedetection.FaceDetection
 import com.pixelro.nenoonkiosk.test.visualacuity.VisualAcuityTestResult
 import com.pixelro.nenoonkiosk.test.visualacuity.VisualAcuityViewModel
-import java.util.*
 
 @Composable
 fun VisualAcuityTestCommonContent(
