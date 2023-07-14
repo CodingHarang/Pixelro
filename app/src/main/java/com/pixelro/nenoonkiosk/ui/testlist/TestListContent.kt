@@ -63,7 +63,7 @@ fun TestListContent(
         )
         EyeTestSelectableBox(
             modifier = modifier,
-            title = StringProvider.getString(R.string.short_visual_acuity_name),
+            title = "시력 검사",
             onClickMethod = {
                 if (checkIsTestDone(TestType.ShortDistanceVisualAcuity)) {
                     showSurveyRecommendationDialog()

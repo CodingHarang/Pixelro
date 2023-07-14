@@ -1,5 +1,6 @@
 package com.pixelro.nenoonkiosk.ui
 
+import android.util.Log
 import androidx.compose.animation.ExperimentalAnimationApi
 import androidx.compose.foundation.layout.*
 import androidx.compose.runtime.Composable
@@ -15,6 +16,7 @@ import com.google.accompanist.navigation.animation.rememberAnimatedNavController
 import com.pixelro.nenoonkiosk.NenoonViewModel
 import com.pixelro.nenoonkiosk.data.AnimationProvider
 import com.pixelro.nenoonkiosk.data.GlobalConstants
+import com.pixelro.nenoonkiosk.data.GlobalValue
 import com.pixelro.nenoonkiosk.data.TestType
 import com.pixelro.nenoonkiosk.test.macular.amslergrid.AmslerGridTestContent
 import com.pixelro.nenoonkiosk.test.macular.mchart.MChartTestContent
@@ -33,6 +35,8 @@ fun NenoonApp(
     viewModel: NenoonViewModel = hiltViewModel(),
     mainNavController: NavHostController = rememberAnimatedNavController()
 ) {
+//    Log.e("GlobalValue", "${GlobalValue.focalLength}, ${GlobalValue.lensSize}, ${GlobalValue.pixelDensity}, ${GlobalValue.screenHeightDp}, ${GlobalValue.screenWidthDp}")
+
     val selectedTest = viewModel.selectedTestType.collectAsState().value
     // Splash Screen
     if (viewModel.isShowingSplashScreen.collectAsState().value) {
