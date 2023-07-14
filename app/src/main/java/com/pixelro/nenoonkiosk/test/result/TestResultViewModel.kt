@@ -27,6 +27,7 @@ import kotlinx.coroutines.launch
 import retrofit2.HttpException
 import retrofit2.Response
 import java.io.IOException
+import java.time.LocalDateTime
 import javax.inject.Inject
 
 @HiltViewModel
@@ -50,30 +51,51 @@ class TestResultViewModel @Inject constructor(
                 TestType.None -> {
                 }
                 TestType.Presbyopia -> {
-                    testResult as PresbyopiaTestResult
-                    Log.e("", testResult.toString())
-                    val request = SendPresbyopiaTestResultRequest(testResult.firstDistance, testResult.secondDistance, testResult.thirdDistance, testResult.avgDistance, testResult.age)
-                    val response = try {
-                        api.sendPresbyopiaTestResult(request)
-                    } catch (e: IOException) {
-                        e.printStackTrace()
-                        null
-                    } catch(e: HttpException) {
-                        e.printStackTrace()
-                        null
+                    viewModelScope.launch {
+                        testResult as PresbyopiaTestResult
+                        val request = SendPresbyopiaTestResultRequest(
+                            surveyId = 0,
+                            distance1 = testResult.firstDistance.toInt(),
+                            distance2 = testResult.secondDistance.toInt(),
+                            distance3 = testResult.thirdDistance.toInt(),
+                            distanceAvg = testResult.avgDistance.toInt(),
+                            createAt = LocalDateTime.now()
+                        )
+                        val response = try {
+                            api.sendPresbyopiaTestResult(request)
+                        } catch (e: IOException) {
+                            e.printStackTrace()
+                            null
+                        } catch(e: HttpException) {
+                            e.printStackTrace()
+                            null
+                        }
+                        Log.e("sendResultToServer", "response: ${response?.body()}, ${response?.errorBody()}")
                     }
                 }
                 TestType.ShortDistanceVisualAcuity -> {
-                    testResult as ShortVisualAcuityTestResult
-                    val request = SendShortVisualAcuityTestResultRequest(testResult.leftEye, testResult.rightEye)
-                    val response = try {
-                        api.sendShortVisualAcuityTestResult(request)
-                    } catch (e: IOException) {
-                        e.printStackTrace()
-                        null
-                    } catch(e: HttpException) {
-                        e.printStackTrace()
-                        null
+                    viewModelScope.launch {
+                        testResult as ShortVisualAcuityTestResult
+                        val request = SendShortVisualAcuityTestResultRequest(
+                            surveyId = 0,
+                            testType = "",
+                            distance = 0,
+                            leftSight = testResult.leftEye,
+                            rightSight = testResult.rightEye,
+                            leftPerspective = "",
+                            rightPerspective = "",
+                            createAt = LocalDateTime.now()
+                        )
+                        val response = try {
+                            api.sendShortVisualAcuityTestResult(request)
+                        } catch (e: IOException) {
+                            e.printStackTrace()
+                            null
+                        } catch(e: HttpException) {
+                            e.printStackTrace()
+                            null
+                        }
+                        Log.e("sendResultToServer", "response: ${response?.body()}, ${response?.errorBody()}")
                     }
                 }
                 TestType.LongDistanceVisualAcuity -> {
@@ -83,30 +105,48 @@ class TestResultViewModel @Inject constructor(
 
                 }
                 TestType.AmslerGrid -> {
-                    testResult as AmslerGridTestResult
-                    val request = SendAmslerGridTestResultRequest(testResult.leftEyeDisorderType.toString(), testResult.rightEyeDisorderType.toString())
-                    val response = try {
-                        api.sendAmslerGridResult(request)
-                    } catch (e: IOException) {
-                        e.printStackTrace()
-                        null
-                    } catch(e: HttpException) {
-                        e.printStackTrace()
-                        null
+                    viewModelScope.launch {
+                        testResult as AmslerGridTestResult
+                        val request = SendAmslerGridTestResultRequest(
+                            surveyId = 0L,
+                            distance = 30,
+                            leftMacularLoc = testResult.leftEyeDisorderType.toString(),
+                            rightMacularLoc = testResult.rightEyeDisorderType.toString(),
+                            createAt = LocalDateTime.now()
+                        )
+                        val response = try {
+                            api.sendAmslerGridResult(request)
+                        } catch (e: IOException) {
+                            e.printStackTrace()
+                            null
+                        } catch(e: HttpException) {
+                            e.printStackTrace()
+                            null
+                        }
+                        Log.e("sendResultToServer", "response: ${response?.body()}, ${response?.errorBody()}")
                     }
-
                 }
                 TestType.MChart -> {
-                    testResult as MChartTestResult
-                    val request = SendMChartTestResultRequest(testResult.leftEyeVertical, testResult.leftEyeHorizontal, testResult.rightEyeVertical, testResult.rightEyeHorizontal)
-                    val response = try {
-                        api.sendMChartTestResult(request)
-                    } catch (e: IOException) {
-                        e.printStackTrace()
-                        null
-                    } catch(e: HttpException) {
-                        e.printStackTrace()
-                        null
+                    viewModelScope.launch {
+                        testResult as MChartTestResult
+                        val request = SendMChartTestResultRequest(
+                            surveyId = 0,
+                            distance = 0,
+                            leftEyeVer = testResult.leftEyeVertical,
+                            rightEyeVer = testResult.rightEyeVertical,
+                            leftEyeHor = testResult.leftEyeHorizontal,
+                            rightEyeHor = testResult.rightEyeHorizontal
+                        )
+                        val response = try {
+                            api.sendMChartTestResult(request)
+                        } catch (e: IOException) {
+                            e.printStackTrace()
+                            null
+                        } catch(e: HttpException) {
+                            e.printStackTrace()
+                            null
+                        }
+                        Log.e("sendResultToServer", "response: ${response?.body()}, ${response?.errorBody()}")
                     }
                 }
             }

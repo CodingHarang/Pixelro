@@ -114,7 +114,6 @@ fun AmslerGridContent(
         val isFaceCenter = amslerGridViewModel.isFaceCenter.collectAsState().value
         if (!amslerGridViewModel.isLookAtTheDotTTSDone.collectAsState().value) {
             amslerGridViewModel.updateIsLookAtTheDotTTSDone(true)
-            Log.e("tts", "tts")
             TTS.speechTTS("검사를 시작하겠습니다. 아래의 깜빡이는 점을 봐주세요", TextToSpeech.QUEUE_ADD)
         }
         if (

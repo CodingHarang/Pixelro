@@ -85,7 +85,7 @@ class PresbyopiaViewModel @Inject constructor(
                 _isNumberShowing.update { true }
                 _isBlinkingDone.update { false }
                 viewModelScope.launch {
-                    TTS.speechTTS("세번째 측정을 시작하겠습니다. 화면으로부터 40~60cm 사이로 거리를 조정해주세요.", TextToSpeech.QUEUE_ADD)
+                    TTS.speechTTS("마지막 측정을 시작하겠습니다. 화면으로부터 40~60cm 사이로 거리를 조정해주세요.", TextToSpeech.QUEUE_ADD)
                 }
             }
             else -> {
@@ -131,7 +131,7 @@ class PresbyopiaViewModel @Inject constructor(
                 age = entry.y.toInt()
             }
         }
-        Log.e("presbyopiaResult", "firstDistance: ${firstDistance}\nsecondDistance: ${secondDistance}\nthirdDistance: ${thirdDistance}\n${avgDistance}\nage: $age")
+//        Log.e("presbyopiaResult", "firstDistance: ${firstDistance}\nsecondDistance: ${secondDistance}\nthirdDistance: ${thirdDistance}\n${avgDistance}\nage: $age")
         return PresbyopiaTestResult(firstDistance, secondDistance, thirdDistance, avgDistance, age)
     }
 

@@ -163,7 +163,7 @@ object TestResultUtil {
 
                 paint.style = Paint.Style.FILL
                 paint.typeface = Typeface.DEFAULT_BOLD
-                Log.e("", testResult.leftEyeDisorderType[0].toString())
+//                Log.e("", testResult.leftEyeDisorderType[0].toString())
                 if(testResult.leftEyeDisorderType[0] != MacularDisorderType.Normal) {
                     canvas.drawText("이상", 70f, baseline + 160f, paint)
                 }

@@ -81,7 +81,6 @@ fun TestResultScreen(
     testResultViewModel: TestResultViewModel = hiltViewModel()
 ) {
     BackHandler(enabled = true) {
-        Log.e("backhandler", "backhandler")
         navController.popBackStack(GlobalConstants.ROUTE_TEST_LIST, false)
 //        viewModel.resetScreenSaverTimer()
     }
