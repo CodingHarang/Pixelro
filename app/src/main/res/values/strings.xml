@@ -141,6 +141,10 @@
     <string name="eye_test">str</string>
     <string name="dementia_test">str</string>
     <string name="submit">str</string>
+    <string name="amslergrid_test_blink_dot">str</string>
+    <string name="amslergrid_test_wired_point">str</string>
+    <string name="amslergrid_test_black_dot">str</string>
+    <string name="dementia_result_instruction">str</string>
     <!--    <string name=""></string>-->
     <!--    <string name=""></string>-->
 </resources>

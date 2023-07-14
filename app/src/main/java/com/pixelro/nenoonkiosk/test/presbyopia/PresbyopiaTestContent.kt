@@ -125,7 +125,7 @@ fun PresbyopiaTestContent(
     LinearProgressIndicator(
         modifier = Modifier
             .padding(bottom = 20.dp)
-            .width(600.dp)
+            .width(490.dp)
             .height(20.dp),
         progress = animatedProgress,
         color = Color(0xff1d71e1),
@@ -135,8 +135,8 @@ fun PresbyopiaTestContent(
         contentAlignment = Alignment.Center,
         modifier = Modifier
             .padding(top = 20.dp)
-            .height(600.dp)
-            .width(600.dp)
+            .height(490.dp)
+            .width(490.dp)
             .background(
                 color = Color(0xffffffff),
                 shape = RoundedCornerShape(8.dp)

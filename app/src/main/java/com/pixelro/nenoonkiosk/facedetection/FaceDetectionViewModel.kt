@@ -187,9 +187,11 @@ class FaceDetectionViewModel @Inject constructor(
             if((rightEyePosition.value.x - leftEyePosition.value.y) != 0f && GlobalValue.lensSize.width != 0f) {
                 _screenToFaceDistance.update {
                     val prev = _screenToFaceDistance.value
-                    val dist = 1.1f * (GlobalValue.focalLength * 63) * inputImageSizeX.value / ((rightEyePosition.value.x - leftEyePosition.value.x) * (GlobalValue.lensSize.width))
-                    if(dist > 600f || dist < 1f) prev
-                    else dist
+//                    val dist = 1.25f * (GlobalValue.focalLength * 63) * inputImageSizeX.value / ((rightEyePosition.value.x - leftEyePosition.value.x) * (GlobalValue.lensSize.width))
+                    val dist = 1.267f * (GlobalValue.focalLength * 63) * inputImageSizeX.value / ((rightEyePosition.value.x - leftEyePosition.value.x) * (GlobalValue.lensSize.width))
+//                    if(dist > 600f || dist < 1f) prev
+                     dist
+//                    else dist
                 }
             } else {
                 return
@@ -217,7 +219,7 @@ class FaceDetectionViewModel @Inject constructor(
             _isLeftEyeCovered.update { false }
             _isRightEyeCovered.update { true }
         }
-        _distance.update { 3200 / ((_textBox.value?.right?.toFloat() ?: 0f) - (_textBox.value?.left?.toFloat() ?: 0f)) }
+        _distance.update { 3200 * 0.8f / ((_textBox.value?.right?.toFloat() ?: 0f) - (_textBox.value?.left?.toFloat() ?: 0f)) }
         _screenToFaceDistance.update { _distance.value * 10f }
     }
 

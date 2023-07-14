@@ -134,8 +134,8 @@ fun MChartContent(
                             shape = RoundedCornerShape(12.dp)
                         )
                         .fillMaxWidth()
-                        .width(700.dp)
-                        .height(700.dp)
+                        .width(600.dp)
+                        .height(600.dp)
                         .padding(40.dp)
                 ) {
 //                Text(

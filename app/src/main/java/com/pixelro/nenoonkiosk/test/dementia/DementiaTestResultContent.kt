@@ -42,8 +42,8 @@ fun DementiaTestResultContent(
     navController: NavHostController
 ) {
     val isWebViewShowing1 = remember { mutableStateOf(false) }
-    val isWebViewShowing2 = remember { mutableStateOf(false) }
-    val isWebViewShowing3 = remember { mutableStateOf(false) }
+//    val isWebViewShowing2 = remember { mutableStateOf(false) }
+//    val isWebViewShowing3 = remember { mutableStateOf(false) }
     val showDementia333 = remember { mutableStateOf(false) }
 
 
@@ -90,96 +90,6 @@ fun DementiaTestResultContent(
                     }
                 }
                 TheContent( "https://m.nid.or.kr/main/main.aspx" )
-            }
-        }
-
-        isWebViewShowing2.value -> {
-            Column(
-                modifier = Modifier
-                    .fillMaxSize()
-                    .background(
-                        color = Color(0xffffffff)
-                    )
-            ) {
-                Box(
-                    modifier = Modifier
-                        .padding(
-                            start = 40.dp,
-                            top = (GlobalValue.statusBarPadding + 20).dp,
-                            end = 40.dp,
-                            bottom = 20.dp
-                        )
-                        .fillMaxWidth()
-                        .height(40.dp)
-                ) {
-                    Row(
-                        modifier = Modifier
-                            .fillMaxHeight()
-                            .clickable {
-                                isWebViewShowing2.value = false
-                            },
-                        verticalAlignment = Alignment.CenterVertically
-                    ) {
-                        Image(
-                            modifier = Modifier
-                                .padding(top = 4.dp)
-                                .width(28.dp),
-                            painter = painterResource(id = R.drawable.icon_back_black),
-                            contentDescription = ""
-                        )
-                        Text(
-                            text = "뒤로 가기",
-                            fontSize = 24.sp,
-                            fontWeight = FontWeight.Medium
-                        )
-                    }
-                }
-                TheContent("https://m.nid.or.kr/support/c_service.aspx?RC=020000002#none")
-            }
-        }
-
-        isWebViewShowing3.value -> {
-            Column(
-                modifier = Modifier
-                    .fillMaxSize()
-                    .background(
-                        color = Color(0xffffffff)
-                    )
-            ) {
-                Box(
-                    modifier = Modifier
-                        .padding(
-                            start = 40.dp,
-                            top = (GlobalValue.statusBarPadding + 20).dp,
-                            end = 40.dp,
-                            bottom = 20.dp
-                        )
-                        .fillMaxWidth()
-                        .height(40.dp)
-                ) {
-                    Row(
-                        modifier = Modifier
-                            .fillMaxHeight()
-                            .clickable {
-                                isWebViewShowing3.value = false
-                            },
-                        verticalAlignment = Alignment.CenterVertically
-                    ) {
-                        Image(
-                            modifier = Modifier
-                                .padding(top = 4.dp)
-                                .width(28.dp),
-                            painter = painterResource(id = R.drawable.icon_back_black),
-                            contentDescription = ""
-                        )
-                        Text(
-                            text = "뒤로 가기",
-                            fontSize = 24.sp,
-                            fontWeight = FontWeight.Medium
-                        )
-                    }
-                }
-                TheContent("https://play.google.com/store/apps/details?id=kr.encom.gostop_p&hl=ko&gl=US")
             }
         }
 
@@ -237,7 +147,7 @@ fun DementiaTestResultContent(
                         .padding(start = 65.dp, top = 20.dp)
                 ) {
                     Text(
-                        text = "6점 이상 시(약 43%) 치매 또는 경도인지장애 의심",
+                        text = StringProvider.getString(R.string.dementia_result_instruction),
                         color = Color(0xff1d71e1),
                         textAlign = TextAlign.Center,
                         fontSize = 30.sp,
@@ -257,7 +167,7 @@ fun DementiaTestResultContent(
 
                 ) {
                     Text(
-                        text = StringProvider.getString(R.string.dementia_result_wording1) + " " +testResult.countActiveScore().toString() + " " + StringProvider.getString(R.string.dementia_result_wording2),
+                        text = StringProvider.getString(R.string.dementia_result_wording1) + " " +testResult.countActiveScore().toString() + StringProvider.getString(R.string.dementia_result_wording2),
                         fontSize = 40.sp,
                         fontWeight = FontWeight.Medium,
                     )
@@ -273,9 +183,10 @@ fun DementiaTestResultContent(
                         color = Color(0xff878787)
                     )
                 }
-                Column(modifier = Modifier.height(400.dp)) {
+                Column(modifier = Modifier.height(320.dp)) {
                     val modifier = Modifier
                         .weight(1f)
+
                     EyeTestSelectableBox(
                         modifier = modifier,
                         title = StringProvider.getString(R.string.dementia_result_selection1),
@@ -300,28 +211,8 @@ fun DementiaTestResultContent(
                     )
                     Spacer(
                         modifier = Modifier
-                            .height(20.dp)
+                            .height(5.dp)
                     )
-//                    EyeTestSelectableBox(
-//                        title = "뇌 운동에 좋은 윷놀이 게임",
-//                        description = "뇌 운동에 좋은 윷놀이 게임",
-//                        onClickMethod = {
-//                            isWebViewShowing2.value = true
-//                        },
-//                        isDone = false
-//                    )
-//                    Spacer(
-//                        modifier = Modifier
-//                            .height(20.dp)
-//                    )
-//                    EyeTestSelectableBox(
-//                        title = "치매 예방에 좋은 고스톱 게임",
-//                        description = "치매 예방에 좋은 고스톱 게임",
-//                        onClickMethod = {
-//                            isWebViewShowing3.value = true
-//                        },
-//                        isDone = false
-//                    )
                 }
             }
         }

@@ -76,8 +76,8 @@ fun VisualAcuityTestContent(
         Box(
             modifier = Modifier
                 .padding(top = 40.dp)
-                .height(500.dp)
-                .width(500.dp)
+                .height(430.dp)
+                .width(430.dp)
                 .background(
                     color = Color(0xffffffff),
                     shape = RoundedCornerShape(8.dp)
@@ -180,7 +180,7 @@ fun VisualAcuityTestContent(
         LinearProgressIndicator(
             modifier = Modifier
                 .padding(bottom = 20.dp)
-                .width(490.dp)
+                .width(430.dp)
                 .height(20.dp),
             progress = animatedProgress,
             color = Color(0xff1d71e1),
@@ -193,8 +193,8 @@ fun VisualAcuityTestContent(
             ) {
                 Box(
                     modifier = Modifier
-                        .height(150.dp)
-                        .width(150.dp)
+                        .height(130.dp)
+                        .width(130.dp)
                         .background(
                             color = Color(0xffffffff),
                             shape = RoundedCornerShape(8.dp)
@@ -238,8 +238,8 @@ fun VisualAcuityTestContent(
             ) {
                 Box(
                     modifier = Modifier
-                        .height(150.dp)
-                        .width(150.dp)
+                        .height(130.dp)
+                        .width(130.dp)
                         .background(
                             color = Color(0xffffffff),
                             shape = RoundedCornerShape(8.dp)
@@ -283,8 +283,8 @@ fun VisualAcuityTestContent(
             ) {
                 Box(
                     modifier = Modifier
-                        .height(150.dp)
-                        .width(150.dp)
+                        .height(130.dp)
+                        .width(130.dp)
                         .background(
                             color = Color(0xffffffff),
                             shape = RoundedCornerShape(8.dp)
@@ -329,8 +329,8 @@ fun VisualAcuityTestContent(
         ) {
             Box(
                 modifier = Modifier
-                    .height(150.dp)
-                    .width(490.dp)
+                    .height(110.dp)
+                    .width(430.dp)
                     .background(
                         color = Color(0xffffffff),
                         shape = RoundedCornerShape(8.dp)

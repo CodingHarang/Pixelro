@@ -79,7 +79,9 @@ fun DementiaTestContent(
                     fontSize = 40.sp,
                     fontWeight = FontWeight.Medium
                 )
-                Row() {
+                Row(modifier = Modifier
+                    .fillMaxWidth()) {
+                    Spacer(Modifier.weight(1f))
                     questions(questionIndex = i, answer = DementiaViewModel.DementiaAnswer.Yes)
                     questions(questionIndex = i, answer = DementiaViewModel.DementiaAnswer.No)
                 }
@@ -147,7 +149,7 @@ fun questions(
             .clip(
                 shape = RoundedCornerShape(50)
             )
-            .width(350.dp)
+            .width(100.dp)
             .height(60.dp)
             .border(
                 border = BorderStroke(

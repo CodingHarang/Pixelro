@@ -149,12 +149,12 @@ fun MeasuringDistanceContent(
                 modifier = Modifier
                     .padding(top = 40.dp)
                     .fillMaxWidth()
-                    .height(740.dp),
+                    .height(750.dp),
                 contentAlignment = Alignment.TopCenter
             ) {
                 Box(
                     modifier = Modifier
-                        .height(740.dp),
+                        .height(630.dp),
                     contentAlignment = Alignment.BottomCenter
                 ) {
 //                Image(
@@ -167,7 +167,7 @@ fun MeasuringDistanceContent(
                     Image(
                         modifier = Modifier
                             .width(450.dp)
-                            .height(660.dp),
+                            .height(550.dp),
                         painter = painterResource(id = R.drawable.face_frame),
                         contentDescription = "",
                         colorFilter = ColorFilter.tint(Color(0xff1d71e1))
@@ -193,11 +193,11 @@ fun MeasuringDistanceContent(
                         if (!isLeftEye) {
                             Image(
                                 modifier = Modifier
-                                    .width((300 * 300 / faceDetectionViewModel.screenToFaceDistance.collectAsState().value).dp)
-                                    .height((600 * 300 / faceDetectionViewModel.screenToFaceDistance.collectAsState().value).dp)
+                                    .width((200 * 200 / faceDetectionViewModel.screenToFaceDistance.collectAsState().value).dp)
+                                    .height((500 * 200 / faceDetectionViewModel.screenToFaceDistance.collectAsState().value).dp)
                                     .offset(
                                         x = (310 - (faceDetectionViewModel.rightEyePosition.collectAsState().value.x / 1.75f)).dp,
-                                        y = (faceDetectionViewModel.rightEyePosition.collectAsState().value.y / 1.75f - 360).dp
+                                        y = (faceDetectionViewModel.rightEyePosition.collectAsState().value.y / 1.75f - 460).dp
                                     )
                                     .alpha(shiftVal),
                                 painter = painterResource(id = R.drawable.occluder),
@@ -206,11 +206,11 @@ fun MeasuringDistanceContent(
                         } else {
                             Image(
                                 modifier = Modifier
-                                    .width((300 * 300 / faceDetectionViewModel.screenToFaceDistance.collectAsState().value).dp)
-                                    .height((600 * 300 / faceDetectionViewModel.screenToFaceDistance.collectAsState().value).dp)
+                                    .width((200 * 200 / faceDetectionViewModel.screenToFaceDistance.collectAsState().value).dp)
+                                    .height((500 * 200 / faceDetectionViewModel.screenToFaceDistance.collectAsState().value).dp)
                                     .offset(
                                         x = (310 - (faceDetectionViewModel.leftEyePosition.collectAsState().value.x / 1.75f)).dp,
-                                        y = (faceDetectionViewModel.leftEyePosition.collectAsState().value.y / 1.75f - 360).dp
+                                        y = (faceDetectionViewModel.leftEyePosition.collectAsState().value.y / 1.75f - 460).dp
                                     )
                                     .alpha(shiftVal),
                                 painter = painterResource(id = R.drawable.occluder),
@@ -273,7 +273,7 @@ fun MeasuringDistanceContent(
                 ) {
                     Text(
                         modifier = Modifier
-                            .padding(bottom = (GlobalValue.navigationBarPadding + 284).dp),
+                            .padding(bottom = (GlobalValue.navigationBarPadding + 274).dp),
                         text = StringProvider.getString(R.string.test_screen_current_distance),
                         color = Color(0xffffffff),
                         fontSize = 24.sp
@@ -305,7 +305,7 @@ fun MeasuringDistanceContent(
                             .padding(
                                 start = 40.dp,
                                 end = 40.dp,
-                                bottom = (GlobalValue.navigationBarPadding + 340).dp
+                                bottom = (GlobalValue.navigationBarPadding + 320).dp
                             )
                             .border(
                                 border = BorderStroke(1.dp, Color(0xffffffff)),

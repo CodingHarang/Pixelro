@@ -46,6 +46,7 @@ fun TestListContent(
     Column(
         modifier = Modifier
             .padding(bottom = 120.dp)
+            .height(600.dp)
     ) {
         val modifier = Modifier
             .weight(1f)

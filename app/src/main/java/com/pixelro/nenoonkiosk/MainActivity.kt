@@ -76,7 +76,6 @@ class MainActivity : ComponentActivity() {
 //        GlobalValue.navigationBarPadding = resources.getDimension(navigationBarResourceId)
         GlobalValue.navigationBarPadding = 0f
         Log.e("padding", "${GlobalValue.statusBarPadding}, ${GlobalValue.navigationBarPadding}")
-
         window.addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON)
         WindowCompat.getInsetsController(window, window.decorView).apply {
             systemBarsBehavior = WindowInsetsControllerCompat.BEHAVIOR_SHOW_TRANSIENT_BARS_BY_SWIPE

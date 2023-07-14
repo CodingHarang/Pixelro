@@ -1,10 +1,7 @@
 package com.pixelro.nenoonkiosk.test.macular.amslergrid
 
-import android.app.Activity
 import android.speech.tts.TextToSpeech
 import android.util.Log
-import android.view.KeyEvent
-import androidx.activity.compose.BackHandler
 import androidx.compose.animation.*
 import androidx.compose.animation.core.MutableTransitionState
 import androidx.compose.foundation.Canvas
@@ -25,7 +22,6 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.input.pointer.pointerInput
-import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
@@ -35,13 +31,10 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import com.pixelro.nenoonkiosk.R
 import com.pixelro.nenoonkiosk.TTS
 import com.pixelro.nenoonkiosk.data.AnimationProvider
-import com.pixelro.nenoonkiosk.data.GlobalValue
 import com.pixelro.nenoonkiosk.data.StringProvider
 import com.pixelro.nenoonkiosk.data.TestType
 import com.pixelro.nenoonkiosk.facedetection.FaceDetection
 import com.pixelro.nenoonkiosk.facedetection.FaceDetectionViewModel
-import com.pixelro.nenoonkiosk.facedetection.CoveredEyeCheckingContent
-import com.pixelro.nenoonkiosk.facedetection.FaceDetectionWithPreview
 import com.pixelro.nenoonkiosk.facedetection.MeasuringDistanceContent
 import kotlin.math.tan
 
@@ -142,10 +135,10 @@ fun AmslerGridContent(
                     .padding(start = 20.dp, top = 20.dp, end = 20.dp, bottom = 20.dp)
                     .height(160.dp),
                 text = when (!isBlinkingDone) {
-                    true -> "아래의 깜빡이는 점을 봐주세요"
+                    true -> StringProvider.getString(R.string.amslergrid_test_blink_dot)
                     false -> when (isFaceCenter) {
-                        true -> "이상하게 보이거나 왜곡되어 보이는 부분을 손으로 눌러 선택해주세요. 선택을 완료했거나 이상한 부분이 없다면, 아래의 완료 버튼을 눌러주세요."
-                        false -> "가운데의 검은 점을 봐주세요"
+                        true -> StringProvider.getString(R.string.amslergrid_test_wired_point)
+                        false -> StringProvider.getString(R.string.amslergrid_test_black_dot)
                     }
                 },
                 fontSize = when (!isBlinkingDone) {
@@ -185,18 +178,21 @@ fun AmslerGridContent(
                         drawCircle(
                             color = Color(0xff000000),
                             radius = 50f,
-                            center = Offset(450f, 450f)
+                            center = Offset(640f, 640f)
                         )
                     }
                     if (!isFaceCenter) {
                         drawCircle(
                             color = Color(0xff0000ff),
                             radius = 20f,
-                            center = Offset(450f - (400f * tan(rotY * 0.0174533)).toFloat(), 450f - (400f * tan((rotX + 10) * 0.0174533)).toFloat())
+//                            center = Offset(450f - (400f * tan(rotY * 0.0174533)).toFloat(), 450f - (400f * tan((rotX + 10) * 0.0174533)).toFloat())
+                            center = Offset(640f - (590f * tan(rotY * 0.0174533)).toFloat(), 640f - (590f * tan((rotX + 10) * 0.0174533)).toFloat())
                         )
                     }
-                    if (isBlinkingDone && !isFaceCenter && 450f - (400f * tan(rotY * 0.0174533)).toFloat() > 400f && 450f - (400f * tan(rotY * 0.0174533)).toFloat() < 500f
-                            && 450f - (400f * tan((rotX + 10) * 0.0174533)).toFloat() > 400f && 450f - (400f * tan((rotX + 10) * 0.0174533)).toFloat() < 500f) {
+//                    if (isBlinkingDone && !isFaceCenter && 450f - (400f * tan(rotY * 0.0174533)).toFloat() > 400f && 450f - (400f * tan(rotY * 0.0174533)).toFloat() < 500f
+                    if (isBlinkingDone && !isFaceCenter && 640f - (590f * tan(rotY * 0.0174533)).toFloat() > 590f && 640f - (590f * tan(rotY * 0.0174533)).toFloat() < 690f
+//                            && 450f - (400f * tan((rotX + 10) * 0.0174533)).toFloat() > 400f && 450f - (400f * tan((rotX + 10) * 0.0174533)).toFloat() < 500f) {
+                            && 640f - (590f * tan((rotX + 10) * 0.0174533)).toFloat() > 590f && 640f - (590f * tan((rotX + 10) * 0.0174533)).toFloat() < 590f) {
                         amslerGridViewModel.updateIsFaceCenter(true)
                     }
                 }

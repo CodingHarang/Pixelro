@@ -39,7 +39,7 @@ class MyFaceAnalyzer(
         FaceDetectorOptions.Builder().setPerformanceMode(FaceDetectorOptions.PERFORMANCE_MODE_ACCURATE)
             .setLandmarkMode(FaceDetectorOptions.LANDMARK_MODE_ALL)
             .setClassificationMode(FaceDetectorOptions.CLASSIFICATION_MODE_ALL)
-            .setMinFaceSize(0.3f)
+            .setMinFaceSize(0.01f)
             .enableTracking()
             .build()
 
@@ -52,7 +52,6 @@ class MyFaceAnalyzer(
         val now = SystemClock.uptimeMillis()
         var isNenoonTextDetected = false
         lastAnalysisTime = now
-
         // original image
         val mediaImage = imageProxy.image
         if (mediaImage != null) {
@@ -60,6 +59,7 @@ class MyFaceAnalyzer(
             // Text Recognition
             recognizer.process(image).addOnSuccessListener(executor) { result ->
 
+                Log.e("imgSize", "${image.height}, ${image.width}")
                 for (block in result.textBlocks) {
                     for (line in block.lines) {
                         if (line.text == "NENOON" || line.text == "NE NOON") {
@@ -86,10 +86,10 @@ class MyFaceAnalyzer(
                     val rightEyePosition = face.getLandmark(FaceLandmark.RIGHT_EYE)?.position
 //                    Log.e("eyePosition", "leftEyePosition: ${leftEyePosition?.x}\nrightEyePosition: ${rightEyePosition?.x}")
                     if (leftEyePosition != null && rightEyePosition != null) {
-                        if (leftEyePosition.x > 260f && leftEyePosition.x < 544f && rightEyePosition.x < 804f && rightEyePosition.x > 544f && leftEyePosition.y > 400f && rightEyePosition.y > 400f && rightEyePosition.x - leftEyePosition.x > 100f) {
+//                        if (leftEyePosition.x > 260f && leftEyePosition.x < 544f && rightEyePosition.x < 804f && rightEyePosition.x > 544f && leftEyePosition.y > 400f && rightEyePosition.y > 400f && rightEyePosition.x - leftEyePosition.x > 100f) {
                             centerFace = face
                             break
-                        }
+//                        }
                     }
                 }
 
@@ -146,6 +146,7 @@ class MyFaceAnalyzer(
         }
     }
 
+    // 사이즈 조절
 //        val bitmap = imageProxy.toBitmap()
 //        val matrix = Matrix()
 //        matrix.setScale(-1f, 1f)

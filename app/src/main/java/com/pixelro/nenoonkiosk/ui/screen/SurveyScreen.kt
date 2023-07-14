@@ -251,7 +251,7 @@ fun SurveyScreen(
             // 성별 질문
             Text(
                 modifier = Modifier
-                    .padding(top = 40.dp, bottom = 20.dp),
+                    .padding(top = 20.dp, bottom = 20.dp),
                 text = "성별은 무엇인가요?",
                 fontSize = 40.sp,
                 fontWeight = FontWeight.Medium
@@ -313,7 +313,7 @@ fun SurveyScreen(
             // 안경 질문
             Text(
                 modifier = Modifier
-                    .padding(top = 40.dp, bottom = 20.dp),
+                    .padding(top = 20.dp, bottom = 20.dp),
                 text = "안경을 착용하시나요?",
                 fontSize = 40.sp,
                 fontWeight = FontWeight.Medium
@@ -375,7 +375,7 @@ fun SurveyScreen(
             // 수술 질문
             Text(
                 modifier = Modifier
-                    .padding(top = 40.dp, bottom = 20.dp),
+                    .padding(top = 20.dp, bottom = 20.dp),
                 text = "눈을 수술하신 경험이 있나요?",
                 fontSize = 40.sp,
                 fontWeight = FontWeight.Medium
@@ -446,7 +446,7 @@ fun SurveyScreen(
             // 당뇨 질문
             Text(
                 modifier = Modifier
-                    .padding(top = 40.dp, bottom = 20.dp),
+                    .padding(top = 20.dp, bottom = 20.dp),
                 text = "당뇨가 있으신가요?",
                 fontSize = 40.sp,
                 fontWeight = FontWeight.Medium
