@@ -123,7 +123,7 @@ fun MChartContent(
             )
             Column(
                 modifier = Modifier
-                    .width(700.dp),
+                    .width(600.dp),
                 horizontalAlignment = Alignment.CenterHorizontally
             ) {
                 Box(
