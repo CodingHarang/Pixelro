@@ -58,7 +58,7 @@ fun NenoonApp(
                     modifier = Modifier
                         .fillMaxSize(),
                     navController = mainNavController,
-                    startDestination = GlobalConstants.ROUTE_TEST_LIST,
+                    startDestination = GlobalConstants.ROUTE_SURVEY,
                     contentAlignment = Alignment.TopCenter
                 ) {
                     // 문진표 작성 화면
@@ -71,7 +71,7 @@ fun NenoonApp(
                             toTestListScreen = {
                                 mainNavController.navigate(GlobalConstants.ROUTE_TEST_LIST)
                                 viewModel.initializeTestDoneStatus()
-                                viewModel.surveyData = it
+//                                viewModel.updateSurveyData(it)
                             }
                         )
                     }
@@ -213,7 +213,9 @@ fun NenoonApp(
                             else -> {
                             }
                         }
+                        val surveyId = viewModel.surveyId.collectAsState().value
                         TestResultScreen(
+                            surveyId = surveyId,
                             testType = viewModel.selectedTestType.collectAsState().value,
                             testResult = when (
                                 viewModel.selectedTestType.collectAsState().value) {

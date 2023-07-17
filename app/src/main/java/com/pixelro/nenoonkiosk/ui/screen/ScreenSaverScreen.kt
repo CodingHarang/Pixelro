@@ -60,6 +60,7 @@ fun ScreenSaverScreen(
     )
     LaunchedEffect(true) {
         toSurveyScreen()
+        viewModel.initializeTestDoneStatus()
     }
     val text = buildAnnotatedString {
         append("화면을 ")

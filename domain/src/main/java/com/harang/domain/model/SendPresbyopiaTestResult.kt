@@ -16,7 +16,7 @@ data class SendPresbyopiaTestResultRequest(
     @SerializedName("distanceAvg")
     val distanceAvg: Int,
     @SerializedName("createAt")
-    val createAt: LocalDateTime,
+    val createAt: String,
     @SerializedName("presbyopia1")
     val presbyopia1: Int = 0,
     @SerializedName("presbyopia2")

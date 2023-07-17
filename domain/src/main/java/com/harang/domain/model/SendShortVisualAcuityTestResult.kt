@@ -20,7 +20,7 @@ data class SendShortVisualAcuityTestResultRequest(
     @SerializedName("rightPerspective")
     val rightPerspective: String,
     @SerializedName("createAt")
-    val createAt: LocalDateTime,
+    val createAt: String,
     @SerializedName("test1")
     val test1: Int = 0,
     @SerializedName("test2")

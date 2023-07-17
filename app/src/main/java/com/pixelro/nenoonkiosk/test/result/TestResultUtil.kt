@@ -25,7 +25,7 @@ object TestResultUtil {
         paint.textAlign = Paint.Align.CENTER
         val width = 600
         val baseline = -paint.ascent()
-        val printName = "태전그룹"
+//        val printName = "포유문 산부인과"
 //    paint.textSize = 40f
 //    paint.color = 0xff000000.toInt()
 //    paint.textAlign = Paint.Align.CENTER

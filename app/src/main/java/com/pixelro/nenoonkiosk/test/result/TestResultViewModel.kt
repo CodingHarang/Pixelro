@@ -33,7 +33,7 @@ import javax.inject.Inject
 @HiltViewModel
 class TestResultViewModel @Inject constructor(
     application: Application,
-    private val api: NenoonKioskApi
+//    private val api: NenoonKioskApi
 ) : AndroidViewModel(application) {
 
     private val _printerName = MutableStateFlow("")
@@ -45,112 +45,112 @@ class TestResultViewModel @Inject constructor(
     private val _printString = MutableStateFlow("")
     val printString: StateFlow<String> = _printString
 
-    fun sendResultToServer(testType: TestType, testResult: Any?) {
-        viewModelScope.launch {
-            when(testType) {
-                TestType.None -> {
-                }
-                TestType.Presbyopia -> {
-                    viewModelScope.launch {
-                        testResult as PresbyopiaTestResult
-                        val request = SendPresbyopiaTestResultRequest(
-                            surveyId = 0,
-                            distance1 = testResult.firstDistance.toInt(),
-                            distance2 = testResult.secondDistance.toInt(),
-                            distance3 = testResult.thirdDistance.toInt(),
-                            distanceAvg = testResult.avgDistance.toInt(),
-                            createAt = LocalDateTime.now()
-                        )
-                        val response = try {
-                            api.sendPresbyopiaTestResult(request)
-                        } catch (e: IOException) {
-                            e.printStackTrace()
-                            null
-                        } catch(e: HttpException) {
-                            e.printStackTrace()
-                            null
-                        }
-                        Log.e("sendResultToServer", "response: ${response?.body()}, ${response?.errorBody()}")
-                    }
-                }
-                TestType.ShortDistanceVisualAcuity -> {
-                    viewModelScope.launch {
-                        testResult as ShortVisualAcuityTestResult
-                        val request = SendShortVisualAcuityTestResultRequest(
-                            surveyId = 0,
-                            testType = "",
-                            distance = 0,
-                            leftSight = testResult.leftEye,
-                            rightSight = testResult.rightEye,
-                            leftPerspective = "",
-                            rightPerspective = "",
-                            createAt = LocalDateTime.now()
-                        )
-                        val response = try {
-                            api.sendShortVisualAcuityTestResult(request)
-                        } catch (e: IOException) {
-                            e.printStackTrace()
-                            null
-                        } catch(e: HttpException) {
-                            e.printStackTrace()
-                            null
-                        }
-                        Log.e("sendResultToServer", "response: ${response?.body()}, ${response?.errorBody()}")
-                    }
-                }
-                TestType.LongDistanceVisualAcuity -> {
-
-                }
-                TestType.ChildrenVisualAcuity -> {
-
-                }
-                TestType.AmslerGrid -> {
-                    viewModelScope.launch {
-                        testResult as AmslerGridTestResult
-                        val request = SendAmslerGridTestResultRequest(
-                            surveyId = 0L,
-                            distance = 30,
-                            leftMacularLoc = testResult.leftEyeDisorderType.toString(),
-                            rightMacularLoc = testResult.rightEyeDisorderType.toString(),
-                            createAt = LocalDateTime.now()
-                        )
-                        val response = try {
-                            api.sendAmslerGridResult(request)
-                        } catch (e: IOException) {
-                            e.printStackTrace()
-                            null
-                        } catch(e: HttpException) {
-                            e.printStackTrace()
-                            null
-                        }
-                        Log.e("sendResultToServer", "response: ${response?.body()}, ${response?.errorBody()}")
-                    }
-                }
-                TestType.MChart -> {
-                    viewModelScope.launch {
-                        testResult as MChartTestResult
-                        val request = SendMChartTestResultRequest(
-                            surveyId = 0,
-                            distance = 0,
-                            leftEyeVer = testResult.leftEyeVertical,
-                            rightEyeVer = testResult.rightEyeVertical,
-                            leftEyeHor = testResult.leftEyeHorizontal,
-                            rightEyeHor = testResult.rightEyeHorizontal
-                        )
-                        val response = try {
-                            api.sendMChartTestResult(request)
-                        } catch (e: IOException) {
-                            e.printStackTrace()
-                            null
-                        } catch(e: HttpException) {
-                            e.printStackTrace()
-                            null
-                        }
-                        Log.e("sendResultToServer", "response: ${response?.body()}, ${response?.errorBody()}")
-                    }
-                }
-            }
-        }
+    fun sendResultToServer(surveyId: Long,testType: TestType, testResult: Any?) {
+//        viewModelScope.launch {
+//            when(testType) {
+//                TestType.None -> {
+//                }
+//                TestType.Presbyopia -> {
+//                    viewModelScope.launch {
+//                        testResult as PresbyopiaTestResult
+//                        val request = SendPresbyopiaTestResultRequest(
+//                            surveyId = surveyId,
+//                            distance1 = testResult.firstDistance.toInt(),
+//                            distance2 = testResult.secondDistance.toInt(),
+//                            distance3 = testResult.thirdDistance.toInt(),
+//                            distanceAvg = testResult.avgDistance.toInt(),
+//                            createAt = LocalDateTime.now().toString()
+//                        )
+//                        val response = try {
+//                            api.sendPresbyopiaTestResult(request)
+//                        } catch (e: IOException) {
+//                            e.printStackTrace()
+//                            null
+//                        } catch(e: HttpException) {
+//                            e.printStackTrace()
+//                            null
+//                        }
+//                        Log.e("sendResultToServer", "response: ${response?.body()}, ${response?.errorBody()}")
+//                    }
+//                }
+//                TestType.ShortDistanceVisualAcuity -> {
+//                    viewModelScope.launch {
+//                        testResult as ShortVisualAcuityTestResult
+//                        val request = SendShortVisualAcuityTestResultRequest(
+//                            surveyId = surveyId,
+//                            testType = "",
+//                            distance = 0,
+//                            leftSight = testResult.leftEye,
+//                            rightSight = testResult.rightEye,
+//                            leftPerspective = "",
+//                            rightPerspective = "",
+//                            createAt = LocalDateTime.now().toString()
+//                        )
+//                        val response = try {
+//                            api.sendShortVisualAcuityTestResult(request)
+//                        } catch (e: IOException) {
+//                            e.printStackTrace()
+//                            null
+//                        } catch(e: HttpException) {
+//                            e.printStackTrace()
+//                            null
+//                        }
+//                        Log.e("sendResultToServer", "response: ${response?.body()}, ${response?.errorBody()}")
+//                    }
+//                }
+//                TestType.LongDistanceVisualAcuity -> {
+//
+//                }
+//                TestType.ChildrenVisualAcuity -> {
+//
+//                }
+//                TestType.AmslerGrid -> {
+//                    viewModelScope.launch {
+//                        testResult as AmslerGridTestResult
+//                        val request = SendAmslerGridTestResultRequest(
+//                            surveyId = surveyId,
+//                            distance = 30,
+//                            leftMacularLoc = testResult.leftEyeDisorderType.toString(),
+//                            rightMacularLoc = testResult.rightEyeDisorderType.toString(),
+//                            createAt = LocalDateTime.now().toString()
+//                        )
+//                        val response = try {
+//                            api.sendAmslerGridResult(request)
+//                        } catch (e: IOException) {
+//                            e.printStackTrace()
+//                            null
+//                        } catch(e: HttpException) {
+//                            e.printStackTrace()
+//                            null
+//                        }
+//                        Log.e("sendResultToServer", "response: ${response?.body()}, ${response?.errorBody()}")
+//                    }
+//                }
+//                TestType.MChart -> {
+//                    viewModelScope.launch {
+//                        testResult as MChartTestResult
+//                        val request = SendMChartTestResultRequest(
+//                            surveyId = surveyId,
+//                            distance = 0,
+//                            leftEyeVer = testResult.leftEyeVertical,
+//                            rightEyeVer = testResult.rightEyeVertical,
+//                            leftEyeHor = testResult.leftEyeHorizontal,
+//                            rightEyeHor = testResult.rightEyeHorizontal
+//                        )
+//                        val response = try {
+//                            api.sendMChartTestResult(request)
+//                        } catch (e: IOException) {
+//                            e.printStackTrace()
+//                            null
+//                        } catch(e: HttpException) {
+//                            e.printStackTrace()
+//                            null
+//                        }
+//                        Log.e("sendResultToServer", "response: ${response?.body()}, ${response?.errorBody()}")
+//                    }
+//                }
+//            }
+//        }
     }
 
     fun updatePrinter(name: String, address: String) {

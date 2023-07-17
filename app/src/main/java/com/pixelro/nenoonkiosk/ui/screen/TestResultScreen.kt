@@ -75,6 +75,7 @@ import mangoslab.nemonicsdk.nemonicWrapper
 
 @Composable
 fun TestResultScreen(
+    surveyId: Long,
     testType: TestType,
     testResult: Any?,
     navController: NavHostController,
@@ -87,6 +88,7 @@ fun TestResultScreen(
     LaunchedEffect(true) {
 //        Log.e("threadName", Thread.currentThread().name)
         testResultViewModel.sendResultToServer(
+            surveyId = surveyId,
             testType = testType,
             testResult = testResult
         )
@@ -303,46 +305,46 @@ fun TestResultScreen(
                     .fillMaxWidth(),
                 horizontalAlignment = Alignment.CenterHorizontally
             ) {
-                Box(
-                    modifier = Modifier
-                        .padding(start = 40.dp, end = 40.dp, bottom = 20.dp)
-                        .fillMaxWidth()
-                        .clip(
-                            shape = RoundedCornerShape(8.dp)
-                        )
-                        .border(
-                            border = BorderStroke(1.dp, Color(0xffc3c3c3)),
-                            shape = RoundedCornerShape(8.dp)
-                        )
-                        .clickable {
-                            coroutineScope.launch {
-                                bluetoothAdapter.startDiscovery()
-                                printResult(
-                                    testType = testType,
-                                    testResult = testResult
-                                )
-                            }
-                        },
-                    contentAlignment = Alignment.Center
-                ) {
-                    Row(
-                        verticalAlignment = Alignment.CenterVertically
-                    ) {
-                        Image(
-                            modifier = Modifier
-                                .width(28.dp),
-                            painter = painterResource(id = R.drawable.icon_print),
-                            contentDescription = ""
-                        )
-                        Text(
-                            modifier = Modifier
-                                .padding(20.dp),
-                            text = StringProvider.getString(R.string.result_screen_print),
-                            fontSize = 24.sp,
-                            fontWeight = FontWeight.Medium
-                        )
-                    }
-                }
+//                Box(
+//                    modifier = Modifier
+//                        .padding(start = 40.dp, end = 40.dp, bottom = 20.dp)
+//                        .fillMaxWidth()
+//                        .clip(
+//                            shape = RoundedCornerShape(8.dp)
+//                        )
+//                        .border(
+//                            border = BorderStroke(1.dp, Color(0xffc3c3c3)),
+//                            shape = RoundedCornerShape(8.dp)
+//                        )
+//                        .clickable {
+//                            coroutineScope.launch {
+//                                bluetoothAdapter.startDiscovery()
+//                                printResult(
+//                                    testType = testType,
+//                                    testResult = testResult
+//                                )
+//                            }
+//                        },
+//                    contentAlignment = Alignment.Center
+//                ) {
+//                    Row(
+//                        verticalAlignment = Alignment.CenterVertically
+//                    ) {
+//                        Image(
+//                            modifier = Modifier
+//                                .width(28.dp),
+//                            painter = painterResource(id = R.drawable.icon_print),
+//                            contentDescription = ""
+//                        )
+//                        Text(
+//                            modifier = Modifier
+//                                .padding(20.dp),
+//                            text = StringProvider.getString(R.string.result_screen_print),
+//                            fontSize = 24.sp,
+//                            fontWeight = FontWeight.Medium
+//                        )
+//                    }
+//                }
                 Box(
                     modifier = Modifier
                         .padding(
