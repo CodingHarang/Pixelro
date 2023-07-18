@@ -20,6 +20,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.pixelro.nenoonkiosk.R
+import com.pixelro.nenoonkiosk.ui.theme.nanumSquareNeoFamily
 
 
 @Composable
@@ -55,11 +56,12 @@ fun EyeTestSelectableBox(
                 modifier = Modifier
                     .padding(start = 28.dp),
                 fontSize = 40.sp,
-                fontWeight = FontWeight.Bold,
+                fontWeight = FontWeight.Black,
                 color = when(isDone) {
                     true -> Color(0xff999999)
                     false -> Color(0xff000000)
-                }
+                },
+                fontFamily = nanumSquareNeoFamily
             )
             Image(
                 modifier = Modifier

@@ -46,8 +46,17 @@ object TestResultUtil {
                 canvas.drawText("조절력 검사", 300f, baseline, paint)
 
                 paint.typeface = Typeface.DEFAULT_BOLD
-                canvas.drawText("안구 나이: " + (testResult.age - 2).toString()  + " ~ " + (testResult.age + 2).toString() + "세", 300f, baseline + 160f, paint)
-                canvas.drawText("조절근점: " + String.format("%.1f", testResult.avgDistance) + "cm", 300f, baseline + 200f, paint)
+                when (testResult.firstDistance.toInt() == 20 || testResult.secondDistance.toInt() == 20 || testResult.thirdDistance.toInt() == 20) {
+                    true -> {
+                        canvas.drawText("노안 증상이 발견되지 않았습니다", 300f, baseline + 160f, paint)
+                        canvas.drawText("안구 나이는 45세 이하입니다", 300f, baseline + 200f, paint)
+                    }
+                    false -> {
+                        canvas.drawText("노안 증상으로 인해 일상생활에", 300f, baseline + 160f, paint)
+                        canvas.drawText("불편함이 있을 수 있습니다", 300f, baseline + 200f, paint)
+                        canvas.drawText("안구 나이는 " + (testResult.age - 2) + " ~ " + (testResult.age + 2) + "세 입니다", 300f, baseline + 240f, paint)
+                    }
+                }
                 paint.typeface = Typeface.DEFAULT
 
                 paint.textAlign = Paint.Align.LEFT
