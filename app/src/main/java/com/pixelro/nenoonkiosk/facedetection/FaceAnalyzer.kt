@@ -86,7 +86,14 @@ class MyFaceAnalyzer(
                     val rightEyePosition = face.getLandmark(FaceLandmark.RIGHT_EYE)?.position
 //                    Log.e("eyePosition", "leftEyePosition: ${leftEyePosition?.x}\nrightEyePosition: ${rightEyePosition?.x}")
                     if (leftEyePosition != null && rightEyePosition != null) {
-                        if (leftEyePosition.x > 260f && leftEyePosition.x < 544f && rightEyePosition.x < 804f && rightEyePosition.x > 544f && leftEyePosition.y > 400f && rightEyePosition.y > 400f && rightEyePosition.x - leftEyePosition.x > 100f) {
+                        if ((leftEyePosition.x > 260f)
+                            && (leftEyePosition.x < 544f)
+                            && (rightEyePosition.x < 804f)
+                            && (rightEyePosition.x > 544f)
+                            && (leftEyePosition.y > 400f)
+                            && (rightEyePosition.y > 400f)
+                            && ((rightEyePosition.x - leftEyePosition.x) > 100f)
+                        ) {
                             centerFace = face
                             break
                         }
