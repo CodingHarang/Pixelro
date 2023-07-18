@@ -59,7 +59,6 @@ class MyFaceAnalyzer(
             val image = InputImage.fromMediaImage(mediaImage, imageProxy.imageInfo.rotationDegrees)
             // Text Recognition
             recognizer.process(image).addOnSuccessListener(executor) { result ->
-
                 for (block in result.textBlocks) {
                     for (line in block.lines) {
                         if (line.text == "NENOON" || line.text == "NE NOON") {
@@ -81,10 +80,10 @@ class MyFaceAnalyzer(
             // Face Detection
             detector.process(image).addOnSuccessListener(executor) { faces ->
                 var centerFace: Face? = null
+
                 for (face in faces) {
                     val leftEyePosition = face.getLandmark(FaceLandmark.LEFT_EYE)?.position
                     val rightEyePosition = face.getLandmark(FaceLandmark.RIGHT_EYE)?.position
-//                    Log.e("eyePosition", "leftEyePosition: ${leftEyePosition?.x}\nrightEyePosition: ${rightEyePosition?.x}")
                     if (leftEyePosition != null && rightEyePosition != null) {
                         if ((leftEyePosition.x > 260f)
                             && (leftEyePosition.x < 544f)
@@ -101,7 +100,6 @@ class MyFaceAnalyzer(
                 }
 
                 if(centerFace != null) {
-
                     noFaceCount = 0
                     updateIsFaceDetected(true)
                     val boundingBox = centerFace.boundingBox
