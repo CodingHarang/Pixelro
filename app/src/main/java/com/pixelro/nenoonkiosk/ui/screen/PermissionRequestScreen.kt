@@ -15,6 +15,7 @@ import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.IntentSenderRequest
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
@@ -22,6 +23,7 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
@@ -31,6 +33,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
@@ -42,6 +45,7 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import com.pixelro.nenoonkiosk.NenoonViewModel
 import com.pixelro.nenoonkiosk.R
 import com.pixelro.nenoonkiosk.data.GlobalValue
+import com.pixelro.nenoonkiosk.ui.theme.nanumSquareNeoFamily
 
 @Composable
 fun PermissionRequestScreen(
@@ -125,7 +129,7 @@ fun PermissionRequestScreen(
     Column(
         modifier = Modifier
             .fillMaxSize()
-            .padding(start = 40.dp)
+            .padding(start = 40.dp, end = 40.dp)
     ) {
         Spacer(
             modifier = Modifier
@@ -134,12 +138,13 @@ fun PermissionRequestScreen(
         Text(
             text = "앱 사용을 위해\n접근 권한 허용이 필요해요",
             fontSize = 36.sp,
-            fontWeight = FontWeight.Bold
+            fontWeight = FontWeight.Bold,
+            fontFamily = nanumSquareNeoFamily
         )
         Text(
             modifier = Modifier
-                .padding(top = 20.dp),
-            text = "권한이 모두 설정되어있어야 다음 화면으로 넘어갑니다",
+                .padding(top = 80.dp),
+            text = "권한이 모두 설정되어있어야 다음 화면으로 넘어갑니다\n체크되지 않은 항목을 선택하면 설정 페이지로 이동합니다",
             fontSize = 20.sp,
             fontWeight = FontWeight.Medium,
             color = Color(0xff878787)
@@ -148,242 +153,136 @@ fun PermissionRequestScreen(
             modifier = Modifier
                 .height(80.dp)
         )
-        Row(
-            verticalAlignment = Alignment.CenterVertically
-        ) {
-            Image(
+        for (idx in 1..5) {
+            Row(
                 modifier = Modifier
-                    .width(32.dp)
-                    .height(32.dp),
-                painter = painterResource(id = R.drawable.icon_settings),
-                contentDescription = ""
-            )
-            Box(
-                modifier = Modifier
-                    .width(220.dp)
-                    .height(80.dp)
-                    .padding(start = 32.dp)
+                    .height(120.dp)
+                    .clip(
+                        RoundedCornerShape(8.dp)
+                    )
+                    .background(
+                        color = Color(0xFFEEEEEE),
+                        shape = RoundedCornerShape(8.dp)
+                    )
                     .clickable {
-                        val intent = Intent(
-                            Settings.ACTION_MANAGE_WRITE_SETTINGS,
-                            Uri.parse("package:" + context.packageName)
-                        )
-                        writeSettingPermissionRequestLauncher.launch(intent)
-                    },
-                contentAlignment = Alignment.CenterStart
-            ) {
-                Text(
-                    text = "시스템 설정 변경",
-                    fontWeight = FontWeight.Medium,
-                    fontSize = 20.sp
-                )
-            }
-            Image(
-                modifier = Modifier
-                    .width(32.dp)
-                    .height(32.dp),
-                painter = when(viewModel.isWriteSettingsPermissionGranted.collectAsState().value) {
-                    true -> painterResource(id = R.drawable.baseline_check_48_on)
-                    else -> painterResource(id = R.drawable.baseline_check_48_off)
-                },
-                contentDescription = ""
-            )
-        }
-        Spacer(
-            modifier = Modifier
-                .height(20.dp)
-        )
-        Row(
-            verticalAlignment = Alignment.CenterVertically
-        ) {
-            Image(
-                modifier = Modifier
-                    .width(32.dp)
-                    .height(32.dp),
-                painter = painterResource(id = R.drawable.icon_camera),
-                contentDescription = ""
-            )
-            Box(
-                modifier = Modifier
-                    .width(220.dp)
-                    .height(80.dp)
-                    .padding(start = 32.dp)
-                    .clickable {
-                        permissionRequestLauncher.launch(cameraPermissions)
-                    },
-                contentAlignment = Alignment.CenterStart
-            ) {
-                Text(
-                    text = "카메라 권한",
-                    fontWeight = FontWeight.Medium,
-                    fontSize = 20.sp
-                )
-            }
-            Image(
-                modifier = Modifier
-                    .width(32.dp)
-                    .height(32.dp),
-                painter = when(viewModel.isCameraPermissionGranted.collectAsState().value) {
-                    true -> painterResource(id = R.drawable.baseline_check_48_on)
-                    else -> painterResource(id = R.drawable.baseline_check_48_off)
-                },
-                contentDescription = ""
-            )
-        }
-        Spacer(
-            modifier = Modifier
-                .height(20.dp)
-        )
-        Row(
-            verticalAlignment = Alignment.CenterVertically
-        ) {
-            Image(
-                modifier = Modifier
-                    .width(32.dp)
-                    .height(32.dp),
-                painter = painterResource(id = R.drawable.icon_bluetooth),
-                contentDescription = ""
-            )
-            Box(
-                modifier = Modifier
-                    .width(220.dp)
-                    .height(80.dp)
-                    .padding(start = 32.dp)
-                    .clickable {
-                        permissionRequestLauncher.launch(bluetoothPermissions)
-                    },
-                contentAlignment = Alignment.CenterStart
-            ) {
-                Text(
-                    text = "블루투스 권한",
-                    fontWeight = FontWeight.Medium,
-                    fontSize = 20.sp
-                )
-            }
-            Image(
-                modifier = Modifier
-                    .width(32.dp)
-                    .height(32.dp),
-                painter = when(viewModel.isBluetoothPermissionsGranted.collectAsState().value) {
-                    true -> painterResource(id = R.drawable.baseline_check_48_on)
-                    else -> painterResource(id = R.drawable.baseline_check_48_off)
-                },
-                contentDescription = ""
-            )
-        }
-        Spacer(
-            modifier = Modifier
-                .height(20.dp)
-        )
-        Row(
-            verticalAlignment = Alignment.CenterVertically
-        ) {
-            Image(
-                modifier = Modifier
-                    .width(32.dp)
-                    .height(32.dp),
-                painter = painterResource(id = R.drawable.icon_bluetoothon),
-                contentDescription = ""
-            )
-            Box(
-                modifier = Modifier
-                    .width(220.dp)
-                    .height(80.dp)
-                    .padding(start = 32.dp)
-                    .clickable {
-                        val bluetoothAdapter =
-                            (context.getSystemService(Context.BLUETOOTH_SERVICE) as BluetoothManager).adapter
-                        if (ActivityCompat.checkSelfPermission(
-                                context,
-                                Manifest.permission.BLUETOOTH_SCAN
-                            ) != PackageManager.PERMISSION_GRANTED
-                        ) {
-                            permissionRequestLauncher.launch(bluetoothPermissions)
-                            return@clickable
-                        }
+                        when (idx) {
+                            1 -> {
+                                val intent = Intent(
+                                    Settings.ACTION_MANAGE_WRITE_SETTINGS,
+                                    Uri.parse("package:" + context.packageName)
+                                )
+                                writeSettingPermissionRequestLauncher.launch(intent)
+                            }
+
+                            2 -> {
+                                permissionRequestLauncher.launch(cameraPermissions)
+                            }
+
+                            3 -> {
+                                permissionRequestLauncher.launch(bluetoothPermissions)
+                            }
+
+                            4 -> {
+                                val bluetoothAdapter =
+                                    (context.getSystemService(Context.BLUETOOTH_SERVICE) as BluetoothManager).adapter
+                                if (ActivityCompat.checkSelfPermission(
+                                        context,
+                                        Manifest.permission.BLUETOOTH_SCAN
+                                    ) != PackageManager.PERMISSION_GRANTED
+                                ) {
+                                    permissionRequestLauncher.launch(bluetoothPermissions)
+                                    return@clickable
+                                }
 //                            bluetoothAdapter.startDiscovery()
-                        bluetoothServiceRequestLauncher.launch(Intent(BluetoothAdapter.ACTION_REQUEST_ENABLE))
-                    },
-                contentAlignment = Alignment.CenterStart
-            ) {
-                Text(
-                    text = "블루투스 서비스",
-                    fontWeight = FontWeight.Medium,
-                    fontSize = 20.sp
-                )
-            }
-            Image(
-                modifier = Modifier
-                    .width(32.dp)
-                    .height(32.dp),
-                painter = when(viewModel.isBlueToothOn.collectAsState().value) {
-                    true -> painterResource(id = R.drawable.baseline_check_48_on)
-                    else -> painterResource(id = R.drawable.baseline_check_48_off)
-                },
-                contentDescription = ""
-            )
-        }
-        Spacer(
-            modifier = Modifier
-                .height(20.dp)
-        )
-        Row(
-            verticalAlignment = Alignment.CenterVertically
-        ) {
-            Image(
-                modifier = Modifier
-                    .width(32.dp)
-                    .height(32.dp),
-                painter = painterResource(id = R.drawable.icon_location),
-                contentDescription = ""
-            )
-            Box(
-                modifier = Modifier
-                    .width(220.dp)
-                    .height(80.dp)
-                    .padding(start = 32.dp)
-                    .clickable {
-                        if (!isLocationOn) {
-                            val locationServiceIntentSenderRequest = IntentSenderRequest
-                                .Builder(locationServiceResolvableApiException.resolution)
-                                .build()
-                            locationServiceRequestLauncher.launch(
-                                locationServiceIntentSenderRequest
-                            )
+                                bluetoothServiceRequestLauncher.launch(Intent(BluetoothAdapter.ACTION_REQUEST_ENABLE))
+                            }
+
+                            5 -> {
+                                if (!isLocationOn) {
+                                    val locationServiceIntentSenderRequest = IntentSenderRequest
+                                        .Builder(locationServiceResolvableApiException.resolution)
+                                        .build()
+                                    locationServiceRequestLauncher.launch(
+                                        locationServiceIntentSenderRequest
+                                    )
+                                }
+                            }
                         }
                     },
-                contentAlignment = Alignment.CenterStart
+                verticalAlignment = Alignment.CenterVertically
             ) {
-                Text(
-                    text = "위치 서비스",
-                    fontWeight = FontWeight.Medium,
-                    fontSize = 20.sp
+                Image(
+                    modifier = Modifier
+                        .padding(start = 40.dp)
+                        .width(40.dp)
+                        .height(40.dp),
+                    painter = painterResource(
+                        id = when (idx) {
+                            1 -> R.drawable.icon_settings
+                            2 -> R.drawable.icon_camera
+                            3 -> R.drawable.icon_bluetooth
+                            4 -> R.drawable.icon_bluetoothon
+                            else -> R.drawable.icon_location
+                        }
+                    ),
+                    contentDescription = null
                 )
+                Column(
+                    modifier = Modifier
+                        .padding(start = 40.dp)
+                ) {
+                    Text(
+                        text = when (idx) {
+                            1 -> "시스템 설정 변경"
+                            2 -> "카메라 권한"
+                            3 -> "블루투스 권한"
+                            4 -> "블루투스 서비스"
+                            else -> "위치 서비스"
+                        },
+                        fontWeight = FontWeight.Medium,
+                        fontSize = 20.sp
+                    )
+                    Text(
+                        text = when (idx) {
+                            1 -> "화면 보호기 영상 재생에 이용"
+                            2 -> "거리 측정을 위해 이용"
+                            3 -> "프린터 연결을 위한 용도"
+                            4 -> "프린터를 연결하기 위한 블루투스 확인 용도"
+                            else -> "블루투스를 사용하기 위한 용도"
+                        },
+                        color = Color(0xff878787)
+                    )
+                }
+                Box(
+                    modifier = Modifier
+                        .fillMaxWidth(),
+                    contentAlignment = Alignment.CenterEnd
+                ) {
+                    Image(
+                        modifier = Modifier
+                            .padding(end = 40.dp)
+                            .width(32.dp)
+                            .height(32.dp),
+                        painter = when (
+                            when (idx) {
+                                1 -> viewModel.isWriteSettingsPermissionGranted.collectAsState().value
+                                2 -> viewModel.isCameraPermissionGranted.collectAsState().value
+                                3 -> viewModel.isBluetoothPermissionsGranted.collectAsState().value
+                                4 -> viewModel.isBlueToothOn.collectAsState().value
+                                else -> viewModel.isLocationOn.collectAsState().value
+                            }
+                        ) {
+                            true -> painterResource(id = R.drawable.baseline_check_48_on)
+                            else -> painterResource(id = R.drawable.baseline_check_48_off)
+                        },
+                        contentDescription = null
+                    )
+                }
             }
-            Image(
+            Spacer(
                 modifier = Modifier
-                    .width(32.dp)
-                    .height(32.dp),
-                painter = when(viewModel.isLocationOn.collectAsState().value) {
-                    true -> painterResource(id = R.drawable.baseline_check_48_on)
-                    else -> painterResource(id = R.drawable.baseline_check_48_off)
-                },
-                contentDescription = ""
+                    .height(20.dp)
             )
         }
-        Spacer(
-            modifier = Modifier
-                .height(20.dp)
-        )
-        Text(
-            modifier = Modifier
-                .clickable {
-                    manuallySetupLauncher.launch(Intent(Settings.ACTION_APPLICATION_DETAILS_SETTINGS,
-                        Uri.parse("package:" + context.packageName)))
-                },
-            text = "권한 직접 설정하기",
-            color = Color(0xffffffff),
-            fontSize = 30.sp
-        )
     }
 }

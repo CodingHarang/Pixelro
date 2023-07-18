@@ -46,7 +46,7 @@ class SurveyViewModel @Inject constructor(
         _surveyDiabetes.update { type }
     }
 
-    fun initSurvey() {
+    fun initSurveyData() {
         _surveyAge.update { SurveyAge.None }
         _surveySex.update { SurveySex.None }
         _surveyGlass.update { SurveyGlass.None }
@@ -89,6 +89,6 @@ class SurveyViewModel @Inject constructor(
     }
 
     init {
-        initSurvey()
+        initSurveyData()
     }
 }

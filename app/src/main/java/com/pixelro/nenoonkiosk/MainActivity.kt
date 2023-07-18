@@ -70,11 +70,8 @@ class MainActivity : ComponentActivity() {
         )
 
         val statusBarResourceId = resources.getIdentifier("status_bar_height", "dimen", "android")
-        val navigationBarResourceId =
-            resources.getIdentifier("navigation_bar_height", "dimen", "android")
         GlobalValue.statusBarPadding = resources.getDimension(statusBarResourceId)
         GlobalValue.navigationBarPadding = 0f
-//        Log.e("padding", "${GlobalValue.statusBarPadding}, ${GlobalValue.navigationBarPadding}")
 
         window.addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON)
         WindowCompat.getInsetsController(window, window.decorView).apply {
@@ -82,41 +79,31 @@ class MainActivity : ComponentActivity() {
         }
         setContent {
             NenoonKioskTheme {
-                Surface(
-                    modifier = Modifier
-                        .systemBarsPadding()
-                        .fillMaxSize(),
-                    color = MaterialTheme.colors.background
-                ) {
-                    val systemUiController = rememberSystemUiController()
-                    systemUiController.setStatusBarColor(
-                        color = Color(0x00000000)
-                    )
-//                    systemUiController.setNavigationBarColor(
-//                        color = Color(0x00000000)
-//                    )
-                    systemUiController.isNavigationBarVisible = false
-                    val context = LocalContext.current
-                    val configuration = LocalConfiguration.current
-                    LaunchedEffect(true) {
-                        val cameraManager =
-                            context.getSystemService(CAMERA_SERVICE) as CameraManager
-                        val cameraCharacteristics =
-                            (context.getSystemService(CAMERA_SERVICE) as CameraManager).getCameraCharacteristics(
-                                cameraManager.cameraIdList[1]
-                            )
-                        viewModel.updateLocalConfigurationValues(
-                            pixelDensity = context.resources.displayMetrics.density,
-                            screenWidthDp = configuration.screenWidthDp,
-                            screenHeightDp = configuration.screenHeightDp,
-                            focalLength = cameraCharacteristics.get(CameraCharacteristics.LENS_INFO_AVAILABLE_FOCAL_LENGTHS)
-                                ?.get(0) ?: 0f,
-                            lensSize = cameraCharacteristics.get(CameraCharacteristics.SENSOR_INFO_PHYSICAL_SIZE)
-                                ?: SizeF(0f, 0f)
+                val systemUiController = rememberSystemUiController()
+                systemUiController.setStatusBarColor(
+                    color = Color(0x00000000)
+                )
+                systemUiController.isNavigationBarVisible = false
+                val context = LocalContext.current
+                val configuration = LocalConfiguration.current
+                LaunchedEffect(true) {
+                    val cameraManager =
+                        context.getSystemService(CAMERA_SERVICE) as CameraManager
+                    val cameraCharacteristics =
+                        (context.getSystemService(CAMERA_SERVICE) as CameraManager).getCameraCharacteristics(
+                            cameraManager.cameraIdList[1]
                         )
-                    }
-                    NenoonApp()
+                    viewModel.updateLocalConfigurationValues(
+                        pixelDensity = context.resources.displayMetrics.density,
+                        screenWidthDp = configuration.screenWidthDp,
+                        screenHeightDp = configuration.screenHeightDp,
+                        focalLength = cameraCharacteristics.get(CameraCharacteristics.LENS_INFO_AVAILABLE_FOCAL_LENGTHS)
+                            ?.get(0) ?: 0f,
+                        lensSize = cameraCharacteristics.get(CameraCharacteristics.SENSOR_INFO_PHYSICAL_SIZE)
+                            ?: SizeF(0f, 0f)
+                    )
                 }
+                NenoonApp()
             }
         }
     }

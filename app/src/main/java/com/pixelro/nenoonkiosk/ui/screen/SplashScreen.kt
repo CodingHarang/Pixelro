@@ -20,11 +20,11 @@ import com.pixelro.nenoonkiosk.NenoonViewModel
 import com.pixelro.nenoonkiosk.R
 import com.pixelro.nenoonkiosk.data.GlobalValue
 import com.pixelro.nenoonkiosk.data.StringProvider
+import com.pixelro.nenoonkiosk.ui.theme.cafe24Family
+import com.pixelro.nenoonkiosk.ui.theme.notoSansKrFamily
 
 @Composable
-fun SplashScreen(
-    viewModel: NenoonViewModel
-) {
+fun SplashScreen() {
     val systemUiController = rememberSystemUiController()
     DisposableEffect(true) {
         systemUiController.systemBarsDarkContentEnabled = false
@@ -32,6 +32,7 @@ fun SplashScreen(
             systemUiController.systemBarsDarkContentEnabled = true
         }
     }
+
     Box(
         modifier = Modifier
             .fillMaxSize()
@@ -66,7 +67,8 @@ fun SplashScreen(
                 color = Color(0xffffffff),
                 fontSize = 92.sp,
                 fontWeight = FontWeight.Medium,
-                style = MaterialTheme.typography.body1
+                style = MaterialTheme.typography.body1,
+                fontFamily = cafe24Family
             )
         }
         Box(

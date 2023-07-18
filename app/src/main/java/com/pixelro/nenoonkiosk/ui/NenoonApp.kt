@@ -34,14 +34,19 @@ fun NenoonApp(
     mainNavController: NavHostController = rememberAnimatedNavController()
 ) {
     val selectedTest = viewModel.selectedTestType.collectAsState().value
-    // Splash Screen
+
+    /**
+     * Splash Screen
+     * 앱 실행 시 처음 한번만 보여지는 화면
+     */
     if (viewModel.isShowingSplashScreen.collectAsState().value) {
-        SplashScreen(
-            viewModel = viewModel
-        )
+        SplashScreen()
     } else {
-        // Screen Saver
         if (viewModel.isScreenSaverOn.collectAsState().value) {
+            /**
+             * Screen Saver
+             * 검사 중이 아닐 때 40초 동안 입력이 없으면 보여지는 화면
+             */
             ScreenSaverScreen(
                 viewModel,
                 toSurveyScreen = {
@@ -49,11 +54,13 @@ fun NenoonApp(
                 }
             )
         } else {
-            // Permission Request Screen
             if (!viewModel.isAllPermissionsGranted.collectAsState().value) {
+                /**
+                 * Permission Request Screen
+                 * 앱 사용에 필요한 권한이 충족되지 않으면 보여지는 화면
+                 */
                 PermissionRequestScreen(viewModel)
-            } // Main Content
-            else {
+            } else {
                 AnimatedNavHost(
                     modifier = Modifier
                         .fillMaxSize(),
@@ -61,7 +68,9 @@ fun NenoonApp(
                     startDestination = GlobalConstants.ROUTE_SURVEY,
                     contentAlignment = Alignment.TopCenter
                 ) {
-                    // 문진표 작성 화면
+                    /**
+                     * 문진표 작성 화면
+                     */
                     composable(
                         route = GlobalConstants.ROUTE_SURVEY,
                         enterTransition = { AnimationProvider.enterTransition },
@@ -76,7 +85,9 @@ fun NenoonApp(
                         )
                     }
 
-                    // 검사 선택 화면
+                    /**
+                     * 검사 목록 화면
+                     */
                     composable(
                         route = GlobalConstants.ROUTE_TEST_LIST,
                         enterTransition = { AnimationProvider.enterTransition },
@@ -101,7 +112,9 @@ fun NenoonApp(
                         )
                     }
 
-                    // 설정 화면
+                    /**
+                     * 설정 화면
+                     */
                     composable(
                         route = GlobalConstants.ROUTE_SETTINGS,
                         enterTransition = { AnimationProvider.enterTransition },
@@ -112,7 +125,9 @@ fun NenoonApp(
                         )
                     }
 
-                    // 검사 화면
+                    /**
+                     * 검사 화면
+                     */
                     composable(
                         route = GlobalConstants.ROUTE_TEST_CONTENT,
                         enterTransition = { AnimationProvider.enterTransition },
@@ -199,7 +214,9 @@ fun NenoonApp(
                         )
                     }
 
-                    // 검사 결과 화면
+                    /**
+                     * 검사 결과 화면
+                     */
                     composable(
                         route = GlobalConstants.ROUTE_TEST_RESULT,
                         enterTransition = { AnimationProvider.enterTransition },

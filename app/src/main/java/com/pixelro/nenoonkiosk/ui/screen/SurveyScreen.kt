@@ -47,7 +47,7 @@ fun SurveyScreen(
     surveyViewModel: SurveyViewModel = hiltViewModel()
 ) {
     LaunchedEffect(true) {
-        surveyViewModel.initSurvey()
+        surveyViewModel.initSurveyData()
     }
     Column(
         modifier = Modifier
