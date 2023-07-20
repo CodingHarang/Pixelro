@@ -152,7 +152,6 @@ fun BodyListScreen(
             EyeTestSelectableBox(
                 modifier = modifier,
                 title = StringProvider.getString(R.string.eye_test),
-                description = "",
                 onClickMethod = {
                     toSurveyScreen()
                 },
@@ -165,7 +164,6 @@ fun BodyListScreen(
             EyeTestSelectableBox(
                 modifier = modifier,
                 title = StringProvider.getString(R.string.dementia_test),
-                description = "",
                 onClickMethod = {
                     toDementiaScreen()
                 },

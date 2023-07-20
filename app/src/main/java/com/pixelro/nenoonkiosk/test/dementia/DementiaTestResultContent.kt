@@ -279,7 +279,6 @@ fun DementiaTestResultContent(
                     EyeTestSelectableBox(
                         modifier = modifier,
                         title = StringProvider.getString(R.string.dementia_result_selection1),
-                        description = "치매예방수칙 3.3.3",
                         onClickMethod = {
                             showDementia333.value = true
                         },
@@ -292,7 +291,6 @@ fun DementiaTestResultContent(
                     EyeTestSelectableBox(
                         modifier = modifier,
                         title = StringProvider.getString(R.string.dementia_result_selection2),
-                        description = "중앙치매센터 홈페이지",
                         onClickMethod = {
                             isWebViewShowing1.value = true
                         },
