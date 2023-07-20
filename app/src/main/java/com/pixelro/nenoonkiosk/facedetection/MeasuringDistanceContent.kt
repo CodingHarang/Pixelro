@@ -100,7 +100,9 @@ fun MeasuringDistanceContent(
             && !isFaceDetectedTTSDone
             && !TTS.tts.isSpeaking
         ) {
-            TTS.speechTTS("화면을 보고 얼굴을 가운데 그림에 맞춰주세요.", TextToSpeech.QUEUE_ADD)
+            if (isLeftEye) {
+                TTS.speechTTS("화면을 보고 얼굴을 가운데 그림에 맞춰주세요.", TextToSpeech.QUEUE_ADD)
+            }
             faceDetectionViewModel.updateIsFaceDetectedTTSDone(true)
         }
 
@@ -400,7 +402,7 @@ fun MeasuringDistanceDialog(
         properties = DialogProperties()
     ) {
         LaunchedEffect(true) {
-            TTS.speechTTS("본 검사에서는 아래의 이미지와 같은 전용 눈가리개를 사용합니다. 눈가리개를 집어주세요.", TextToSpeech.QUEUE_ADD)
+            TTS.speechTTS("본 검사에서는 아래의 그림과 같은 전용 눈가리개를 사용합니다. 눈가리개를 집어주세요.", TextToSpeech.QUEUE_ADD)
         }
         Column(
             modifier = Modifier
@@ -416,7 +418,7 @@ fun MeasuringDistanceDialog(
                 modifier = Modifier
                     .padding(start = 20.dp, top = 20.dp, end = 20.dp, bottom = 8.dp)
                     .fillMaxWidth(),
-                text = "본 검사에서는 아래의 이미지와 같은\n전용 눈가리개를 사용합니다.\n눈가리개를 집어주세요.",
+                text = "본 검사에서는 아래의 그림과 같은\n전용 눈가리개를 사용합니다.\n눈가리개를 집어주세요.",
                 fontSize = 32.sp,
                 fontWeight = FontWeight.Bold
             )
