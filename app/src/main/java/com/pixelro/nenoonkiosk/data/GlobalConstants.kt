@@ -5,9 +5,6 @@ object GlobalConstants {
     const val ROUTE_SURVEY = "Servey"
     const val ROUTE_LOGIN = "Login"
     const val ROUTE_TEST_LIST = "MainTestList"
-    const val ROUTE_MAIN_TEST_LIST = "MainTestList"
-    const val ROUTE_VISUAL_ACUITY_TEST_LIST = "VisualAcuityTestList"
-    const val ROUTE_MACULAR_DEGENERATION_TEST_LIST = "MacularDegenerationTestList"
 
     const val ROUTE_SETTINGS = "Settings"
 
@@ -20,7 +17,6 @@ object GlobalConstants {
     const val ROUTE_M_CHART_TEST = "MacularDegenerationTestList/MChartTest"
 
     const val ROUTE_TEST_CONTENT = "TestContent"
-    const val ROUTE_TEST_PRE_DESCRIPTION = "TestPreDescription"
     const val ROUTE_TEST_RESULT = "TestResult"
     const val ROUTE_DEMENTIA_RESULT = "DementiaResult"
 

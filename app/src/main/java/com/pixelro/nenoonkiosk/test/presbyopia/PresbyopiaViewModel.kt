@@ -22,12 +22,6 @@ class PresbyopiaViewModel @Inject constructor(
     application: Application
 ) : AndroidViewModel(application) {
 
-//    private val _isFirstItemVisible = MutableStateFlow(true)
-//    val isFirstItemVisible: StateFlow<Boolean> = _isFirstItemVisible
-//    private val _isSecondItemVisible = MutableStateFlow(false)
-//    val isSecondItemVisible: StateFlow<Boolean> = _isSecondItemVisible
-//    private val _isThirdItemVisible = MutableStateFlow(false)
-//    val isThirdItemVisible: StateFlow<Boolean> = _isThirdItemVisible
     private val _isMovedTo40cm = MutableStateFlow(false)
     val isMovedTo40cm: StateFlow<Boolean> = _isMovedTo40cm
     private val _isUnder25cm = MutableStateFlow(false)
@@ -91,7 +85,7 @@ class PresbyopiaViewModel @Inject constructor(
                 _isNumberShowing.update { true }
                 _isBlinkingDone.update { false }
                 viewModelScope.launch {
-                    TTS.speechTTS("세번째 측정을 시작하겠습니다. 화면으로부터 40~60cm 사이로 거리를 조정해주세요.", TextToSpeech.QUEUE_ADD)
+                    TTS.speechTTS("마지막 측정을 시작하겠습니다. 화면으로부터 40~60cm 사이로 거리를 조정해주세요.", TextToSpeech.QUEUE_ADD)
                 }
             }
             else -> {
@@ -137,7 +131,7 @@ class PresbyopiaViewModel @Inject constructor(
                 age = entry.y.toInt()
             }
         }
-        Log.e("presbyopiaResult", "firstDistance: ${firstDistance}\nsecondDistance: ${secondDistance}\nthirdDistance: ${thirdDistance}\n${avgDistance}\nage: $age")
+//        Log.e("presbyopiaResult", "firstDistance: ${firstDistance}\nsecondDistance: ${secondDistance}\nthirdDistance: ${thirdDistance}\n${avgDistance}\nage: $age")
         return PresbyopiaTestResult(firstDistance, secondDistance, thirdDistance, avgDistance, age)
     }
 
@@ -147,8 +141,5 @@ class PresbyopiaViewModel @Inject constructor(
         _isNumberShowing.update { true }
         _isBlinkingDone.update { false }
         _tryCount.update { 0 }
-//        _isFirstItemVisible.update { true }
-//        _isSecondItemVisible.update { false }
-//        _isThirdItemVisible.update { false }
     }
 }

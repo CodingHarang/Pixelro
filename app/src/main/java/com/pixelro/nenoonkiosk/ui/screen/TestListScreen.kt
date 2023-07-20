@@ -63,16 +63,11 @@ fun TestListScreen(
     isAmslerGridDone: Boolean,
     isMChartDone: Boolean,
 ) {
-//    BackHandler(enabled = true) {
-//        viewModel.resetScreenSaverTimer()
-//        Log.e("backhandler", "backhandler")
-//    }
     val pagerState = rememberPagerState(
         initialPage = 50000
     )
     LaunchedEffect(true) {
         while(true) {
-//            yield()
             delay(8000)
             pagerState.animateScrollToPage(
                 page = (pagerState.currentPage + 1),
@@ -255,7 +250,6 @@ fun Advertisement(
         modifier = Modifier
             .fillMaxWidth()
             .height(300.dp),
-//            .padding(20.dp),
         elevation = CardDefaults.cardElevation(0.dp),
         colors = CardDefaults.cardColors(
             containerColor = Color(0xffffffff)

@@ -77,19 +77,20 @@ import mangoslab.nemonicsdk.nemonicWrapper
 
 @Composable
 fun TestResultScreen(
+    surveyId: Long,
     testType: TestType,
     testResult: Any?,
     navController: NavHostController,
     testResultViewModel: TestResultViewModel = hiltViewModel()
 ) {
     BackHandler(enabled = true) {
-        Log.e("backhandler", "backhandler")
         navController.popBackStack(GlobalConstants.ROUTE_TEST_LIST, false)
 //        viewModel.resetScreenSaverTimer()
     }
     LaunchedEffect(true) {
 //        Log.e("threadName", Thread.currentThread().name)
         testResultViewModel.sendResultToServer(
+            surveyId = surveyId,
             testType = testType,
             testResult = testResult
         )

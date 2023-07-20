@@ -127,17 +127,6 @@ class MyFaceAnalyzer(
                         updateIsFaceDetected(false)
                     }
                 }
-
-//                    val leftEyeContour = face.getContour(FaceContour.LEFT_EYE)?.points
-//                    val rightEyeContour = face.getContour(FaceContour.RIGHT_EYE)?.points
-//                    val upperLipTopContour = face.getContour(FaceContour.UPPER_LIP_TOP)?.points
-//                    val upperLipBottomContour = face.getContour(FaceContour.UPPER_LIP_BOTTOM)?.points
-//                    val lowerLipTopContour = face.getContour(FaceContour.LOWER_LIP_TOP)?.points
-//                    val lowerLipBottomContour = face.getContour(FaceContour.LOWER_LIP_BOTTOM)?.points
-//                    val faceContour = face.getContour(FaceContour.FACE)?.points
-//                    if (leftEyeContour != null && rightEyeContour != null && upperLipTopContour != null && upperLipBottomContour != null && lowerLipTopContour != null && lowerLipBottomContour != null && faceContour != null) {
-//                        updateFaceContourData(leftEyeContour, rightEyeContour, upperLipTopContour, upperLipBottomContour, lowerLipTopContour, lowerLipBottomContour, faceContour, image.width.toFloat(), image.height.toFloat())
-//                    }
             }.addOnFailureListener {
                 it.printStackTrace()
             }.addOnCompleteListener {

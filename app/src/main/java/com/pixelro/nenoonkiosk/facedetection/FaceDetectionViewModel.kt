@@ -24,9 +24,7 @@ class FaceDetectionViewModel @Inject constructor(
     private val _screenToFaceDistance = MutableStateFlow(0f)
     val screenToFaceDistance: StateFlow<Float> = _screenToFaceDistance
     private val _inputImageSizeX = MutableStateFlow(1088f)
-    val inputImageSizeX: StateFlow<Float> = _inputImageSizeX
     private val _inputImageSizeY = MutableStateFlow(1088f)
-    val inputImageSizeY: StateFlow<Float> = _inputImageSizeY
     private val _rightEyePosition = MutableStateFlow(PointF(0f, 0f))
     val rightEyePosition: StateFlow<PointF> = _rightEyePosition
     private val _leftEyePosition = MutableStateFlow(PointF(0f, 0f))
@@ -122,48 +120,6 @@ class FaceDetectionViewModel @Inject constructor(
         updateScreenToFaceDistance()
     }
 
-//    fun updateBitmap(bitmap: Bitmap) {
-//        _bitmap.update { bitmap }
-//    }
-
-    fun updateFaceContourData(leftEyeContour: List<PointF>, rightEyeContour: List<PointF>, upperLipTopContour: List<PointF>, upperLipBottomContour: List<PointF>, lowerLipTopContour: List<PointF>, lowerLipBottomContour: List<PointF>, faceContour: List<PointF>, width: Float, height: Float) {
-        _leftEyeContour.update {
-            List(leftEyeContour.size) {
-                PointF(leftEyeContour[it].x / width, leftEyeContour[it].y / height)
-            }
-        }
-        _rightEyeContour.update {
-            List(rightEyeContour.size) {
-                PointF(rightEyeContour[it].x / width, rightEyeContour[it].y / height)
-            }
-        }
-        _upperLipTopContour.update {
-            List(upperLipTopContour.size) {
-                PointF(upperLipTopContour[it].x / width, upperLipTopContour[it].y / height)
-            }
-        }
-        _upperLipBottomContour.update {
-            List(upperLipBottomContour.size) {
-                PointF(upperLipBottomContour[it].x / width, upperLipBottomContour[it].y / height)
-            }
-        }
-        _lowerLipTopContour.update {
-            List(lowerLipTopContour.size) {
-                PointF(lowerLipTopContour[it].x / width, lowerLipTopContour[it].y / height)
-            }
-        }
-        _lowerLipBottomContour.update {
-            List(lowerLipBottomContour.size) {
-                PointF(lowerLipBottomContour[it].x / width, lowerLipBottomContour[it].y / height)
-            }
-        }
-        _faceContour.update {
-            List(faceContour.size) {
-                PointF(faceContour[it].x / width, faceContour[it].y / height)
-            }
-        }
-    }
-
     fun updateIsFaceDetected(isFaceDetected: Boolean) {
         _isFaceDetected.update { isFaceDetected }
     }
@@ -187,7 +143,7 @@ class FaceDetectionViewModel @Inject constructor(
             if((rightEyePosition.value.x - leftEyePosition.value.y) != 0f && GlobalValue.lensSize.width != 0f) {
                 _screenToFaceDistance.update {
                     val prev = _screenToFaceDistance.value
-                    val dist = 1.1f * (GlobalValue.focalLength * 63) * inputImageSizeX.value / ((rightEyePosition.value.x - leftEyePosition.value.x) * (GlobalValue.lensSize.width))
+                    val dist = 1.1f * (GlobalValue.focalLength * 63) * _inputImageSizeX.value / ((rightEyePosition.value.x - leftEyePosition.value.x) * (GlobalValue.lensSize.width))
                     if(dist > 600f || dist < 1f) prev
                     else dist
                 }
