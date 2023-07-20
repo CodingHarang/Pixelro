@@ -295,6 +295,7 @@ fun AmslerGridContent(
                             } else {
                                 amslerGridViewModel.updateRightSelectedArea()
                                 amslerGridViewModel.updateIsAmslerGridContentVisible(false)
+                                TTS.speechTTS("검사가 완료되었습니다. 결과가 나올 때 까지 잠시 기다려주세요.", TextToSpeech.QUEUE_ADD)
                                 toResultScreen(amslerGridViewModel.getAmslerGridTestResult())
                             }
                         },
