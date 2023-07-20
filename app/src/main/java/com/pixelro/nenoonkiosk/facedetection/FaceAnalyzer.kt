@@ -7,6 +7,7 @@ import android.graphics.Matrix
 import android.graphics.PointF
 import android.graphics.Rect
 import android.media.ImageReader
+import android.media.Image
 import android.os.SystemClock
 import android.util.Log
 import androidx.camera.core.ImageAnalysis
@@ -87,13 +88,13 @@ class MyFaceAnalyzer(
 //                    Log.e("eyePosition", "leftEyePosition: ${leftEyePosition?.x}\nrightEyePosition: ${rightEyePosition?.x}")
                     if (leftEyePosition != null && rightEyePosition != null) {
 //                        if (leftEyePosition.x > 260f && leftEyePosition.x < 544f && rightEyePosition.x < 804f && rightEyePosition.x > 544f && leftEyePosition.y > 400f && rightEyePosition.y > 400f && rightEyePosition.x - leftEyePosition.x > 100f) {
-                            centerFace = face
-                            break
+                        centerFace = face
+                        break
 //                        }
                     }
                 }
 
-                if(centerFace != null) {
+                if (centerFace != null) {
 
                     noFaceCount = 0
                     updateIsFaceDetected(true)
@@ -123,7 +124,7 @@ class MyFaceAnalyzer(
                     }
                 } else {
                     noFaceCount++
-                    if(noFaceCount > 6) {
+                    if (noFaceCount > 6) {
                         updateIsFaceDetected(false)
                     }
                 }
@@ -144,21 +145,36 @@ class MyFaceAnalyzer(
                 imageProxy.close()
             }
         }
-    }
+//    }
 
-    // 사이즈 조절
+//     사이즈 조절
 //        val bitmap = imageProxy.toBitmap()
 //        val matrix = Matrix()
 //        matrix.setScale(-1f, 1f)
 //        matrix.postRotate(90f)
-//        val rotatedImage = Bitmap.createBitmap(bitmap, 0, 0, bitmap.width - 300, bitmap.height, matrix, true)
+//        val rotatedImage =
+//            Bitmap.createBitmap(bitmap, 0, 0, bitmap.width - 300, bitmap.height, matrix, true)
 //
 //        updateBitmap(rotatedImage)
-    // resized image
-//        val bitmap = imageProxy.toBitmap()
-//        val resizedBitmap = Bitmap.createScaledBitmap(bitmap, bitmap.width * 2, bitmap.height * 2, false)
-//        val croppedBitmap = Bitmap.createBitmap(resizedBitmap, resizedBitmap.width / 4, resizedBitmap.height / 4, resizedBitmap.width / 2, resizedBitmap.height / 2)
-//        val imageReader = ImageReader.newInstance(resizedBitmap.width, resizedBitmap.height, ImageFormat.YUV_420_888, 1)
-//        val resizedImage = imageReader.acquireLatestImage()
-//        val inputResizedImage = InputImage.fromBitmap(croppedBitmap, imageProxy.imageInfo.rotationDegrees)
+//     resized image
+        val bitmap = imageProxy.toBitmap()
+        val resizedBitmap =
+            Bitmap.createScaledBitmap(bitmap, bitmap.width * 2, bitmap.height * 2, false)
+        val croppedBitmap = Bitmap.createBitmap(
+            resizedBitmap,
+            resizedBitmap.width / 4,
+            resizedBitmap.height / 4,
+            resizedBitmap.width / 2,
+            resizedBitmap.height / 2
+        )
+        val imageReader = ImageReader.newInstance(
+            resizedBitmap.width,
+            resizedBitmap.height,
+            ImageFormat.YUV_420_888,
+            1
+        )
+        val resizedImage = imageReader.acquireLatestImage()
+        val inputResizedImage =
+            InputImage.fromBitmap(croppedBitmap, imageProxy.imageInfo.rotationDegrees)
+    }
 }

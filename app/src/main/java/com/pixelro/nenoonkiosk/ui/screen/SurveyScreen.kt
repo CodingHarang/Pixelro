@@ -60,7 +60,7 @@ fun SurveyScreen(
         Box(
             modifier = Modifier
                 .padding(
-                    top = (GlobalValue.statusBarPadding + 20).dp,
+                    top = (GlobalValue.statusBarPadding).dp,
                     bottom = 20.dp
                 )
                 .fillMaxWidth()

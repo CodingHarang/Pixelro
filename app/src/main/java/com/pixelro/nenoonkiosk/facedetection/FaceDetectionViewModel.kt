@@ -5,6 +5,14 @@ import android.graphics.PointF
 import android.graphics.Rect
 import android.util.Log
 import androidx.compose.animation.core.MutableTransitionState
+import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.width
+import androidx.compose.runtime.Composable
+import androidx.compose.ui.Modifier
+import androidx.compose.ui.unit.dp
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.viewModelScope
 import com.pixelro.nenoonkiosk.data.GlobalValue
@@ -188,7 +196,7 @@ class FaceDetectionViewModel @Inject constructor(
                 _screenToFaceDistance.update {
                     val prev = _screenToFaceDistance.value
 //                    val dist = 1.25f * (GlobalValue.focalLength * 63) * inputImageSizeX.value / ((rightEyePosition.value.x - leftEyePosition.value.x) * (GlobalValue.lensSize.width))
-                    val dist = 1.267f * (GlobalValue.focalLength * 63) * inputImageSizeX.value / ((rightEyePosition.value.x - leftEyePosition.value.x) * (GlobalValue.lensSize.width))
+                    val dist = 1.268f * (GlobalValue.focalLength * 63) * inputImageSizeX.value / ((rightEyePosition.value.x - leftEyePosition.value.x) * (GlobalValue.lensSize.width))
                     if(dist > 4000f || dist < 1f) prev
 //                     dist
                     else dist
@@ -244,3 +252,4 @@ class FaceDetectionViewModel @Inject constructor(
         startTimer()
     }
 }
+

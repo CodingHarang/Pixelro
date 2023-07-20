@@ -185,14 +185,11 @@ fun AmslerGridContent(
                         drawCircle(
                             color = Color(0xff0000ff),
                             radius = 20f,
-//                            center = Offset(450f - (400f * tan(rotY * 0.0174533)).toFloat(), 450f - (400f * tan((rotX + 10) * 0.0174533)).toFloat())
-                            center = Offset(640f - (590f * tan(rotY * 0.0174533)).toFloat(), 640f - (590f * tan((rotX + 10) * 0.0174533)).toFloat())
+                            center = Offset(640f - (590f * tan(rotY * 0.00872665)).toFloat(), 640f - (590f * tan((rotX + 10) * 0.00872665)).toFloat())
                         )
                     }
-//                    if (isBlinkingDone && !isFaceCenter && 450f - (400f * tan(rotY * 0.0174533)).toFloat() > 400f && 450f - (400f * tan(rotY * 0.0174533)).toFloat() < 500f
-                    if (isBlinkingDone && !isFaceCenter && 640f - (590f * tan(rotY * 0.0174533)).toFloat() > 590f && 640f - (590f * tan(rotY * 0.0174533)).toFloat() < 690f
-//                            && 450f - (400f * tan((rotX + 10) * 0.0174533)).toFloat() > 400f && 450f - (400f * tan((rotX + 10) * 0.0174533)).toFloat() < 500f) {
-                            && 640f - (590f * tan((rotX + 10) * 0.0174533)).toFloat() > 590f && 640f - (590f * tan((rotX + 10) * 0.0174533)).toFloat() < 590f) {
+                    if (isBlinkingDone && !isFaceCenter && 640f - (590f * tan(rotY * 0.00872665)).toFloat() > 590f && 640f - (590f * tan(rotY * 0.00872665)).toFloat() < 690f
+                            && 640f - (590f * tan((rotX + 10) * 0.00872665)).toFloat() > 590f && 640f - (590f * tan((rotX + 10) * 0.00872665)).toFloat() < 590f) {
                         amslerGridViewModel.updateIsFaceCenter(true)
                     }
                 }

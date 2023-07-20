@@ -83,7 +83,7 @@ fun DementiaTestResultContent(
                             contentDescription = ""
                         )
                         Text(
-                            text = "뒤로 가기",
+                            text = StringProvider.getString(R.string.test_list_go_back),
                             fontSize = 24.sp,
                             fontWeight = FontWeight.Medium
                         )
@@ -128,7 +128,7 @@ fun DementiaTestResultContent(
                             contentDescription = ""
                         )
                         Text(
-                            text = "뒤로 가기",
+                            text = StringProvider.getString(R.string.test_list_go_back),
                             fontSize = 24.sp,
                             fontWeight = FontWeight.Medium
                         )

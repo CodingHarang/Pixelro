@@ -65,7 +65,7 @@ fun SettingsScreen(
     ) {
         Box(
             modifier = Modifier
-                .padding(top = (GlobalValue.statusBarPadding + 20).dp, bottom = 20.dp)
+                .padding(top = (GlobalValue.statusBarPadding).dp, bottom = 20.dp)
                 .fillMaxWidth()
                 .height(40.dp),
             contentAlignment = Alignment.Center

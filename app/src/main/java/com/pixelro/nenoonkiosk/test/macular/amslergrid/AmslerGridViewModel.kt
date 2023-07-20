@@ -125,7 +125,7 @@ class AmslerGridViewModel @Inject constructor(
         _currentSelectedPosition.update { position }
         Log.e("position", "${position.x}, ${position.y}")
         for(i in 0..8) {
-            if(position.x in ((i % 3) * 300f)..((i % 3) * 300f + 299f) && position.y in ((i / 3) * 300f)..((i / 3) * 300f + 299f)) {
+            if(position.x in ((i % 3) * 433f)..((i % 3) * 433f + 432f) && position.y in ((i / 3) * 433f)..((i / 3) * 433f + 432f)) {
                 if(_currentSelectedArea.value[i] != MacularDisorderType.Normal) {
                     _currentSelectedArea.update {
                         val tmpList = it.toMutableList()
@@ -145,7 +145,7 @@ class AmslerGridViewModel @Inject constructor(
         _currentSelectedArea.update {
             val tmpList = it.toMutableList()
             for(i in 0..8) {
-                if(position.x in ((i % 3) * 300f)..((i % 3) * 300f + 299f) && position.y in ((i / 3) * 300f)..((i / 3) * 300f + 299f)) {
+                if(position.x in ((i % 3) * 433f)..((i % 3) * 433f + 432f) && position.y in ((i / 3) * 433f)..((i / 3) * 433f + 432f)) {
                     tmpList[i] = MacularDisorderType.Distorted
                 }
             }

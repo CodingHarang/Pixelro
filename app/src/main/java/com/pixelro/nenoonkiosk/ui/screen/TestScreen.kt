@@ -84,7 +84,7 @@ fun TestScreen(
                 modifier = Modifier
                     .padding(
                         start = 40.dp,
-                        top = (GlobalValue.statusBarPadding + 20).dp,
+                        top = (GlobalValue.statusBarPadding).dp,
                         end = 40.dp,
                         bottom = 20.dp
                     )
