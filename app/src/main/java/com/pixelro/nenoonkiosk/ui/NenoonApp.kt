@@ -228,6 +228,7 @@ fun NenoonApp(
                             TestType.AmslerGrid -> viewModel.updateIsAmslerGridTestDone(true)
                             TestType.MChart -> viewModel.updateIsMChartTestDone(true)
                             else -> {
+
                             }
                         }
                         val surveyId = viewModel.surveyId.collectAsState().value
