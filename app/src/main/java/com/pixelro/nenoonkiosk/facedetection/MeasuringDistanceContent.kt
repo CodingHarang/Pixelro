@@ -1,6 +1,7 @@
 package com.pixelro.nenoonkiosk.facedetection
 
-import androidx.activity.compose.BackHandler
+import android.speech.tts.TextToSpeech
+import android.util.Log
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.core.MutableTransitionState
 import androidx.compose.animation.core.RepeatMode
@@ -15,7 +16,6 @@ import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
@@ -25,6 +25,7 @@ import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -46,6 +47,7 @@ import androidx.compose.ui.window.Dialog
 import androidx.compose.ui.window.DialogProperties
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.pixelro.nenoonkiosk.R
+import com.pixelro.nenoonkiosk.TTS
 import com.pixelro.nenoonkiosk.data.AnimationProvider
 import com.pixelro.nenoonkiosk.data.GlobalValue
 import com.pixelro.nenoonkiosk.data.StringProvider
@@ -65,6 +67,81 @@ fun MeasuringDistanceContent(
         enter = AnimationProvider.enterTransition,
         exit = AnimationProvider.exitTransition
     ) {
+        val isFaceDetected = faceDetectionViewModel.isFaceDetected.collectAsState().value
+        val isRightEyeCovered = faceDetectionViewModel.isRightEyeCovered.collectAsState().value
+        val isLeftEyeCovered = faceDetectionViewModel.isLeftEyeCovered.collectAsState().value
+        val isDistanceOK = faceDetectionViewModel.isDistanceOK.collectAsState().value
+
+        val isOccluderPickedTTSDone = faceDetectionViewModel.isOccluderPickedTTSDone.collectAsState().value
+        val isFaceDetectedTTSDone = faceDetectionViewModel.isFaceDetectedTTSDone.collectAsState().value
+        val isEyeCoveredTTSDone = faceDetectionViewModel.isEyeCoveredTTSDone.collectAsState().value
+        val isDistanceMeasuredTTSDone = faceDetectionViewModel.isDistanceMeasuredTTSDone.collectAsState().value
+        val isPressStartButtonTTSDone = faceDetectionViewModel.isPressStartButtonTTSDone.collectAsState().value
+
+        LaunchedEffect(isLeftEye) {
+            if (isLeftEye) {
+                faceDetectionViewModel.updateIsOccluderPickedTTSDone(false)
+            }
+//            Log.e("launched effect", "isLeftEye: $isLeftEye")
+            faceDetectionViewModel.updateIsFaceDetectedTTSDone(false)
+            faceDetectionViewModel.updateIsEyeCoveredTTSDone(false)
+            faceDetectionViewModel.updateIsDistanceMeasuredTTSDone(false)
+            faceDetectionViewModel.updateIsPressStartButtonTTSDone(false)
+        }
+//        if (
+//            faceDetectionViewModel.isOccluderPickedTTSDone.collectAsState().value
+//            && !faceDetectionViewModel.isFaceDetectedTTSDone.collectAsState().value
+//            && !TTS.tts.isSpeaking
+//        ) {
+//        }
+
+        if (
+            isOccluderPickedTTSDone
+            && !isFaceDetectedTTSDone
+            && !TTS.tts.isSpeaking
+        ) {
+            if (isLeftEye) {
+                TTS.speechTTS("화면을 보고 얼굴을 가운데 그림에 맞춰주세요.", TextToSpeech.QUEUE_ADD)
+            }
+            faceDetectionViewModel.updateIsFaceDetectedTTSDone(true)
+        }
+
+        if (
+            isFaceDetectedTTSDone
+            && isFaceDetected
+            && !isEyeCoveredTTSDone
+            && !TTS.tts.isSpeaking
+        ) {
+            faceDetectionViewModel.updateIsEyeCoveredTTSDone(true)
+            when (isLeftEye) {
+                true -> TTS.speechTTS("눈가리개로 오른쪽 눈을 가려주세요.", TextToSpeech.QUEUE_ADD)
+                false -> TTS.speechTTS("눈가리개로 왼쪽 눈을 가려주세요.", TextToSpeech.QUEUE_ADD)
+            }
+        }
+        if (
+            isEyeCoveredTTSDone
+            && when (isLeftEye) {
+                true -> isRightEyeCovered
+                false -> isLeftEyeCovered
+            }
+            && !isDistanceMeasuredTTSDone
+            && !TTS.tts.isSpeaking
+        ) {
+            faceDetectionViewModel.updateIsDistanceMeasuredTTSDone(true)
+            TTS.speechTTS("눈을 가린 채로 거리를 확인해주세요.", TextToSpeech.QUEUE_ADD)
+        }
+        if (
+            isDistanceMeasuredTTSDone
+            && isDistanceOK
+            && !isPressStartButtonTTSDone
+            && !TTS.tts.isSpeaking
+        ) {
+//            Log.e("아래의 검사 시작", "버튼을 눌러주세요, ${faceDetectionViewModel.isPressStartButtonTTSDone.collectAsState().value}")
+            faceDetectionViewModel.updateIsPressStartButtonTTSDone(true)
+//            Log.e("아래의 검사 시작", "버튼을 눌러주세요, ${faceDetectionViewModel.isPressStartButtonTTSDone.collectAsState().value}")
+//            Log.e("아래의 검사 시작", "${!faceDetectionViewModel.isPressStartButtonTTSDone.collectAsState().value}")
+            TTS.speechTTS("아래의 검사 시작 버튼을 눌러주세요.", TextToSpeech.QUEUE_ADD)
+        }
         val transition = rememberInfiniteTransition()
         val shiftVal by transition.animateFloat(
             initialValue = 0f, targetValue = 1f, animationSpec = infiniteRepeatable(
@@ -104,9 +181,7 @@ fun MeasuringDistanceContent(
 //                    bitmap = viewModel.bitmap.collectAsState().value.asImageBitmap(),
 //                    contentDescription = ""
 //                )
-                    if (measuringDistanceContentVisibleState.targetState) {
-                        FaceDetectionWithPreview()
-                    }
+                    FaceDetectionWithPreview(measuringDistanceContentVisibleState.targetState)
                     // eye tracking red dot
 //                    CustomShape()
                     Image(
@@ -181,8 +256,8 @@ fun MeasuringDistanceContent(
                                 true -> when(faceDetectionViewModel.isLeftEyeCovered.collectAsState().value && faceDetectionViewModel.isNenoonTextDetected.collectAsState().value) {
                                     true -> {
                                         when(faceDetectionViewModel.isDistanceOK.collectAsState().value) {
-                                            true -> StringProvider.getString(R.string.measuring_distance_content_description5)
-                                            false -> StringProvider.getString(R.string.measuring_distance_content_description4)
+                                            true -> StringProvider.getString(R.string.measuring_distance_content_press_start_button)
+                                            false -> StringProvider.getString(R.string.measuring_distance_content_measure_distance)
                                         }
                                     }
                                     false -> StringProvider.getString(R.string.measuring_distance_content_description2)
@@ -190,11 +265,11 @@ fun MeasuringDistanceContent(
                                 false -> when(faceDetectionViewModel.isRightEyeCovered.collectAsState().value && faceDetectionViewModel.isNenoonTextDetected.collectAsState().value) {
                                     true -> {
                                         when (faceDetectionViewModel.isDistanceOK.collectAsState().value) {
-                                            true -> StringProvider.getString(R.string.measuring_distance_content_description5)
-                                            false -> StringProvider.getString(R.string.measuring_distance_content_description4)
+                                            true -> StringProvider.getString(R.string.measuring_distance_content_press_start_button)
+                                            false -> StringProvider.getString(R.string.measuring_distance_content_measure_distance)
                                         }
                                     }
-                                    false -> StringProvider.getString(R.string.measuring_distance_content_description3)
+                                    false -> StringProvider.getString(R.string.measuring_distance_content_cover_right_eye)
                                 }
                             }
                             false -> StringProvider.getString(R.string.measuring_distance_content_description1)
@@ -218,14 +293,14 @@ fun MeasuringDistanceContent(
                 ) {
                     Text(
                         modifier = Modifier
-                            .padding(bottom = (GlobalValue.navigationBarPadding + 384).dp),
+                            .padding(bottom = (GlobalValue.navigationBarPadding + 284).dp),
                         text = StringProvider.getString(R.string.test_screen_current_distance),
                         color = Color(0xffffffff),
                         fontSize = 24.sp
                     )
                     Text(
                         modifier = Modifier
-                            .padding(bottom = (GlobalValue.navigationBarPadding + 280).dp),
+                            .padding(bottom = (GlobalValue.navigationBarPadding + 100).dp),
                         color = when (selectedTestType) {
                             TestType.ShortDistanceVisualAcuity -> {
                                 when (faceDetectionViewModel.screenToFaceDistance.collectAsState().value) {
@@ -242,7 +317,7 @@ fun MeasuringDistanceContent(
                             }
                         },
                         text = "${(faceDetectionViewModel.screenToFaceDistance.collectAsState().value / 10).roundToInt()}cm",
-                        fontSize = 68.sp,
+                        fontSize = 140.sp,
                         fontWeight = FontWeight.Bold
                     )
                     Box(
@@ -250,7 +325,7 @@ fun MeasuringDistanceContent(
                             .padding(
                                 start = 40.dp,
                                 end = 40.dp,
-                                bottom = (GlobalValue.navigationBarPadding + 200).dp
+                                bottom = (GlobalValue.navigationBarPadding + 340).dp
                             )
                             .border(
                                 border = BorderStroke(1.dp, Color(0xffffffff)),
@@ -319,12 +394,16 @@ fun MeasuringDistanceContent(
 
 @Composable
 fun MeasuringDistanceDialog(
-    onDismissRequest: () -> Unit
+    onDismissRequest: () -> Unit,
+    faceDetectionViewModel: FaceDetectionViewModel = hiltViewModel(),
 ) {
     Dialog(
         onDismissRequest = onDismissRequest,
         properties = DialogProperties()
     ) {
+        LaunchedEffect(true) {
+            TTS.speechTTS("본 검사에서는 아래의 그림과 같은 전용 눈가리개를 사용합니다. 눈가리개를 집어주세요.", TextToSpeech.QUEUE_ADD)
+        }
         Column(
             modifier = Modifier
                 .width(800.dp)
@@ -339,7 +418,7 @@ fun MeasuringDistanceDialog(
                 modifier = Modifier
                     .padding(start = 20.dp, top = 20.dp, end = 20.dp, bottom = 8.dp)
                     .fillMaxWidth(),
-                text = "본 검사에서는 아래의 이미지와 같은\n전용 눈가리개를 사용합니다.\n눈가리개를 집어주세요.",
+                text = "본 검사에서는 아래의 그림과 같은\n전용 눈가리개를 사용합니다.\n눈가리개를 집어주세요.",
                 fontSize = 32.sp,
                 fontWeight = FontWeight.Bold
             )
@@ -369,6 +448,7 @@ fun MeasuringDistanceDialog(
                             shape = RoundedCornerShape(8.dp)
                         )
                         .clickable {
+                            faceDetectionViewModel.updateIsOccluderPickedTTSDone(true)
                             onDismissRequest()
                         }
                         .padding(20.dp),

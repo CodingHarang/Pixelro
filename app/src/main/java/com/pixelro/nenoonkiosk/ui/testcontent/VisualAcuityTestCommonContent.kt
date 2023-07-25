@@ -1,5 +1,6 @@
 package com.pixelro.nenoonkiosk.ui.testcontent
 
+import android.speech.tts.TextToSpeech
 import androidx.compose.animation.*
 import androidx.compose.animation.core.MutableTransitionState
 import androidx.compose.animation.core.animateFloatAsState
@@ -22,16 +23,13 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
-import com.pixelro.nenoonkiosk.NenoonViewModel
 import com.pixelro.nenoonkiosk.R
+import com.pixelro.nenoonkiosk.TTS
 import com.pixelro.nenoonkiosk.data.AnimationProvider
-import com.pixelro.nenoonkiosk.data.GlobalValue
 import com.pixelro.nenoonkiosk.data.StringProvider
-import com.pixelro.nenoonkiosk.data.VisionDisorderType
 import com.pixelro.nenoonkiosk.facedetection.FaceDetection
 import com.pixelro.nenoonkiosk.test.visualacuity.VisualAcuityTestResult
 import com.pixelro.nenoonkiosk.test.visualacuity.VisualAcuityViewModel
-import java.util.*
 
 @Composable
 fun VisualAcuityTestCommonContent(
@@ -63,7 +61,9 @@ fun VisualAcuityTestContent(
         targetValue = progress,
         animationSpec = ProgressIndicatorDefaults.ProgressAnimationSpec
     )
-
+    LaunchedEffect(true) {
+        TTS.speechTTS("검사를 시작하겠습니다. 아래의 세 시표 중, 위 시표와 동일하게 보이는 것을 선택해주세요. 시표가 잘 보이지 않는다면 아래의 안보임 버튼을 눌러주세요.", TextToSpeech.QUEUE_ADD)
+    }
     Column(
         modifier = Modifier
             .fillMaxWidth(),
@@ -349,223 +349,7 @@ fun VisualAcuityTestContent(
                     text = "안보임",
                     fontSize = 60.sp,
                 )
-//                Image(
-//                    modifier = Modifier
-//                        .padding(10.dp)
-//                        .height(150.dp),
-//                    imageVector = ImageVector.vectorResource(id = R.drawable.question_mark),
-//                    contentDescription = ""
-//                )
             }
         }
     }
 }
-
-//@Composable
-//fun SightednessTestContent(
-//    toResultScreen: () -> Unit,
-//    viewModel: NenoonViewModel,
-//    visualAcuityTestSightednessTestContentVisibleState: MutableTransitionState<Boolean>
-//) {
-//    val isLeftEye = viewModel.isLeftEye.collectAsState().value
-//    AnimatedVisibility(
-//        visibleState = visualAcuityTestSightednessTestContentVisibleState,
-//        enter = AnimationProvider.enterTransition,
-//        exit = AnimationProvider.exitTransition
-//    ) {
-//        Column(
-//            modifier = Modifier
-//                .padding(top = 100.dp),
-//            horizontalAlignment = Alignment.CenterHorizontally
-//        ) {
-//            Text(
-//                text = StringProvider.getString(R.string.visual_acuity_test_common_content_signtedness_description),
-//                color = Color(0xffffffff),
-//                fontSize = 40.sp,
-//                fontWeight = FontWeight.Bold
-//            )
-//            Spacer(
-//                modifier = Modifier
-//                    .height(20.dp)
-//            )
-//            Box() {
-//                Row(
-//                    verticalAlignment = Alignment.CenterVertically
-//                ) {
-//                    Box(
-//                        modifier = Modifier
-//                            .height(500.dp)
-//                            .width(250.dp)
-//                            .background(
-//                                color = Color(0xff00ff00),
-//                                shape = RoundedCornerShape(
-//                                    topStart = 8.dp,
-//                                    topEnd = 0.dp,
-//                                    bottomEnd = 0.dp,
-//                                    bottomStart = 8.dp
-//                                )
-//                            ),
-//                        contentAlignment = Alignment.Center
-//                    ) {
-//                        Text(
-//                            modifier = Modifier
-//                                .fillMaxWidth(),
-//                            text = StringProvider.getString(R.string.visual_acuity_test_common_content_green),
-//                            fontSize = 48.sp,
-//                            fontWeight = FontWeight.Bold,
-//                            textAlign = TextAlign.Center
-//                        )
-//                    }
-//                    Box(
-//                        modifier = Modifier
-//                            .height(500.dp)
-//                            .width(250.dp)
-//                            .background(
-//                                color = Color(0xffff0000),
-//                                shape = RoundedCornerShape(
-//                                    topStart = 0.dp,
-//                                    topEnd = 8.dp,
-//                                    bottomEnd = 8.dp,
-//                                    bottomStart = 0.dp
-//                                )
-//                            ),
-//                        contentAlignment = Alignment.Center
-//                    ) {
-//                        Text(
-//                            modifier = Modifier
-//                                .fillMaxWidth(),
-//                            text = StringProvider.getString(R.string.visual_acuity_test_common_content_red),
-//                            fontSize = 48.sp,
-//                            fontWeight = FontWeight.Bold,
-//                            textAlign = TextAlign.Center
-//                        )
-//                    }
-//                }
-//            }
-//            Spacer(
-//                modifier = Modifier
-//                    .height(20.dp)
-//            )
-//            Column(
-//                modifier = Modifier
-//                    .padding(bottom = GlobalValue.navigationBarPadding.dp)
-//                    .fillMaxHeight(),
-//                verticalArrangement = Arrangement.Bottom
-//            ) {
-//                Row(
-//                    modifier = Modifier
-//                        .padding(start = 40.dp, end = 40.dp),
-//                    verticalAlignment = Alignment.CenterVertically
-//                ) {
-//                    Box(
-//                        modifier = Modifier
-//                            .padding(8.dp)
-//                            .weight(1f)
-//                            .height(80.dp)
-//                            .background(
-//                                color = Color(0xff00ff00),
-//                                shape = RoundedCornerShape(8.dp)
-//                            )
-//                            .clickable {
-//                                if (isLeftEye) {
-//                                    viewModel.updateLeftEyeSightedValue(VisionDisorderType.Hyperopia)
-//                                } else {
-//                                    viewModel.updateRightEyeSightedValue(VisionDisorderType.Hyperopia)
-//                                    toResultScreen()
-//                                }
-//                            },
-//                        contentAlignment = Alignment.Center
-//                    ) {
-//                        Text(
-//                            text = StringProvider.getString(R.string.visual_acuity_test_common_content_green),
-//                            fontSize = 30.sp,
-//                            fontWeight = FontWeight.Bold
-//                        )
-//                    }
-//
-//                    Box(
-//                        modifier = Modifier
-//                            .padding(8.dp)
-//                            .weight(1f)
-//                            .height(80.dp)
-//                            .background(
-//                                color = Color(0xffff0000),
-//                                shape = RoundedCornerShape(8.dp)
-//                            )
-//                            .clickable {
-//                                if (isLeftEye) {
-//                                    viewModel.updateLeftEyeSightedValue(VisionDisorderType.Myopia)
-//                                } else {
-//                                    viewModel.updateRightEyeSightedValue(VisionDisorderType.Myopia)
-//                                    toResultScreen()
-//                                }
-//                            },
-//                        contentAlignment = Alignment.Center
-//                    ) {
-//                        Text(
-//                            text = StringProvider.getString(R.string.visual_acuity_test_common_content_red),
-//                            fontSize = 30.sp,
-//                            fontWeight = FontWeight.Bold
-//                        )
-//                    }
-//                }
-//                Row(
-//                    modifier = Modifier
-//                        .padding(start = 40.dp, end = 40.dp),
-//                    verticalAlignment = Alignment.CenterVertically
-//                ) {
-//                    Box(
-//                        modifier = Modifier
-//                            .padding(8.dp)
-//                            .weight(1f)
-//                            .height(80.dp)
-//                            .background(
-//                                color = Color(0xffffffff),
-//                                shape = RoundedCornerShape(8.dp)
-//                            )
-//                            .clickable {
-//                                if (isLeftEye) {
-//                                    viewModel.updateLeftEyeSightedValue(VisionDisorderType.Normal)
-//                                } else {
-//                                    viewModel.updateRightEyeSightedValue(VisionDisorderType.Normal)
-//                                    toResultScreen()
-//                                }
-//                            },
-//                        contentAlignment = Alignment.Center
-//                    ) {
-//                        Text(
-//                            text = StringProvider.getString(R.string.visual_acuity_test_common_content_both_positive),
-//                            fontSize = 30.sp,
-//                            fontWeight = FontWeight.Bold
-//                        )
-//                    }
-//                    Box(
-//                        modifier = Modifier
-//                            .padding(8.dp)
-//                            .weight(1f)
-//                            .height(80.dp)
-//                            .background(
-//                                color = Color(0xffffffff),
-//                                shape = RoundedCornerShape(8.dp)
-//                            )
-//                            .clickable {
-//                                if (isLeftEye) {
-//                                    viewModel.updateLeftEyeSightedValue(VisionDisorderType.Astigmatism)
-//                                } else {
-//                                    viewModel.updateRightEyeSightedValue(VisionDisorderType.Astigmatism)
-//                                    toResultScreen()
-//                                }
-//                            },
-//                        contentAlignment = Alignment.Center
-//                    ) {
-//                        Text(
-//                            text = StringProvider.getString(R.string.visual_acuity_test_common_content_both_negative),
-//                            fontSize = 30.sp,
-//                            fontWeight = FontWeight.Bold
-//                        )
-//                    }
-//                }
-//            }
-//        }
-//    }
-//}

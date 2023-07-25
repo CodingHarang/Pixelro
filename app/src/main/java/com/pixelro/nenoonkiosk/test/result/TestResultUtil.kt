@@ -25,7 +25,7 @@ object TestResultUtil {
         paint.textAlign = Paint.Align.CENTER
         val width = 600
         val baseline = -paint.ascent()
-        val printName = "태전그룹"
+//        val printName = "포유문 산부인과"
 //    paint.textSize = 40f
 //    paint.color = 0xff000000.toInt()
 //    paint.textAlign = Paint.Align.CENTER
@@ -46,8 +46,17 @@ object TestResultUtil {
                 canvas.drawText("조절력 검사", 300f, baseline, paint)
 
                 paint.typeface = Typeface.DEFAULT_BOLD
-                canvas.drawText("안구 나이: " + (testResult.age - 2).toString()  + " ~ " + (testResult.age + 2).toString() + "세", 300f, baseline + 160f, paint)
-                canvas.drawText("조절근점: " + String.format("%.1f", testResult.avgDistance) + "cm", 300f, baseline + 200f, paint)
+                when (testResult.firstDistance.toInt() == 20 || testResult.secondDistance.toInt() == 20 || testResult.thirdDistance.toInt() == 20) {
+                    true -> {
+                        canvas.drawText("노안 증상이 발견되지 않았습니다", 300f, baseline + 160f, paint)
+                        canvas.drawText("안구 나이는 45세 이하입니다", 300f, baseline + 200f, paint)
+                    }
+                    false -> {
+                        canvas.drawText("노안 증상으로 인해 일상생활에", 300f, baseline + 160f, paint)
+                        canvas.drawText("불편함이 있을 수 있습니다", 300f, baseline + 200f, paint)
+                        canvas.drawText("안구 나이는 " + (testResult.age - 2) + " ~ " + (testResult.age + 2) + "세 입니다", 300f, baseline + 240f, paint)
+                    }
+                }
                 paint.typeface = Typeface.DEFAULT
 
                 paint.textAlign = Paint.Align.LEFT
@@ -163,7 +172,7 @@ object TestResultUtil {
 
                 paint.style = Paint.Style.FILL
                 paint.typeface = Typeface.DEFAULT_BOLD
-                Log.e("", testResult.leftEyeDisorderType[0].toString())
+//                Log.e("", testResult.leftEyeDisorderType[0].toString())
                 if(testResult.leftEyeDisorderType[0] != MacularDisorderType.Normal) {
                     canvas.drawText("이상", 70f, baseline + 160f, paint)
                 }

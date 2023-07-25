@@ -31,6 +31,7 @@ import androidx.navigation.NavHostController
 import com.google.accompanist.systemuicontroller.rememberSystemUiController
 import com.pixelro.nenoonkiosk.NenoonViewModel
 import com.pixelro.nenoonkiosk.R
+import com.pixelro.nenoonkiosk.TTS
 import com.pixelro.nenoonkiosk.data.GlobalConstants
 import com.pixelro.nenoonkiosk.data.GlobalValue
 import com.pixelro.nenoonkiosk.data.StringProvider
@@ -111,6 +112,7 @@ fun TestScreen(
                                         KeyEvent.KEYCODE_BACK
                                     )
                                 )
+                                TTS.tts.stop()
                             },
                         painter = painterResource(id = R.drawable.close_button),
                         contentDescription = ""

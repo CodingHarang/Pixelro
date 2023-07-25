@@ -1,16 +1,23 @@
 package com.pixelro.nenoonkiosk.test.macular.amslergrid
 
-import android.app.Activity
-import android.view.KeyEvent
-import androidx.activity.compose.BackHandler
-import androidx.compose.animation.*
+import android.speech.tts.TextToSpeech
+import android.util.Log
+import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.core.MutableTransitionState
 import androidx.compose.foundation.Canvas
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.gestures.detectTapGestures
-import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.fillMaxHeight
+import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
@@ -23,7 +30,6 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.input.pointer.pointerInput
-import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
@@ -31,14 +37,12 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.pixelro.nenoonkiosk.R
+import com.pixelro.nenoonkiosk.TTS
 import com.pixelro.nenoonkiosk.data.AnimationProvider
-import com.pixelro.nenoonkiosk.data.GlobalValue
 import com.pixelro.nenoonkiosk.data.StringProvider
 import com.pixelro.nenoonkiosk.data.TestType
 import com.pixelro.nenoonkiosk.facedetection.FaceDetection
 import com.pixelro.nenoonkiosk.facedetection.FaceDetectionViewModel
-import com.pixelro.nenoonkiosk.facedetection.CoveredEyeCheckingContent
-import com.pixelro.nenoonkiosk.facedetection.FaceDetectionWithPreview
 import com.pixelro.nenoonkiosk.facedetection.MeasuringDistanceContent
 import kotlin.math.tan
 
@@ -54,8 +58,7 @@ fun AmslerGridTestContent(
     measuringDistanceContentVisibleState.targetState = amslerGridViewModel.isMeasuringDistanceContentVisible.collectAsState().value
     val amslerGridContentVisibleState = remember { MutableTransitionState(false) }
     amslerGridContentVisibleState.targetState = amslerGridViewModel.isAmslerGridContentVisible.collectAsState().value
-//    val macularDegenerationTypeVisibleState = remember { MutableTransitionState(false) }
-//    macularDegenerationTypeVisibleState.targetState = amslerGridViewModel.isMacularDegenerationTypeVisible.collectAsState().value
+
     Column(
         modifier = Modifier
             .fillMaxSize()
@@ -101,6 +104,26 @@ fun AmslerGridContent(
         enter = AnimationProvider.enterTransition,
         exit = AnimationProvider.exitTransition
     ) {
+        LaunchedEffect(true) {
+            amslerGridViewModel.startBlinking()
+            amslerGridViewModel.updateIsLookAtTheDotTTSDone(false)
+            amslerGridViewModel.updateIsSelectTTSDone(false)
+        }
+        val isBlinkingDone = amslerGridViewModel.isBlinkingDone.collectAsState().value
+        val isDotShowing = amslerGridViewModel.isDotShowing.collectAsState().value
+        val isFaceCenter = amslerGridViewModel.isFaceCenter.collectAsState().value
+        if (!amslerGridViewModel.isLookAtTheDotTTSDone.collectAsState().value) {
+            amslerGridViewModel.updateIsLookAtTheDotTTSDone(true)
+            TTS.speechTTS("검사를 시작하겠습니다. 격자 가운데의 깜빡이는 점을 봐주세요", TextToSpeech.QUEUE_ADD)
+        }
+        if (
+            amslerGridViewModel.isLookAtTheDotTTSDone.collectAsState().value
+            && isFaceCenter
+            && !amslerGridViewModel.isSelectTTSDone.collectAsState().value
+        ) {
+            amslerGridViewModel.updateIsSelectTTSDone(true)
+            TTS.speechTTS("이상하게 보이거나 왜곡되어 보이는 부분을, 손으로 눌러 선택해주세요. 선택을 완료했거나 이상한 부분이 없다면 아래의 완료 버튼을 눌러주세요.", TextToSpeech.QUEUE_ADD)
+        }
         FaceDetection()
         Column(
             modifier = Modifier
@@ -114,9 +137,22 @@ fun AmslerGridContent(
 
             Text(
                 modifier = Modifier
-                    .padding(start = 20.dp, top = 20.dp, end = 20.dp, bottom = 20.dp),
-                text = StringProvider.getString(R.string.amsler_grid_test_description),
-                fontSize = 32.sp,
+                    .padding(start = 20.dp, top = 20.dp, end = 20.dp, bottom = 20.dp)
+                    .height(160.dp),
+                text = when (!isBlinkingDone) {
+                    true -> "아래의 깜빡이는 점을 봐주세요"
+                    false -> when (isFaceCenter) {
+                        true -> "이상하게 보이거나 왜곡되어 보이는 부분을 손으로 눌러 선택해주세요. 선택을 완료했거나 이상한 부분이 없다면, 아래의 완료 버튼을 눌러주세요."
+                        false -> "가운데의 검은 점을 봐주세요"
+                    }
+                },
+                fontSize = when (!isBlinkingDone) {
+                    true -> 40.sp
+                    false -> when (isFaceCenter) {
+                        true -> 32.sp
+                        false -> 40.sp
+                    }
+                },
                 color = Color(0xffffffff),
                 fontWeight = FontWeight.Medium
             )
@@ -143,16 +179,24 @@ fun AmslerGridContent(
                         .width(600.dp)
                         .height(600.dp)
                 ) {
-                    drawCircle(
-                        color = Color(0xff000000),
-                        radius = 50f,
-                        center = Offset(450f, 450f)
-                    )
-                    drawCircle(
-                        color = Color(0xff0000ff),
-                        radius = 20f,
-                        center = Offset(450f - (400f * tan(rotY * 0.0174533)).toFloat(), 450f - (400f * tan((rotX + 10) * 0.0174533)).toFloat())
-                    )
+                    if (isDotShowing) {
+                        drawCircle(
+                            color = Color(0xff000000),
+                            radius = 50f,
+                            center = Offset(450f, 450f)
+                        )
+                    }
+                    if (!isFaceCenter) {
+                        drawCircle(
+                            color = Color(0xff0000ff),
+                            radius = 20f,
+                            center = Offset(450f - (400f * tan(rotY * 0.0174533)).toFloat(), 450f - (400f * tan((rotX + 10) * 0.0174533)).toFloat())
+                        )
+                    }
+                    if (isBlinkingDone && !isFaceCenter && 450f - (400f * tan(rotY * 0.0174533)).toFloat() > 400f && 450f - (400f * tan(rotY * 0.0174533)).toFloat() < 500f
+                            && 450f - (400f * tan((rotX + 10) * 0.0174533)).toFloat() > 400f && 450f - (400f * tan((rotX + 10) * 0.0174533)).toFloat() < 500f) {
+                        amslerGridViewModel.updateIsFaceCenter(true)
+                    }
                 }
                 Column(
                     modifier = Modifier
@@ -251,6 +295,7 @@ fun AmslerGridContent(
                             } else {
                                 amslerGridViewModel.updateRightSelectedArea()
                                 amslerGridViewModel.updateIsAmslerGridContentVisible(false)
+                                TTS.speechTTS("검사가 완료되었습니다. 결과가 나올 때 까지 잠시 기다려주세요.", TextToSpeech.QUEUE_ADD)
                                 toResultScreen(amslerGridViewModel.getAmslerGridTestResult())
                             }
                         },
