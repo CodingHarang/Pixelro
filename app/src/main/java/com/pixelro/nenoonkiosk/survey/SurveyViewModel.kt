@@ -3,6 +3,7 @@ package com.pixelro.nenoonkiosk.survey
 import android.app.Application
 import android.widget.Toast
 import androidx.lifecycle.AndroidViewModel
+import com.harang.data.api.NenoonKioskApi
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -11,7 +12,7 @@ import javax.inject.Inject
 
 @HiltViewModel
 class SurveyViewModel @Inject constructor(
-    application: Application,
+    application: Application
 ) : AndroidViewModel(application) {
 
     private val _surveyAge = MutableStateFlow(SurveyAge.None)
@@ -45,7 +46,7 @@ class SurveyViewModel @Inject constructor(
         _surveyDiabetes.update { type }
     }
 
-    fun initSurvey() {
+    fun initSurveyData() {
         _surveyAge.update { SurveyAge.None }
         _surveySex.update { SurveySex.None }
         _surveyGlass.update { SurveyGlass.None }
@@ -88,6 +89,6 @@ class SurveyViewModel @Inject constructor(
     }
 
     init {
-        initSurvey()
+        initSurveyData()
     }
 }

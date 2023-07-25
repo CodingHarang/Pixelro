@@ -130,48 +130,6 @@ class FaceDetectionViewModel @Inject constructor(
         updateScreenToFaceDistance()
     }
 
-//    fun updateBitmap(bitmap: Bitmap) {
-//        _bitmap.update { bitmap }
-//    }
-
-    fun updateFaceContourData(leftEyeContour: List<PointF>, rightEyeContour: List<PointF>, upperLipTopContour: List<PointF>, upperLipBottomContour: List<PointF>, lowerLipTopContour: List<PointF>, lowerLipBottomContour: List<PointF>, faceContour: List<PointF>, width: Float, height: Float) {
-        _leftEyeContour.update {
-            List(leftEyeContour.size) {
-                PointF(leftEyeContour[it].x / width, leftEyeContour[it].y / height)
-            }
-        }
-        _rightEyeContour.update {
-            List(rightEyeContour.size) {
-                PointF(rightEyeContour[it].x / width, rightEyeContour[it].y / height)
-            }
-        }
-        _upperLipTopContour.update {
-            List(upperLipTopContour.size) {
-                PointF(upperLipTopContour[it].x / width, upperLipTopContour[it].y / height)
-            }
-        }
-        _upperLipBottomContour.update {
-            List(upperLipBottomContour.size) {
-                PointF(upperLipBottomContour[it].x / width, upperLipBottomContour[it].y / height)
-            }
-        }
-        _lowerLipTopContour.update {
-            List(lowerLipTopContour.size) {
-                PointF(lowerLipTopContour[it].x / width, lowerLipTopContour[it].y / height)
-            }
-        }
-        _lowerLipBottomContour.update {
-            List(lowerLipBottomContour.size) {
-                PointF(lowerLipBottomContour[it].x / width, lowerLipBottomContour[it].y / height)
-            }
-        }
-        _faceContour.update {
-            List(faceContour.size) {
-                PointF(faceContour[it].x / width, faceContour[it].y / height)
-            }
-        }
-    }
-
     fun updateIsFaceDetected(isFaceDetected: Boolean) {
         _isFaceDetected.update { isFaceDetected }
     }
@@ -227,8 +185,7 @@ class FaceDetectionViewModel @Inject constructor(
             _isLeftEyeCovered.update { false }
             _isRightEyeCovered.update { true }
         }
-//        _distance.update { 3200 * 0.8f / ((_textBox.value?.right?.toFloat() ?: 0f) - (_textBox.value?.left?.toFloat() ?: 0f)) }
-        _distance.update { 3200 * 0.8f / ((_textBox.value?.right?.toFloat() ?: 0f) - (_textBox.value?.left?.toFloat() ?: 0f)) }
+        _distance.update { 3200 / ((_textBox.value?.right?.toFloat() ?: 0f) - (_textBox.value?.left?.toFloat() ?: 0f)) }
         _screenToFaceDistance.update { _distance.value * 10f }
     }
 
@@ -252,4 +209,3 @@ class FaceDetectionViewModel @Inject constructor(
         startTimer()
     }
 }
-

@@ -31,3 +31,24 @@ val Typography = Typography(
         )
     )
 )
+
+val notoSansKrFamily = FontFamily(
+    Font(R.font.notosanskr_thin, FontWeight.Thin),
+    Font(R.font.notosanskr_light, FontWeight.Light),
+    Font(R.font.notosanskr_regular, FontWeight.Normal),
+    Font(R.font.notosanskr_medium, FontWeight.Medium),
+    Font(R.font.notosanskr_bold, FontWeight.Bold),
+    Font(R.font.notosanskr_black, FontWeight.Black)
+)
+
+val cafe24Family = FontFamily(
+    Font(R.font.cafe24_ssurround_v2, FontWeight.Normal)
+)
+
+val nanumSquareNeoFamily = FontFamily(
+    Font(R.font.nanumsquareneo_light, FontWeight.Light),
+    Font(R.font.nanumsquareneo_regular, FontWeight.Normal),
+    Font(R.font.nanumsquareneo_bold, FontWeight.Bold),
+    Font(R.font.nanumsquareneo_extrabold, FontWeight.ExtraBold),
+    Font(R.font.nanumsquareneo_heavy, FontWeight.Black)
+)

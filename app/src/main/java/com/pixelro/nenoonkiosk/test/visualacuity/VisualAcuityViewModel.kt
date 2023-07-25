@@ -129,10 +129,10 @@ class VisualAcuityViewModel @Inject constructor(
         }
         if (!isEnd) updateRandomList()
 //        Log.e("", "end: ${_sightLevel.value}")
-        Log.e(
-            "visualAcuityTest",
-            "${sightHistory[1]}\n${sightHistory[2]}\n${sightHistory[3]}\n${sightHistory[4]}\n${sightHistory[5]}\n${sightHistory[6]}\n${sightHistory[7]}\n${sightHistory[8]}\n${sightHistory[9]}\n${sightHistory[10]}"
-        )
+//        Log.e(
+//            "visualAcuityTest",
+//            "${sightHistory[1]}\n${sightHistory[2]}\n${sightHistory[3]}\n${sightHistory[4]}\n${sightHistory[5]}\n${sightHistory[6]}\n${sightHistory[7]}\n${sightHistory[8]}\n${sightHistory[9]}\n${sightHistory[10]}"
+//        )
     }
 
     fun getVisualAcuityTestResult(): VisualAcuityTestResult {
@@ -174,7 +174,7 @@ class VisualAcuityViewModel @Inject constructor(
             TTS.speechTTS("검사가 완료되었습니다. 결과가 나올 때 까지 잠시 기다려주세요.", TextToSpeech.QUEUE_ADD)
             toResultScreen()
         } else {
-            TTS.speechTTS("오른쪽 눈 검사를 시작하겠습니다.", TextToSpeech.QUEUE_ADD)
+            TTS.speechTTS("오른쪽 눈 검사를 시작하겠습니다. 화면을 보고 얼굴을 가운데 그림에 맞춰주세요.", TextToSpeech.QUEUE_ADD)
             _isMeasuringDistanceContentVisible.update { true }
             _isLeftEye.update { false }
         }

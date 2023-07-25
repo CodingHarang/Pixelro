@@ -1,7 +1,10 @@
 package com.pixelro.nenoonkiosk.test.macular.amslergrid
 
+import android.app.Activity
 import android.speech.tts.TextToSpeech
 import android.util.Log
+import android.view.KeyEvent
+import androidx.activity.compose.BackHandler
 import androidx.compose.animation.*
 import androidx.compose.animation.core.MutableTransitionState
 import androidx.compose.foundation.Canvas
@@ -22,6 +25,7 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.input.pointer.pointerInput
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
@@ -31,10 +35,12 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import com.pixelro.nenoonkiosk.R
 import com.pixelro.nenoonkiosk.TTS
 import com.pixelro.nenoonkiosk.data.AnimationProvider
+import com.pixelro.nenoonkiosk.data.GlobalValue
 import com.pixelro.nenoonkiosk.data.StringProvider
 import com.pixelro.nenoonkiosk.data.TestType
 import com.pixelro.nenoonkiosk.facedetection.FaceDetection
 import com.pixelro.nenoonkiosk.facedetection.FaceDetectionViewModel
+import com.pixelro.nenoonkiosk.facedetection.FaceDetectionWithPreview
 import com.pixelro.nenoonkiosk.facedetection.MeasuringDistanceContent
 import kotlin.math.tan
 
@@ -50,8 +56,6 @@ fun AmslerGridTestContent(
     measuringDistanceContentVisibleState.targetState = amslerGridViewModel.isMeasuringDistanceContentVisible.collectAsState().value
     val amslerGridContentVisibleState = remember { MutableTransitionState(false) }
     amslerGridContentVisibleState.targetState = amslerGridViewModel.isAmslerGridContentVisible.collectAsState().value
-//    val macularDegenerationTypeVisibleState = remember { MutableTransitionState(false) }
-//    macularDegenerationTypeVisibleState.targetState = amslerGridViewModel.isMacularDegenerationTypeVisible.collectAsState().value
 
     Column(
         modifier = Modifier
@@ -108,8 +112,7 @@ fun AmslerGridContent(
         val isFaceCenter = amslerGridViewModel.isFaceCenter.collectAsState().value
         if (!amslerGridViewModel.isLookAtTheDotTTSDone.collectAsState().value) {
             amslerGridViewModel.updateIsLookAtTheDotTTSDone(true)
-            Log.e("tts", "tts")
-            TTS.speechTTS("검사를 시작하겠습니다. 아래의 깜빡이는 점을 봐주세요", TextToSpeech.QUEUE_ADD)
+            TTS.speechTTS("검사를 시작하겠습니다. 격자 가운데의 깜빡이는 점을 봐주세요", TextToSpeech.QUEUE_ADD)
         }
         if (
             amslerGridViewModel.isLookAtTheDotTTSDone.collectAsState().value
@@ -290,6 +293,7 @@ fun AmslerGridContent(
                             } else {
                                 amslerGridViewModel.updateRightSelectedArea()
                                 amslerGridViewModel.updateIsAmslerGridContentVisible(false)
+                                TTS.speechTTS("검사가 완료되었습니다. 결과가 나올 때 까지 잠시 기다려주세요.", TextToSpeech.QUEUE_ADD)
                                 toResultScreen(amslerGridViewModel.getAmslerGridTestResult())
                             }
                         },

@@ -389,7 +389,6 @@ fun DementiaTestContent(
     }
 }
 
-
 @Composable
 fun questions(
     dementiaViewModel: DementiaViewModel = hiltViewModel(),

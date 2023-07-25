@@ -24,8 +24,6 @@ class AmslerGridViewModel @Inject constructor(
     val isMeasuringDistanceContentVisible: StateFlow<Boolean> = _isMeasuringDistanceContentVisible
     private val _isAmslerGridContentVisible = MutableStateFlow(false)
     val isAmslerGridContentVisible: StateFlow<Boolean> = _isAmslerGridContentVisible
-//    private val _isMacularDegenerationTypeVisible = MutableStateFlow(false)
-//    val isMacularDegenerationTypeVisible: StateFlow<Boolean> = _isMacularDegenerationTypeVisible
     private val _isLeftEye = MutableStateFlow(true)
     val isLeftEye: StateFlow<Boolean> = _isLeftEye
     private val _currentSelectedPosition = MutableStateFlow(Offset(0f, 0f))
@@ -87,9 +85,6 @@ class AmslerGridViewModel @Inject constructor(
         _isAmslerGridContentVisible.update { visible }
     }
 
-//    fun updateIsMacularDegenerationTypeVisible(visible: Boolean) {
-//        _isMacularDegenerationTypeVisible.update { visible }
-//    }
 
     fun updateIsLeftEye(isLeft: Boolean) {
         _isLeftEye.update { isLeft }
@@ -123,7 +118,7 @@ class AmslerGridViewModel @Inject constructor(
 
     fun updateCurrentSelectedPosition(position: Offset) {
         _currentSelectedPosition.update { position }
-        Log.e("position", "${position.x}, ${position.y}")
+//        Log.e("position", "${position.x}, ${position.y}")
         for(i in 0..8) {
             if(position.x in ((i % 3) * 433f)..((i % 3) * 433f + 432f) && position.y in ((i / 3) * 433f)..((i / 3) * 433f + 432f)) {
                 if(_currentSelectedArea.value[i] != MacularDisorderType.Normal) {
@@ -151,16 +146,16 @@ class AmslerGridViewModel @Inject constructor(
             }
             tmpList.toList()
         }
-        Log.e("selectedArea", "${_currentSelectedArea.value[0]}\n" +
-                "${_currentSelectedArea.value[1]}\n" +
-                "${_currentSelectedArea.value[2]}\n" +
-                "${_currentSelectedArea.value[3]}\n" +
-                "${_currentSelectedArea.value[4]}\n" +
-                "${_currentSelectedArea.value[5]}\n" +
-                "${_currentSelectedArea.value[6]}\n" +
-                "${_currentSelectedArea.value[7]}\n" +
-                "${_currentSelectedArea.value[8]}\n"
-        )
+//        Log.e("selectedArea", "${_currentSelectedArea.value[0]}\n" +
+//                "${_currentSelectedArea.value[1]}\n" +
+//                "${_currentSelectedArea.value[2]}\n" +
+//                "${_currentSelectedArea.value[3]}\n" +
+//                "${_currentSelectedArea.value[4]}\n" +
+//                "${_currentSelectedArea.value[5]}\n" +
+//                "${_currentSelectedArea.value[6]}\n" +
+//                "${_currentSelectedArea.value[7]}\n" +
+//                "${_currentSelectedArea.value[8]}\n"
+//        )
     }
 
     fun startBlinking() {

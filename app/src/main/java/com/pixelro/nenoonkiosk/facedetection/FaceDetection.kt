@@ -1,11 +1,16 @@
 package com.pixelro.nenoonkiosk.facedetection
 
 import android.Manifest
+import android.graphics.Bitmap
+import android.graphics.ImageFormat
+import android.media.ImageReader
 import android.util.Log
 import android.util.Size
 import androidx.camera.core.CameraSelector
 import androidx.camera.core.ImageAnalysis
+import androidx.camera.core.ImageProxy
 import androidx.camera.core.Preview
+import androidx.camera.core.ViewPort.FILL_END
 import androidx.camera.lifecycle.ProcessCameraProvider
 import androidx.camera.view.PreviewView
 import androidx.compose.animation.core.MutableTransitionState
@@ -24,6 +29,7 @@ import androidx.core.content.ContextCompat
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.google.accompanist.permissions.ExperimentalPermissionsApi
 import com.google.accompanist.permissions.rememberMultiplePermissionsState
+import com.google.mlkit.vision.common.InputImage
 import kotlinx.coroutines.newSingleThreadContext
 import java.util.concurrent.Executors
 
@@ -67,7 +73,6 @@ fun FaceDetectionWithPreview(
 fun FaceDetectionScreenContent(
     viewModel: FaceDetectionViewModel = hiltViewModel()
 ) {
-//    Log.e("faceDetection", "faceDetectionOnly")
     val lifecycleOwner = LocalLifecycleOwner.current
     val context = LocalContext.current
     val cameraProviderFuture = remember { ProcessCameraProvider.getInstance(context) }
@@ -90,7 +95,6 @@ fun FaceDetectionScreenContent(
                                 viewModel::updateIsFaceDetected,
                                 viewModel::updateIsNenoonTextDetected,
                                 executor1
-//                                viewModel::updateBitmap
                             )
                         )
                     }
@@ -108,12 +112,13 @@ fun FaceDetectionScreenContentWithPreview(
     isPreviewShowing: Boolean,
     viewModel: FaceDetectionViewModel = hiltViewModel()
 ) {
-//    Log.e("faceDetection", "faceDetectionWithPreview")
-//    if(visibleState.targetState) {
     val lifecycleOwner = LocalLifecycleOwner.current
     val context = LocalContext.current
     val cameraProviderFuture = remember { ProcessCameraProvider.getInstance(context) }
-    Surface() {
+    Surface(
+//        modifier = Modifier
+//        .offset(x = 0.dp, y = (0).dp)
+    ) {
         if (isPreviewShowing) {
             AndroidView(
                 modifier = Modifier
@@ -121,7 +126,7 @@ fun FaceDetectionScreenContentWithPreview(
                     .height(800.dp),
                 factory = { context ->
                     val previewView = PreviewView(context)
-                    previewView.scaleType = PreviewView.ScaleType.FILL_END
+                    previewView.scaleType = PreviewView.ScaleType.FILL_START
                     val executor = ContextCompat.getMainExecutor(context)
                     val executor1 = Executors.newSingleThreadExecutor()
                     cameraProviderFuture.addListener({
@@ -140,7 +145,6 @@ fun FaceDetectionScreenContentWithPreview(
                                         viewModel::updateIsFaceDetected,
                                         viewModel::updateIsNenoonTextDetected,
                                         executor1
-//                                    viewModel::updateBitmap
                                     )
                                 )
                             }
@@ -150,10 +154,29 @@ fun FaceDetectionScreenContentWithPreview(
                         cameraProvider.bindToLifecycle(
                             lifecycleOwner, cameraSelector, preview, imageAnalysis)
                     }, executor)
+
+//                    val bitmap = mediaImage.toBitmap()
+//                    val resizedBitmap = Bitmap.createScaledBitmap(bitmap, bitmap.width * 1, bitmap.height * 1, false)
+//                    val croppedBitmap = Bitmap.createBitmap(
+//                        resizedBitmap,
+//                        0,
+//                        0,
+//                        (resizedBitmap.width * 2) / 3,
+//                        resizedBitmap.height
+//                    )
+//                    val imageReader = ImageReader.newInstance(
+//                        resizedBitmap.width,
+//                        resizedBitmap.height,
+//                        ImageFormat.YUV_420_888,
+//                        1
+//                    )
+//                    val resizedImage = imageReader.acquireLatestImage()
+//                    val image =
+//                        InputImage.fromBitmap(croppedBitmap, imageProxy.imageInfo.rotationDegrees)
+
                     previewView
                 }
             )
         }
     }
-//    }
 }

@@ -2,16 +2,19 @@ package com.pixelro.nenoonkiosk.facedetection
 
 import android.annotation.SuppressLint
 import android.graphics.Bitmap
+import android.graphics.BitmapFactory
 import android.graphics.ImageFormat
 import android.graphics.Matrix
 import android.graphics.PointF
 import android.graphics.Rect
+import android.graphics.YuvImage
 import android.media.ImageReader
 import android.media.Image
 import android.os.SystemClock
 import android.util.Log
 import androidx.camera.core.ImageAnalysis
 import androidx.camera.core.ImageProxy
+import androidx.compose.runtime.Composable
 import com.google.mlkit.vision.common.InputImage
 import com.google.mlkit.vision.face.Face
 import com.google.mlkit.vision.face.FaceDetectorOptions
@@ -24,6 +27,7 @@ import kotlinx.coroutines.coroutineScope
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.newSingleThreadContext
 import kotlinx.coroutines.runBlocking
+import java.io.ByteArrayOutputStream
 import java.util.concurrent.Executor
 
 class MyFaceAnalyzer(
@@ -56,6 +60,25 @@ class MyFaceAnalyzer(
         // original image
         val mediaImage = imageProxy.image
         if (mediaImage != null) {
+//            val bitmap = mediaImage.toBitmap()
+//            val resizedBitmap = Bitmap.createScaledBitmap(bitmap, bitmap.width * 1, bitmap.height * 1, false)
+//            val croppedBitmap = Bitmap.createBitmap(
+//                resizedBitmap,
+//                0,
+//                0,
+//                (resizedBitmap.width * 2) / 3,
+//                resizedBitmap.height
+//            )
+//            val imageReader = ImageReader.newInstance(
+//                resizedBitmap.width,
+//                resizedBitmap.height,
+//                ImageFormat.YUV_420_888,
+//                1
+//            )
+//            val resizedImage = imageReader.acquireLatestImage()
+//            val image =
+//                InputImage.fromBitmap(croppedBitmap, imageProxy.imageInfo.rotationDegrees)
+
             val image = InputImage.fromMediaImage(mediaImage, imageProxy.imageInfo.rotationDegrees)
             // Text Recognition
             recognizer.process(image).addOnSuccessListener(executor) { result ->
@@ -128,24 +151,36 @@ class MyFaceAnalyzer(
                         updateIsFaceDetected(false)
                     }
                 }
-
-//                    val leftEyeContour = face.getContour(FaceContour.LEFT_EYE)?.points
-//                    val rightEyeContour = face.getContour(FaceContour.RIGHT_EYE)?.points
-//                    val upperLipTopContour = face.getContour(FaceContour.UPPER_LIP_TOP)?.points
-//                    val upperLipBottomContour = face.getContour(FaceContour.UPPER_LIP_BOTTOM)?.points
-//                    val lowerLipTopContour = face.getContour(FaceContour.LOWER_LIP_TOP)?.points
-//                    val lowerLipBottomContour = face.getContour(FaceContour.LOWER_LIP_BOTTOM)?.points
-//                    val faceContour = face.getContour(FaceContour.FACE)?.points
-//                    if (leftEyeContour != null && rightEyeContour != null && upperLipTopContour != null && upperLipBottomContour != null && lowerLipTopContour != null && lowerLipBottomContour != null && faceContour != null) {
-//                        updateFaceContourData(leftEyeContour, rightEyeContour, upperLipTopContour, upperLipBottomContour, lowerLipTopContour, lowerLipBottomContour, faceContour, image.width.toFloat(), image.height.toFloat())
-//                    }
             }.addOnFailureListener {
                 it.printStackTrace()
             }.addOnCompleteListener {
                 imageProxy.close()
             }
         }
-//    }
+    }
+
+    fun Image.toBitmap(): Bitmap {
+        val yBuffer = planes[0].buffer
+        val uBuffer = planes[1].buffer
+        val vBuffer = planes[2].buffer
+
+        val ySize = yBuffer.remaining()
+        val uSize = uBuffer.remaining()
+        val vSize = vBuffer.remaining()
+
+        val nv21 = ByteArray(ySize + uSize + vSize)
+
+        yBuffer.get(nv21, 0, ySize)
+        vBuffer.get(nv21, ySize, vSize)
+        uBuffer.get(nv21, ySize + vSize, uSize)
+
+        val yuvImage = YuvImage(nv21, ImageFormat.NV21, this.width, this.height, null)
+        val out = ByteArrayOutputStream()
+        yuvImage.compressToJpeg(Rect(0, 0, yuvImage.width, yuvImage.height), 100, out)
+        val imageBytes = out.toByteArray()
+
+        return BitmapFactory.decodeByteArray(imageBytes, 0, imageBytes.size)
+    }
 
 //     사이즈 조절
 //        val bitmap = imageProxy.toBitmap()
@@ -156,25 +191,26 @@ class MyFaceAnalyzer(
 //            Bitmap.createBitmap(bitmap, 0, 0, bitmap.width - 300, bitmap.height, matrix, true)
 //
 //        updateBitmap(rotatedImage)
-//     resized image
-        val bitmap = imageProxy.toBitmap()
-        val resizedBitmap =
-            Bitmap.createScaledBitmap(bitmap, bitmap.width * 2, bitmap.height * 2, false)
-        val croppedBitmap = Bitmap.createBitmap(
-            resizedBitmap,
-            resizedBitmap.width / 4,
-            resizedBitmap.height / 4,
-            resizedBitmap.width / 2,
-            resizedBitmap.height / 2
-        )
-        val imageReader = ImageReader.newInstance(
-            resizedBitmap.width,
-            resizedBitmap.height,
-            ImageFormat.YUV_420_888,
-            1
-        )
-        val resizedImage = imageReader.acquireLatestImage()
-        val inputResizedImage =
-            InputImage.fromBitmap(croppedBitmap, imageProxy.imageInfo.rotationDegrees)
-    }
+
+//        resized image
+//        val bitmap = imageProxy.toBitmap()
+//        val resizedBitmap =
+//            Bitmap.createScaledBitmap(bitmap, bitmap.width * 2, bitmap.height * 2, false)
+//        val croppedBitmap = Bitmap.createBitmap(
+//            resizedBitmap,
+//            resizedBitmap.width / 4,
+//            resizedBitmap.height / 4,
+//            resizedBitmap.width / 2,
+//            resizedBitmap.height / 2
+//        )
+//        val imageReader = ImageReader.newInstance(
+//            resizedBitmap.width,
+//            resizedBitmap.height,
+//            ImageFormat.YUV_420_888,
+//            1
+//        )
+//        val resizedImage = imageReader.acquireLatestImage()
+//        val inputResizedImage =
+//            InputImage.fromBitmap(croppedBitmap, imageProxy.imageInfo.rotationDegrees)
+//    }
 }
