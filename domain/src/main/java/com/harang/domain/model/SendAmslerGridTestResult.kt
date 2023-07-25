@@ -13,8 +13,6 @@ data class SendAmslerGridTestResultRequest(
     val leftMacularLoc: String,
     @SerializedName("rightMacularLoc")
     val rightMacularLoc: String,
-    @SerializedName("createAt")
-    val createAt: String,
     @SerializedName("Amsler1")
     val Amsler1: Int = 0,
     @SerializedName("Amsler2")

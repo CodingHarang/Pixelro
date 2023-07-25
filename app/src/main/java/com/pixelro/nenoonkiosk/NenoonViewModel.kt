@@ -66,7 +66,7 @@ import javax.inject.Inject
 @HiltViewModel
 class NenoonViewModel @Inject constructor(
     application: Application,
-//    private val api: NenoonKioskApi
+    private val api: NenoonKioskApi
 ) : AndroidViewModel(application) {
 
     private fun checkBackgroundStatus() {
@@ -288,57 +288,58 @@ class NenoonViewModel @Inject constructor(
     private val _surveyId = MutableStateFlow(0L)
     val surveyId: StateFlow<Long> = _surveyId
 
-//    fun updateSurveyData(surveyData: SurveyData) {
-//        viewModelScope.launch {
-//            val request = SendSurveyDataRequest(
-//                age = when (surveyData.surveyAge) {
-//                    SurveyAge.First -> 9
-//                    SurveyAge.Second -> 10
-//                    SurveyAge.Third -> 20
-//                    SurveyAge.Fourth -> 30
-//                    SurveyAge.Fifth -> 40
-//                    SurveyAge.Sixth -> 50
-//                    SurveyAge.Seventh -> 60
-//                    else -> 70
-//                },
-//                gender = when (surveyData.surveySex) {
-//                    SurveySex.Man -> "M"
-//                    else -> "W"
-//                },
-//                glasses = when (surveyData.surveyGlass) {
-//                    SurveyGlass.Yes -> true
-//                    else -> false
-//                },
-//                surgery = when (surveyData.surveySurgery) {
-//                    SurveySurgery.Normal -> "normal"
-//                    SurveySurgery.LASIK -> "correction"
-//                    SurveySurgery.Cataract -> "cataract"
-//                    else -> "etc"
-//                },
-//                diabetes = when (surveyData.surveyDiabetes) {
-//                    SurveyDiabetes.Yes -> true
-//                    else -> false
-//                },
-//                createAt = LocalDateTime.now().toString()
-//            )
-//            Log.e("surveyDataRequest", request.toString())
-//            val response = try {
-//                api.sendSurveyData(request)
-//            } catch (e: Exception) {
-//                e.printStackTrace()
-//                null
-//            } catch (e: HttpException) {
-//                e.printStackTrace()
-//                null
-//            }
-//            Log.e("surveyDataResponse", response?.body().toString())
-//            if (response != null) {
-//                _surveyId.update { ((response.body()?.data?.get("tid") ?: 0) as Double).toLong() }
-//            } else {
-//                _surveyId.update { 0L }
-//            }
-//        }
-//    }
+    fun updateSurveyData(surveyData: SurveyData) {
+        viewModelScope.launch {
+            val request = SendSurveyDataRequest(
+                age = when (surveyData.surveyAge) {
+                    SurveyAge.First -> 9
+                    SurveyAge.Second -> 10
+                    SurveyAge.Third -> 20
+                    SurveyAge.Fourth -> 30
+                    SurveyAge.Fifth -> 40
+                    SurveyAge.Sixth -> 50
+                    SurveyAge.Seventh -> 60
+                    else -> 70
+                },
+                gender = when (surveyData.surveySex) {
+                    SurveySex.Man -> "M"
+                    else -> "W"
+                },
+                glasses = when (surveyData.surveyGlass) {
+                    SurveyGlass.Yes -> true
+                    else -> false
+                },
+                surgery = when (surveyData.surveySurgery) {
+                    SurveySurgery.Normal -> "normal"
+                    SurveySurgery.LASIK -> "correction"
+                    SurveySurgery.Cataract -> "cataract"
+                    else -> "etc"
+                },
+                diabetes = when (surveyData.surveyDiabetes) {
+                    SurveyDiabetes.Yes -> true
+                    else -> false
+                }
+            )
+            Log.e("surveyDataRequest", request.toString())
+            val response = try {
+                api.sendSurveyData(request)
+            } catch (e: Exception) {
+                e.printStackTrace()
+                null
+            } catch (e: HttpException) {
+                e.printStackTrace()
+                null
+            }
+            Log.e("surveyDataResponseCode", response?.code().toString())
+            Log.e("surveyDataResponseBody", response?.body().toString())
+            Log.e("surveyDataResponseErrorBody", response?.errorBody().toString())
+            if (response != null) {
+                _surveyId.update { ((response.body()?.data?.get("tid") ?: 0) as Double).toLong() }
+            } else {
+                _surveyId.update { 0L }
+            }
+        }
+    }
 
     // Test Result
     private val _isPresbyopiaTestDone = MutableStateFlow(false)

@@ -80,7 +80,7 @@ fun NenoonApp(
                             toTestListScreen = {
                                 mainNavController.navigate(GlobalConstants.ROUTE_TEST_LIST)
                                 viewModel.initializeTestDoneStatus()
-//                                viewModel.updateSurveyData(it)
+                                viewModel.updateSurveyData(it)
                             }
                         )
                     }
