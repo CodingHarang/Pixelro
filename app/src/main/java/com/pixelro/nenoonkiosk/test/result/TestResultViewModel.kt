@@ -60,6 +60,7 @@ class TestResultViewModel @Inject constructor(
                             distance3 = testResult.thirdDistance.toInt(),
                             distanceAvg = testResult.avgDistance.toInt()
                         )
+                        Log.e("presbyopiaRequest", "$request")
                         val response = try {
                             api.sendPresbyopiaTestResult(request)
                         } catch (e: IOException) {
@@ -69,7 +70,7 @@ class TestResultViewModel @Inject constructor(
                             e.printStackTrace()
                             null
                         }
-                        Log.e("sendPresbyopiaResultToServer", "code: ${response?.code()}\nresponse: ${response?.body()}, ${response?.errorBody()}")
+                        Log.e("presbyopiaResponse", "code: ${response?.code()}\nresponse: ${response?.body()}, ${response?.errorBody()}")
                     }
                 }
                 TestType.ShortDistanceVisualAcuity -> {
@@ -78,12 +79,10 @@ class TestResultViewModel @Inject constructor(
                         val request = SendShortVisualAcuityTestResultRequest(
                             surveyId = surveyId,
                             testType = "",
-                            distance = 0,
                             leftSight = testResult.leftEye,
-                            rightSight = testResult.rightEye,
-                            leftPerspective = "",
-                            rightPerspective = ""
+                            rightSight = testResult.rightEye
                         )
+                        Log.e("shortVisualAcuityRequest", "$request")
                         val response = try {
                             api.sendShortVisualAcuityTestResult(request)
                         } catch (e: IOException) {
@@ -93,7 +92,7 @@ class TestResultViewModel @Inject constructor(
                             e.printStackTrace()
                             null
                         }
-                        Log.e("sendShortDistanceResultToServer", "response: ${response?.body()}, ${response?.errorBody()}")
+                        Log.e("shortVisualAcuityResponse", "response: ${response?.body()}, ${response?.errorBody()}")
                     }
                 }
                 TestType.LongDistanceVisualAcuity -> {
@@ -107,10 +106,10 @@ class TestResultViewModel @Inject constructor(
                         testResult as AmslerGridTestResult
                         val request = SendAmslerGridTestResultRequest(
                             surveyId = surveyId,
-                            distance = 30,
                             leftMacularLoc = testResult.leftEyeDisorderType.toString(),
                             rightMacularLoc = testResult.rightEyeDisorderType.toString()
                         )
+                        Log.e("amslerGridRequest", "$request")
                         val response = try {
                             api.sendAmslerGridResult(request)
                         } catch (e: IOException) {
@@ -120,7 +119,7 @@ class TestResultViewModel @Inject constructor(
                             e.printStackTrace()
                             null
                         }
-                        Log.e("sendAmslerGridResultToServer", "response: ${response?.body()}, ${response?.errorBody()}")
+                        Log.e("amslerGridResponse", "response: ${response?.body()}, ${response?.errorBody()}")
                     }
                 }
                 TestType.MChart -> {
@@ -128,12 +127,12 @@ class TestResultViewModel @Inject constructor(
                         testResult as MChartTestResult
                         val request = SendMChartTestResultRequest(
                             surveyId = surveyId,
-                            distance = 0,
                             leftEyeVer = testResult.leftEyeVertical,
                             rightEyeVer = testResult.rightEyeVertical,
                             leftEyeHor = testResult.leftEyeHorizontal,
                             rightEyeHor = testResult.rightEyeHorizontal
                         )
+                        Log.e("mchartRequest", "$request")
                         val response = try {
                             api.sendMChartTestResult(request)
                         } catch (e: IOException) {
@@ -143,7 +142,7 @@ class TestResultViewModel @Inject constructor(
                             e.printStackTrace()
                             null
                         }
-                        Log.e("sendMChartResultToServer", "response: ${response?.body()}, ${response?.errorBody()}")
+                        Log.e("mchartResultToServer", "response: ${response?.body()}, ${response?.errorBody()}")
                     }
                 }
             }

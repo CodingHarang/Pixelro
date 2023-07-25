@@ -8,7 +8,7 @@ data class SendAmslerGridTestResultRequest(
     @SerializedName("surveyId")
     val surveyId: Long,
     @SerializedName("distance")
-    val distance: Int,
+    val distance: Int = 30,
     @SerializedName("leftMacularLoc")
     val leftMacularLoc: String,
     @SerializedName("rightMacularLoc")
