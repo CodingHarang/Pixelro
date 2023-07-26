@@ -7,7 +7,7 @@ data class SendMChartTestResultRequest(
     @SerializedName("surveyId")
     val surveyId: Long,
     @SerializedName("distance")
-    val distance: Int,
+    val distance: Int = 30,
     @SerializedName("leftEyeVer")
     val leftEyeVer: Int,
     @SerializedName("rightEyeVer")
