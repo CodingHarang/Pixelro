@@ -1,9 +1,12 @@
 package com.pixelro.nenoonkiosk
 
 import android.annotation.SuppressLint
+import android.content.pm.PackageManager
 import android.hardware.camera2.CameraCharacteristics
 import android.hardware.camera2.CameraManager
+import android.os.Build
 import android.os.Bundle
+import android.provider.Settings
 import android.util.Log
 import android.util.SizeF
 import android.view.MotionEvent
@@ -28,6 +31,9 @@ import com.pixelro.nenoonkiosk.data.SharedPreferencesManager
 import com.pixelro.nenoonkiosk.ui.NenoonApp
 import com.pixelro.nenoonkiosk.ui.theme.NenoonKioskTheme
 import dagger.hilt.android.AndroidEntryPoint
+import java.io.BufferedReader
+import java.io.File
+import java.io.FileReader
 import java.util.Locale
 
 @AndroidEntryPoint
@@ -49,6 +55,7 @@ class MainActivity : ComponentActivity() {
     @SuppressLint("InternalInsetResource", "DiscouragedApi")
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+
         TTS.initTTS()
         if (SharedPreferencesManager.getString("language") == "") {
             SharedPreferencesManager.putString("language", "en")
