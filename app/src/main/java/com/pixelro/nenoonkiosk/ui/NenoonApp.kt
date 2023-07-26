@@ -65,9 +65,28 @@ fun NenoonApp(
                     modifier = Modifier
                         .fillMaxSize(),
                     navController = mainNavController,
-                    startDestination = GlobalConstants.ROUTE_SURVEY,
+                    startDestination = GlobalConstants.ROUTE_LOGIN,
+//                    startDestination = GlobalConstants.ROUTE_SURVEY,
                     contentAlignment = Alignment.TopCenter
                 ) {
+                    /**
+                     * 로그인 화면
+                     */
+                    composable(
+                        route = GlobalConstants.ROUTE_LOGIN,
+                        enterTransition = { AnimationProvider.enterTransition },
+                        exitTransition = { AnimationProvider.exitTransition }
+                    ) {
+                        LoginScreen(
+                            toSurveyScreen_Guest = {
+                                mainNavController.navigate(GlobalConstants.ROUTE_SURVEY)
+                            },
+                            toSurveyScreen = {
+                                mainNavController.navigate(GlobalConstants.ROUTE_SURVEY)
+                                //계정 정보
+                            }
+                        )
+                    }
                     /**
                      * 문진표 작성 화면
                      */
