@@ -78,7 +78,6 @@ class TestResultViewModel @Inject constructor(
                         testResult as ShortVisualAcuityTestResult
                         val request = SendShortVisualAcuityTestResultRequest(
                             surveyId = surveyId,
-                            testType = "",
                             leftSight = testResult.leftEye,
                             rightSight = testResult.rightEye
                         )
@@ -104,10 +103,20 @@ class TestResultViewModel @Inject constructor(
                 TestType.AmslerGrid -> {
                     viewModelScope.launch {
                         testResult as AmslerGridTestResult
+                        var leftMacularLoc = testResult.leftEyeDisorderType.toString()
+                        leftMacularLoc = leftMacularLoc.replace(" ", "").replace("[", "")
+                            .replace("]", "").replace("Normal", "n")
+                            .replace("Distorted", "d").replace("Blacked", "b")
+                            .replace("Whited", "w")
+                        var rightMacularLoc = testResult.rightEyeDisorderType.toString()
+                        rightMacularLoc = rightMacularLoc.replace(" ", "").replace("[", "")
+                            .replace("]", "").replace("Normal", "n")
+                            .replace("Distorted", "d").replace("Blacked", "b")
+                            .replace("Whited", "w")
                         val request = SendAmslerGridTestResultRequest(
                             surveyId = surveyId,
-                            leftMacularLoc = testResult.leftEyeDisorderType.toString(),
-                            rightMacularLoc = testResult.rightEyeDisorderType.toString()
+                            leftMacularLoc = leftMacularLoc,
+                            rightMacularLoc = rightMacularLoc
                         )
                         Log.e("amslerGridRequest", "$request")
                         val response = try {
