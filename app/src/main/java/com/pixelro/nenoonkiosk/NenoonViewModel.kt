@@ -9,13 +9,11 @@ import android.content.IntentSender
 import android.content.pm.PackageManager
 import android.location.LocationManager
 import android.net.Uri
-import android.os.Build
 import android.provider.Settings
 import android.util.Log
 import android.util.SizeF
 import androidx.core.content.ContextCompat
 import androidx.core.content.ContextCompat.getSystemService
-import androidx.core.content.PackageManagerCompat
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.viewModelScope
 import androidx.media3.common.MediaItem
@@ -30,18 +28,16 @@ import com.google.android.gms.location.LocationSettingsResponse
 import com.google.android.gms.location.SettingsClient
 import com.google.android.gms.tasks.Task
 import com.harang.data.api.NenoonKioskApi
-import com.harang.domain.model.SendPresbyopiaTestResultRequest
 import com.harang.domain.model.SendSurveyDataRequest
 import com.pixelro.nenoonkiosk.data.GlobalValue
 import com.pixelro.nenoonkiosk.data.SharedPreferencesManager
-import com.pixelro.nenoonkiosk.data.StringProvider
 import com.pixelro.nenoonkiosk.data.TestType
-import com.pixelro.nenoonkiosk.survey.SurveyAge
-import com.pixelro.nenoonkiosk.survey.SurveyData
-import com.pixelro.nenoonkiosk.survey.SurveyDiabetes
-import com.pixelro.nenoonkiosk.survey.SurveyGlass
-import com.pixelro.nenoonkiosk.survey.SurveySex
-import com.pixelro.nenoonkiosk.survey.SurveySurgery
+import com.pixelro.nenoonkiosk.survey.datatype.SurveyAge
+import com.pixelro.nenoonkiosk.survey.datatype.SurveyData
+import com.pixelro.nenoonkiosk.survey.datatype.SurveyDiabetes
+import com.pixelro.nenoonkiosk.survey.datatype.SurveyGlass
+import com.pixelro.nenoonkiosk.survey.datatype.SurveySex
+import com.pixelro.nenoonkiosk.survey.datatype.SurveySurgery
 import com.pixelro.nenoonkiosk.test.macular.amslergrid.AmslerGridTestResult
 import com.pixelro.nenoonkiosk.test.macular.mchart.MChartTestResult
 import com.pixelro.nenoonkiosk.test.presbyopia.PresbyopiaTestResult
@@ -50,7 +46,6 @@ import com.pixelro.nenoonkiosk.test.visualacuity.longdistance.LongVisualAcuityTe
 import com.pixelro.nenoonkiosk.test.visualacuity.shortdistance.ShortVisualAcuityTestResult
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.CoroutineName
-import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -58,7 +53,6 @@ import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import retrofit2.HttpException
 import java.io.File
-import java.time.LocalDateTime
 import java.util.Locale
 import javax.inject.Inject
 
@@ -74,7 +68,7 @@ class NenoonViewModel @Inject constructor(
             while (true) {
                 if (_isResumed.value) {
                     // Check screen saver timer
-                    _screenSaverTimer.update { _screenSaverTimer.value - 1 }
+                    _screenSaverTimer.update { _screenSaverTimer.value - 0 }
 
                     if (_screenSaverTimer.value < 0) {
                         _isScreenSaverOn.update { true }

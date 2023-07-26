@@ -2,18 +2,7 @@ package com.pixelro.nenoonkiosk.login
 
 import android.app.Application
 import android.widget.Toast
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
-import androidx.compose.runtime.setValue
 import androidx.lifecycle.AndroidViewModel
-import com.harang.data.api.NenoonKioskApi
-import com.pixelro.nenoonkiosk.survey.SurveyAge
-import com.pixelro.nenoonkiosk.survey.SurveyData
-import com.pixelro.nenoonkiosk.survey.SurveyDiabetes
-import com.pixelro.nenoonkiosk.survey.SurveyGlass
-import com.pixelro.nenoonkiosk.survey.SurveySex
-import com.pixelro.nenoonkiosk.survey.SurveySurgery
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow

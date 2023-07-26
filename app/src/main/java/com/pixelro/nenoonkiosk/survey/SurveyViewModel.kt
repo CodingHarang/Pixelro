@@ -3,11 +3,19 @@ package com.pixelro.nenoonkiosk.survey
 import android.app.Application
 import android.widget.Toast
 import androidx.lifecycle.AndroidViewModel
-import com.harang.data.api.NenoonKioskApi
+import androidx.lifecycle.viewModelScope
+import com.pixelro.nenoonkiosk.survey.datatype.SurveyAge
+import com.pixelro.nenoonkiosk.survey.datatype.SurveyData
+import com.pixelro.nenoonkiosk.survey.datatype.SurveyDiabetes
+import com.pixelro.nenoonkiosk.survey.datatype.SurveyGlass
+import com.pixelro.nenoonkiosk.survey.datatype.SurveySex
+import com.pixelro.nenoonkiosk.survey.datatype.SurveySurgery
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.update
+import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
@@ -25,6 +33,15 @@ class SurveyViewModel @Inject constructor(
     val surveySurgery: StateFlow<SurveySurgery> = _surveySurgery
     private val _surveyDiabetes = MutableStateFlow(SurveyDiabetes.None)
     val surveyDiabetes: StateFlow<SurveyDiabetes> = _surveyDiabetes
+    private val _questionType = MutableStateFlow(QuestionType.Age)
+    val questionType: StateFlow<QuestionType> = _questionType
+
+    fun updateQuestionType(type: QuestionType) {
+        viewModelScope.launch {
+            delay(1000)
+            _questionType.update { type }
+        }
+    }
 
     fun updateSurveyAge(type: SurveyAge) {
         _surveyAge.update { type }
@@ -47,6 +64,7 @@ class SurveyViewModel @Inject constructor(
     }
 
     fun initSurveyData() {
+        _questionType.update { QuestionType.Age }
         _surveyAge.update { SurveyAge.None }
         _surveySex.update { SurveySex.None }
         _surveyGlass.update { SurveyGlass.None }
@@ -86,6 +104,10 @@ class SurveyViewModel @Inject constructor(
             surveySurgery = surveySurgery.value,
             surveyDiabetes = surveyDiabetes.value
         )
+    }
+
+    enum class QuestionType {
+        Age, Sex, Glass, Surgery, Diabetes
     }
 
     init {

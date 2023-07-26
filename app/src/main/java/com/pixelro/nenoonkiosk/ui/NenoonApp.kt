@@ -65,7 +65,7 @@ fun NenoonApp(
                     modifier = Modifier
                         .fillMaxSize(),
                     navController = mainNavController,
-                    startDestination = GlobalConstants.ROUTE_SURVEY,
+                    startDestination = GlobalConstants.ROUTE_INTRO,
 //                    startDestination = GlobalConstants.ROUTE_SURVEY,
                     contentAlignment = Alignment.TopCenter
                 ) {
@@ -75,7 +75,9 @@ fun NenoonApp(
                     composable(
                         route = GlobalConstants.ROUTE_LOGIN,
                         enterTransition = { AnimationProvider.enterTransition },
-                        exitTransition = { AnimationProvider.exitTransition }
+                        exitTransition = { AnimationProvider.exitTransition },
+                        popEnterTransition = { AnimationProvider.popEnterTransition },
+                        popExitTransition = { AnimationProvider.popExitTransition }
                     ) {
                         LoginScreen(
                             toSurveyScreen_Guest = {
@@ -87,13 +89,33 @@ fun NenoonApp(
                             }
                         )
                     }
+
+                    /**
+                     * 첫 시작 화면
+                     */
+                    composable(
+                        route = GlobalConstants.ROUTE_INTRO,
+                        enterTransition = { AnimationProvider.enterTransition },
+                        exitTransition = { AnimationProvider.exitTransition },
+                        popEnterTransition = { AnimationProvider.popEnterTransition },
+                        popExitTransition = { AnimationProvider.popExitTransition }
+                    ) {
+                        IntroScreen(
+                            toSurveyScreen = {
+                                mainNavController.navigate(GlobalConstants.ROUTE_SURVEY)
+                            }
+                        )
+                    }
+
                     /**
                      * 문진표 작성 화면
                      */
                     composable(
                         route = GlobalConstants.ROUTE_SURVEY,
                         enterTransition = { AnimationProvider.enterTransition },
-                        exitTransition = { AnimationProvider.exitTransition }
+                        exitTransition = { AnimationProvider.exitTransition },
+                        popEnterTransition = { AnimationProvider.popEnterTransition },
+                        popExitTransition = { AnimationProvider.popExitTransition }
                     ) {
                         SurveyScreen(
                             toTestListScreen = {
@@ -110,7 +132,9 @@ fun NenoonApp(
                     composable(
                         route = GlobalConstants.ROUTE_TEST_LIST,
                         enterTransition = { AnimationProvider.enterTransition },
-                        exitTransition = { AnimationProvider.exitTransition }
+                        exitTransition = { AnimationProvider.exitTransition },
+                        popEnterTransition = { AnimationProvider.popEnterTransition },
+                        popExitTransition = { AnimationProvider.popExitTransition }
                     ) {
                         TestListScreen(
                             checkIsTestDone = viewModel::checkIsTestDone,
@@ -137,7 +161,9 @@ fun NenoonApp(
                     composable(
                         route = GlobalConstants.ROUTE_SETTINGS,
                         enterTransition = { AnimationProvider.enterTransition },
-                        exitTransition = { AnimationProvider.exitTransition }
+                        exitTransition = { AnimationProvider.exitTransition },
+                        popEnterTransition = { AnimationProvider.popEnterTransition },
+                        popExitTransition = { AnimationProvider.popExitTransition }
                     ) {
                         SettingsScreen(
                             viewModel = viewModel
@@ -150,7 +176,9 @@ fun NenoonApp(
                     composable(
                         route = GlobalConstants.ROUTE_TEST_CONTENT,
                         enterTransition = { AnimationProvider.enterTransition },
-                        exitTransition = { AnimationProvider.exitTransition }
+                        exitTransition = { AnimationProvider.exitTransition },
+                        popEnterTransition = { AnimationProvider.popEnterTransition },
+                        popExitTransition = { AnimationProvider.popExitTransition }
                     ) {
                         TestScreen(
                             viewModel = viewModel,
@@ -239,7 +267,9 @@ fun NenoonApp(
                     composable(
                         route = GlobalConstants.ROUTE_TEST_RESULT,
                         enterTransition = { AnimationProvider.enterTransition },
-                        exitTransition = { AnimationProvider.exitTransition }
+                        exitTransition = { AnimationProvider.exitTransition },
+                        popEnterTransition = { AnimationProvider.popEnterTransition },
+                        popExitTransition = { AnimationProvider.popExitTransition }
                     ) {
                         when (viewModel.selectedTestType.collectAsState().value) {
                             TestType.Presbyopia -> viewModel.updateIsPresbyopiaTestDone(true)

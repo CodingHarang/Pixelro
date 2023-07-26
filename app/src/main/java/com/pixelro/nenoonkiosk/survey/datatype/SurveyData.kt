@@ -1,4 +1,4 @@
-package com.pixelro.nenoonkiosk.survey
+package com.pixelro.nenoonkiosk.survey.datatype
 
 data class SurveyData(
     val surveyAge: SurveyAge = SurveyAge.None,
