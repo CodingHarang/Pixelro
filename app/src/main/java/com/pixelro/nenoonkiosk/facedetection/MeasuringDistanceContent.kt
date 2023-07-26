@@ -174,18 +174,9 @@ fun MeasuringDistanceContent(
             ) {
                 Box(
                     modifier = Modifier
-//                        .offset(x=0.dp, y=(0).dp)
                         .height(630.dp),
                     contentAlignment = Alignment.BottomCenter
                 ) {
-//                Image(
-//                    bitmap = viewModel.bitmap.collectAsState().value.asImageBitmap(),
-//                    contentDescription = ""
-//                )
-//                    Box(
-//                        modifier = Modifier
-//                            .offset(x = (0).dp, y = (0).dp)
-//                    ) {
                     FaceDetectionWithPreview(measuringDistanceContentVisibleState.targetState)
 //                    }
                     // eye tracking red dot
@@ -223,7 +214,7 @@ fun MeasuringDistanceContent(
                                     .height((500 * 200 / faceDetectionViewModel.screenToFaceDistance.collectAsState().value).dp)
                                     .offset(
                                         x = (310 - (faceDetectionViewModel.rightEyePosition.collectAsState().value.x / 1.75f)).dp,
-                                        y = (faceDetectionViewModel.rightEyePosition.collectAsState().value.y / 1.75f - 460).dp
+                                        y = (faceDetectionViewModel.rightEyePosition.collectAsState().value.y / 1.75f - 285).dp
                                     )
                                     .alpha(shiftVal),
                                 painter = painterResource(id = R.drawable.occluder),
@@ -236,7 +227,7 @@ fun MeasuringDistanceContent(
                                     .height((500 * 200 / faceDetectionViewModel.screenToFaceDistance.collectAsState().value).dp)
                                     .offset(
                                         x = (310 - (faceDetectionViewModel.leftEyePosition.collectAsState().value.x / 1.75f)).dp,
-                                        y = (faceDetectionViewModel.leftEyePosition.collectAsState().value.y / 1.75f - 460).dp
+                                        y = (faceDetectionViewModel.leftEyePosition.collectAsState().value.y / 1.75f - 285).dp
                                     )
                                     .alpha(shiftVal),
                                 painter = painterResource(id = R.drawable.occluder),

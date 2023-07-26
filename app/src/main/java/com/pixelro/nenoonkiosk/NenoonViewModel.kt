@@ -37,7 +37,6 @@ import com.pixelro.nenoonkiosk.data.SharedPreferencesManager
 import com.pixelro.nenoonkiosk.data.TestType
 import com.pixelro.nenoonkiosk.test.dementia.DementiaData
 import com.pixelro.nenoonkiosk.test.dementia.DementiaViewModel
-import com.pixelro.nenoonkiosk.login.LoginData
 import com.pixelro.nenoonkiosk.test.dementia.DementiaTestResult
 import com.pixelro.nenoonkiosk.survey.SurveyAge
 import com.pixelro.nenoonkiosk.survey.SurveyData
@@ -117,13 +116,6 @@ class NenoonViewModel @Inject constructor(
         return true
     }
 
-    fun retrieveLoginData(): LoginData {
-        return LoginData(
-            id = inputSignInId.value,
-            password = inputSignInPassword.value,
-
-            )
-    }
 
     // Settings
     private val _isLanguageSelectDialogShowing = MutableStateFlow(false)
@@ -311,9 +303,6 @@ class NenoonViewModel @Inject constructor(
     fun updateSelectedTestType(testType: TestType) {
         _selectedTestType.update { testType }
     }
-
-    // Login Data
-    var loginData = LoginData()
 
 //    var dementiaData = DementiaData(scores = mapOf(DementiaScore.One to true, DementiaScore.Two to false))
     var dementiaData = DementiaData(

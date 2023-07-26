@@ -60,25 +60,6 @@ class MyFaceAnalyzer(
         // original image
         val mediaImage = imageProxy.image
         if (mediaImage != null) {
-//            val bitmap = mediaImage.toBitmap()
-//            val resizedBitmap = Bitmap.createScaledBitmap(bitmap, bitmap.width * 1, bitmap.height * 1, false)
-//            val croppedBitmap = Bitmap.createBitmap(
-//                resizedBitmap,
-//                0,
-//                0,
-//                (resizedBitmap.width * 2) / 3,
-//                resizedBitmap.height
-//            )
-//            val imageReader = ImageReader.newInstance(
-//                resizedBitmap.width,
-//                resizedBitmap.height,
-//                ImageFormat.YUV_420_888,
-//                1
-//            )
-//            val resizedImage = imageReader.acquireLatestImage()
-//            val image =
-//                InputImage.fromBitmap(croppedBitmap, imageProxy.imageInfo.rotationDegrees)
-
             val image = InputImage.fromMediaImage(mediaImage, imageProxy.imageInfo.rotationDegrees)
             // Text Recognition
             recognizer.process(image).addOnSuccessListener(executor) { result ->

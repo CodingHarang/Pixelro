@@ -71,10 +71,8 @@ fun NenoonApp(
                         .fillMaxSize(),
                     navController = mainNavController,
 
-                    startDestination = GlobalConstants.ROUTE_TEST_LIST,
-//                    startDestination = GlobalConstants.ROUTE_PRIMARY_TEST_LIST,
+                    startDestination = GlobalConstants.ROUTE_PRIMARY_TEST_LIST,
 //                    startDestination = GlobalConstants.ROUTE_SURVEY,
-//                    startDestination = GlobalConstants.ROUTE_LOGIN,
 
                     contentAlignment = Alignment.TopCenter
                 ) {
@@ -98,24 +96,6 @@ fun NenoonApp(
                                 viewModel.updateSelectedTestType(TestType.Dementia)
                                 mainNavController.navigate(GlobalConstants.ROUTE_TEST_CONTENT)
                             },
-                        )
-                    }
-
-                    /**
-                     * 로그인 화면
-                     */
-                    composable(
-                        route = GlobalConstants.ROUTE_LOGIN,
-                        enterTransition = { AnimationProvider.enterTransition },
-                        exitTransition = { AnimationProvider.exitTransition }
-                    ) {
-//                            navBackStackEntry ->
-                        LoginScreen(
-
-                            toSurveyScreen = {
-                                mainNavController.navigate(GlobalConstants.ROUTE_SURVEY)
-                            },
-                            viewModel = viewModel
                         )
                     }
 

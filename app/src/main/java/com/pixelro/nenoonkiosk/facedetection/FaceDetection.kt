@@ -115,10 +115,7 @@ fun FaceDetectionScreenContentWithPreview(
     val lifecycleOwner = LocalLifecycleOwner.current
     val context = LocalContext.current
     val cameraProviderFuture = remember { ProcessCameraProvider.getInstance(context) }
-    Surface(
-//        modifier = Modifier
-//        .offset(x = 0.dp, y = (0).dp)
-    ) {
+    Surface() {
         if (isPreviewShowing) {
             AndroidView(
                 modifier = Modifier
@@ -154,26 +151,6 @@ fun FaceDetectionScreenContentWithPreview(
                         cameraProvider.bindToLifecycle(
                             lifecycleOwner, cameraSelector, preview, imageAnalysis)
                     }, executor)
-
-//                    val bitmap = mediaImage.toBitmap()
-//                    val resizedBitmap = Bitmap.createScaledBitmap(bitmap, bitmap.width * 1, bitmap.height * 1, false)
-//                    val croppedBitmap = Bitmap.createBitmap(
-//                        resizedBitmap,
-//                        0,
-//                        0,
-//                        (resizedBitmap.width * 2) / 3,
-//                        resizedBitmap.height
-//                    )
-//                    val imageReader = ImageReader.newInstance(
-//                        resizedBitmap.width,
-//                        resizedBitmap.height,
-//                        ImageFormat.YUV_420_888,
-//                        1
-//                    )
-//                    val resizedImage = imageReader.acquireLatestImage()
-//                    val image =
-//                        InputImage.fromBitmap(croppedBitmap, imageProxy.imageInfo.rotationDegrees)
-
                     previewView
                 }
             )
