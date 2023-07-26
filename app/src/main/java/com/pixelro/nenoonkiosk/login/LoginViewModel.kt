@@ -26,9 +26,6 @@ class LoginViewModel @Inject constructor(
 ) : AndroidViewModel(application) {
 
     // signIn
-    private val _inputSignInId = MutableStateFlow("")
-    val inputSignInId: StateFlow<String> = _inputSignInId
-
     private val _text = MutableStateFlow("")
     val text: StateFlow<String> = _text
     private val _password = MutableStateFlow("")
@@ -39,10 +36,6 @@ class LoginViewModel @Inject constructor(
     }
     fun updatePassword(text: String){
         _password.update { text }
-    }
-
-    fun updateInputSignInId(id: String) {
-        _inputSignInId.update { id }
     }
 
     fun checkLoginIsDone(): Boolean {
@@ -56,10 +49,5 @@ class LoginViewModel @Inject constructor(
         }
         return true
     }
-
-
-
-
-
 
 }

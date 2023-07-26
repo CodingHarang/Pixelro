@@ -57,7 +57,6 @@ import dagger.hilt.android.internal.Contexts.getApplication
 fun LoginScreen(
     toSurveyScreen: () -> Unit,
     toSurveyScreen_Guest: () -> Unit,
-//    viewModel: NenoonViewModel
     loginViewModel: LoginViewModel = hiltViewModel()
 ) {
     val text = loginViewModel.text.collectAsState().value
@@ -204,7 +203,6 @@ fun LoginScreen(
                         shape = RoundedCornerShape(8.dp),
                     )
                     .clickable {
-//                        if (!surveyViewModel.checkSurveyIsDone()) return@clickable
                         if (!loginViewModel.checkLoginIsDone()) return@clickable
                         toSurveyScreen()
                     },
@@ -221,48 +219,3 @@ fun LoginScreen(
         }
     }
 }
-
-
-//    Box(
-//        modifier = Modifier
-//            .fillMaxSize(),
-//        contentAlignment = Alignment.Center
-//    ) {
-//        val idHintTransition = updateTransition(LoginViewModel.inputSignInId.collectAsState().value, label = "")
-//        val idHintUp by idHintTransition.animateDp(label = "") {
-//            when(it) {
-//                "" -> 0.dp
-//                else -> (-15).dp
-//            }
-//        }
-//        Box(
-//            modifier = Modifier
-//                .fillMaxWidth()
-//                .height(50.dp)
-//                .padding(start = 20.dp, end = 20.dp)
-//                .background(
-//                    color = Color(0xffbbffbb),
-//                    shape = RoundedCornerShape(8.dp)
-//                ),
-//            contentAlignment = Alignment.CenterStart
-//        ) {
-//            BasicTextField(
-//                modifier = Modifier
-//                    .fillMaxWidth()
-//                    .padding(start = 20.dp),
-//                value = LoginViewModel.inputSignInId.collectAsState().value,
-//                onValueChange = { LoginViewModel.updateInputSignInId(it) },
-//                keyboardOptions = KeyboardOptions.Default.copy(
-//                    imeAction = ImeAction.Done
-//                ),
-//            )
-//            Text(
-//                modifier = Modifier
-//                    .offset(0.dp, idHintUp)
-//                    .padding(start = 20.dp),
-//                text = "Id",
-//                color = Color(0xff666666)
-//            )
-//        }
-//    }
-//}
