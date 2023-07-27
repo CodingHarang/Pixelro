@@ -15,7 +15,7 @@ data class SendSurveyDataRequest (
     @SerializedName("diabetes")
     val diabetes: Boolean,
     @SerializedName("pid")
-    val pid: Long = 1L,
+    val pid: Long = 23L,
     @SerializedName("survey1")
     val survey1: Int = 0,
     @SerializedName("survey2")

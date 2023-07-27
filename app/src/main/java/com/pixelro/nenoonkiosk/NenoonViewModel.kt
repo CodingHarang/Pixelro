@@ -68,7 +68,7 @@ class NenoonViewModel @Inject constructor(
             while (true) {
                 if (_isResumed.value) {
                     // Check screen saver timer
-                    _screenSaverTimer.update { _screenSaverTimer.value - 0 }
+                    _screenSaverTimer.update { _screenSaverTimer.value - 1 }
 
                     if (_screenSaverTimer.value < 0) {
                         _isScreenSaverOn.update { true }
@@ -109,8 +109,8 @@ class NenoonViewModel @Inject constructor(
     private val _isResumed = MutableStateFlow(false)
     private val _isPaused = MutableStateFlow(false)
     val exoPlayer = ExoPlayer.Builder(getApplication()).build()
-    private val _screenSaverTimer = MutableStateFlow(40)
-    private val _timeValue = MutableStateFlow(40)
+    private val _screenSaverTimer = MutableStateFlow(60)
+    private val _timeValue = MutableStateFlow(60)
 
     private val _isScreenSaverOn = MutableStateFlow(false)
     val isScreenSaverOn: StateFlow<Boolean> = _isScreenSaverOn
@@ -326,7 +326,7 @@ class NenoonViewModel @Inject constructor(
             }
             Log.e("surveyDataResponseCode", response?.code().toString())
             Log.e("surveyDataResponseBody", response?.body().toString())
-            Log.e("surveyDataResponseErrorBody", response?.errorBody().toString())
+            Log.e("surveyDataResponseErrorBody", response?.errorBody()?.string().toString())
             if (response != null) {
                 _surveyId.update { ((response.body()?.data?.get("tid") ?: 0) as Double).toLong() }
             } else {

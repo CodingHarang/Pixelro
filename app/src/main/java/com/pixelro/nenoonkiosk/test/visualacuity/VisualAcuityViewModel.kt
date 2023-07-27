@@ -75,7 +75,7 @@ class VisualAcuityViewModel @Inject constructor(
                 // if first trial
                 if (sightHistory[_sightLevel.value]!!.first == 1 && sightHistory[_sightLevel.value]!!.second == 0) {
                     // if level == 10
-                    if (_sightLevel.value == 10) {
+                    if (_sightLevel.value >= 10) {
                         viewModelScope.launch {
                             handleWrong(1.2f)
                             delay(500)
@@ -113,10 +113,26 @@ class VisualAcuityViewModel @Inject constructor(
         if (sightHistory[_sightLevel.value]!!.first + sightHistory[_sightLevel.value]!!.second >= 3) {
             // if correct >= 2
             if (sightHistory[_sightLevel.value]!!.first >= 2) {
-                _sightLevel.update { it + 1 }
+                // if level == 10
+                if (_sightLevel.value >= 10) {
+                    viewModelScope.launch {
+                        handleWrong(1.2f)
+                        delay(500)
+                        isEnd = true
+                        moveToNextStep(
+                            handleWrong,
+                            toResultScreen
+                        )
+                    }
+                } else {
+                    _sightLevel.update { it + 1 }
+                }
             } // if correct < 1
             else {
                 viewModelScope.launch {
+                    if (_sightLevel.value > 1) {
+                        _sightLevel.value--
+                    }
                     handleWrong(1.2f)
                     delay(500)
                     isEnd = true
