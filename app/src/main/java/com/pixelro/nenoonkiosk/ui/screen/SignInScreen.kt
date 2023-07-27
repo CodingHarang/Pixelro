@@ -40,8 +40,8 @@ import com.pixelro.nenoonkiosk.login.LoginViewModel
 
 @Composable
 fun SignInScreen(
-    toSurveyScreen: () -> Unit,
-    toSurveyScreen_Guest: () -> Unit,
+    updateIsSignedIn: () -> Unit,
+    updateScreenSaverInfo: (String) -> Unit,
     loginViewModel: LoginViewModel = hiltViewModel()
 ) {
     val text = loginViewModel.text.collectAsState().value
@@ -166,7 +166,7 @@ fun SignInScreen(
                 textDecoration = TextDecoration.Underline,
                 modifier = Modifier
                     .clickable {
-                        toSurveyScreen_Guest()
+
                     },
             )
         }
@@ -195,7 +195,14 @@ fun SignInScreen(
                     )
                     .clickable {
                         if (!loginViewModel.checkLoginIsDone()) return@clickable
-                        loginViewModel.signIn()
+                        loginViewModel.signIn(
+                            updateIsSignedIn = {
+                                updateIsSignedIn()
+                            },
+                            updateScreenSaverInfo = {
+                                updateScreenSaverInfo(it)
+                            }
+                        )
                     },
                 contentAlignment = Alignment.Center
             ) {

@@ -7,6 +7,8 @@ import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.viewModelScope
 import com.harang.data.api.NenoonKioskApi
 import com.harang.domain.model.SendSignInDataResponse
+import com.pixelro.nenoonkiosk.NenoonKioskApplication
+import com.pixelro.nenoonkiosk.data.GlobalConstants
 import com.pixelro.nenoonkiosk.data.SharedPreferencesManager
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -35,7 +37,10 @@ class LoginViewModel @Inject constructor(
         _password.update { text }
     }
 
-    fun signIn() {
+    fun signIn(
+        updateIsSignedIn: () -> Unit,
+        updateScreenSaverInfo: (String) -> Unit
+    ) {
         viewModelScope.launch {
             val response = try {
                 api.sendSignInData(
@@ -52,6 +57,18 @@ class LoginViewModel @Inject constructor(
             Log.e("signInResponseCode", "${response?.code()}")
             Log.e("signInResponseBody", "${response?.body()}")
             Log.e("signInResponseErrorBody", "${response?.errorBody()}")
+            if (response != null) {
+                if (response.body()?.data?.get("success") as Boolean) {
+                    Log.e("response", response.body()?.data?.get("video").toString())
+                    updateScreenSaverInfo(response.body()?.data?.get("video").toString())
+//                    SharedPreferencesManager.putString(GlobalConstants.PREFERENCE_VIDEO_URI, response.body()!!.data["video"].toString())
+                    updateIsSignedIn()
+                } else {
+                    Toast.makeText(NenoonKioskApplication.applicationContext(), "아이디와 비밀번호를 확인해주세요", Toast.LENGTH_SHORT).show()
+                }
+            } else {
+                Toast.makeText(NenoonKioskApplication.applicationContext(), "네트워크 설정을 확인해주세요", Toast.LENGTH_SHORT).show()
+            }
         }
     }
 

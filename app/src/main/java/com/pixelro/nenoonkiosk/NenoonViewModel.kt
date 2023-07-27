@@ -10,6 +10,7 @@ import android.content.pm.PackageManager
 import android.location.LocationManager
 import android.net.Uri
 import android.provider.Settings
+import android.provider.Settings.Global
 import android.util.Log
 import android.util.SizeF
 import androidx.core.content.ContextCompat
@@ -29,6 +30,7 @@ import com.google.android.gms.location.SettingsClient
 import com.google.android.gms.tasks.Task
 import com.harang.data.api.NenoonKioskApi
 import com.harang.domain.model.SendSurveyDataRequest
+import com.pixelro.nenoonkiosk.data.GlobalConstants
 import com.pixelro.nenoonkiosk.data.GlobalValue
 import com.pixelro.nenoonkiosk.data.SharedPreferencesManager
 import com.pixelro.nenoonkiosk.data.TestType
@@ -68,7 +70,7 @@ class NenoonViewModel @Inject constructor(
             while (true) {
                 if (_isResumed.value) {
                     // Check screen saver timer
-                    _screenSaverTimer.update { _screenSaverTimer.value - 0 }
+                    _screenSaverTimer.update { _screenSaverTimer.value - 10 }
 
                     if (_screenSaverTimer.value < 0) {
                         _isScreenSaverOn.update { true }
@@ -87,7 +89,7 @@ class NenoonViewModel @Inject constructor(
     private val _isSignedIn = MutableStateFlow(false)
     val isSignedIn: StateFlow<Boolean> = _isSignedIn
 
-    fun updateInputSignInId(isSignedIn: Boolean) {
+    fun updateIsSignedInId(isSignedIn: Boolean) {
         _isSignedIn.update { isSignedIn }
     }
 
@@ -399,12 +401,30 @@ class NenoonViewModel @Inject constructor(
     var amslerGridTestResult = AmslerGridTestResult()
     var mChartTestResult = MChartTestResult()
 
-    init {
-        showSplashScreen()
-        checkBackgroundStatus()
-        exoPlayer.setMediaItem(MediaItem.fromUri(Uri.fromFile(File("/storage/emulated/0/Download/ad1.mp4"))))
+    fun updateScreenSaverInfo(
+        uri: String
+    ) {
+        SharedPreferencesManager.putString(GlobalConstants.PREFERENCE_VIDEO_URI, uri)
+        Log.e("video_uri", SharedPreferencesManager.getString(GlobalConstants.PREFERENCE_VIDEO_URI))
+        exoPlayer.setMediaItem(MediaItem.fromUri(uri))
         exoPlayer.prepare()
         exoPlayer.repeatMode = Player.REPEAT_MODE_ONE
         exoPlayer.volume = 0f
+    }
+
+    init {
+        showSplashScreen()
+        checkBackgroundStatus()
+        //        exoPlayer.setMediaItem(MediaItem.fromUri(Uri.fromFile(File("/storage/emulated/0/Download/ad1.mp4"))))
+        if (SharedPreferencesManager.getString(GlobalConstants.PREFERENCE_VIDEO_URI) == "") {
+            exoPlayer.setMediaItem(MediaItem.fromUri(Uri.fromFile(File("/storage/emulated/0/Download/ad1.mp4"))))
+        } else {
+            exoPlayer.setMediaItem(MediaItem.fromUri(SharedPreferencesManager.getString(GlobalConstants.PREFERENCE_VIDEO_URI)))
+        }
+//        exoPlayer.setMediaItem(MediaItem.fromUri("https://drive.google.com/uc?export=view&id=1vNW4Xia8pG4tfGoao4Nb7hEJtOd9Cg8F"))
+        exoPlayer.prepare()
+        exoPlayer.repeatMode = Player.REPEAT_MODE_ONE
+        exoPlayer.volume = 0f
+//        exoPlayer.setMediaItem(MediaItem.fromUri("https://drive.google.com/uc?export=view&id=1NJAxk3TGlcXA8sUd01c2zsgEkp9ngp5q"))
     }
 }

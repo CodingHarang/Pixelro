@@ -12,5 +12,7 @@ object GlobalConstants {
     const val ROUTE_TEST_CONTENT = "TestContent"
     const val ROUTE_TEST_RESULT = "TestResult"
 
+    // SharedPreferences
     const val PREFERENCE_NAME = "nenoon_kiosk_shared_preferences"
+    const val PREFERENCE_VIDEO_URI = "video_uri"
 }

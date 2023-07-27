@@ -282,8 +282,12 @@ fun NenoonApp(
             }
         } else {
             SignInScreen(
-                toSurveyScreen = { /*TODO*/ },
-                toSurveyScreen_Guest = { /*TODO*/ }
+                updateIsSignedIn = {
+                    viewModel.updateIsSignedInId(true)
+                },
+                updateScreenSaverInfo = {
+                    viewModel.updateScreenSaverInfo(it)
+                }
             )
         }
     }
