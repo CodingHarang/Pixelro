@@ -125,7 +125,7 @@ fun NenoonApp(
                                 mainNavController.navigate(GlobalConstants.ROUTE_SETTINGS)
                             },
                             toSurveyScreen = {
-                                mainNavController.popBackStack(GlobalConstants.ROUTE_SURVEY, false)
+                                mainNavController.popBackStack(GlobalConstants.ROUTE_INTRO, false)
                             },
                             isPresbyopiaDone = viewModel.isPresbyopiaTestDone.collectAsState().value,
                             isShortVisualAcuityDone = viewModel.isShortVisualAcuityTestDone.collectAsState().value,
