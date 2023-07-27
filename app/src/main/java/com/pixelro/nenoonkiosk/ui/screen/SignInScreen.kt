@@ -37,7 +37,7 @@ import com.pixelro.nenoonkiosk.R
 import com.pixelro.nenoonkiosk.login.LoginViewModel
 
 @Composable
-fun LoginScreen(
+fun SignInScreen(
     toSurveyScreen: () -> Unit,
     toSurveyScreen_Guest: () -> Unit,
     loginViewModel: LoginViewModel = hiltViewModel()

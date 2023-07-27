@@ -112,7 +112,6 @@ fun TestScreen(
                                         KeyEvent.KEYCODE_BACK
                                     )
                                 )
-                                TTS.tts.stop()
                             },
                         painter = painterResource(id = R.drawable.close_button),
                         contentDescription = ""

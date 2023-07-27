@@ -84,11 +84,11 @@ class NenoonViewModel @Inject constructor(
     }
 
     // signIn
-    private val _inputSignInId = MutableStateFlow("")
-    val inputSignInId: StateFlow<String> = _inputSignInId
+    private val _isSignedIn = MutableStateFlow(false)
+    val isSignedIn: StateFlow<Boolean> = _isSignedIn
 
-    fun updateInputSignInId(id: String) {
-        _inputSignInId.update { id }
+    fun updateInputSignInId(isSignedIn: Boolean) {
+        _isSignedIn.update { isSignedIn }
     }
 
     // Settings
