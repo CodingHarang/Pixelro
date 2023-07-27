@@ -281,7 +281,10 @@ fun NenoonApp(
                 }
             }
         } else {
-            SignInScreen(toSurveyScreen = { /*TODO*/ }, toSurveyScreen_Guest = { /*TODO*/ })
+            SignInScreen(
+                toSurveyScreen = { /*TODO*/ },
+                toSurveyScreen_Guest = { /*TODO*/ }
+            )
         }
     }
 }
