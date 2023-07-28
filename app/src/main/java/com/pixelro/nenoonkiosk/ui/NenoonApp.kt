@@ -67,12 +67,26 @@ fun NenoonApp(
                         .fillMaxSize(),
                     navController = mainNavController,
 
-                    startDestination = GlobalConstants.ROUTE_PRIMARY_TEST_LIST,
-//                    startDestination = GlobalConstants.ROUTE_SURVEY,
-//                    startDestination = GlobalConstants.ROUTE_LOGIN,
+                    startDestination = GlobalConstants.ROUTE_INTRO,
 
                     contentAlignment = Alignment.TopCenter
                 ) {
+                    /**
+                     * 첫 시작 화면
+                     */
+                    composable(
+                        route = GlobalConstants.ROUTE_INTRO,
+                        enterTransition = { AnimationProvider.enterTransition },
+                        exitTransition = { AnimationProvider.exitTransition },
+                        popEnterTransition = { AnimationProvider.popEnterTransition },
+                        popExitTransition = { AnimationProvider.popExitTransition }
+                    ) {
+                        IntroScreen(
+                            toPrimaryTestListScreen = {
+                                mainNavController.navigate(GlobalConstants.ROUTE_PRIMARY_TEST_LIST)
+                            }
+                        )
+                    }
 
                     /**
                      * 초기 선택 화면
@@ -124,7 +138,7 @@ fun NenoonApp(
                     ) {
                         SurveyScreen(
                             toPrimaryScreen = {
-                                mainNavController.navigate(GlobalConstants.ROUTE_PRIMARY_TEST_LIST)
+                                mainNavController.navigate(GlobalConstants.ROUTE_INTRO)
                             },
                             toTestListScreen = {
                                 mainNavController.navigate(GlobalConstants.ROUTE_TEST_LIST)
