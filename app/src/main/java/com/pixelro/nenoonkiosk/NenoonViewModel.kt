@@ -9,8 +9,8 @@ import android.content.IntentSender
 import android.content.pm.PackageManager
 import android.location.LocationManager
 import android.net.Uri
-import android.os.Build
 import android.provider.Settings
+import android.provider.Settings.Global
 import android.util.Log
 import android.util.SizeF
 import android.widget.Toast
@@ -30,20 +30,20 @@ import com.google.android.gms.location.LocationSettingsResponse
 import com.google.android.gms.location.SettingsClient
 import com.google.android.gms.tasks.Task
 import com.harang.data.api.NenoonKioskApi
-import com.harang.domain.model.SendPresbyopiaTestResultRequest
 import com.harang.domain.model.SendSurveyDataRequest
+import com.pixelro.nenoonkiosk.data.GlobalConstants
 import com.pixelro.nenoonkiosk.data.GlobalValue
 import com.pixelro.nenoonkiosk.data.SharedPreferencesManager
 import com.pixelro.nenoonkiosk.data.TestType
 import com.pixelro.nenoonkiosk.test.dementia.DementiaData
 import com.pixelro.nenoonkiosk.test.dementia.DementiaViewModel
 import com.pixelro.nenoonkiosk.test.dementia.DementiaTestResult
-import com.pixelro.nenoonkiosk.survey.SurveyAge
-import com.pixelro.nenoonkiosk.survey.SurveyData
-import com.pixelro.nenoonkiosk.survey.SurveyDiabetes
-import com.pixelro.nenoonkiosk.survey.SurveyGlass
-import com.pixelro.nenoonkiosk.survey.SurveySex
-import com.pixelro.nenoonkiosk.survey.SurveySurgery
+import com.pixelro.nenoonkiosk.survey.datatype.SurveyAge
+import com.pixelro.nenoonkiosk.survey.datatype.SurveyData
+import com.pixelro.nenoonkiosk.survey.datatype.SurveyDiabetes
+import com.pixelro.nenoonkiosk.survey.datatype.SurveyGlass
+import com.pixelro.nenoonkiosk.survey.datatype.SurveySex
+import com.pixelro.nenoonkiosk.survey.datatype.SurveySurgery
 import com.pixelro.nenoonkiosk.test.macular.amslergrid.AmslerGridTestResult
 import com.pixelro.nenoonkiosk.test.macular.mchart.MChartTestResult
 import com.pixelro.nenoonkiosk.test.presbyopia.PresbyopiaTestResult
@@ -59,7 +59,6 @@ import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import retrofit2.HttpException
 import java.io.File
-import java.time.LocalDateTime
 import java.util.Locale
 import javax.inject.Inject
 
@@ -67,7 +66,7 @@ import javax.inject.Inject
 @HiltViewModel
 class NenoonViewModel @Inject constructor(
     application: Application,
-//    private val api: NenoonKioskApi
+    private val api: NenoonKioskApi
 ) : AndroidViewModel(application) {
 
     private fun checkBackgroundStatus() {
@@ -75,8 +74,7 @@ class NenoonViewModel @Inject constructor(
             while (true) {
                 if (_isResumed.value) {
                     // Check screen saver timer
-
-                    _screenSaverTimer.update { _screenSaverTimer.value - 1 }
+                    _screenSaverTimer.update { _screenSaverTimer.value + 100 }
 
                     if (_screenSaverTimer.value < 0) {
                         _isScreenSaverOn.update { true }
@@ -92,30 +90,12 @@ class NenoonViewModel @Inject constructor(
     }
 
     // signIn
-    private val _inputSignInId = MutableStateFlow("")
-    val inputSignInId: StateFlow<String> = _inputSignInId
-    private val _inputSignInPassword = MutableStateFlow("")
-    val inputSignInPassword: StateFlow<String> = _inputSignInPassword
+    private val _isSignedIn = MutableStateFlow(false)
+    val isSignedIn: StateFlow<Boolean> = _isSignedIn
 
-    fun updateInputSignInId(id: String) {
-        _inputSignInId.update { id }
+    fun updateIsSignedInId(isSignedIn: Boolean) {
+        _isSignedIn.update { isSignedIn }
     }
-    fun updateInputSignInPassword(id: String) {
-        _inputSignInPassword.update { id }
-    }
-
-    fun checkLoginIsDone(): Boolean {
-        if (inputSignInId.value == "") {
-            Toast.makeText(getApplication(), "아이디를 입력해주세요", Toast.LENGTH_SHORT).show()
-            return false
-        }
-        if (inputSignInPassword.value == "") {
-            Toast.makeText(getApplication(), "비밀번호를 입력해주세요", Toast.LENGTH_SHORT).show()
-            return false
-        }
-        return true
-    }
-
 
     // Settings
     private val _isLanguageSelectDialogShowing = MutableStateFlow(false)
@@ -138,7 +118,6 @@ class NenoonViewModel @Inject constructor(
     private val _screenSaverTimer = MutableStateFlow(40)
     private val _timeValue = MutableStateFlow(40)
 
-//        val screenSaverTimer: StateFlow<Int> = _screenSaverTimer
     private val _isScreenSaverOn = MutableStateFlow(false)
     val isScreenSaverOn: StateFlow<Boolean> = _isScreenSaverOn
 
@@ -314,57 +293,58 @@ class NenoonViewModel @Inject constructor(
     private val _surveyId = MutableStateFlow(0L)
     val surveyId: StateFlow<Long> = _surveyId
 
-//    fun updateSurveyData(surveyData: SurveyData) {
-//        viewModelScope.launch {
-//            val request = SendSurveyDataRequest(
-//                age = when (surveyData.surveyAge) {
-//                    SurveyAge.First -> 9
-//                    SurveyAge.Second -> 10
-//                    SurveyAge.Third -> 20
-//                    SurveyAge.Fourth -> 30
-//                    SurveyAge.Fifth -> 40
-//                    SurveyAge.Sixth -> 50
-//                    SurveyAge.Seventh -> 60
-//                    else -> 70
-//                },
-//                gender = when (surveyData.surveySex) {
-//                    SurveySex.Man -> "M"
-//                    else -> "W"
-//                },
-//                glasses = when (surveyData.surveyGlass) {
-//                    SurveyGlass.Yes -> true
-//                    else -> false
-//                },
-//                surgery = when (surveyData.surveySurgery) {
-//                    SurveySurgery.Normal -> "normal"
-//                    SurveySurgery.LASIK -> "correction"
-//                    SurveySurgery.Cataract -> "cataract"
-//                    else -> "etc"
-//                },
-//                diabetes = when (surveyData.surveyDiabetes) {
-//                    SurveyDiabetes.Yes -> true
-//                    else -> false
-//                },
-//                createAt = LocalDateTime.now().toString()
-//            )
-//            Log.e("surveyDataRequest", request.toString())
-//            val response = try {
-//                api.sendSurveyData(request)
-//            } catch (e: Exception) {
-//                e.printStackTrace()
-//                null
-//            } catch (e: HttpException) {
-//                e.printStackTrace()
-//                null
-//            }
-//            Log.e("surveyDataResponse", response?.body().toString())
-//            if (response != null) {
-//                _surveyId.update { ((response.body()?.data?.get("tid") ?: 0) as Double).toLong() }
-//            } else {
-//                _surveyId.update { 0L }
-//            }
-//        }
-//    }
+    fun updateSurveyData(surveyData: SurveyData) {
+        viewModelScope.launch {
+            val request = SendSurveyDataRequest(
+                age = when (surveyData.surveyAge) {
+                    SurveyAge.First -> 9
+                    SurveyAge.Second -> 10
+                    SurveyAge.Third -> 20
+                    SurveyAge.Fourth -> 30
+                    SurveyAge.Fifth -> 40
+                    SurveyAge.Sixth -> 50
+                    SurveyAge.Seventh -> 60
+                    else -> 70
+                },
+                gender = when (surveyData.surveySex) {
+                    SurveySex.Man -> "M"
+                    else -> "W"
+                },
+                glasses = when (surveyData.surveyGlass) {
+                    SurveyGlass.Yes -> true
+                    else -> false
+                },
+                surgery = when (surveyData.surveySurgery) {
+                    SurveySurgery.Normal -> "normal"
+                    SurveySurgery.LASIK -> "correction"
+                    SurveySurgery.Cataract -> "cataract"
+                    else -> "etc"
+                },
+                diabetes = when (surveyData.surveyDiabetes) {
+                    SurveyDiabetes.Yes -> true
+                    else -> false
+                }
+            )
+            Log.e("surveyDataRequest", request.toString())
+            val response = try {
+                api.sendSurveyData(request)
+            } catch (e: Exception) {
+                e.printStackTrace()
+                null
+            } catch (e: HttpException) {
+                e.printStackTrace()
+                null
+            }
+            Log.e("surveyDataResponseCode", response?.code().toString())
+            Log.e("surveyDataResponseBody", response?.body().toString())
+            Log.e("surveyDataResponseErrorBody", response?.errorBody().toString())
+            if (response != null) {
+                _surveyId.update { ((response.body()?.data?.get("tid") ?: 0) as Double).toLong() }
+            } else {
+                _surveyId.update { 0L }
+            }
+        }
+    }
 
     // Test Result
     private val _isPresbyopiaTestDone = MutableStateFlow(false)
@@ -431,12 +411,30 @@ class NenoonViewModel @Inject constructor(
     var mChartTestResult = MChartTestResult()
     var dementiaTestResult = DementiaTestResult(scores = List(14) { DementiaViewModel.DementiaAnswer.None })
 
-    init {
-        showSplashScreen()
-        checkBackgroundStatus()
-        exoPlayer.setMediaItem(MediaItem.fromUri(Uri.fromFile(File("/storage/emulated/0/Download/ad1.mp4"))))
+    fun updateScreenSaverInfo(
+        uri: String
+    ) {
+        SharedPreferencesManager.putString(GlobalConstants.PREFERENCE_VIDEO_URI, uri)
+        Log.e("video_uri", SharedPreferencesManager.getString(GlobalConstants.PREFERENCE_VIDEO_URI))
+        exoPlayer.setMediaItem(MediaItem.fromUri(uri))
         exoPlayer.prepare()
         exoPlayer.repeatMode = Player.REPEAT_MODE_ONE
         exoPlayer.volume = 0f
+    }
+
+    init {
+        showSplashScreen()
+        checkBackgroundStatus()
+        //        exoPlayer.setMediaItem(MediaItem.fromUri(Uri.fromFile(File("/storage/emulated/0/Download/ad1.mp4"))))
+        if (SharedPreferencesManager.getString(GlobalConstants.PREFERENCE_VIDEO_URI) == "") {
+            exoPlayer.setMediaItem(MediaItem.fromUri(Uri.fromFile(File("/storage/emulated/0/Download/ad1.mp4"))))
+        } else {
+            exoPlayer.setMediaItem(MediaItem.fromUri(SharedPreferencesManager.getString(GlobalConstants.PREFERENCE_VIDEO_URI)))
+        }
+//        exoPlayer.setMediaItem(MediaItem.fromUri("https://drive.google.com/uc?export=view&id=1vNW4Xia8pG4tfGoao4Nb7hEJtOd9Cg8F"))
+        exoPlayer.prepare()
+        exoPlayer.repeatMode = Player.REPEAT_MODE_ONE
+        exoPlayer.volume = 0f
+//        exoPlayer.setMediaItem(MediaItem.fromUri("https://drive.google.com/uc?export=view&id=1NJAxk3TGlcXA8sUd01c2zsgEkp9ngp5q"))
     }
 }

@@ -8,6 +8,7 @@ import com.harang.domain.model.SendPresbyopiaTestResultRequest
 import com.harang.domain.model.SendPresbyopiaTestResultResponse
 import com.harang.domain.model.SendShortVisualAcuityTestResultRequest
 import com.harang.domain.model.SendShortVisualAcuityTestResultResponse
+import com.harang.domain.model.SendSignInDataResponse
 import com.harang.domain.model.SendSurveyDataRequest
 import com.harang.domain.model.SendSurveyDataResponse
 import com.harang.domain.model.TestData
@@ -15,6 +16,7 @@ import retrofit2.Response
 import retrofit2.http.Body
 import retrofit2.http.GET
 import retrofit2.http.POST
+import retrofit2.http.Query
 
 interface NenoonKioskApi {
 
@@ -42,4 +44,10 @@ interface NenoonKioskApi {
     suspend fun sendSurveyData(
         @Body body: SendSurveyDataRequest
     ): Response<SendSurveyDataResponse>
+
+    @GET("api/v1/location/signin")
+    suspend fun sendSignInData(
+        @Query("id") id: String,
+        @Query("pw") pw: String
+    ): Response<SendSignInDataResponse>
 }

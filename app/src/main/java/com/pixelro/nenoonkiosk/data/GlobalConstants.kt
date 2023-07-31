@@ -1,9 +1,12 @@
 package com.pixelro.nenoonkiosk.data
 
 object GlobalConstants {
-    const val ROUTE_PRIMARY_TEST_LIST = "PrimaryTestList"
-    const val ROUTE_SURVEY = "Servey"
+
     const val ROUTE_LOGIN = "Login"
+    const val ROUTE_INTRO = "Intro"
+    const val ROUTE_SURVEY = "Survey"
+    const val ROUTE_PRIMARY_TEST_LIST = "PrimaryPage"
+
     const val ROUTE_TEST_LIST = "MainTestList"
 
     const val ROUTE_SETTINGS = "Settings"
@@ -24,5 +27,7 @@ object GlobalConstants {
     const val ROUTE_WEBVIEW2 = "WebviewPage2"
     const val ROUTE_WEBVIEW3 = "WebviewPage3"
 
+    // SharedPreferences
     const val PREFERENCE_NAME = "nenoon_kiosk_shared_preferences"
+    const val PREFERENCE_VIDEO_URI = "video_uri"
 }

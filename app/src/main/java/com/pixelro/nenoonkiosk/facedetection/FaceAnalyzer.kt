@@ -65,6 +65,7 @@ class MyFaceAnalyzer(
             recognizer.process(image).addOnSuccessListener(executor) { result ->
 
                 Log.e("imgSize", "${image.height}, ${image.width}")
+
                 for (block in result.textBlocks) {
                     for (line in block.lines) {
                         if (line.text == "NENOON" || line.text == "NE NOON") {
@@ -86,20 +87,27 @@ class MyFaceAnalyzer(
             // Face Detection
             detector.process(image).addOnSuccessListener(executor) { faces ->
                 var centerFace: Face? = null
+
                 for (face in faces) {
                     val leftEyePosition = face.getLandmark(FaceLandmark.LEFT_EYE)?.position
                     val rightEyePosition = face.getLandmark(FaceLandmark.RIGHT_EYE)?.position
-//                    Log.e("eyePosition", "leftEyePosition: ${leftEyePosition?.x}\nrightEyePosition: ${rightEyePosition?.x}")
                     if (leftEyePosition != null && rightEyePosition != null) {
-//                        if (leftEyePosition.x > 260f && leftEyePosition.x < 544f && rightEyePosition.x < 804f && rightEyePosition.x > 544f && leftEyePosition.y > 400f && rightEyePosition.y > 400f && rightEyePosition.x - leftEyePosition.x > 100f) {
-                        centerFace = face
-                        break
-//                        }
+
+                        if ((leftEyePosition.x > 260f)
+                            && (leftEyePosition.x < 544f)
+                            && (rightEyePosition.x < 804f)
+                            && (rightEyePosition.x > 544f)
+                            && (leftEyePosition.y > 400f)
+                            && (rightEyePosition.y > 400f)
+                            && ((rightEyePosition.x - leftEyePosition.x) > 100f)
+                        ) {
+                            centerFace = face
+                            break
+                        }
                     }
                 }
 
-                if (centerFace != null) {
-
+                if(centerFace != null) {
                     noFaceCount = 0
                     updateIsFaceDetected(true)
                     val boundingBox = centerFace.boundingBox
@@ -163,35 +171,4 @@ class MyFaceAnalyzer(
         return BitmapFactory.decodeByteArray(imageBytes, 0, imageBytes.size)
     }
 
-//     사이즈 조절
-//        val bitmap = imageProxy.toBitmap()
-//        val matrix = Matrix()
-//        matrix.setScale(-1f, 1f)
-//        matrix.postRotate(90f)
-//        val rotatedImage =
-//            Bitmap.createBitmap(bitmap, 0, 0, bitmap.width - 300, bitmap.height, matrix, true)
-//
-//        updateBitmap(rotatedImage)
-
-//        resized image
-//        val bitmap = imageProxy.toBitmap()
-//        val resizedBitmap =
-//            Bitmap.createScaledBitmap(bitmap, bitmap.width * 2, bitmap.height * 2, false)
-//        val croppedBitmap = Bitmap.createBitmap(
-//            resizedBitmap,
-//            resizedBitmap.width / 4,
-//            resizedBitmap.height / 4,
-//            resizedBitmap.width / 2,
-//            resizedBitmap.height / 2
-//        )
-//        val imageReader = ImageReader.newInstance(
-//            resizedBitmap.width,
-//            resizedBitmap.height,
-//            ImageFormat.YUV_420_888,
-//            1
-//        )
-//        val resizedImage = imageReader.acquireLatestImage()
-//        val inputResizedImage =
-//            InputImage.fromBitmap(croppedBitmap, imageProxy.imageInfo.rotationDegrees)
-//    }
 }

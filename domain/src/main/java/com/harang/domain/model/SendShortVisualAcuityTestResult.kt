@@ -8,19 +8,17 @@ data class SendShortVisualAcuityTestResultRequest(
     @SerializedName("surveyId")
     val surveyId: Long,
     @SerializedName("testType")
-    val testType: String,
+    val testType: String = "short",
     @SerializedName("distance")
-    val distance: Int,
+    val distance: Int = 40,
     @SerializedName("leftSight")
     val leftSight: Int,
     @SerializedName("rightSight")
     val rightSight: Int,
     @SerializedName("leftPerspective")
-    val leftPerspective: String,
+    val leftPerspective: String = "normal",
     @SerializedName("rightPerspective")
-    val rightPerspective: String,
-    @SerializedName("createAt")
-    val createAt: String,
+    val rightPerspective: String = "normal",
     @SerializedName("test1")
     val test1: Int = 0,
     @SerializedName("test2")

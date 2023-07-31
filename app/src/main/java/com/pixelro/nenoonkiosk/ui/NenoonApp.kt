@@ -37,7 +37,10 @@ fun NenoonApp(
     mainNavController: NavHostController = rememberAnimatedNavController()
 ) {
 
-    Log.e("GlobalValue", "${GlobalValue.focalLength}, ${GlobalValue.lensSize}, ${GlobalValue.pixelDensity}, ${GlobalValue.screenHeightDp}, ${GlobalValue.screenWidthDp}")
+    Log.e(
+        "GlobalValue",
+        "${GlobalValue.focalLength}, ${GlobalValue.lensSize}, ${GlobalValue.pixelDensity}, ${GlobalValue.screenHeightDp}, ${GlobalValue.screenWidthDp}"
+    )
     val selectedTest = viewModel.selectedTestType.collectAsState().value
 
     /**
@@ -47,260 +50,285 @@ fun NenoonApp(
     if (viewModel.isShowingSplashScreen.collectAsState().value) {
         SplashScreen()
     } else {
-        if (viewModel.isScreenSaverOn.collectAsState().value) {
-            /**
-             * Screen Saver
-             * 검사 중이 아닐 때 40초 동안 입력이 없으면 보여지는 화면
-             */
-            ScreenSaverScreen(
-                viewModel,
-                toSurveyScreen = {
-                    mainNavController.popBackStack(GlobalConstants.ROUTE_SURVEY, false)
-                }
-            )
-        } else {
-            if (!viewModel.isAllPermissionsGranted.collectAsState().value) {
+//        if (viewModel.isSignedIn.collectAsState().value) {
+            if (viewModel.isScreenSaverOn.collectAsState().value) {
                 /**
-                 * Permission Request Screen
-                 * 앱 사용에 필요한 권한이 충족되지 않으면 보여지는 화면
+                 * Screen Saver
+                 * 검사 중이 아닐 때 40초 동안 입력이 없으면 보여지는 화면
                  */
-                PermissionRequestScreen(viewModel)
+                ScreenSaverScreen(
+                    viewModel,
+                    toSurveyScreen = {
+                        mainNavController.popBackStack(GlobalConstants.ROUTE_SURVEY, false)
+                    }
+                )
+
             } else {
-                AnimatedNavHost(
-                    modifier = Modifier
-                        .fillMaxSize(),
-                    navController = mainNavController,
-
-                    startDestination = GlobalConstants.ROUTE_PRIMARY_TEST_LIST,
+                if (!viewModel.isAllPermissionsGranted.collectAsState().value) {
+                    /**
+                     * Permission Request Screen
+                     * 앱 사용에 필요한 권한이 충족되지 않으면 보여지는 화면
+                     */
+                    PermissionRequestScreen(viewModel)
+                } else {
+                    AnimatedNavHost(
+                        modifier = Modifier
+                            .fillMaxSize(),
+                        navController = mainNavController,
+                        startDestination = GlobalConstants.ROUTE_PRIMARY_TEST_LIST,
 //                    startDestination = GlobalConstants.ROUTE_SURVEY,
-
-                    contentAlignment = Alignment.TopCenter
-                ) {
-
-                    /**
-                     * 초기 선택 화면
-                     */
-                    composable(
-                        route = GlobalConstants.ROUTE_PRIMARY_TEST_LIST,
-                        enterTransition = { AnimationProvider.enterTransition },
-                        exitTransition = { AnimationProvider.exitTransition }
+                        contentAlignment = Alignment.TopCenter
                     ) {
-                        BodyListScreen(
-                            toSettingsScreen = {
-                                mainNavController.navigate(GlobalConstants.ROUTE_SETTINGS)
-                            },
-                            toSurveyScreen = {
-                                mainNavController.navigate(GlobalConstants.ROUTE_SURVEY)
-                            },
-                            toDementiaScreen = {
-                                viewModel.updateSelectedTestType(TestType.Dementia)
-                                mainNavController.navigate(GlobalConstants.ROUTE_TEST_CONTENT)
-                            },
-                        )
-                    }
 
-                    /**
-                     * 문진표 작성 화면
-                     */
-                    composable(
-                        route = GlobalConstants.ROUTE_SURVEY,
-                        enterTransition = { AnimationProvider.enterTransition },
-                        exitTransition = { AnimationProvider.exitTransition }
-                    ) {
-                        SurveyScreen(
-                            toPrimaryScreen = {
-                                mainNavController.navigate(GlobalConstants.ROUTE_PRIMARY_TEST_LIST)
-                            },
-                            toTestListScreen = {
-                                mainNavController.navigate(GlobalConstants.ROUTE_TEST_LIST)
-                                viewModel.initializeTestDoneStatus()
+                        /**
+                         * 초기 선택 화면
+                         */
+                        composable(
+                            route = GlobalConstants.ROUTE_PRIMARY_TEST_LIST,
+                            enterTransition = { AnimationProvider.enterTransition },
+                            exitTransition = { AnimationProvider.exitTransition }
+                        ) {
+                            BodyListScreen(
+                                toSettingsScreen = {
+                                    mainNavController.navigate(GlobalConstants.ROUTE_SETTINGS)
+                                },
+                                toSurveyScreen = {
+                                    mainNavController.navigate(GlobalConstants.ROUTE_SURVEY)
+                                },
+                                toDementiaScreen = {
+                                    viewModel.updateSelectedTestType(TestType.Dementia)
+                                    mainNavController.navigate(GlobalConstants.ROUTE_TEST_CONTENT)
+                                },
+                            )
+                        }
+
+                        /**
+                         * 문진표 작성 화면
+                         */
+                        composable(
+                            route = GlobalConstants.ROUTE_SURVEY,
+                            enterTransition = { AnimationProvider.enterTransition },
+                            exitTransition = { AnimationProvider.exitTransition },
+                            popEnterTransition = { AnimationProvider.popEnterTransition },
+                            popExitTransition = { AnimationProvider.popExitTransition }
+                        ) {
+                            SurveyScreen(
+                                toPrimaryScreen = {
+                                    mainNavController.navigate(GlobalConstants.ROUTE_PRIMARY_TEST_LIST)
+                                },
+                                toTestListScreen = {
+                                    mainNavController.navigate(GlobalConstants.ROUTE_TEST_LIST)
+                                    viewModel.initializeTestDoneStatus()
 //                                viewModel.updateSurveyData(it)
-                            }
-                        )
-                    }
+                                }
+                            )
+                        }
 
-                    /**
-                     * 검사 목록 화면
-                     */
-                    composable(
-                        route = GlobalConstants.ROUTE_TEST_LIST,
-                        enterTransition = { AnimationProvider.enterTransition },
-                        exitTransition = { AnimationProvider.exitTransition }
-                    ) {
-                        TestListScreen(
-                            checkIsTestDone = viewModel::checkIsTestDone,
-                            toTestScreen = {
-                                viewModel.updateSelectedTestType(it)
-                                mainNavController.navigate(GlobalConstants.ROUTE_TEST_CONTENT)
-                            },
-                            toSettingsScreen = {
-                                mainNavController.navigate(GlobalConstants.ROUTE_SETTINGS)
-                            },
-                            toSurveyScreen = {
-                                mainNavController.popBackStack(GlobalConstants.ROUTE_SURVEY, false)
-                            },
+                        /**
+                         * 검사 목록 화면
+                         */
+                        composable(
+                            route = GlobalConstants.ROUTE_TEST_LIST,
+                            enterTransition = { AnimationProvider.enterTransition },
+                            exitTransition = { AnimationProvider.exitTransition }
+                        ) {
+                            TestListScreen(
+                                checkIsTestDone = viewModel::checkIsTestDone,
+                                toTestScreen = {
+                                    viewModel.updateSelectedTestType(it)
+                                    mainNavController.navigate(GlobalConstants.ROUTE_TEST_CONTENT)
+                                },
+                                toSettingsScreen = {
+                                    mainNavController.navigate(GlobalConstants.ROUTE_SETTINGS)
+                                },
+                                toSurveyScreen = {
+                                    mainNavController.popBackStack(
+                                        GlobalConstants.ROUTE_SURVEY,
+                                        false
+                                    )
+                                },
 
-                            isPresbyopiaDone = viewModel.isPresbyopiaTestDone.collectAsState().value,
-                            isShortVisualAcuityDone = viewModel.isShortVisualAcuityTestDone.collectAsState().value,
-                            isAmslerGridDone = viewModel.isAmslerGridTestDone.collectAsState().value,
-                            isMChartDone = viewModel.isMChartTestDone.collectAsState().value
-                        )
-                    }
+                                isPresbyopiaDone = viewModel.isPresbyopiaTestDone.collectAsState().value,
+                                isShortVisualAcuityDone = viewModel.isShortVisualAcuityTestDone.collectAsState().value,
+                                isAmslerGridDone = viewModel.isAmslerGridTestDone.collectAsState().value,
+                                isMChartDone = viewModel.isMChartTestDone.collectAsState().value
+                            )
+                        }
 
-                    /**
-                     * 설정 화면
-                     */
-                    composable(
-                        route = GlobalConstants.ROUTE_SETTINGS,
-                        enterTransition = { AnimationProvider.enterTransition },
-                        exitTransition = { AnimationProvider.exitTransition }
-                    ) {
-                        SettingsScreen(
-                            viewModel = viewModel
-                        )
-                    }
+                        /**
+                         * 설정 화면
+                         */
+                        composable(
+                            route = GlobalConstants.ROUTE_SETTINGS,
+                            enterTransition = { AnimationProvider.enterTransition },
+                            exitTransition = { AnimationProvider.exitTransition },
+                            popEnterTransition = { AnimationProvider.popEnterTransition },
+                            popExitTransition = { AnimationProvider.popExitTransition }
+                        ) {
+                            SettingsScreen(
+                                viewModel = viewModel
+                            )
+                        }
 
-                    /**
-                     * 검사 화면
-                     */
-                    composable(
-                        route = GlobalConstants.ROUTE_TEST_CONTENT,
-                        enterTransition = { AnimationProvider.enterTransition },
-                        exitTransition = { AnimationProvider.exitTransition }
-                    ) {
-                        TestScreen(
-                            viewModel = viewModel,
-                            navController = mainNavController,
-                            content = {
-                                when (selectedTest) {
-                                    TestType.Presbyopia -> {
-                                        PresbyopiaTestContent(
-                                            toResultScreen = {
-                                                mainNavController.navigate(GlobalConstants.ROUTE_TEST_RESULT)
-                                                viewModel.presbyopiaTestResult = it
-                                            }
-                                        )
-                                    }
+                        /**
+                         * 검사 화면
+                         */
+                        composable(
+                            route = GlobalConstants.ROUTE_TEST_CONTENT,
+                            enterTransition = { AnimationProvider.enterTransition },
+                            exitTransition = { AnimationProvider.exitTransition },
+                            popEnterTransition = { AnimationProvider.popEnterTransition },
+                            popExitTransition = { AnimationProvider.popExitTransition }
+                        ) {
+                            TestScreen(
+                                viewModel = viewModel,
+                                navController = mainNavController,
+                                content = {
+                                    when (selectedTest) {
+                                        TestType.Presbyopia -> {
+                                            PresbyopiaTestContent(
+                                                toResultScreen = {
+                                                    mainNavController.navigate(GlobalConstants.ROUTE_TEST_RESULT)
+                                                    viewModel.presbyopiaTestResult = it
+                                                }
+                                            )
+                                        }
 
-                                    TestType.ShortDistanceVisualAcuity -> {
-                                        ShortDistanceVisualAcuityTestContent(
-                                            toResultScreen = {
-                                                mainNavController.navigate(GlobalConstants.ROUTE_TEST_RESULT)
-                                                viewModel.shortVisualAcuityTestResult =
-                                                    ShortVisualAcuityTestResult(
-                                                        it.leftEye,
-                                                        it.rightEye
+                                        TestType.ShortDistanceVisualAcuity -> {
+                                            ShortDistanceVisualAcuityTestContent(
+                                                toResultScreen = {
+                                                    mainNavController.navigate(GlobalConstants.ROUTE_TEST_RESULT)
+                                                    viewModel.shortVisualAcuityTestResult =
+                                                        ShortVisualAcuityTestResult(
+                                                            it.leftEye,
+                                                            it.rightEye
+                                                        )
+                                                }
+                                            )
+                                        }
+
+                                        TestType.LongDistanceVisualAcuity -> {
+                                            LongDistanceVisualAcuityTestContent(
+                                                toResultScreen = {
+                                                    mainNavController.navigate(GlobalConstants.ROUTE_TEST_RESULT)
+                                                    viewModel.longVisualAcuityTestResult =
+                                                        LongVisualAcuityTestResult(
+                                                            it.leftEye,
+                                                            it.rightEye
+                                                        )
+                                                }
+                                            )
+                                        }
+
+                                        TestType.ChildrenVisualAcuity -> {
+                                            ChildrenVisualAcuityTestContent(
+                                                toResultScreen = {
+                                                    mainNavController.navigate(GlobalConstants.ROUTE_TEST_RESULT)
+                                                    viewModel.childrenVisualAcuityTestResult =
+                                                        ChildrenVisualAcuityTestResult(
+                                                            it.leftEye,
+                                                            it.rightEye
+                                                        )
+                                                }
+                                            )
+                                        }
+
+                                        TestType.AmslerGrid -> {
+                                            AmslerGridTestContent(
+                                                toResultScreen = {
+                                                    mainNavController.navigate(GlobalConstants.ROUTE_TEST_RESULT)
+                                                    viewModel.amslerGridTestResult = it
+                                                },
+                                            )
+                                        }
+
+                                        TestType.MChart -> {
+                                            MChartTestContent(
+                                                toResultScreen = {
+                                                    mainNavController.navigate(GlobalConstants.ROUTE_TEST_RESULT)
+                                                    viewModel.mChartTestResult = it
+                                                }
+                                            )
+                                        }
+
+                                        TestType.Dementia -> {
+                                            DementiaTestContent(
+                                                toBackScreen = {
+                                                    mainNavController.popBackStack(
+                                                        GlobalConstants.ROUTE_PRIMARY_TEST_LIST,
+                                                        false
                                                     )
+                                                },
+                                                toResultScreen = {
+                                                    mainNavController.navigate(GlobalConstants.ROUTE_TEST_RESULT)
+                                                    viewModel.dementiaTestResult = it
+                                                }
+                                            )
+                                        }
+
+                                        TestType.None -> {
+                                            Box() {
+
                                             }
-                                        )
-                                    }
-
-                                    TestType.LongDistanceVisualAcuity -> {
-                                        LongDistanceVisualAcuityTestContent(
-                                            toResultScreen = {
-                                                mainNavController.navigate(GlobalConstants.ROUTE_TEST_RESULT)
-                                                viewModel.longVisualAcuityTestResult =
-                                                    LongVisualAcuityTestResult(
-                                                        it.leftEye,
-                                                        it.rightEye
-                                                    )
-                                            }
-                                        )
-                                    }
-
-                                    TestType.ChildrenVisualAcuity -> {
-                                        ChildrenVisualAcuityTestContent(
-                                            toResultScreen = {
-                                                mainNavController.navigate(GlobalConstants.ROUTE_TEST_RESULT)
-                                                viewModel.childrenVisualAcuityTestResult =
-                                                    ChildrenVisualAcuityTestResult(
-                                                        it.leftEye,
-                                                        it.rightEye
-                                                    )
-                                            }
-                                        )
-                                    }
-
-                                    TestType.AmslerGrid -> {
-                                        AmslerGridTestContent(
-                                            toResultScreen = {
-                                                mainNavController.navigate(GlobalConstants.ROUTE_TEST_RESULT)
-                                                viewModel.amslerGridTestResult = it
-                                            },
-                                        )
-                                    }
-
-                                    TestType.MChart -> {
-                                        MChartTestContent(
-                                            toResultScreen = {
-                                                mainNavController.navigate(GlobalConstants.ROUTE_TEST_RESULT)
-                                                viewModel.mChartTestResult = it
-                                            }
-                                        )
-                                    }
-
-                                    TestType.Dementia -> {
-                                        DementiaTestContent(
-                                            toBackScreen = {
-                                                mainNavController.popBackStack(GlobalConstants.ROUTE_PRIMARY_TEST_LIST, false)
-                                            },
-                                            toResultScreen = {
-                                                mainNavController.navigate(GlobalConstants.ROUTE_TEST_RESULT)
-                                                viewModel.dementiaTestResult = it
-                                            }
-                                        )
-                                    }
-
-                                    TestType.None -> {
-                                        Box() {
-
                                         }
                                     }
                                 }
-                            }
-                        )
-                    }
-
-                    /**
-                     * 검사 결과 화면
-                     */
-                    composable(
-                        route = GlobalConstants.ROUTE_TEST_RESULT,
-                        enterTransition = { AnimationProvider.enterTransition },
-                        exitTransition = { AnimationProvider.exitTransition }
-                    ) {
-                        when (viewModel.selectedTestType.collectAsState().value) {
-                            TestType.Presbyopia -> viewModel.updateIsPresbyopiaTestDone(true)
-                            TestType.ShortDistanceVisualAcuity -> viewModel.updateIsShortVisualAcuityTestDone(
-                                true
                             )
-
-                            TestType.AmslerGrid -> viewModel.updateIsAmslerGridTestDone(true)
-                            TestType.MChart -> viewModel.updateIsMChartTestDone(true)
-                            else -> {
-                            }
                         }
-                        val surveyId = viewModel.surveyId.collectAsState().value
-                        TestResultScreen(
-                            surveyId = surveyId,
-                            testType = viewModel.selectedTestType.collectAsState().value,
-                            testResult = when (
-                                viewModel.selectedTestType.collectAsState().value) {
-                                TestType.Presbyopia -> viewModel.presbyopiaTestResult
-                                TestType.ShortDistanceVisualAcuity -> viewModel.shortVisualAcuityTestResult
-                                TestType.LongDistanceVisualAcuity -> viewModel.longVisualAcuityTestResult
-                                TestType.ChildrenVisualAcuity -> viewModel.childrenVisualAcuityTestResult
-                                TestType.AmslerGrid -> viewModel.amslerGridTestResult
-                                TestType.MChart -> viewModel.mChartTestResult
-                                TestType.Dementia -> viewModel.dementiaTestResult
-                                TestType.None -> null
-                            },
-                            navController = mainNavController,
-                        )
+
+                        /**
+                         * 검사 결과 화면
+                         */
+                        composable(
+                            route = GlobalConstants.ROUTE_TEST_RESULT,
+                            enterTransition = { AnimationProvider.enterTransition },
+                            exitTransition = { AnimationProvider.exitTransition },
+                            popEnterTransition = { AnimationProvider.popEnterTransition },
+                            popExitTransition = { AnimationProvider.popExitTransition }
+                        ) {
+                            when (viewModel.selectedTestType.collectAsState().value) {
+                                TestType.Presbyopia -> viewModel.updateIsPresbyopiaTestDone(true)
+                                TestType.ShortDistanceVisualAcuity -> viewModel.updateIsShortVisualAcuityTestDone(
+                                    true
+                                )
+
+                                TestType.AmslerGrid -> viewModel.updateIsAmslerGridTestDone(true)
+                                TestType.MChart -> viewModel.updateIsMChartTestDone(true)
+                                else -> {
+
+                                }
+                            }
+                            val surveyId = viewModel.surveyId.collectAsState().value
+                            TestResultScreen(
+                                surveyId = surveyId,
+                                testType = viewModel.selectedTestType.collectAsState().value,
+                                testResult = when (
+                                    viewModel.selectedTestType.collectAsState().value) {
+                                    TestType.Presbyopia -> viewModel.presbyopiaTestResult
+                                    TestType.ShortDistanceVisualAcuity -> viewModel.shortVisualAcuityTestResult
+                                    TestType.LongDistanceVisualAcuity -> viewModel.longVisualAcuityTestResult
+                                    TestType.ChildrenVisualAcuity -> viewModel.childrenVisualAcuityTestResult
+                                    TestType.AmslerGrid -> viewModel.amslerGridTestResult
+                                    TestType.MChart -> viewModel.mChartTestResult
+                                    TestType.Dementia -> viewModel.dementiaTestResult
+                                    TestType.None -> null
+                                },
+                                navController = mainNavController,
+                            )
+                        }
                     }
                 }
             }
-        }
+//        } else {
+//            SignInScreen(
+//                updateIsSignedIn = {
+//                    viewModel.updateIsSignedInId(true)
+//                },
+//                updateScreenSaverInfo = {
+//                    viewModel.updateScreenSaverInfo(it)
+//                }
+//            )
+//        }
     }
 }
 
