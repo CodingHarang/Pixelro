@@ -57,7 +57,7 @@ class MainActivity : ComponentActivity() {
     @SuppressLint("InternalInsetResource", "DiscouragedApi")
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-
+        
         TTS.initTTS()
         if (SharedPreferencesManager.getString("language") == "") {
             SharedPreferencesManager.putString("language", "en")
