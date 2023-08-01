@@ -14,9 +14,11 @@ import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -30,6 +32,8 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import com.pixelro.nenoonkiosk.R
 import com.pixelro.nenoonkiosk.data.GlobalValue
 import com.pixelro.nenoonkiosk.data.StringProvider
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.launch
 
 @Composable
 fun DementiaTestContent(
@@ -37,398 +41,131 @@ fun DementiaTestContent(
     toResultScreen: (DementiaTestResult) -> Unit,
     dementiaViewModel: DementiaViewModel = hiltViewModel()
 ) {
+    val coroutineScope = rememberCoroutineScope()
     BackHandler(enabled = true) {
         Log.e("backhandler", "backhandler")
         toBackScreen()
     }
-    val dementiapage1 = remember { mutableStateOf(true) }
-    val dementiapage2 = remember { mutableStateOf(false) }
-    val dementiapage3 = remember { mutableStateOf(false) }
 
-    val scrollState = rememberScrollState()
+    val currentQuestion = remember { mutableStateOf(0) }
     LaunchedEffect(true) {
         dementiaViewModel.init()
     }
-    when {
-        dementiapage1.value -> {
-            Column(
-                modifier = Modifier
-                    .fillMaxSize()
-                    .background(
-                        color = Color(0xff000000)
-                    )
-            ) {
-                Column(
-                    modifier = Modifier
-                        .padding(start = 40.dp, top = 20.dp, end = 40.dp)
-                        .fillMaxWidth()
-                        .weight(10f)
-                        .verticalScroll(scrollState)
-                ) {
-                    for (i in 0..4) {
-                        Text(
-                            modifier = Modifier
-                                .padding(bottom = 20.dp)
-                                .height(100.dp),
-                            text = when (i) {
-                                0 -> StringProvider.getString(R.string.dementia_survey_question0)
-                                1 -> StringProvider.getString(R.string.dementia_survey_question0)
-                                2 -> StringProvider.getString(R.string.dementia_survey_question1)
-                                3 -> StringProvider.getString(R.string.dementia_survey_question2)
-                                4 -> StringProvider.getString(R.string.dementia_survey_question3)
-                                else -> ""
-                            },
-                            color = Color(0xffffffff),
-                            fontSize = 40.sp,
-                            fontWeight = FontWeight.Medium
-                        )
-                        Row(
-                            modifier = Modifier
-                                .fillMaxWidth()
-                                .padding(bottom = 10.dp)
-                        ) {
-                            Spacer(Modifier.weight(1f))
-                            questions(
-                                questionIndex = i,
-                                answer = DementiaViewModel.DementiaAnswer.Yes
-                            )
-                            questions(
-                                questionIndex = i,
-                                answer = DementiaViewModel.DementiaAnswer.No
-                            )
-                        }
-                    }
 
+    @Composable
+    fun questions(
+        dementiaViewModel: DementiaViewModel = hiltViewModel(),
+        questionIndex: Int,
+        answer: DementiaViewModel.DementiaAnswer,
+    ) {
 
-                    Box(
-                        modifier = Modifier
-                            .fillMaxWidth()
-                            .weight(1f),
-                        contentAlignment = Alignment.Center
-                    ) {
-                        Box(
-                            modifier = Modifier
-                                .padding(
-                                    start = 40.dp,
-                                    end = 40.dp,
-                                    bottom = 40.dp
-                                )
-                                .width(160.dp)
-                                .clip(
-                                    shape = RoundedCornerShape(8.dp)
-                                )
-                                .background(
-                                    color = Color(0xff1d71e1),
-                                    shape = RoundedCornerShape(8.dp),
-                                )
-                                .clickable {
-                                    dementiapage1.value = false
-                                    dementiapage2.value = true
-                                }
-                                .align(alignment = Alignment.BottomEnd),
-                            contentAlignment = Alignment.Center
-                        ) {
-                            Text(
-                                text = "다음",
-                                modifier = Modifier
-                                    .padding(5.dp),
-                                fontSize = 40.sp,
-                                color = Color(0xffffffff),
-                                fontWeight = FontWeight.Medium,
-                            )
-                        }
-                    }
-                }
-            }
-        }
-
-        dementiapage2.value -> {
-            Column(
-                modifier = Modifier
-                    .fillMaxSize()
-                    .background(
-                        color = Color(0xff000000)
-                    )
-            ) {
-                Column(
-                    modifier = Modifier
-                        .padding(start = 40.dp, top = 20.dp, end = 40.dp)
-                        .fillMaxWidth()
-                        .weight(10f)
-                        .verticalScroll(scrollState)
-                ) {
-                    for (i in 5..9) {
-                        Text(
-                            modifier = Modifier
-                                .padding(bottom = 20.dp)
-                                .height(100.dp),
-                            text = when (i) {
-                                5 -> StringProvider.getString(R.string.dementia_survey_question4)
-                                6 -> StringProvider.getString(R.string.dementia_survey_question5)
-                                7 -> StringProvider.getString(R.string.dementia_survey_question6)
-                                8 -> StringProvider.getString(R.string.dementia_survey_question7)
-                                9 -> StringProvider.getString(R.string.dementia_survey_question8)
-                                else -> ""
-                            },
-                            color = Color(0xffffffff),
-                            fontSize = 40.sp,
-                            fontWeight = FontWeight.Medium
-                        )
-                        Row(
-                            modifier = Modifier
-                                .fillMaxWidth()
-                                .padding(bottom = 10.dp)
-                        ) {
-                            Spacer(Modifier.weight(1f))
-                            questions(
-                                questionIndex = i,
-                                answer = DementiaViewModel.DementiaAnswer.Yes
-                            )
-                            questions(
-                                questionIndex = i,
-                                answer = DementiaViewModel.DementiaAnswer.No
-                            )
-                        }
-                    }
-                    Box(
-                        modifier = Modifier
-                            .fillMaxWidth()
-                            .weight(1f),
-                        contentAlignment = Alignment.Center
-                    ) {
-                        Box(
-                            modifier = Modifier
-                                .padding(
-                                    start = 40.dp,
-                                    end = 40.dp,
-                                    bottom = 40.dp
-                                )
-                                .width(160.dp)
-                                .clip(
-                                    shape = RoundedCornerShape(8.dp)
-                                )
-                                .background(
-                                    color = Color(0xff1d71e1),
-                                    shape = RoundedCornerShape(8.dp),
-                                )
-                                .clickable {
-                                    dementiapage2.value = false
-                                    dementiapage1.value = true
-                                }
-                                .align(alignment = Alignment.BottomStart),
-                            contentAlignment = Alignment.Center
-                        ) {
-                            Text(
-                                text = "이전",
-                                modifier = Modifier
-                                    .padding(5.dp),
-                                fontSize = 40.sp,
-                                color = Color(0xffffffff),
-                                fontWeight = FontWeight.Medium,
-                                textAlign = TextAlign.Center
-                            )
-                        }
-                        Box(
-                            modifier = Modifier
-                                .padding(
-                                    start = 40.dp,
-                                    end = 40.dp,
-                                    bottom = 40.dp
-                                )
-                                .width(160.dp)
-                                .clip(
-                                    shape = RoundedCornerShape(8.dp)
-                                )
-                                .background(
-                                    color = Color(0xff1d71e1),
-                                    shape = RoundedCornerShape(8.dp),
-                                )
-                                .clickable {
-                                    dementiapage2.value = false
-                                    dementiapage3.value = true
-                                }
-                                .align(alignment = Alignment.BottomEnd),
-                            contentAlignment = Alignment.Center
-                        ) {
-                            Text(
-                                text = "다음",
-                                modifier = Modifier
-                                    .padding(5.dp),
-                                fontSize = 40.sp,
-                                color = Color(0xffffffff),
-                                fontWeight = FontWeight.Medium,
-                            )
-                        }
-                    }
-                }
-            }
-        }
-
-        dementiapage3.value -> {
-            Column(
-                modifier = Modifier
-                    .fillMaxSize()
-                    .background(
-                        color = Color(0xff000000)
-                    )
-            ) {
-                Column(
-                    modifier = Modifier
-                        .padding(start = 40.dp, top = 20.dp, end = 40.dp)
-                        .fillMaxWidth()
-                        .weight(10f)
-                        .verticalScroll(scrollState)
-                ) {
-                    for (i in 10..13) {
-                        Text(
-                            modifier = Modifier
-                                .padding(bottom = 20.dp)
-                                .height(100.dp),
-                            text = when (i) {
-                                10 -> StringProvider.getString(R.string.dementia_survey_question9)
-                                11 -> StringProvider.getString(R.string.dementia_survey_question10)
-                                12 -> StringProvider.getString(R.string.dementia_survey_question11)
-                                13 -> StringProvider.getString(R.string.dementia_survey_question12)
-                                else -> ""
-                            },
-                            color = Color(0xffffffff),
-                            fontSize = 40.sp,
-                            fontWeight = FontWeight.Medium
-                        )
-                        Row(
-                            modifier = Modifier
-                                .fillMaxWidth()
-                                .padding(bottom = 10.dp)
-                        ) {
-                            Spacer(Modifier.weight(1f))
-                            questions(
-                                questionIndex = i,
-                                answer = DementiaViewModel.DementiaAnswer.Yes
-                            )
-                            questions(
-                                questionIndex = i,
-                                answer = DementiaViewModel.DementiaAnswer.No
-                            )
-                        }
-                    }
-                    Box(
-                        modifier = Modifier
-                            .fillMaxWidth()
-                            .weight(1f),
-                        contentAlignment = Alignment.Center
-                    ) {
-                        Box(
-                            modifier = Modifier
-                                .padding(
-                                    start = 40.dp,
-                                    end = 40.dp,
-                                    bottom = 40.dp
-                                )
-                                .width(160.dp)
-                                .clip(
-                                    shape = RoundedCornerShape(8.dp)
-                                )
-                                .background(
-                                    color = Color(0xff1d71e1),
-                                    shape = RoundedCornerShape(8.dp),
-                                )
-                                .clickable {
-                                    dementiapage3.value = false
-                                    dementiapage2.value = true
-                                }
-                                .align(alignment = Alignment.BottomStart),
-                            contentAlignment = Alignment.Center
-                        ) {
-                            Text(
-                                text = "이전",
-                                modifier = Modifier
-                                    .padding(5.dp),
-                                fontSize = 40.sp,
-                                color = Color(0xffffffff),
-                                fontWeight = FontWeight.Medium,
-                                textAlign = TextAlign.Center
-                            )
-                        }
-                        Box(
-                            modifier = Modifier
-                                .padding(
-                                    start = 40.dp,
-                                    end = 20.dp,
-                                    bottom = 40.dp
-                                )
-                                .width(260.dp)
-                                .clip(
-                                    shape = RoundedCornerShape(8.dp)
-                                )
-                                .background(
-                                    color = Color(0xff1d71e1),
-                                    shape = RoundedCornerShape(8.dp),
-                                )
-                                .clickable {
-
-                                    if (!dementiaViewModel.checkDementiaIsDone()) return@clickable
-                                    toResultScreen(dementiaViewModel.getDementiaData())
-                                }
-                                .align(alignment = Alignment.BottomEnd),
-                            contentAlignment = Alignment.Center
-                        ) {
-                            Text(
-                                text = "작성완료",
-                                modifier = Modifier
-                                    .padding(5.dp),
-                                fontSize = 40.sp,
-                                color = Color(0xffffffff),
-                                fontWeight = FontWeight.Medium,
-                            )
-                        }
-                    }
-                }
-            }
-        }
-        else -> ""
-    }
-}
-
-@Composable
-fun questions(
-    dementiaViewModel: DementiaViewModel = hiltViewModel(),
-    questionIndex: Int,
-    answer: DementiaViewModel.DementiaAnswer
-) {
-
-    Box(
-        modifier = Modifier
-            .padding(start = if (answer == DementiaViewModel.DementiaAnswer.Yes) 0.dp else 20.dp)
-            .clip(
-                shape = RoundedCornerShape(50)
-            )
-            .width(100.dp)
-            .height(60.dp)
-            .border(
-                border = BorderStroke(
-                    width = 1.dp,
+        Box(
+            modifier = Modifier
+                .padding(start = if (answer == DementiaViewModel.DementiaAnswer.Yes) 0.dp else 20.dp)
+                .clip(
+                    shape = RoundedCornerShape(8.dp)
+                )
+                .width(320.dp)
+                .fillMaxHeight(0.8f)
+                .border(
+                    border = BorderStroke(
+                        width = 4.dp,
+                        color = Color(0xff1d71e1)
+                    ),
+                    shape = RoundedCornerShape(8.dp)
+                )
+                .background(
                     color = when (dementiaViewModel.dementiaScores.collectAsState().value[questionIndex]) {
                         answer -> Color(0xff1d71e1)
-                        else -> Color(0xffc3c3c3)
+                        else -> Color(0xffffffff)
                     }
-                ),
-                shape = RoundedCornerShape(50)
-            )
-            .clickable {
-                dementiaViewModel.updateDementiaScore(
-                    questionIndex,
-                    answer
                 )
-            },
-        contentAlignment = Alignment.Center
+                .clickable {
+                    coroutineScope.launch {
+                        dementiaViewModel.updateDementiaScore(
+                            questionIndex,
+                            answer
+                        )
+                        delay(1000)
+                        if (currentQuestion.value < 13) {
+                            currentQuestion.value++
+                        } else {
+                            toResultScreen(dementiaViewModel.getDementiaData())
+                        }
+                    }
+                },
+            contentAlignment = Alignment.Center
+        ) {
+            Text(
+                text = StringProvider.getString(if (answer == DementiaViewModel.DementiaAnswer.Yes) R.string.yes else R.string.no),
+                fontSize = 60.sp,
+                color = when (dementiaViewModel.dementiaScores.collectAsState().value[questionIndex]) {
+                    answer -> Color(0xffffffff)
+                    else -> Color(0xff1d71e1)
+                },
+                fontWeight = FontWeight.ExtraBold
+            )
+        }
+    }
+
+    @Composable
+    fun questionBox(
+        dementiaViewModel: DementiaViewModel,
+        i: Int,
     ) {
         Text(
-            text = StringProvider.getString(if (answer == DementiaViewModel.DementiaAnswer.Yes) R.string.yes else R.string.no),
-            fontSize = 28.sp,
-            color = when (dementiaViewModel.dementiaScores.collectAsState().value[questionIndex]) {
-                answer -> Color(0xff1d71e1)
-                else -> Color(0xffc3c3c3)
-            }
+            modifier = Modifier
+                .padding(bottom = 20.dp)
+                .height(300.dp),
+            text = when (i) {
+                0 -> "1. " + StringProvider.getString(R.string.dementia_survey_question0)
+                1 -> "2. " + StringProvider.getString(R.string.dementia_survey_question1)
+                2 -> "3. " + StringProvider.getString(R.string.dementia_survey_question2)
+                3 -> "4. " + StringProvider.getString(R.string.dementia_survey_question3)
+                4 -> "5. " + StringProvider.getString(R.string.dementia_survey_question4)
+                5 -> "6. " + StringProvider.getString(R.string.dementia_survey_question5)
+                6 -> "7. " + StringProvider.getString(R.string.dementia_survey_question6)
+                7 -> "8. " + StringProvider.getString(R.string.dementia_survey_question7)
+                8 -> "9. " + StringProvider.getString(R.string.dementia_survey_question8)
+                9 -> "10. " + StringProvider.getString(R.string.dementia_survey_question9)
+                10 -> "11. " + StringProvider.getString(R.string.dementia_survey_question10)
+                11 -> "12. " + StringProvider.getString(R.string.dementia_survey_question11)
+                12 -> "13. " + StringProvider.getString(R.string.dementia_survey_question12)
+                13 -> "14. " + StringProvider.getString(R.string.dementia_survey_question13)
+
+                else -> ""
+            },
+            fontSize = 50.sp,
+            fontWeight = FontWeight.Medium
         )
+        Row(
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(bottom = 10.dp)
+        ) {
+            Spacer(Modifier.weight(1f))
+            questions(
+                dementiaViewModel,
+                questionIndex = i,
+                answer = DementiaViewModel.DementiaAnswer.Yes,
+            )
+            questions(
+                dementiaViewModel,
+                questionIndex = i,
+                answer = DementiaViewModel.DementiaAnswer.No,
+            )
+        }
+    }
+
+    Column(
+        modifier = Modifier
+            .fillMaxSize()
+            .background(
+                color = Color(0xffffffff)
+            )
+            .padding(40.dp)
+
+    ) {
+        questionBox(dementiaViewModel, i = currentQuestion.value)
     }
 }

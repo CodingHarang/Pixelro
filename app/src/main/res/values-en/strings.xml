@@ -13,7 +13,7 @@
     <string name="test_list_screen_warning2">not medical findings,</string>
     <string name="test_list_screen_warning3">" so please visit a hospital and consult a doctor for an accurate diagnosis. Test results may vary depending on the condition of your eyes, surrounding environment, or device."</string>
     <string name="presbyopia_name2">Presbyopia Test\n(Eye Age Test)</string>
-    <string name="test_list_go_back">back</string>
+    <string name="test_list_go_back">BACK</string>
     <string name="test_predescription_screen_start">Start</string>
     <string name="screen_saver_description">Touch the screen to start eye test</string>
     <string name="test_screen_current_distance">"current distance: "</string>

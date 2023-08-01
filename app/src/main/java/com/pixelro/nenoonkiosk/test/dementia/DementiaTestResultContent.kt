@@ -42,10 +42,7 @@ fun DementiaTestResultContent(
     navController: NavHostController
 ) {
     val isWebViewShowing1 = remember { mutableStateOf(false) }
-//    val isWebViewShowing2 = remember { mutableStateOf(false) }
-//    val isWebViewShowing3 = remember { mutableStateOf(false) }
     val showDementia333 = remember { mutableStateOf(false) }
-
 
     when {
         isWebViewShowing1.value -> {
@@ -53,14 +50,14 @@ fun DementiaTestResultContent(
                 modifier = Modifier
                     .fillMaxSize()
                     .background(
-                        color = Color(0xffffffff)
+                        color = Color(0xff144AAE)
                     )
             ) {
                 Box(
                     modifier = Modifier
                         .padding(
                             start = 40.dp,
-                            top = (GlobalValue.statusBarPadding + 20).dp,
+                            top = 20.dp,
                             end = 40.dp,
                             bottom = 20.dp
                         )
@@ -79,13 +76,14 @@ fun DementiaTestResultContent(
                             modifier = Modifier
                                 .padding(top = 4.dp)
                                 .width(28.dp),
-                            painter = painterResource(id = R.drawable.icon_back_black),
+                            painter = painterResource(id = R.drawable.icon_back_white),
                             contentDescription = ""
                         )
                         Text(
                             text = StringProvider.getString(R.string.test_list_go_back),
                             fontSize = 24.sp,
-                            fontWeight = FontWeight.Medium
+                            fontWeight = FontWeight.Medium,
+                            color = Color(0xffffffff)
                         )
                     }
                 }
@@ -105,7 +103,7 @@ fun DementiaTestResultContent(
                     modifier = Modifier
                         .padding(
                             start = 40.dp,
-                            top = (GlobalValue.statusBarPadding + 20).dp,
+                            top = 20.dp,
                             end = 40.dp,
                             bottom = 20.dp
                         )

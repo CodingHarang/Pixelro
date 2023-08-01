@@ -74,7 +74,7 @@ class NenoonViewModel @Inject constructor(
             while (true) {
                 if (_isResumed.value) {
                     // Check screen saver timer
-                    _screenSaverTimer.update { _screenSaverTimer.value + 100 }
+                    _screenSaverTimer.update { _screenSaverTimer.value - 0 }
 
                     if (_screenSaverTimer.value < 0) {
                         _isScreenSaverOn.update { true }
@@ -283,7 +283,6 @@ class NenoonViewModel @Inject constructor(
         _selectedTestType.update { testType }
     }
 
-//    var dementiaData = DementiaData(scores = mapOf(DementiaScore.One to true, DementiaScore.Two to false))
     var dementiaData = DementiaData(
         scores = List(14) { DementiaViewModel.DementiaAnswer.None }
     )
