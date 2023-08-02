@@ -26,6 +26,7 @@ import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.platform.LocalContext
 import androidx.core.view.WindowCompat
 import androidx.core.view.WindowInsetsControllerCompat
+import androidx.lifecycle.ViewModelProvider
 import com.google.accompanist.systemuicontroller.rememberSystemUiController
 import com.pixelro.nenoonkiosk.data.GlobalConstants
 import com.pixelro.nenoonkiosk.data.GlobalValue
@@ -41,7 +42,10 @@ import java.util.Locale
 @AndroidEntryPoint
 class MainActivity : ComponentActivity() {
 
-    private val viewModel: NenoonViewModel by viewModels()
+//    private val viewModel: NenoonViewModel by viewModels()
+    val viewModel: NenoonViewModel by lazy {
+        ViewModelProvider(this).get(NenoonViewModel::class.java)
+    }
 
     override fun onTouchEvent(event: MotionEvent?): Boolean {
         viewModel.resetScreenSaverTimer()
@@ -56,8 +60,11 @@ class MainActivity : ComponentActivity() {
 
     @SuppressLint("InternalInsetResource", "DiscouragedApi")
     override fun onCreate(savedInstanceState: Bundle?) {
+        Log.e("className", "${NenoonViewModel::class.java.canonicalName}, ${this.viewModelStore}")
         super.onCreate(savedInstanceState)
-        
+
+        this.defaultViewModelProviderFactory
+
         TTS.initTTS()
         if (SharedPreferencesManager.getString("language") == "") {
             SharedPreferencesManager.putString("language", "en")
