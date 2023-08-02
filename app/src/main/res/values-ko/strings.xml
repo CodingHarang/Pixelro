@@ -127,4 +127,25 @@
     <string name="measuring_distance_content_cover_right_eye">눈가리개로 오른쪽 눈을 가려주세요</string>
     <string name="measuring_distance_content_measure_distance">눈을 가린 채로 거리를 확인해주세요</string>
     <string name="measuring_distance_content_press_start_button">아래의 \'검사 시작\' 버튼을 눌러주세요</string>
+    <string name="short_visual_acuity_test_unreadable">안보임</string>
+    <string name="presbyopia_test_adjust_description">화면으로부터 40~60cm 사이로 거리를 조정해주세요</string>
+    <string name="survey_age">나이를 알려주세요</string>
+    <string name="survey_age_under9">9세 이하</string>
+    <string name="survey_age_10">10세~19세</string>
+    <string name="survey_age_20">20세~29세</string>
+    <string name="survey_age_30">30세~39세</string>
+    <string name="survey_age_40">40세~49세</string>
+    <string name="survey_age_50">50세~59세</string>
+    <string name="survey_age_60">60세~69세</string>
+    <string name="survey_age_above70">70세 이상</string>
+    <string name="survey_sex">성별이 무엇인가요?</string>
+    <string name="survey_sex_male">남자</string>
+    <string name="survey_sex_female">여자</string>
+    <string name="survey_glass">안경을 착용하시나요?</string>
+    <string name="survey_eye_surgery">눈을 수술하신 경험이 있나요?</string>
+    <string name="survey_surgery_none">없음</string>
+    <string name="etc">기타</string>
+    <string name="survey_surgery_lasik">라식/라섹</string>
+    <string name="survey_surgery_cataract">백내장</string>
+    <string name="survey_diabetes">당뇨</string>
 </resources>

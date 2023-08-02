@@ -103,7 +103,7 @@ fun PresbyopiaTestContent(
     ) {
         Text(
             text = when (!isMovedTo40cm) {
-                true -> "화면으로부터 40~60cm 사이로 거리를 조정해주세요"
+                true -> StringProvider.getString(R.string.presbyopia_test_adjust_description)
                 false -> when(isBlinkingDone) {
                     true -> "조금씩 앞으로 오다가 숫자가 흐릿해지는\n지점에서 멈추고 아래의 '다음'을 눌러주세요"
                     false -> "아래의 깜빡이는 숫자를 봐주세요"

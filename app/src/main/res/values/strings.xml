@@ -68,9 +68,10 @@
     <string name="test_predescription_amsler_title">암슬러 차트 검사</string>
     <string name="test_predescription_mchart_title">엠식 변형시 검사</string>
     <string name="test_list">검사 목록</string>
+    <string name="presbyopia_test_adjust_description">화면으로부터 40~60cm 사이로 거리를 조정해주세요</string>
     <string name="presbyopia_test_description">50cm 지점에서 조금씩 가까이 오다가\n시표가 흐릿해지는 지점에서 멈추고 버튼을 누르세요</string>
     <string name="next">다음</string>
-    <string name="back_to_survey">문진하러 가기y</string>
+    <string name="back_to_survey">문진하러 가기</string>
     <string name="home">처음으로</string>
     <string name="presbyopia_result_near_point_accommodation">이상의 거리에서 물체가 흐리게 보입니다.</string>
     <string name="presbyopia_result_hoffstetter2">세 입니다</string>
@@ -96,6 +97,25 @@
     <string name="amsler_grid_test_description">가운데 검은 점을 바라보고 이상하게 보이는 부분 또는\n왜곡되어 보이는 부분을 손으로 눌러 선택해주세요.\n선택을 완료했거나 이상하게 보이는 부분이 없다면\n아래의 \'완료\' 버튼을 눌러주세요.</string>
     <string name="mchart_test_description">아래의 선이 곧은 선으로 보이는지\n휘어진 선으로 보이는지 선택해주세요</string>
     <string name="survey_title">문진표 작성</string>
+    <string name="survey_age">나이를 알려주세요</string>
+    <string name="survey_age_under9">9세 이하</string>
+    <string name="survey_age_10">10세~19세</string>
+    <string name="survey_age_20">20세~29세</string>
+    <string name="survey_age_30">30세~39세</string>
+    <string name="survey_age_40">40세~49세</string>
+    <string name="survey_age_50">50세~59세</string>
+    <string name="survey_age_60">60세~69세</string>
+    <string name="survey_age_above70">70세 이상</string>
+    <string name="survey_sex">성별이 무엇인가요?</string>
+    <string name="survey_sex_male">남자</string>
+    <string name="survey_sex_female">여자</string>
+    <string name="survey_glass">안경을 착용하시나요?</string>
+    <string name="survey_eye_surgery">눈을 수술하신 경험이 있나요?</string>
+    <string name="survey_surgery_none">없음</string>
+    <string name="survey_surgery_lasik">라식/라섹</string>
+    <string name="survey_surgery_cataract">백내장</string>
+    <string name="etc">기타</string>
+    <string name="survey_diabetes">당뇨</string>
     <string name="dementia_title">치매 자가진단 (SMCQ)</string>
     <string name="measuring_distance_content_description3">오른쪽 눈을 가려주세요</string>
     <string name="measuring_distance_content_description4">거리를 확인해주세요</string>
@@ -128,5 +148,6 @@
     <string name="measuring_distance_content_cover_right_eye">눈가리개로 오른쪽 눈을 가려주세요</string>
     <string name="measuring_distance_content_measure_distance">눈을 가린 채로 거리를 확인해주세요</string>
     <string name="measuring_distance_content_press_start_button">아래의 \'검사 시작\' 버튼을 눌러주세요</string>
+    <string name="short_visual_acuity_test_unreadable">안보임</string>
 
 </resources>

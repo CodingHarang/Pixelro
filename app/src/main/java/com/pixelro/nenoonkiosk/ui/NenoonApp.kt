@@ -67,6 +67,7 @@ fun NenoonApp(
                         .fillMaxSize(),
                     navController = mainNavController,
 
+//                    startDestination = GlobalConstants.ROUTE_TEST_LIST,
                     startDestination = GlobalConstants.ROUTE_INTRO,
 
                     contentAlignment = Alignment.TopCenter

@@ -128,5 +128,26 @@
     <string name="measuring_distance_content_cover_right_eye">Please cover your right eye</string>
     <string name="measuring_distance_content_measure_distance">Please adjust the distance</string>
     <string name="measuring_distance_content_press_start_button">str</string>
+    <string name="short_visual_acuity_test_unreadable">UNREADABLE</string>
+    <string name="presbyopia_test_adjust_description">Please adjust the distance to be between 40 and 60 cm from the screen</string>
+    <string name="survey_age">How Old Are You</string>
+    <string name="survey_age_under9">Under 9</string>
+    <string name="survey_age_10">10~19</string>
+    <string name="survey_age_20">20~29</string>
+    <string name="survey_age_30">30~39</string>
+    <string name="survey_age_40">40~49</string>
+    <string name="survey_age_50">50~59</string>
+    <string name="survey_age_60">60~69</string>
+    <string name="survey_age_above70">Above 70</string>
+    <string name="survey_sex">What is Your sex?</string>
+    <string name="survey_sex_male">MALE</string>
+    <string name="survey_sex_female">FEMALE</string>
+    <string name="survey_glass">Do you wear glasses</string>
+    <string name="survey_eye_surgery">Have you done Eye Surgery</string>
+    <string name="survey_surgery_none">None</string>
+    <string name="etc">ETC</string>
+    <string name="survey_surgery_lasik">LASIK /\n LASEK</string>
+    <string name="survey_surgery_cataract">Cataract</string>
+    <string name="survey_diabetes">Do you have Diabetes</string>
 
 </resources>
