@@ -44,11 +44,8 @@ fun SignInScreen(
     updateScreenSaverInfo: (String) -> Unit,
     signInViewModel: SignInViewModel = hiltViewModel()
 ) {
-    val text = signInViewModel.text.collectAsState().value
+    val id = signInViewModel.id.collectAsState().value
     val password = signInViewModel.password.collectAsState().value
-    val colors = TextFieldDefaults.textFieldColors(
-        backgroundColor = Color.White
-    )
 
     Box() {
         Column(
@@ -57,23 +54,23 @@ fun SignInScreen(
             horizontalAlignment = Alignment.CenterHorizontally,
             verticalArrangement = Arrangement.Center
         ) {
-            //로고
+
             Image(
                 modifier = Modifier
-                    .width(300.dp)
+                    .width(600.dp)
                     .height(200.dp),
                 painter = painterResource(id = R.drawable.nenoon_login_logo),
                 contentDescription = ""
             )
 
-            //아이디 창
             BasicTextField(
-                value = text,
+                modifier = Modifier
+                    .width(500.dp),
+                value = id,
                 onValueChange = { newText ->
-                    signInViewModel.updateText(newText)
+                    signInViewModel.updateId(newText)
                 },
                 textStyle = TextStyle(
-                    fontWeight = FontWeight.SemiBold,
                     fontSize = 30.sp
                 ),
                 decorationBox = { innerTextField ->
@@ -88,14 +85,13 @@ fun SignInScreen(
                                 ),
                                 shape = RoundedCornerShape(8.dp)
                             )
-                            .padding(horizontal = 20.dp),
-                        contentAlignment = Alignment.Center
+                            .padding(start = 20.dp),
+                        contentAlignment = Alignment.CenterStart
                     ) {
-                        if (text.isEmpty()) {
+                        if (id.isEmpty()) {
                             Text(
                                 text = "아이디를 입력해주세요",
                                 fontSize = 24.sp,
-                                fontWeight = FontWeight.Normal,
                                 color = Color.LightGray,
                             )
                         }
@@ -113,7 +109,6 @@ fun SignInScreen(
                     .height(10.dp)
             )
 
-            //비밀번호 창
             BasicTextField(
                 value = password,
                 onValueChange = { newText ->
@@ -121,7 +116,6 @@ fun SignInScreen(
                 },
                 visualTransformation = PasswordVisualTransformation(),
                 textStyle = TextStyle(
-                    fontWeight = FontWeight.SemiBold,
                     fontSize = 30.sp
                 ),
                 decorationBox = { innerTextField ->
@@ -136,14 +130,13 @@ fun SignInScreen(
                                 ),
                                 shape = RoundedCornerShape(8.dp)
                             )
-                            .padding(horizontal = 20.dp),
-                        contentAlignment = Alignment.Center
+                            .padding(start = 20.dp),
+                        contentAlignment = Alignment.CenterStart
                     ) {
-                        if (text.isEmpty()) {
+                        if (password.isEmpty()) {
                             Text(
                                 text = "비밀번호를 입력해주세요",
                                 fontSize = 24.sp,
-                                fontWeight = FontWeight.Normal,
                                 color = Color.LightGray,
                             )
                         }

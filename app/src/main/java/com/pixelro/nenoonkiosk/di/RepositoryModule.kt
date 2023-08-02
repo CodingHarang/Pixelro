@@ -1,7 +1,7 @@
 package com.pixelro.nenoonkiosk.di
 
 import com.harang.data.datasource.SignInRemoteDataSource
-import com.harang.data.repository.SignInResultRepository
+import com.harang.data.repository.SignInRepository
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -12,7 +12,7 @@ import dagger.hilt.components.SingletonComponent
 object RepositoryModule {
 
     @Provides
-    fun provideSignInResultRepository(source: SignInRemoteDataSource): SignInResultRepository {
-        return SignInResultRepository(source)
+    fun provideSignInResultRepository(source: SignInRemoteDataSource): SignInRepository {
+        return SignInRepository(source)
     }
 }

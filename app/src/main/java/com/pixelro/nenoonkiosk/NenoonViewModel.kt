@@ -50,6 +50,7 @@ import kotlinx.coroutines.CoroutineName
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import retrofit2.HttpException
@@ -82,6 +83,13 @@ class NenoonViewModel @Inject constructor(
                 delay(1000)
             }
         }
+    }
+
+    private val _screenState = MutableStateFlow(ScreenState.Splash)
+    val screenState: StateFlow<ScreenState> = _screenState.asStateFlow()
+
+    fun updateScreenState(screenState: ScreenState) {
+        _screenState.update { screenState }
     }
 
     // signIn
@@ -442,5 +450,9 @@ class NenoonViewModel @Inject constructor(
         exoPlayer.repeatMode = Player.REPEAT_MODE_ONE
         exoPlayer.volume = 0f
 //        exoPlayer.setMediaItem(MediaItem.fromUri("https://drive.google.com/uc?export=view&id=1NJAxk3TGlcXA8sUd01c2zsgEkp9ngp5q"))
+    }
+
+    enum class ScreenState {
+        Splash, SignIn, ScreenSaver, Permission, Main
     }
 }

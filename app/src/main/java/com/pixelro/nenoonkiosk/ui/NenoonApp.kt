@@ -35,18 +35,43 @@ fun NenoonApp(
 ) {
     val selectedTest = viewModel.selectedTestType.collectAsState().value
 
-    /**
-     * Splash Screen
-     * 앱 실행 시 처음 한번만 보여지는 화면
-     */
+//    when (viewModel.screenState.collectAsState().value) {
+//        NenoonViewModel.ScreenState.Splash -> SplashScreen()
+//        NenoonViewModel.ScreenState.SignIn -> SignInScreen(
+//            updateIsSignedIn = { /*TODO*/ },
+//            updateScreenSaverInfo =
+//        )
+//        NenoonViewModel.ScreenState.ScreenSaver -> ScreenSaverScreen(viewModel = ) {
+//
+//        }
+//        NenoonViewModel.ScreenState.Permission -> PermissionRequestScreen(viewModel = )
+//        NenoonViewModel.ScreenState.Main -> MainScreen()
+//    }
     if (viewModel.isShowingSplashScreen.collectAsState().value) {
+        /**
+         * Splash Screen
+         * 앱 실행 시 처음 한번만 보여지는 화면
+         */
         SplashScreen()
     } else {
-        if (viewModel.isSignedIn.collectAsState().value) {
+        if (!viewModel.isSignedIn.collectAsState().value) {
+            /**
+             * Sign In Screen
+             * 로그인을 할 수 있는 화면
+             */
+            SignInScreen(
+                updateIsSignedIn = {
+                    viewModel.updateIsSignedInId(true)
+                },
+                updateScreenSaverInfo = {
+                    viewModel.updateScreenSaverInfo(it)
+                }
+            )
+        } else {
             if (viewModel.isScreenSaverOn.collectAsState().value) {
                 /**
                  * Screen Saver
-                 * 검사 중이 아닐 때 40초 동안 입력이 없으면 보여지는 화면
+                 * 검사 중이 아닐 때 40초 동안 입력이 없으면 보여지는 대기 화면
                  */
                 ScreenSaverScreen(
                     viewModel,
@@ -126,7 +151,7 @@ fun NenoonApp(
                                     mainNavController.navigate(GlobalConstants.ROUTE_SETTINGS)
                                 },
                                 toSurveyScreen = {
-                                    mainNavController.popBackStack(GlobalConstants.ROUTE_SURVEY, false)
+                                    mainNavController.popBackStack(GlobalConstants.ROUTE_INTRO, false)
                                 },
                                 isPresbyopiaDone = viewModel.isPresbyopiaTestDone.collectAsState().value,
                                 isShortVisualAcuityDone = viewModel.isShortVisualAcuityTestDone.collectAsState().value,
@@ -280,15 +305,6 @@ fun NenoonApp(
                     }
                 }
             }
-        } else {
-            SignInScreen(
-                updateIsSignedIn = {
-                    viewModel.updateIsSignedInId(true)
-                },
-                updateScreenSaverInfo = {
-                    viewModel.updateScreenSaverInfo(it)
-                }
-            )
         }
     }
 }
