@@ -109,7 +109,7 @@ class NenoonViewModel @Inject constructor(
     // Screen Saver
     private val _isResumed = MutableStateFlow(false)
     private val _isPaused = MutableStateFlow(false)
-    val exoPlayer = ExoPlayer.Builder(getApplication()).build()
+    val exoPlayer: ExoPlayer
     private val _screenSaverTimer = MutableStateFlow(40)
     private val _timeValue = MutableStateFlow(40)
 
@@ -406,6 +406,13 @@ class NenoonViewModel @Inject constructor(
         SharedPreferencesManager.putString(GlobalConstants.PREFERENCE_VIDEO_URI, uri)
         Log.e("video_uri", SharedPreferencesManager.getString(GlobalConstants.PREFERENCE_VIDEO_URI))
         exoPlayer.setMediaItem(MediaItem.fromUri(uri))
+        viewModelScope.launch {
+            while (exoPlayer.isLoading) {
+                Log.e("isLoading", "isLoading")
+                delay(1000)
+            }
+            Log.e("isLoading", "loadingDone")
+        }
         exoPlayer.prepare()
         exoPlayer.repeatMode = Player.REPEAT_MODE_ONE
         exoPlayer.volume = 0f
@@ -414,13 +421,23 @@ class NenoonViewModel @Inject constructor(
     init {
         showSplashScreen()
         checkBackgroundStatus()
+        exoPlayer = ExoPlayer.Builder(getApplication()).build()
         //        exoPlayer.setMediaItem(MediaItem.fromUri(Uri.fromFile(File("/storage/emulated/0/Download/ad1.mp4"))))
         if (SharedPreferencesManager.getString(GlobalConstants.PREFERENCE_VIDEO_URI) == "") {
             exoPlayer.setMediaItem(MediaItem.fromUri(Uri.fromFile(File("/storage/emulated/0/Download/ad1.mp4"))))
+            Log.e("localVideo", "local Video Loaded")
         } else {
-            exoPlayer.setMediaItem(MediaItem.fromUri(SharedPreferencesManager.getString(GlobalConstants.PREFERENCE_VIDEO_URI)))
+            exoPlayer.setMediaItem(MediaItem.fromUri("https://drive.google.com/uc?export=view&id=1NJAxk3TGlcXA8sUd01c2zsgEkp9ngp5q"))
+            Log.e("remoteVideo", "remote Video Loaded")
         }
 //        exoPlayer.setMediaItem(MediaItem.fromUri("https://drive.google.com/uc?export=view&id=1vNW4Xia8pG4tfGoao4Nb7hEJtOd9Cg8F"))
+        viewModelScope.launch {
+            while (exoPlayer.isLoading) {
+                Log.e("isLoading", "isLoading")
+                delay(1000)
+            }
+            Log.e("isLoading", "loadingDone")
+        }
         exoPlayer.prepare()
         exoPlayer.repeatMode = Player.REPEAT_MODE_ONE
         exoPlayer.volume = 0f

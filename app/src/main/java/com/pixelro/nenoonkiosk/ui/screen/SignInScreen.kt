@@ -36,16 +36,16 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.pixelro.nenoonkiosk.R
-import com.pixelro.nenoonkiosk.login.LoginViewModel
+import com.pixelro.nenoonkiosk.login.SignInViewModel
 
 @Composable
 fun SignInScreen(
     updateIsSignedIn: () -> Unit,
     updateScreenSaverInfo: (String) -> Unit,
-    loginViewModel: LoginViewModel = hiltViewModel()
+    signInViewModel: SignInViewModel = hiltViewModel()
 ) {
-    val text = loginViewModel.text.collectAsState().value
-    val password = loginViewModel.password.collectAsState().value
+    val text = signInViewModel.text.collectAsState().value
+    val password = signInViewModel.password.collectAsState().value
     val colors = TextFieldDefaults.textFieldColors(
         backgroundColor = Color.White
     )
@@ -70,7 +70,7 @@ fun SignInScreen(
             BasicTextField(
                 value = text,
                 onValueChange = { newText ->
-                    loginViewModel.updateText(newText)
+                    signInViewModel.updateText(newText)
                 },
                 textStyle = TextStyle(
                     fontWeight = FontWeight.SemiBold,
@@ -117,7 +117,7 @@ fun SignInScreen(
             BasicTextField(
                 value = password,
                 onValueChange = { newText ->
-                    loginViewModel.updatePassword(newText)
+                    signInViewModel.updatePassword(newText)
                 },
                 visualTransformation = PasswordVisualTransformation(),
                 textStyle = TextStyle(
@@ -194,8 +194,8 @@ fun SignInScreen(
                         shape = RoundedCornerShape(8.dp),
                     )
                     .clickable {
-                        if (!loginViewModel.checkLoginIsDone()) return@clickable
-                        loginViewModel.signIn(
+                        if (!signInViewModel.checkLoginIsDone()) return@clickable
+                        signInViewModel.signIn(
                             updateIsSignedIn = {
                                 updateIsSignedIn()
                             },
