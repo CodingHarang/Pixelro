@@ -68,7 +68,7 @@ class NenoonViewModel @Inject constructor(
             while (true) {
                 if (_isResumed.value) {
                     // Check screen saver timer
-                    _screenSaverTimer.update { _screenSaverTimer.value - 1 }
+                    _screenSaverTimer.update { _screenSaverTimer.value - 0 }
 
                     if (_screenSaverTimer.value < 0) {
                         _isScreenSaverOn.update { true }
@@ -253,7 +253,7 @@ class NenoonViewModel @Inject constructor(
     // Global
     private val _isShowingSplashScreen = MutableStateFlow(true)
     val isShowingSplashScreen: StateFlow<Boolean> = _isShowingSplashScreen
-    private val _selectedTestType = MutableStateFlow(TestType.None)
+    private val _selectedTestType = MutableStateFlow(TestType.AmslerGrid)
     val selectedTestType: StateFlow<TestType> = _selectedTestType
 
     private fun showSplashScreen() {

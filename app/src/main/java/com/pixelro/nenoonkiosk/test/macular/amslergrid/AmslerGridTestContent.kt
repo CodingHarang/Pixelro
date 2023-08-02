@@ -54,10 +54,10 @@ fun AmslerGridTestContent(
     LaunchedEffect(true) {
         amslerGridViewModel.init()
     }
-    val measuringDistanceContentVisibleState = remember { MutableTransitionState(true) }
+    val measuringDistanceContentVisibleState = remember { MutableTransitionState(false) }
     measuringDistanceContentVisibleState.targetState = amslerGridViewModel.isMeasuringDistanceContentVisible.collectAsState().value
-    val amslerGridContentVisibleState = remember { MutableTransitionState(false) }
-    amslerGridContentVisibleState.targetState = amslerGridViewModel.isAmslerGridContentVisible.collectAsState().value
+    val amslerGridContentVisibleState = remember { MutableTransitionState(true) }
+//    amslerGridContentVisibleState.targetState = amslerGridViewModel.isAmslerGridContentVisible.collectAsState().value
 
     Column(
         modifier = Modifier
@@ -72,16 +72,16 @@ fun AmslerGridTestContent(
             modifier = Modifier
                 .fillMaxSize()
         ) {
-            MeasuringDistanceContent(
-                measuringDistanceContentVisibleState = measuringDistanceContentVisibleState,
-                toNextContent = {
-                    amslerGridViewModel.updateIsMeasuringDistanceContentVisible(false)
-                    amslerGridViewModel.updateIsAmslerGridContentVisible(true)
-//                    amslerGridViewModel.updateIsMacularDegenerationTypeVisible(false)
-                },
-                selectedTestType = TestType.AmslerGrid,
-                isLeftEye = amslerGridViewModel.isLeftEye.collectAsState().value
-            )
+//            MeasuringDistanceContent(
+//                measuringDistanceContentVisibleState = measuringDistanceContentVisibleState,
+//                toNextContent = {
+//                    amslerGridViewModel.updateIsMeasuringDistanceContentVisible(false)
+//                    amslerGridViewModel.updateIsAmslerGridContentVisible(true)
+////                    amslerGridViewModel.updateIsMacularDegenerationTypeVisible(false)
+//                },
+//                selectedTestType = TestType.AmslerGrid,
+//                isLeftEye = amslerGridViewModel.isLeftEye.collectAsState().value
+//            )
             AmslerGridContent(
                 amslerGridContentVisibleState = amslerGridContentVisibleState,
 //                macularDegenerationTypeVisibleState = macularDegenerationTypeVisibleState,
@@ -186,14 +186,14 @@ fun AmslerGridContent(
                             center = Offset(450f, 450f)
                         )
                     }
-                    if (!isFaceCenter) {
+                    if (true) {
                         drawCircle(
                             color = Color(0xff0000ff),
                             radius = 20f,
                             center = Offset(450f - (400f * tan(rotY * 0.0174533)).toFloat(), 450f - (400f * tan((rotX + 10) * 0.0174533)).toFloat())
                         )
                     }
-                    if (isBlinkingDone && !isFaceCenter && 450f - (400f * tan(rotY * 0.0174533)).toFloat() > 400f && 450f - (400f * tan(rotY * 0.0174533)).toFloat() < 500f
+                    if (450f - (400f * tan(rotY * 0.0174533)).toFloat() > 400f && 450f - (400f * tan(rotY * 0.0174533)).toFloat() < 500f
                             && 450f - (400f * tan((rotX + 10) * 0.0174533)).toFloat() > 400f && 450f - (400f * tan((rotX + 10) * 0.0174533)).toFloat() < 500f) {
                         amslerGridViewModel.updateIsFaceCenter(true)
                     }
@@ -287,24 +287,24 @@ fun AmslerGridContent(
                             shape = RoundedCornerShape(8.dp)
                         )
                         .clickable {
-                            if (isLeft) {
-                                amslerGridViewModel.updateIsLeftEye(false)
-                                amslerGridViewModel.updateLeftSelectedArea()
-                                amslerGridViewModel.updateIsMeasuringDistanceContentVisible(true)
-                                amslerGridViewModel.updateIsAmslerGridContentVisible(false)
-                            } else {
-                                amslerGridViewModel.updateRightSelectedArea()
-                                amslerGridViewModel.updateIsAmslerGridContentVisible(false)
-                                TTS.speechTTS("검사가 완료되었습니다. 결과가 나올 때 까지 잠시 기다려주세요.", TextToSpeech.QUEUE_ADD)
-                                toResultScreen(amslerGridViewModel.getAmslerGridTestResult())
-                            }
+//                            if (isLeft) {
+//                                amslerGridViewModel.updateIsLeftEye(false)
+//                                amslerGridViewModel.updateLeftSelectedArea()
+//                                amslerGridViewModel.updateIsMeasuringDistanceContentVisible(true)
+//                                amslerGridViewModel.updateIsAmslerGridContentVisible(false)
+//                            } else {
+//                                amslerGridViewModel.updateRightSelectedArea()
+//                                amslerGridViewModel.updateIsAmslerGridContentVisible(false)
+//                                TTS.speechTTS("검사가 완료되었습니다. 결과가 나올 때 까지 잠시 기다려주세요.", TextToSpeech.QUEUE_ADD)
+//                                toResultScreen(amslerGridViewModel.getAmslerGridTestResult())
+//                            }
                         },
                     contentAlignment = Alignment.Center
                 ) {
                     Text(
                         modifier = Modifier
                             .padding(bottom = 4.dp),
-                        text = StringProvider.getString(R.string.amsler_grid_test_content_done),
+                        text = String.format("%.1f", rotY),
                         fontSize = 40.sp,
                         color = Color(0xffffffff),
                         textAlign = TextAlign.Center,
