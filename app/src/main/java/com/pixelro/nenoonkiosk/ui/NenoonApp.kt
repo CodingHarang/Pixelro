@@ -62,9 +62,6 @@ fun NenoonApp(
             SignInScreen(
                 updateIsSignedIn = {
                     viewModel.updateIsSignedInId(true)
-                },
-                updateScreenSaverInfo = {
-                    viewModel.updateScreenSaverInfo(it)
                 }
             )
         } else {

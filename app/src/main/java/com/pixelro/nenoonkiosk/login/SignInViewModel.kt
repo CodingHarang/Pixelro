@@ -9,6 +9,7 @@ import com.harang.data.api.NenoonKioskApi
 import com.harang.data.repository.SignInRepository
 import com.pixelro.nenoonkiosk.data.SharedPreferencesManager
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.update
@@ -18,11 +19,9 @@ import javax.inject.Inject
 @HiltViewModel
 class SignInViewModel @Inject constructor(
     application: Application,
-    private val api: NenoonKioskApi,
     private val signInRepository: SignInRepository
 ) : AndroidViewModel(application) {
 
-    // signIn
     private val _id = MutableStateFlow("")
     val id: StateFlow<String> = _id
     private val _password = MutableStateFlow("")
@@ -36,20 +35,18 @@ class SignInViewModel @Inject constructor(
     }
 
     fun signIn(
-        updateIsSignedIn: () -> Unit,
-        updateScreenSaverInfo: (String) -> Unit
+        updateIsSignedIn: () -> Unit
     ) {
-        viewModelScope.launch {
+        viewModelScope.launch(Dispatchers.IO) {
             val result = signInRepository.getSignInResult(_id.value, _password.value)
             if (result != null) {
                 Log.e("result", "data = ${result.data}\ncreateAt = ${result.createAt}\nresponseId = ${result.responseId}")
                 for (data in result.data) {
-                    if (data.value != null) {
-                        Log.e("dataType", "data: ${data.value}\ntype: ${data.value.javaClass}")
-                    }
+                    Log.e("dataType", "data: ${data.value}\ntype: ${data.value?.javaClass}")
                 }
                 if (result.data["success"] as Boolean) {
-                    SharedPreferencesManager.putInt("locationId", (result.data["pid"] as Double).toInt())
+                    signInRepository.updateLocationId((result.data["pid"] as Double).toInt())
+                    signInRepository.updateScreenSaverVideoURI(result.data["video"] as String)
                     updateIsSignedIn()
                 } else {
                     Toast.makeText(getApplication(), "아이디와 비밀번호를 확인해주세요", Toast.LENGTH_SHORT).show()
@@ -71,5 +68,4 @@ class SignInViewModel @Inject constructor(
         }
         return true
     }
-
 }
