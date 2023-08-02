@@ -3,9 +3,9 @@
     <string name="app_name">Nenoon Kiosk</string>
     <string name="presbyopia_name1">Presbyopia Test</string>
     <string name="visual_acuity_name">Visual Acuity Test</string>
-    <string name="short_visual_acuity_name">Short Distance Visual Acuity Test</string>
-    <string name="long_visual_acuity_name">Long Distance Visual Acuity Test</string>
-    <string name="children_visual_acuity_name">Children Visual Acuity Test</string>
+    <string name="short_visual_acuity_name">Short Distance \nVisual Acuity Test</string>
+    <string name="long_visual_acuity_name">Long Distance \nVisual Acuity Test</string>
+    <string name="children_visual_acuity_name">Children \nVisual Acuity Test</string>
     <string name="macular_degeneration_name">Macular Degeneration Test</string>
     <string name="amsler_grid_name">Amsler Grid Test</string>
     <string name="mchart_name">M-Chart Test</string>
@@ -148,6 +148,8 @@
     <string name="etc">ETC</string>
     <string name="survey_surgery_lasik">LASIK /\n LASEK</string>
     <string name="survey_surgery_cataract">Cataract</string>
-    <string name="survey_diabetes">Do you have Diabetes</string>
+    <string name="survey_diabetes">Do you have Diabetes?</string>
+    <string name="dialog_description">comeon</string>
+    <string name="dialog_ok_button">Understand</string>
 
 </resources>

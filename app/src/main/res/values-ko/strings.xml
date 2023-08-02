@@ -7,8 +7,8 @@
     <string name="long_visual_acuity_name">원거리 시력 검사</string>
     <string name="children_visual_acuity_name">어린이 시력 검사</string>
     <string name="macular_degeneration_name">황반 변성 검사</string>
-    <string name="amsler_grid_name">암슬러 차트 검사</string>
-    <string name="mchart_name">엠식 변형시 검사</string>
+    <string name="amsler_grid_name">암슬러 차트 검사\n(황반 변성 검사)</string>
+    <string name="mchart_name">엠식 변형시 검사\n(황반 변성 검사)</string>
     <string name="test_list_screen_warning1">"내눈 앱의 모든 눈 검사는 자가 검사로 "</string>
     <string name="test_list_screen_warning2">"의학적 소견이 아니기에 "</string>
     <string name="test_list_screen_warning3">정확한 진단은 병원을 방문하시길 바랍니다. 눈의 상태와 주변 환경 또는 기기에 따라 검사 결과가 달라질 수 있습니다.</string>
@@ -147,5 +147,7 @@
     <string name="etc">기타</string>
     <string name="survey_surgery_lasik">라식/라섹</string>
     <string name="survey_surgery_cataract">백내장</string>
-    <string name="survey_diabetes">당뇨</string>
+    <string name="survey_diabetes">당뇨가 있으신가요?</string>
+    <string name="dialog_description">본 검사에서는 아래의 그림과 같은 \n전용 눈가리개를 사용합니다.\n눈가리개를 집어주세요</string>
+    <string name="dialog_ok_button">확인했습니다</string>
 </resources>

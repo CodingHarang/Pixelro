@@ -813,44 +813,6 @@ fun SurveyScreen(
                 }
             }
         }
-
-//        // 작성 완료 버튼
-//        Box(
-//            modifier = Modifier
-//                .fillMaxSize(),
-//            contentAlignment = Alignment.BottomCenter
-//        ) {
-//            Box(
-//                modifier = Modifier
-//                    .padding(
-//                        start = 40.dp,
-//                        end = 40.dp,
-//                        bottom = 40.dp
-//                    )
-//                    .fillMaxWidth()
-//                    .height(80.dp)
-//                    .clip(
-//                        shape = RoundedCornerShape(8.dp)
-//                    )
-//                    .background(
-//                        color = Color(0xff1d71e1),
-//                        shape = RoundedCornerShape(8.dp),
-//                    )
-//                    .clickable {
-//                        if (!surveyViewModel.checkSurveyIsDone()) return@clickable
-//                        toTestListScreen(surveyViewModel.getSurveyData())
-//                    },
-//                contentAlignment = Alignment.Center
-//            ) {
-//                Text(
-//                    text = "작성 완료",
-//                    fontSize = 40.sp,
-//                    color = Color(0xffffffff),
-//                    fontWeight = FontWeight.Medium,
-//                    textAlign = TextAlign.Center
-//                )
-//            }
-//        }
     }
 }
 

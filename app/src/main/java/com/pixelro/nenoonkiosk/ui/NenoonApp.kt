@@ -43,18 +43,18 @@ fun NenoonApp(
     if (viewModel.isShowingSplashScreen.collectAsState().value) {
         SplashScreen()
     } else {
-        if (viewModel.isScreenSaverOn.collectAsState().value) {
-            /**
-             * Screen Saver
-             * 검사 중이 아닐 때 40초 동안 입력이 없으면 보여지는 화면
-             */
-            ScreenSaverScreen(
-                viewModel,
-                toSurveyScreen = {
-                    mainNavController.popBackStack(GlobalConstants.ROUTE_SURVEY, false)
-                }
-            )
-        } else {
+//        if (viewModel.isScreenSaverOn.collectAsState().value) {
+//            /**
+//             * Screen Saver
+//             * 검사 중이 아닐 때 40초 동안 입력이 없으면 보여지는 화면
+//             */
+//            ScreenSaverScreen(
+//                viewModel,
+//                toSurveyScreen = {
+//                    mainNavController.popBackStack(GlobalConstants.ROUTE_SURVEY, false)
+//                }
+//            )
+//        } else {
             if (!viewModel.isAllPermissionsGranted.collectAsState().value) {
                 /**
                  * Permission Request Screen
@@ -332,5 +332,5 @@ fun NenoonApp(
             }
         }
     }
-}
+//}
 

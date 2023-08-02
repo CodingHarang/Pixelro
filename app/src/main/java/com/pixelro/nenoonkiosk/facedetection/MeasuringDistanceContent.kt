@@ -418,7 +418,7 @@ fun MeasuringDistanceDialog(
                 modifier = Modifier
                     .padding(start = 20.dp, top = 20.dp, end = 20.dp, bottom = 8.dp)
                     .fillMaxWidth(),
-                text = "본 검사에서는 아래의 그림과 같은\n전용 눈가리개를 사용합니다.\n눈가리개를 집어주세요.",
+                text = StringProvider.getString(R.string.dialog_description),
                 fontSize = 32.sp,
                 fontWeight = FontWeight.Bold
             )
@@ -452,7 +452,7 @@ fun MeasuringDistanceDialog(
                             onDismissRequest()
                         }
                         .padding(20.dp),
-                    text = "확인했습니다",
+                    text = StringProvider.getString(R.string.dialog_ok_button),
                     fontSize = 30.sp,
                     color = Color(0xff1d71e1),
                     fontWeight = FontWeight.Medium,
