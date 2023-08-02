@@ -66,7 +66,7 @@ fun DementiaTestContent(
                     shape = RoundedCornerShape(8.dp)
                 )
                 .width(320.dp)
-                .fillMaxHeight(0.8f)
+                .fillMaxHeight(0.9f)
                 .border(
                     border = BorderStroke(
                         width = 4.dp,
@@ -113,31 +113,37 @@ fun DementiaTestContent(
         dementiaViewModel: DementiaViewModel,
         i: Int,
     ) {
-        Text(
-            modifier = Modifier
-                .padding(bottom = 20.dp)
-                .height(300.dp),
-            text = when (i) {
-                0 -> "1. " + StringProvider.getString(R.string.dementia_survey_question0)
-                1 -> "2. " + StringProvider.getString(R.string.dementia_survey_question1)
-                2 -> "3. " + StringProvider.getString(R.string.dementia_survey_question2)
-                3 -> "4. " + StringProvider.getString(R.string.dementia_survey_question3)
-                4 -> "5. " + StringProvider.getString(R.string.dementia_survey_question4)
-                5 -> "6. " + StringProvider.getString(R.string.dementia_survey_question5)
-                6 -> "7. " + StringProvider.getString(R.string.dementia_survey_question6)
-                7 -> "8. " + StringProvider.getString(R.string.dementia_survey_question7)
-                8 -> "9. " + StringProvider.getString(R.string.dementia_survey_question8)
-                9 -> "10. " + StringProvider.getString(R.string.dementia_survey_question9)
-                10 -> "11. " + StringProvider.getString(R.string.dementia_survey_question10)
-                11 -> "12. " + StringProvider.getString(R.string.dementia_survey_question11)
-                12 -> "13. " + StringProvider.getString(R.string.dementia_survey_question12)
-                13 -> "14. " + StringProvider.getString(R.string.dementia_survey_question13)
+        Box(
 
-                else -> ""
-            },
-            fontSize = 50.sp,
-            fontWeight = FontWeight.Medium
-        )
+        ) {
+            Text(
+                textAlign = TextAlign.Center,
+                modifier = Modifier
+                    .padding(bottom = 20.dp)
+                    .height(300.dp)
+                    .align(Alignment.Center),
+                text = when (i) {
+                    0 -> "1. " + StringProvider.getString(R.string.dementia_survey_question0)
+                    1 -> "2. " + StringProvider.getString(R.string.dementia_survey_question1)
+                    2 -> "3. " + StringProvider.getString(R.string.dementia_survey_question2)
+                    3 -> "4. " + StringProvider.getString(R.string.dementia_survey_question3)
+                    4 -> "5. " + StringProvider.getString(R.string.dementia_survey_question4)
+                    5 -> "6. " + StringProvider.getString(R.string.dementia_survey_question5)
+                    6 -> "7. " + StringProvider.getString(R.string.dementia_survey_question6)
+                    7 -> "8. " + StringProvider.getString(R.string.dementia_survey_question7)
+                    8 -> "9. " + StringProvider.getString(R.string.dementia_survey_question8)
+                    9 -> "10. " + StringProvider.getString(R.string.dementia_survey_question9)
+                    10 -> "11. " + StringProvider.getString(R.string.dementia_survey_question10)
+                    11 -> "12. " + StringProvider.getString(R.string.dementia_survey_question11)
+                    12 -> "13. " + StringProvider.getString(R.string.dementia_survey_question12)
+                    13 -> "14. " + StringProvider.getString(R.string.dementia_survey_question13)
+
+                    else -> ""
+                },
+                fontSize = 50.sp,
+                fontWeight = FontWeight.Medium
+            )
+        }
         Row(
             modifier = Modifier
                 .fillMaxWidth()
