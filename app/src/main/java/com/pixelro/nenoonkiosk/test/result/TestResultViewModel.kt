@@ -1,19 +1,14 @@
 package com.pixelro.nenoonkiosk.test.result
 
 import android.app.Application
-import android.graphics.Bitmap
 import android.util.Log
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.viewModelScope
 import com.harang.data.api.NenoonKioskApi
-import com.harang.domain.model.SendAmslerGridTestResultRequest
-import com.harang.domain.model.SendAmslerGridTestResultResponse
-import com.harang.domain.model.SendMChartTestResultRequest
-import com.harang.domain.model.SendMChartTestResultResponse
-import com.harang.domain.model.SendPresbyopiaTestResultRequest
-import com.harang.domain.model.SendPresbyopiaTestResultResponse
-import com.harang.domain.model.SendShortVisualAcuityTestResultRequest
-import com.harang.domain.model.SendShortVisualAcuityTestResultResponse
+import com.harang.data.model.SendAmslerGridTestResultRequest
+import com.harang.data.model.SendMChartTestResultRequest
+import com.harang.data.model.SendPresbyopiaTestResultRequest
+import com.harang.data.model.SendShortVisualAcuityTestResultRequest
 import com.pixelro.nenoonkiosk.data.TestType
 import com.pixelro.nenoonkiosk.test.macular.amslergrid.AmslerGridTestResult
 import com.pixelro.nenoonkiosk.test.macular.mchart.MChartTestResult
@@ -25,9 +20,7 @@ import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import retrofit2.HttpException
-import retrofit2.Response
 import java.io.IOException
-import java.time.LocalDateTime
 import javax.inject.Inject
 
 @HiltViewModel

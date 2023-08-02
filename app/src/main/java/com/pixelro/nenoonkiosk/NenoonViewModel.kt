@@ -10,7 +10,6 @@ import android.content.pm.PackageManager
 import android.location.LocationManager
 import android.net.Uri
 import android.provider.Settings
-import android.provider.Settings.Global
 import android.util.Log
 import android.util.SizeF
 import androidx.core.content.ContextCompat
@@ -29,7 +28,7 @@ import com.google.android.gms.location.LocationSettingsResponse
 import com.google.android.gms.location.SettingsClient
 import com.google.android.gms.tasks.Task
 import com.harang.data.api.NenoonKioskApi
-import com.harang.domain.model.SendSurveyDataRequest
+import com.harang.data.model.SendSurveyDataRequest
 import com.pixelro.nenoonkiosk.data.GlobalConstants
 import com.pixelro.nenoonkiosk.data.GlobalValue
 import com.pixelro.nenoonkiosk.data.SharedPreferencesManager

@@ -6,10 +6,7 @@ import android.widget.Toast
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.viewModelScope
 import com.harang.data.api.NenoonKioskApi
-import com.harang.domain.model.SendSignInDataResponse
 import com.pixelro.nenoonkiosk.NenoonKioskApplication
-import com.pixelro.nenoonkiosk.data.GlobalConstants
-import com.pixelro.nenoonkiosk.data.SharedPreferencesManager
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow

@@ -1,4 +1,4 @@
-package com.harang.domain.model
+package com.harang.data.model
 
 import com.google.gson.annotations.SerializedName
 import java.io.Serializable
