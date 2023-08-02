@@ -51,6 +51,10 @@ class MyFaceAnalyzer(
     override fun analyze(imageProxy: ImageProxy) {
         val now = SystemClock.uptimeMillis()
         var isNenoonTextDetected = false
+        if(lastAnalysisTime != -1L && now - lastAnalysisTime < 400f) {
+            imageProxy.close()
+            return
+        }
         lastAnalysisTime = now
 
         // original image
@@ -82,6 +86,7 @@ class MyFaceAnalyzer(
                 var centerFace: Face? = null
 
                 for (face in faces) {
+                    Log.e("centerFace", "face1")
                     val leftEyePosition = face.getLandmark(FaceLandmark.LEFT_EYE)?.position
                     val rightEyePosition = face.getLandmark(FaceLandmark.RIGHT_EYE)?.position
                     if (leftEyePosition != null && rightEyePosition != null) {
@@ -100,6 +105,7 @@ class MyFaceAnalyzer(
                 }
 
                 if(centerFace != null) {
+                    Log.e("centerFace", "face")
                     noFaceCount = 0
                     updateIsFaceDetected(true)
                     val boundingBox = centerFace.boundingBox
@@ -127,7 +133,7 @@ class MyFaceAnalyzer(
                         updateIsFaceDetected(false)
                     }
                 } else {
-                    noFaceCount++
+//                    noFaceCount++
                     if(noFaceCount > 6) {
                         updateIsFaceDetected(false)
                     }
