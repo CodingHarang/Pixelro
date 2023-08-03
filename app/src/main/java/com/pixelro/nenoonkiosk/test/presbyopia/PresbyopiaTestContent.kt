@@ -78,9 +78,9 @@ fun PresbyopiaTestContent(
     }
     if (distance < 250f && !isUnder25cm && isMovedTo40cm) {
         when (tryCount) {
-            0 -> TTS.speechTTS("다음 측정을 실시합니다. 아래의 다음 버튼을 눌러주세요", TextToSpeech.QUEUE_ADD)
-            1 -> TTS.speechTTS("다음 측정을 실시합니다. 아래의 다음 버튼을 눌러주세요", TextToSpeech.QUEUE_ADD)
-            else -> TTS.speechTTS("검사를 모두 완료했습니다. 아래의 다음 버튼을 눌러주세요", TextToSpeech.QUEUE_ADD)
+            0 -> TTS.speechTTS("첫 번째 측정에서 노안이 발견되지 않았습니다\n아래의 '다음'을 눌러주세요", TextToSpeech.QUEUE_ADD)
+            1 -> TTS.speechTTS("두 번째 측정에서 노안이 발견되지 않았습니다\n아래의 '다음'을 눌러주세요", TextToSpeech.QUEUE_ADD)
+            else -> TTS.speechTTS("마지막 측정에서 노안이 발견되지 않았습니다\n아래의 '다음'을 눌러주세요", TextToSpeech.QUEUE_ADD)
         }
         presbyopiaViewModel.updateIsUnder25cm(true)
     }
@@ -140,9 +140,9 @@ fun PresbyopiaTestContent(
                 if (isUnder25cm) {
                     Text(
                         text = when (tryCount) {
-                            0 -> "두 번째 측정을 실시합니다\n아래의 '다음'을 눌러주세요"
-                            1 -> "세 번째 측정을 실시합니다\n아래의 '다음'을 눌러주세요"
-                            else -> "검사가 완료되었습니다\n아래의 '다음'을 눌러주세요"
+                            0 -> "첫 번째 측정에서\n노안이 발견되지 않았습니다\n아래의 다음을 눌러주세요"
+                            1 -> "두 번째 측정에서\n노안이 발견되지 않았습니다\n아래의 다음을 눌러주세요"
+                            else -> "마지막 측정에서\n노안이 발견되지 않았습니다\n아래의 다음을 눌러주세요"
                         },
                         fontSize = 44.sp,
                         fontWeight = FontWeight.Bold,

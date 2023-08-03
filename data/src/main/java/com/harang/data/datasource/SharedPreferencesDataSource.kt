@@ -12,6 +12,15 @@ class SharedPreferencesDataSource constructor(
     private val editor = pref.edit()
     private val gson = Gson()
 
+    fun checkIfKeyExists(key: String): Boolean {
+        return pref.contains(key)
+    }
+
+    fun removeKeyValue(key: String) {
+        editor.remove(key)
+        editor.commit()
+    }
+
     private fun putStringAndCommit(key: String, string: String) {
         editor.putString(key, string)
         editor.commit()

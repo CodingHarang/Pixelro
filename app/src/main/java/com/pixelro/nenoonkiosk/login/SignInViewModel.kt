@@ -52,10 +52,15 @@ class SignInViewModel @Inject constructor(
                         updateIsSignedIn(true)
                     }
                 } else {
-                    Toast.makeText(getApplication(), "아이디와 비밀번호를 확인해주세요", Toast.LENGTH_SHORT).show()
+                    withContext(Dispatchers.Main) {
+                        Toast.makeText(getApplication(), "아이디와 비밀번호를 확인해주세요", Toast.LENGTH_SHORT).show()
+                    }
                 }
             } else {
-                Toast.makeText(getApplication(), "와이파이가 연결되어있는지 확인해주세요", Toast.LENGTH_SHORT).show()
+                withContext(Dispatchers.Main) {
+                    Toast.makeText(getApplication(), "와이파이가 연결되어있는지 확인해주세요", Toast.LENGTH_SHORT)
+                        .show()
+                }
             }
         }
     }
@@ -70,5 +75,11 @@ class SignInViewModel @Inject constructor(
             return false
         }
         return true
+    }
+
+    fun signOut() {
+        viewModelScope.launch {
+            signInRepository.signOut()
+        }
     }
 }

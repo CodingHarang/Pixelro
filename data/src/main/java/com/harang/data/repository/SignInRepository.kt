@@ -4,6 +4,7 @@ import android.content.SharedPreferences
 import com.harang.data.datasource.SharedPreferencesDataSource
 import com.harang.data.datasource.SignInRemoteDataSource
 import com.harang.data.model.SendSignInDataResponse
+import com.harang.data.vo.Constants
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 
@@ -19,13 +20,18 @@ class SignInRepository(
 
     suspend fun updateLocationId(locationId: Int) {
         withContext(Dispatchers.IO) {
-            sharedPreferencesDataSource.putInt("locationId", locationId)
+            sharedPreferencesDataSource.putInt(Constants.PREF_LOCATION_ID, locationId)
         }
     }
 
     suspend fun updateScreenSaverVideoURI(uri: String) {
         withContext(Dispatchers.IO) {
-            sharedPreferencesDataSource.putString("screenSaverVideoURI", uri)
+            sharedPreferencesDataSource.putString(Constants.PREF_VIDEO_URI, uri)
         }
+    }
+
+    suspend fun signOut() {
+        sharedPreferencesDataSource.removeKeyValue(Constants.PREF_LOCATION_ID)
+        sharedPreferencesDataSource.removeKeyValue(Constants.PREF_VIDEO_URI)
     }
 }

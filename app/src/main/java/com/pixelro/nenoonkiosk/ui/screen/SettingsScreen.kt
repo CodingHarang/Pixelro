@@ -35,17 +35,21 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.compose.ui.window.Dialog
 import androidx.compose.ui.window.DialogProperties
+import androidx.hilt.navigation.compose.hiltViewModel
 import com.pixelro.nenoonkiosk.NenoonKioskApplication
 import com.pixelro.nenoonkiosk.NenoonViewModel
 import com.pixelro.nenoonkiosk.R
 import com.pixelro.nenoonkiosk.data.GlobalValue
 import com.pixelro.nenoonkiosk.data.SharedPreferencesManager
 import com.pixelro.nenoonkiosk.data.StringProvider
+import com.pixelro.nenoonkiosk.login.SignInViewModel
 import java.util.Locale
 
 @Composable
 fun SettingsScreen(
-    viewModel: NenoonViewModel
+    viewModel: NenoonViewModel,
+    signInViewModel: SignInViewModel = hiltViewModel(),
+
 ) {
     val isLanguageSelectDialogShowing = viewModel.isLanguageSelectDialogShowing
     val context = LocalContext.current
@@ -83,7 +87,12 @@ fun SettingsScreen(
                                 KeyEvent.KEYCODE_BACK
                             )
                         )
-                        context.dispatchKeyEvent(KeyEvent(KeyEvent.ACTION_UP, KeyEvent.KEYCODE_BACK))
+                        context.dispatchKeyEvent(
+                            KeyEvent(
+                                KeyEvent.ACTION_UP,
+                                KeyEvent.KEYCODE_BACK
+                            )
+                        )
                     },
                 contentAlignment = Alignment.CenterStart
             ) {
@@ -156,6 +165,21 @@ fun SettingsScreen(
                     color = Color(0xffdddddd)
                 )
         )
+        Box(
+            modifier = Modifier
+                .clickable {
+                    signInViewModel.signOut()
+                }
+        ) {
+            Text(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(start = 40.dp, top = 10.dp, bottom = 10.dp),
+                text = "로그아웃",
+                fontSize = 30.sp,
+                color = Color(0xFFFF0000)
+            )
+        }
     }
 }
 
