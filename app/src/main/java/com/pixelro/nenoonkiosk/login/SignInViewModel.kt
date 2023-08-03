@@ -35,7 +35,7 @@ class SignInViewModel @Inject constructor(
     }
 
     fun signIn(
-        updateIsSignedIn: () -> Unit
+        updateIsSignedIn: (Boolean) -> Unit
     ) {
         viewModelScope.launch(Dispatchers.IO) {
             val result = signInRepository.getSignInResult(_id.value, _password.value)
@@ -47,7 +47,7 @@ class SignInViewModel @Inject constructor(
                 if (result.data["success"] as Boolean) {
                     signInRepository.updateLocationId((result.data["pid"] as Double).toInt())
                     signInRepository.updateScreenSaverVideoURI(result.data["video"] as String)
-                    updateIsSignedIn()
+                    updateIsSignedIn(true)
                 } else {
                     Toast.makeText(getApplication(), "아이디와 비밀번호를 확인해주세요", Toast.LENGTH_SHORT).show()
                 }
@@ -57,7 +57,7 @@ class SignInViewModel @Inject constructor(
         }
     }
 
-    fun checkLoginIsDone(): Boolean {
+    fun checkIsTextFilled(): Boolean {
         if (_id.value == "") {
             Toast.makeText(getApplication(), "아이디를 입력해주세요", Toast.LENGTH_SHORT).show()
             return false

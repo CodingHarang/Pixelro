@@ -12,14 +12,20 @@ class SignInRepository(
     private val sharedPreferencesDataSource: SharedPreferencesDataSource
 ) {
     suspend fun getSignInResult(id: String, pw: String): SendSignInDataResponse? {
-        return withContext(Dispatchers.IO) {remoteDataSource.signIn(id, pw) }
+        return withContext(Dispatchers.IO) {
+            remoteDataSource.signIn(id, pw)
+        }
     }
 
     suspend fun updateLocationId(locationId: Int) {
-        sharedPreferencesDataSource.putInt("locationId", locationId)
+        withContext(Dispatchers.IO) {
+            sharedPreferencesDataSource.putInt("locationId", locationId)
+        }
     }
 
     suspend fun updateScreenSaverVideoURI(uri: String) {
-        sharedPreferencesDataSource.putString("screenSaverVideoURI", uri)
+        withContext(Dispatchers.IO) {
+            sharedPreferencesDataSource.putString("screenSaverVideoURI", uri)
+        }
     }
 }

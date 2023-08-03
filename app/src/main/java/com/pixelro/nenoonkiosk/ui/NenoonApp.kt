@@ -57,11 +57,11 @@ fun NenoonApp(
         if (!viewModel.isSignedIn.collectAsState().value) {
             /**
              * Sign In Screen
-             * 로그인을 할 수 있는 화면
+             * 로그인 화면
              */
             SignInScreen(
                 updateIsSignedIn = {
-                    viewModel.updateIsSignedInId(true)
+                    viewModel.updateIsSignedInId(it)
                 }
             )
         } else {
@@ -71,9 +71,12 @@ fun NenoonApp(
                  * 검사 중이 아닐 때 40초 동안 입력이 없으면 보여지는 대기 화면
                  */
                 ScreenSaverScreen(
-                    viewModel,
-                    toSurveyScreen = {
-                        mainNavController.popBackStack(GlobalConstants.ROUTE_SURVEY, false)
+                    viewModel.exoPlayer,
+                    initializeTestDoneStatus = {
+                        viewModel.initializeTestDoneStatus()
+                    },
+                    toIntroScreen = {
+                        mainNavController.popBackStack(GlobalConstants.ROUTE_INTRO, false)
                     }
                 )
             } else {
@@ -147,7 +150,7 @@ fun NenoonApp(
                                 toSettingsScreen = {
                                     mainNavController.navigate(GlobalConstants.ROUTE_SETTINGS)
                                 },
-                                toSurveyScreen = {
+                                toIntroScreen = {
                                     mainNavController.popBackStack(GlobalConstants.ROUTE_INTRO, false)
                                 },
                                 isPresbyopiaDone = viewModel.isPresbyopiaTestDone.collectAsState().value,

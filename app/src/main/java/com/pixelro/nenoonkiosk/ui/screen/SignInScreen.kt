@@ -40,7 +40,7 @@ import com.pixelro.nenoonkiosk.login.SignInViewModel
 
 @Composable
 fun SignInScreen(
-    updateIsSignedIn: () -> Unit,
+    updateIsSignedIn: (Boolean) -> Unit,
     signInViewModel: SignInViewModel = hiltViewModel()
 ) {
     val id = signInViewModel.id.collectAsState().value
@@ -186,7 +186,7 @@ fun SignInScreen(
                         shape = RoundedCornerShape(8.dp),
                     )
                     .clickable {
-                        if (!signInViewModel.checkLoginIsDone()) return@clickable
+                        if (!signInViewModel.checkIsTextFilled()) return@clickable
                         signInViewModel.signIn(
                             updateIsSignedIn = updateIsSignedIn
                         )

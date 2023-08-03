@@ -57,7 +57,7 @@ fun TestListScreen(
     checkIsTestDone: (TestType) -> Boolean,
     toTestScreen: (TestType) -> Unit,
     toSettingsScreen: () -> Unit,
-    toSurveyScreen: () -> Unit,
+    toIntroScreen: () -> Unit,
     isPresbyopiaDone: Boolean,
     isShortVisualAcuityDone: Boolean,
     isAmslerGridDone: Boolean,
@@ -83,7 +83,7 @@ fun TestListScreen(
                 isDialogShowing = false
             },
             toTestScreen = toTestScreen,
-            toSurveyScreen = toSurveyScreen,
+            toIntroScreen = toIntroScreen,
             selectedTest = selectedTest
         )
     }
@@ -109,7 +109,7 @@ fun TestListScreen(
                 modifier = Modifier
                     .fillMaxHeight()
                     .clickable {
-                        toSurveyScreen()
+                        toIntroScreen()
                     },
                 verticalAlignment = Alignment.CenterVertically
             ) {
@@ -283,7 +283,7 @@ fun Advertisement(
 fun SurveyRecommendationDialog(
     onDismissRequest: () -> Unit,
     toTestScreen: (TestType) -> Unit,
-    toSurveyScreen: () -> Unit,
+    toIntroScreen: () -> Unit,
     selectedTest: TestType
 ) {
     Dialog(
@@ -360,7 +360,7 @@ fun SurveyRecommendationDialog(
                                 )
                                 .clickable {
                                     onDismissRequest()
-                                    toSurveyScreen()
+                                    toIntroScreen()
                                 }
                                 .padding(top = 4.dp),
                             text = "문진하러 가기",

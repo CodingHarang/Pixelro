@@ -132,9 +132,10 @@ class MainActivity : ComponentActivity() {
     }
 
     override fun onDestroy() {
-        super.onDestroy()
         TTS.tts.stop()
         TTS.destroyTTS()
+        viewModel.exoPlayer.release()
+        super.onDestroy()
     }
 }
 

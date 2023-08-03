@@ -430,26 +430,28 @@ class NenoonViewModel @Inject constructor(
         showSplashScreen()
         checkBackgroundStatus()
         exoPlayer = ExoPlayer.Builder(getApplication()).build()
-        //        exoPlayer.setMediaItem(MediaItem.fromUri(Uri.fromFile(File("/storage/emulated/0/Download/ad1.mp4"))))
-        if (SharedPreferencesManager.getString(GlobalConstants.PREFERENCE_VIDEO_URI) == "") {
-            exoPlayer.setMediaItem(MediaItem.fromUri(Uri.fromFile(File("/storage/emulated/0/Download/ad1.mp4"))))
-            Log.e("localVideo", "local Video Loaded")
-        } else {
-            exoPlayer.setMediaItem(MediaItem.fromUri("https://drive.google.com/uc?export=view&id=1NJAxk3TGlcXA8sUd01c2zsgEkp9ngp5q"))
-            Log.e("remoteVideo", "remote Video Loaded")
-        }
-//        exoPlayer.setMediaItem(MediaItem.fromUri("https://drive.google.com/uc?export=view&id=1vNW4Xia8pG4tfGoao4Nb7hEJtOd9Cg8F"))
-        viewModelScope.launch {
-            while (exoPlayer.isLoading) {
-                Log.e("isLoading", "isLoading")
-                delay(1000)
-            }
-            Log.e("isLoading", "loadingDone")
-        }
-        exoPlayer.prepare()
         exoPlayer.repeatMode = Player.REPEAT_MODE_ONE
         exoPlayer.volume = 0f
-//        exoPlayer.setMediaItem(MediaItem.fromUri("https://drive.google.com/uc?export=view&id=1NJAxk3TGlcXA8sUd01c2zsgEkp9ngp5q"))
+//        //        exoPlayer.setMediaItem(MediaItem.fromUri(Uri.fromFile(File("/storage/emulated/0/Download/ad1.mp4"))))
+//        if (SharedPreferencesManager.getString(GlobalConstants.PREFERENCE_VIDEO_URI) == "") {
+//            exoPlayer.setMediaItem(MediaItem.fromUri(Uri.fromFile(File("/storage/emulated/0/Download/ad1.mp4"))))
+//            Log.e("localVideo", "local Video Loaded")
+//        } else {
+//            exoPlayer.setMediaItem(MediaItem.fromUri("https://drive.google.com/uc?export=view&id=1NJAxk3TGlcXA8sUd01c2zsgEkp9ngp5q"))
+//            Log.e("remoteVideo", "remote Video Loaded")
+//        }
+////        exoPlayer.setMediaItem(MediaItem.fromUri("https://drive.google.com/uc?export=view&id=1vNW4Xia8pG4tfGoao4Nb7hEJtOd9Cg8F"))
+//        viewModelScope.launch {
+//            while (exoPlayer.isLoading) {
+//                Log.e("isLoading", "isLoading")
+//                delay(1000)
+//            }
+//            Log.e("isLoading", "loadingDone")
+//        }
+//        exoPlayer.prepare()
+//        exoPlayer.repeatMode = Player.REPEAT_MODE_ONE
+//        exoPlayer.volume = 0f
+////        exoPlayer.setMediaItem(MediaItem.fromUri("https://drive.google.com/uc?export=view&id=1NJAxk3TGlcXA8sUd01c2zsgEkp9ngp5q"))
     }
 
     enum class ScreenState {

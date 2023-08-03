@@ -37,18 +37,26 @@ import androidx.compose.ui.text.withStyle
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.compose.ui.viewinterop.AndroidView
+import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.media3.common.MediaItem
+import androidx.media3.common.Player
+import androidx.media3.exoplayer.ExoPlayer
 import androidx.media3.ui.AspectRatioFrameLayout
 import androidx.media3.ui.PlayerView
 import com.google.accompanist.systemuicontroller.rememberSystemUiController
 import com.pixelro.nenoonkiosk.NenoonViewModel
 import com.pixelro.nenoonkiosk.data.GlobalValue
+import com.pixelro.nenoonkiosk.data.SharedPreferencesManager
+import com.pixelro.nenoonkiosk.ui.ScreenSaverViewModel
 
 @OptIn(ExperimentalTextApi::class)
 @androidx.annotation.OptIn(androidx.media3.common.util.UnstableApi::class)
 @Composable
 fun ScreenSaverScreen(
-    viewModel: NenoonViewModel,
-    toSurveyScreen: () -> Unit
+    exoPlayer: ExoPlayer,
+    initializeTestDoneStatus: () -> Unit,
+    toIntroScreen: () -> Unit,
+    screenSaverViewModel: ScreenSaverViewModel = hiltViewModel()
 ) {
     val transition = rememberInfiniteTransition()
     val shiftVal by transition.animateFloat(
@@ -60,8 +68,9 @@ fun ScreenSaverScreen(
         )
     )
     LaunchedEffect(true) {
-        toSurveyScreen()
-        viewModel.initializeTestDoneStatus()
+        screenSaverViewModel.setMediaItem(exoPlayer)
+        toIntroScreen()
+        initializeTestDoneStatus()
     }
     val text = buildAnnotatedString {
         append("화면을 ")
@@ -79,7 +88,6 @@ fun ScreenSaverScreen(
     }
     val systemUiController = rememberSystemUiController()
     val context = LocalContext.current
-    val exoPlayer = viewModel.exoPlayer
     Column(
         modifier = Modifier
             .fillMaxSize()
@@ -94,7 +102,7 @@ fun ScreenSaverScreen(
             exoPlayer.play()
             onDispose {
                 systemUiController.systemBarsDarkContentEnabled = true
-                exoPlayer.pause()
+                exoPlayer.stop()
             }
         }
         Spacer(
