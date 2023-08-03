@@ -6,8 +6,6 @@ import android.widget.Toast
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.viewModelScope
 import com.harang.data.api.NenoonKioskApi
-import com.harang.domain.model.SendSignInDataResponse
-import com.pixelro.nenoonkiosk.data.SharedPreferencesManager
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -37,21 +35,21 @@ class LoginViewModel @Inject constructor(
 
     fun signIn() {
         viewModelScope.launch {
-            val response = try {
-                api.sendSignInData(
-                    id = _text.value,
-                    pw = _password.value
-                )
-            } catch (e: Exception) {
-                e.printStackTrace()
-                null
-            } catch (e: HttpException) {
-                e.printStackTrace()
-                null
-            }
-            Log.e("signInResponseCode", "${response?.code()}")
-            Log.e("signInResponseBody", "${response?.body()}")
-            Log.e("signInResponseErrorBody", "${response?.errorBody()}")
+//            val response = try {
+//                api.sendSignInData(
+//                    id = _text.value,
+//                    pw = _password.value
+//                )
+//            } catch (e: Exception) {
+//                e.printStackTrace()
+//                null
+//            } catch (e: HttpException) {
+//                e.printStackTrace()
+//                null
+//            }
+//            Log.e("signInResponseCode", "${response?.code()}")
+//            Log.e("signInResponseBody", "${response?.body()}")
+//            Log.e("signInResponseErrorBody", "${response?.errorBody()}")
         }
     }
 

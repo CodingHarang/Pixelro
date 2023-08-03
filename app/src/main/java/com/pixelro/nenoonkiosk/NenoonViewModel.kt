@@ -28,7 +28,6 @@ import com.google.android.gms.location.LocationSettingsResponse
 import com.google.android.gms.location.SettingsClient
 import com.google.android.gms.tasks.Task
 import com.harang.data.api.NenoonKioskApi
-import com.harang.domain.model.SendSurveyDataRequest
 import com.pixelro.nenoonkiosk.data.GlobalValue
 import com.pixelro.nenoonkiosk.data.SharedPreferencesManager
 import com.pixelro.nenoonkiosk.data.TestType
@@ -283,56 +282,56 @@ class NenoonViewModel @Inject constructor(
     val surveyId: StateFlow<Long> = _surveyId
 
     fun updateSurveyData(surveyData: SurveyData) {
-        viewModelScope.launch {
-            val request = SendSurveyDataRequest(
-                age = when (surveyData.surveyAge) {
-                    SurveyAge.First -> 9
-                    SurveyAge.Second -> 10
-                    SurveyAge.Third -> 20
-                    SurveyAge.Fourth -> 30
-                    SurveyAge.Fifth -> 40
-                    SurveyAge.Sixth -> 50
-                    SurveyAge.Seventh -> 60
-                    else -> 70
-                },
-                gender = when (surveyData.surveySex) {
-                    SurveySex.Man -> "M"
-                    else -> "W"
-                },
-                glasses = when (surveyData.surveyGlass) {
-                    SurveyGlass.Yes -> true
-                    else -> false
-                },
-                surgery = when (surveyData.surveySurgery) {
-                    SurveySurgery.Normal -> "normal"
-                    SurveySurgery.LASIK -> "correction"
-                    SurveySurgery.Cataract -> "cataract"
-                    else -> "etc"
-                },
-                diabetes = when (surveyData.surveyDiabetes) {
-                    SurveyDiabetes.Yes -> true
-                    else -> false
-                }
-            )
-            Log.e("surveyDataRequest", request.toString())
-            val response = try {
-                api.sendSurveyData(request)
-            } catch (e: Exception) {
-                e.printStackTrace()
-                null
-            } catch (e: HttpException) {
-                e.printStackTrace()
-                null
-            }
-            Log.e("surveyDataResponseCode", response?.code().toString())
-            Log.e("surveyDataResponseBody", response?.body().toString())
-            Log.e("surveyDataResponseErrorBody", response?.errorBody()?.string().toString())
-            if (response != null) {
-                _surveyId.update { ((response.body()?.data?.get("tid") ?: 0) as Double).toLong() }
-            } else {
-                _surveyId.update { 0L }
-            }
-        }
+//        viewModelScope.launch {
+//            val request = SendSurveyDataRequest(
+//                age = when (surveyData.surveyAge) {
+//                    SurveyAge.First -> 9
+//                    SurveyAge.Second -> 10
+//                    SurveyAge.Third -> 20
+//                    SurveyAge.Fourth -> 30
+//                    SurveyAge.Fifth -> 40
+//                    SurveyAge.Sixth -> 50
+//                    SurveyAge.Seventh -> 60
+//                    else -> 70
+//                },
+//                gender = when (surveyData.surveySex) {
+//                    SurveySex.Man -> "M"
+//                    else -> "W"
+//                },
+//                glasses = when (surveyData.surveyGlass) {
+//                    SurveyGlass.Yes -> true
+//                    else -> false
+//                },
+//                surgery = when (surveyData.surveySurgery) {
+//                    SurveySurgery.Normal -> "normal"
+//                    SurveySurgery.LASIK -> "correction"
+//                    SurveySurgery.Cataract -> "cataract"
+//                    else -> "etc"
+//                },
+//                diabetes = when (surveyData.surveyDiabetes) {
+//                    SurveyDiabetes.Yes -> true
+//                    else -> false
+//                }
+//            )
+//            Log.e("surveyDataRequest", request.toString())
+//            val response = try {
+//                api.sendSurveyData(request)
+//            } catch (e: Exception) {
+//                e.printStackTrace()
+//                null
+//            } catch (e: HttpException) {
+//                e.printStackTrace()
+//                null
+//            }
+//            Log.e("surveyDataResponseCode", response?.code().toString())
+//            Log.e("surveyDataResponseBody", response?.body().toString())
+//            Log.e("surveyDataResponseErrorBody", response?.errorBody()?.string().toString())
+//            if (response != null) {
+//                _surveyId.update { ((response.body()?.data?.get("tid") ?: 0) as Double).toLong() }
+//            } else {
+//                _surveyId.update { 0L }
+//            }
+//        }
     }
 
     // Test Result
