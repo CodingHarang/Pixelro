@@ -1,9 +1,12 @@
 package com.pixelro.nenoonkiosk.survey
 
 import android.app.Application
+import android.util.Log
 import android.widget.Toast
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.viewModelScope
+import com.harang.data.model.SendSurveyDataRequest
+import com.harang.data.repository.SurveyRepository
 import com.pixelro.nenoonkiosk.survey.datatype.SurveyAge
 import com.pixelro.nenoonkiosk.survey.datatype.SurveyData
 import com.pixelro.nenoonkiosk.survey.datatype.SurveyDiabetes
@@ -11,16 +14,19 @@ import com.pixelro.nenoonkiosk.survey.datatype.SurveyGlass
 import com.pixelro.nenoonkiosk.survey.datatype.SurveySex
 import com.pixelro.nenoonkiosk.survey.datatype.SurveySurgery
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 import javax.inject.Inject
 
 @HiltViewModel
 class SurveyViewModel @Inject constructor(
-    application: Application
+    application: Application,
+    private val surveyRepository: SurveyRepository
 ) : AndroidViewModel(application) {
 
     private val _surveyAge = MutableStateFlow(SurveyAge.None)
@@ -72,38 +78,54 @@ class SurveyViewModel @Inject constructor(
         _surveyDiabetes.update { SurveyDiabetes.None }
     }
 
-    fun checkSurveyIsDone(): Boolean {
-        if (surveyAge.value == SurveyAge.None) {
-            Toast.makeText(getApplication(), "나이를 선택해주세요", Toast.LENGTH_SHORT).show()
-            return false
+    fun getSurveyId(
+        toTestListScreen: (Long) -> Unit
+    ) {
+        viewModelScope.launch(Dispatchers.IO) {
+            val response = surveyRepository.sendSurveyData(
+                SendSurveyDataRequest(
+                    age = when (_surveyAge.value) {
+                        SurveyAge.First -> 1
+                        SurveyAge.Second -> 2
+                        SurveyAge.Third -> 4
+                        SurveyAge.Fourth -> 5
+                        SurveyAge.Fifth -> 6
+                        SurveyAge.Sixth -> 7
+                        SurveyAge.Seventh -> 8
+                        else -> 9
+                    },
+                    gender = when (_surveySex.value) {
+                        SurveySex.Man -> "M"
+                        else -> "W"
+                    },
+                    glasses = when (_surveyGlass.value) {
+                        SurveyGlass.Yes -> true
+                        else -> false
+                    },
+                    surgery = when (_surveySurgery.value) {
+                        SurveySurgery.Normal -> "normal"
+                        SurveySurgery.LASIK -> "correction"
+                        SurveySurgery.Cataract -> "cataract"
+                        else -> "etc"
+                    },
+                    diabetes = when (_surveyDiabetes.value) {
+                        SurveyDiabetes.Yes -> true
+                        else -> false
+                    }
+                )
+            )
+            if (response != null) {
+                Log.e("surveyId", "${((response.data?.get("tid") ?: 0) as Double).toLong()}")
+                withContext(Dispatchers.Main) {
+                    toTestListScreen(((response.data?.get("tid") ?: 0) as Double).toLong())
+                }
+            } else {
+                Log.e("surveyId", "result is null")
+                withContext(Dispatchers.Main) {
+                    toTestListScreen(0L)
+                }
+            }
         }
-        if (surveySex.value == SurveySex.None) {
-            Toast.makeText(getApplication(), "성별을 선택해주세요", Toast.LENGTH_SHORT).show()
-            return false
-        }
-        if (surveyGlass.value == SurveyGlass.None) {
-            Toast.makeText(getApplication(), "안경 착용 여부를 선택해주세요", Toast.LENGTH_SHORT).show()
-            return false
-        }
-        if (surveySurgery.value == SurveySurgery.None) {
-            Toast.makeText(getApplication(), "수술 여부를 선택해주세요", Toast.LENGTH_SHORT).show()
-            return false
-        }
-        if (surveyDiabetes.value == SurveyDiabetes.None) {
-            Toast.makeText(getApplication(), "당뇨 여부를 선택해주세요", Toast.LENGTH_SHORT).show()
-            return false
-        }
-        return true
-    }
-
-    fun getSurveyData(): SurveyData {
-        return SurveyData(
-            surveyAge = surveyAge.value,
-            surveySex = surveySex.value,
-            surveyGlass = surveyGlass.value,
-            surveySurgery = surveySurgery.value,
-            surveyDiabetes = surveyDiabetes.value
-        )
     }
 
     enum class QuestionType {

@@ -10,7 +10,7 @@ import dagger.hilt.components.SingletonComponent
 
 @Module
 @InstallIn(SingletonComponent::class)
-object SharedPreferencesDataModule {
+object SharedPreferencesDataSourceModule {
 
     @Provides
     fun provideSharedPreferencesDataSource(@ApplicationContext context: Context): SharedPreferencesDataSource {

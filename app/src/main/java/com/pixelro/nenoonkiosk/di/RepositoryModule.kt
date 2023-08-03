@@ -2,8 +2,10 @@ package com.pixelro.nenoonkiosk.di
 
 import com.harang.data.datasource.SharedPreferencesDataSource
 import com.harang.data.datasource.SignInRemoteDataSource
+import com.harang.data.datasource.SurveyRemoteDataSource
 import com.harang.data.repository.ScreenSaverRepository
 import com.harang.data.repository.SignInRepository
+import com.harang.data.repository.SurveyRepository
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -30,6 +32,15 @@ object RepositoryModule {
     ): ScreenSaverRepository {
         return ScreenSaverRepository(
             sharedPreferencesDataSource = sharedPreferencesDataSource
+        )
+    }
+
+    @Provides
+    fun provideSurveyRepository(
+        remoteDataSource: SurveyRemoteDataSource
+    ): SurveyRepository {
+        return SurveyRepository(
+            remoteDataSource = remoteDataSource
         )
     }
 }

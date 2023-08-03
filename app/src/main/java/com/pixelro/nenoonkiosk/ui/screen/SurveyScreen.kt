@@ -64,7 +64,7 @@ import kotlinx.coroutines.coroutineScope
 
 @Composable
 fun SurveyScreen(
-    toTestListScreen: (SurveyData) -> Unit,
+    toTestListScreen: (Long) -> Unit,
     surveyViewModel: SurveyViewModel = hiltViewModel()
 ) {
     LaunchedEffect(true) {
@@ -697,7 +697,7 @@ fun SurveyScreen(
                                             isPressed = true
                                             delay(1000)
                                             isPressed = false
-                                            toTestListScreen(surveyViewModel.getSurveyData())
+                                            surveyViewModel.getSurveyId(toTestListScreen)
                                         }
                                     }
                                     .padding(start = 20.dp, top = 16.dp, end = 20.dp, bottom = 16.dp),
