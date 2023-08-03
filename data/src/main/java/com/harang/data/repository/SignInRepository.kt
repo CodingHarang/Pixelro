@@ -31,7 +31,9 @@ class SignInRepository(
     }
 
     suspend fun signOut() {
-        sharedPreferencesDataSource.removeKeyValue(Constants.PREF_LOCATION_ID)
-        sharedPreferencesDataSource.removeKeyValue(Constants.PREF_VIDEO_URI)
+        withContext(Dispatchers.IO) {
+            sharedPreferencesDataSource.removeKeyValue(Constants.PREF_LOCATION_ID)
+            sharedPreferencesDataSource.removeKeyValue(Constants.PREF_VIDEO_URI)
+        }
     }
 }

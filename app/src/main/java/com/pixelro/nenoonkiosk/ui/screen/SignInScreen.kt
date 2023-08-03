@@ -156,7 +156,7 @@ fun SignInScreen(
                 textDecoration = TextDecoration.Underline,
                 modifier = Modifier
                     .clickable {
-
+                        updateIsSignedIn(false)
                     },
             )
         }

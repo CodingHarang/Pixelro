@@ -12,9 +12,7 @@ class SurveyRemoteDataSource(
         request: SendSurveyDataRequest
     ): SendSurveyDataResponse? {
         return try {
-            api.sendSurveyData(
-                request
-            ).body()
+            api.sendSurveyData(request).body()
         } catch (e: Exception) {
             e.printStackTrace()
             null

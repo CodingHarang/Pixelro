@@ -54,6 +54,7 @@ import com.pixelro.nenoonkiosk.ui.ScreenSaverViewModel
 @Composable
 fun ScreenSaverScreen(
     exoPlayer: ExoPlayer,
+    isSignedIn: Boolean,
     initializeTestDoneStatus: () -> Unit,
     screenSaverViewModel: ScreenSaverViewModel = hiltViewModel()
 ) {
@@ -67,7 +68,10 @@ fun ScreenSaverScreen(
         )
     )
     LaunchedEffect(true) {
-        screenSaverViewModel.setMediaItem(exoPlayer)
+        screenSaverViewModel.setMediaItem(
+            isSignedIn = isSignedIn,
+            exoPlayer = exoPlayer
+        )
         initializeTestDoneStatus()
     }
     val text = buildAnnotatedString {

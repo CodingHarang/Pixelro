@@ -48,6 +48,8 @@ import java.util.Locale
 @Composable
 fun SettingsScreen(
     viewModel: NenoonViewModel,
+    isSignedIn: Boolean,
+    toSignInScreen: () -> Unit,
     signInViewModel: SignInViewModel = hiltViewModel(),
 
 ) {
@@ -168,16 +170,25 @@ fun SettingsScreen(
         Box(
             modifier = Modifier
                 .clickable {
-                    signInViewModel.signOut()
+                    if (isSignedIn) {
+                        signInViewModel.signOut()
+                    }
+                    toSignInScreen()
                 }
         ) {
             Text(
                 modifier = Modifier
                     .fillMaxWidth()
                     .padding(start = 40.dp, top = 10.dp, bottom = 10.dp),
-                text = "로그아웃",
+                text = when (isSignedIn) {
+                    true -> "로그아웃"
+                    false -> "로그인"
+                },
                 fontSize = 30.sp,
-                color = Color(0xFFFF0000)
+                color = when (isSignedIn) {
+                    true -> Color(0xFFFF0000)
+                    false -> Color(0xFF000000)
+                }
             )
         }
     }

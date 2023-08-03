@@ -9,16 +9,13 @@ import android.content.IntentSender
 import android.content.pm.PackageManager
 import android.location.LocationManager
 import android.provider.Settings
-import android.util.Log
 import android.util.SizeF
 import androidx.core.content.ContextCompat
 import androidx.core.content.ContextCompat.getSystemService
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.viewModelScope
-import androidx.media3.common.MediaItem
 import androidx.media3.common.Player
 import androidx.media3.exoplayer.ExoPlayer
-import com.google.accompanist.navigation.animation.rememberAnimatedNavController
 import com.google.android.gms.common.api.ResolvableApiException
 import com.google.android.gms.common.api.Status
 import com.google.android.gms.location.LocationRequest
@@ -27,18 +24,9 @@ import com.google.android.gms.location.LocationSettingsRequest
 import com.google.android.gms.location.LocationSettingsResponse
 import com.google.android.gms.location.SettingsClient
 import com.google.android.gms.tasks.Task
-import com.harang.data.api.NenoonKioskApi
-import com.harang.data.model.SendSurveyDataRequest
-import com.pixelro.nenoonkiosk.data.Constants
 import com.pixelro.nenoonkiosk.data.GlobalValue
 import com.pixelro.nenoonkiosk.data.SharedPreferencesManager
 import com.pixelro.nenoonkiosk.data.TestType
-import com.pixelro.nenoonkiosk.survey.datatype.SurveyAge
-import com.pixelro.nenoonkiosk.survey.datatype.SurveyData
-import com.pixelro.nenoonkiosk.survey.datatype.SurveyDiabetes
-import com.pixelro.nenoonkiosk.survey.datatype.SurveyGlass
-import com.pixelro.nenoonkiosk.survey.datatype.SurveySex
-import com.pixelro.nenoonkiosk.survey.datatype.SurveySurgery
 import com.pixelro.nenoonkiosk.test.macular.amslergrid.AmslerGridTestResult
 import com.pixelro.nenoonkiosk.test.macular.mchart.MChartTestResult
 import com.pixelro.nenoonkiosk.test.presbyopia.PresbyopiaTestResult
@@ -53,22 +41,20 @@ import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
-import retrofit2.HttpException
 import java.util.Locale
 import javax.inject.Inject
 
 @SuppressLint("HardwareIds")
 @HiltViewModel
 class NenoonViewModel @Inject constructor(
-    application: Application,
-    private val api: NenoonKioskApi
+    application: Application
 ) : AndroidViewModel(application) {
 
     private fun checkBackgroundStatus() {
         viewModelScope.launch(CoroutineName("checkBackgroundStatus")) {
             while (true) {
                 if (_isResumed.value) {
-                    _screenSaverTimer.update { _screenSaverTimer.value - 0 }
+                    _screenSaverTimer.update { _screenSaverTimer.value - 10 }
 
                     if (_screenSaverTimer.value < 0) {
                         _isScreenSaving.update { true }

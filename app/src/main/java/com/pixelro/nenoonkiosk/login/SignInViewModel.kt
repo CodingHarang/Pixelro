@@ -39,24 +39,42 @@ class SignInViewModel @Inject constructor(
         updateIsSignedIn: (Boolean) -> Unit
     ) {
         viewModelScope.launch(Dispatchers.IO) {
+
+            /*
+            * 로그인 시도
+            */
             val result = signInRepository.getSignInResult(_id.value, _password.value)
+
             if (result != null) {
+                /*
+                * 서버와 연결이 제대로 이루어졌을 때
+                */
                 Log.e("result", "data = ${result.data}\ncreateAt = ${result.createAt}\nresponseId = ${result.responseId}")
                 for (data in result.data) {
                     Log.e("dataType", "data: ${data.value}\ntype: ${data.value?.javaClass}")
                 }
+
                 if (result.data["success"] as Boolean) {
+                    /*
+                    * 로그인 성공
+                    */
                     signInRepository.updateLocationId((result.data["pid"] as Double).toInt())
                     signInRepository.updateScreenSaverVideoURI(result.data["video"] as String)
                     withContext(Dispatchers.Main) {
                         updateIsSignedIn(true)
                     }
                 } else {
+                    /*
+                    * 로그인 실패
+                    */
                     withContext(Dispatchers.Main) {
                         Toast.makeText(getApplication(), "아이디와 비밀번호를 확인해주세요", Toast.LENGTH_SHORT).show()
                     }
                 }
             } else {
+                /*
+                * 네트워크 연결이 되어있지 않거나 서버와의 통신에 문제가 있을 때
+                */
                 withContext(Dispatchers.Main) {
                     Toast.makeText(getApplication(), "와이파이가 연결되어있는지 확인해주세요", Toast.LENGTH_SHORT)
                         .show()
