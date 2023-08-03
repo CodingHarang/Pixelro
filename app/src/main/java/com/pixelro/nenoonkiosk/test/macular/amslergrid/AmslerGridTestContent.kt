@@ -182,7 +182,7 @@ fun AmslerGridContent(
                     if (isDotShowing) {
                         drawCircle(
                             color = Color(0xff000000),
-                            radius = 50f,
+                            radius = 46f,
                             center = Offset(450f, 450f)
                         )
                     }
