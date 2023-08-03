@@ -4,10 +4,12 @@ import com.harang.data.api.NenoonKioskApi
 import com.harang.data.model.SendSignInDataResponse
 
 class SignInRemoteDataSource(
-    private val api: NenoonKioskApi,
-
+    private val api: NenoonKioskApi
 ) {
-    suspend fun signIn(id: String, pw: String): SendSignInDataResponse? {
+    suspend fun signIn(
+        id: String,
+        pw: String
+    ): SendSignInDataResponse? {
         return try {
             api.sendSignInData(
                 id = id,
