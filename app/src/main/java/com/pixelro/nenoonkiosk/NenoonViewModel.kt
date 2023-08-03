@@ -8,7 +8,6 @@ import android.content.Context
 import android.content.IntentSender
 import android.content.pm.PackageManager
 import android.location.LocationManager
-import android.net.Uri
 import android.provider.Settings
 import android.util.Log
 import android.util.SizeF
@@ -19,6 +18,7 @@ import androidx.lifecycle.viewModelScope
 import androidx.media3.common.MediaItem
 import androidx.media3.common.Player
 import androidx.media3.exoplayer.ExoPlayer
+import com.google.accompanist.navigation.animation.rememberAnimatedNavController
 import com.google.android.gms.common.api.ResolvableApiException
 import com.google.android.gms.common.api.Status
 import com.google.android.gms.location.LocationRequest
@@ -29,7 +29,7 @@ import com.google.android.gms.location.SettingsClient
 import com.google.android.gms.tasks.Task
 import com.harang.data.api.NenoonKioskApi
 import com.harang.data.model.SendSurveyDataRequest
-import com.pixelro.nenoonkiosk.data.GlobalConstants
+import com.pixelro.nenoonkiosk.data.Constants
 import com.pixelro.nenoonkiosk.data.GlobalValue
 import com.pixelro.nenoonkiosk.data.SharedPreferencesManager
 import com.pixelro.nenoonkiosk.data.TestType
@@ -54,7 +54,6 @@ import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import retrofit2.HttpException
-import java.io.File
 import java.util.Locale
 import javax.inject.Inject
 
@@ -69,34 +68,28 @@ class NenoonViewModel @Inject constructor(
         viewModelScope.launch(CoroutineName("checkBackgroundStatus")) {
             while (true) {
                 if (_isResumed.value) {
-                    // Check screen saver timer
-                    _screenSaverTimer.update { _screenSaverTimer.value - 10 }
+                    _screenSaverTimer.update { _screenSaverTimer.value - 0 }
 
                     if (_screenSaverTimer.value < 0) {
-                        _isScreenSaverOn.update { true }
+                        _isScreenSaving.update { true }
                     }
                     // Check permissions
                     checkPermissions()
-                    checkIsLocationOn()
-                    checkIsBluetoothOn()
                 }
                 delay(1000)
             }
         }
     }
 
-    private val _screenState = MutableStateFlow(ScreenState.Splash)
-    val screenState: StateFlow<ScreenState> = _screenState.asStateFlow()
 
-    fun updateScreenState(screenState: ScreenState) {
-        _screenState.update { screenState }
-    }
+    private val _isScreenSaving = MutableStateFlow(false)
+    val isScreenSaving: StateFlow<Boolean> = _isScreenSaving.asStateFlow()
 
     // signIn
     private val _isSignedIn = MutableStateFlow(false)
     val isSignedIn: StateFlow<Boolean> = _isSignedIn
 
-    fun updateIsSignedInId(isSignedIn: Boolean) {
+    fun updateIsSignedIn(isSignedIn: Boolean) {
         _isSignedIn.update { isSignedIn }
     }
 
@@ -121,12 +114,10 @@ class NenoonViewModel @Inject constructor(
     private val _screenSaverTimer = MutableStateFlow(40)
     private val _timeValue = MutableStateFlow(40)
 
-    private val _isScreenSaverOn = MutableStateFlow(false)
-    val isScreenSaverOn: StateFlow<Boolean> = _isScreenSaverOn
 
     fun resetScreenSaverTimer() {
         _screenSaverTimer.update { _timeValue.value }
-        _isScreenSaverOn.update { false }
+        _isScreenSaving.update { false }
     }
 
     fun updateScreenSaverTimerValue(time: Int) {
@@ -210,6 +201,8 @@ class NenoonViewModel @Inject constructor(
             _isWriteSettingsPermissionGranted.update { false }
         }
 
+        checkIsLocationOn()
+        checkIsBluetoothOn()
         if (_isBluetoothPermissionsGranted.value && _isCameraPermissionGranted.value && _isWriteSettingsPermissionGranted.value && _isLocationOn.value && _isBluetoothOn.value) {
             _isAllPermissionsGranted.update { true }
         } else {
@@ -233,6 +226,7 @@ class NenoonViewModel @Inject constructor(
                 client.checkLocationSettings(builder.build())
 
             gpsSettingTask.addOnSuccessListener {
+
             }
             gpsSettingTask.addOnFailureListener { exception ->
                 if (exception is ResolvableApiException) {
@@ -259,18 +253,8 @@ class NenoonViewModel @Inject constructor(
         }
     }
 
-    // Global
-    private val _isShowingSplashScreen = MutableStateFlow(true)
-    val isShowingSplashScreen: StateFlow<Boolean> = _isShowingSplashScreen
     private val _selectedTestType = MutableStateFlow(TestType.None)
     val selectedTestType: StateFlow<TestType> = _selectedTestType
-
-    private fun showSplashScreen() {
-        viewModelScope.launch {
-            delay(3000)
-            _isShowingSplashScreen.update { false }
-        }
-    }
 
     fun updateToResumed() {
         _isResumed.update { true }
@@ -295,14 +279,14 @@ class NenoonViewModel @Inject constructor(
         viewModelScope.launch {
             val request = SendSurveyDataRequest(
                 age = when (surveyData.surveyAge) {
-                    SurveyAge.First -> 9
-                    SurveyAge.Second -> 10
-                    SurveyAge.Third -> 20
-                    SurveyAge.Fourth -> 30
-                    SurveyAge.Fifth -> 40
-                    SurveyAge.Sixth -> 50
-                    SurveyAge.Seventh -> 60
-                    else -> 70
+                    SurveyAge.First -> 1
+                    SurveyAge.Second -> 2
+                    SurveyAge.Third -> 4
+                    SurveyAge.Fourth -> 5
+                    SurveyAge.Fifth -> 6
+                    SurveyAge.Sixth -> 7
+                    SurveyAge.Seventh -> 8
+                    else -> 9
                 },
                 gender = when (surveyData.surveySex) {
                     SurveySex.Man -> "M"
@@ -408,53 +392,11 @@ class NenoonViewModel @Inject constructor(
     var amslerGridTestResult = AmslerGridTestResult()
     var mChartTestResult = MChartTestResult()
 
-    fun updateScreenSaverInfo(
-        uri: String
-    ) {
-        SharedPreferencesManager.putString(GlobalConstants.PREFERENCE_VIDEO_URI, uri)
-        Log.e("video_uri", SharedPreferencesManager.getString(GlobalConstants.PREFERENCE_VIDEO_URI))
-        exoPlayer.setMediaItem(MediaItem.fromUri(uri))
-        viewModelScope.launch {
-            while (exoPlayer.isLoading) {
-                Log.e("isLoading", "isLoading")
-                delay(1000)
-            }
-            Log.e("isLoading", "loadingDone")
-        }
-        exoPlayer.prepare()
-        exoPlayer.repeatMode = Player.REPEAT_MODE_ONE
-        exoPlayer.volume = 0f
-    }
-
     init {
-        showSplashScreen()
         checkBackgroundStatus()
         exoPlayer = ExoPlayer.Builder(getApplication()).build()
         exoPlayer.repeatMode = Player.REPEAT_MODE_ONE
         exoPlayer.volume = 0f
-//        //        exoPlayer.setMediaItem(MediaItem.fromUri(Uri.fromFile(File("/storage/emulated/0/Download/ad1.mp4"))))
-//        if (SharedPreferencesManager.getString(GlobalConstants.PREFERENCE_VIDEO_URI) == "") {
 //            exoPlayer.setMediaItem(MediaItem.fromUri(Uri.fromFile(File("/storage/emulated/0/Download/ad1.mp4"))))
-//            Log.e("localVideo", "local Video Loaded")
-//        } else {
-//            exoPlayer.setMediaItem(MediaItem.fromUri("https://drive.google.com/uc?export=view&id=1NJAxk3TGlcXA8sUd01c2zsgEkp9ngp5q"))
-//            Log.e("remoteVideo", "remote Video Loaded")
-//        }
-////        exoPlayer.setMediaItem(MediaItem.fromUri("https://drive.google.com/uc?export=view&id=1vNW4Xia8pG4tfGoao4Nb7hEJtOd9Cg8F"))
-//        viewModelScope.launch {
-//            while (exoPlayer.isLoading) {
-//                Log.e("isLoading", "isLoading")
-//                delay(1000)
-//            }
-//            Log.e("isLoading", "loadingDone")
-//        }
-//        exoPlayer.prepare()
-//        exoPlayer.repeatMode = Player.REPEAT_MODE_ONE
-//        exoPlayer.volume = 0f
-////        exoPlayer.setMediaItem(MediaItem.fromUri("https://drive.google.com/uc?export=view&id=1NJAxk3TGlcXA8sUd01c2zsgEkp9ngp5q"))
-    }
-
-    enum class ScreenState {
-        Splash, SignIn, ScreenSaver, Permission, Main
     }
 }

@@ -35,4 +35,6 @@ object AnimationProvider {
     ) + fadeOut(
         animationSpec = TweenSpec(durationMillis = 500)
     )
+
+
 }

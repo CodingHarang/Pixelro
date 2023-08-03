@@ -1,7 +1,6 @@
 package com.pixelro.nenoonkiosk.ui.screen
 
 import android.app.Activity
-import android.util.Log
 import android.view.KeyEvent
 import androidx.activity.compose.BackHandler
 import androidx.compose.foundation.Image
@@ -26,17 +25,14 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import androidx.navigation.NavHost
 import androidx.navigation.NavHostController
 import com.google.accompanist.systemuicontroller.rememberSystemUiController
 import com.pixelro.nenoonkiosk.NenoonViewModel
 import com.pixelro.nenoonkiosk.R
-import com.pixelro.nenoonkiosk.TTS
-import com.pixelro.nenoonkiosk.data.GlobalConstants
+import com.pixelro.nenoonkiosk.data.Constants
 import com.pixelro.nenoonkiosk.data.GlobalValue
 import com.pixelro.nenoonkiosk.data.StringProvider
 import com.pixelro.nenoonkiosk.data.TestType
-import com.pixelro.nenoonkiosk.facedetection.FaceDetection
 
 @Composable
 fun TestScreen(
@@ -45,25 +41,17 @@ fun TestScreen(
     content: @Composable () -> Unit
 ) {
     BackHandler(enabled = true) {
-        navController.popBackStack(GlobalConstants.ROUTE_TEST_LIST, false)
+        navController.popBackStack(Constants.ROUTE_TEST_LIST, false)
         viewModel.resetScreenSaverTimer()
     }
     val systemUiController = rememberSystemUiController()
     DisposableEffect(true) {
         viewModel.updateScreenSaverTimerValue(2147483647)
-//        systemUiController.setNavigationBarColor(
-//            color = Color(0x00000000),
-//            darkIcons = false
-//        )
     systemUiController.systemBarsDarkContentEnabled = false
     onDispose {
         viewModel.updateScreenSaverTimerValue(30)
         viewModel.resetScreenSaverTimer()
         systemUiController.systemBarsDarkContentEnabled = true
-//            systemUiController.setNavigationBarColor(
-//                color = Color(0x00000000),
-//                darkIcons = true
-//            )
     }
 }
     val selectedTestType = viewModel.selectedTestType.collectAsState().value

@@ -10,7 +10,6 @@ import android.content.IntentFilter
 import android.content.pm.PackageManager
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory
-import android.util.Log
 import android.widget.Toast
 import androidx.activity.compose.BackHandler
 import androidx.compose.foundation.BorderStroke
@@ -51,7 +50,7 @@ import androidx.core.content.ContextCompat.getSystemService
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavHostController
 import com.pixelro.nenoonkiosk.R
-import com.pixelro.nenoonkiosk.data.GlobalConstants
+import com.pixelro.nenoonkiosk.data.Constants
 import com.pixelro.nenoonkiosk.data.GlobalValue
 import com.pixelro.nenoonkiosk.data.StringProvider
 import com.pixelro.nenoonkiosk.data.TestType
@@ -69,7 +68,6 @@ import com.pixelro.nenoonkiosk.test.visualacuity.shortdistance.ShortDistanceVisu
 import com.pixelro.nenoonkiosk.test.visualacuity.shortdistance.ShortVisualAcuityTestResult
 import com.pixelro.nenoonkiosk.ui.testresultcontent.ChildrenVisualAcuityTestResultContent
 import com.pixelro.nenoonkiosk.ui.testresultcontent.LongDistanceVisualAcuityTestResultContent
-import kotlinx.coroutines.coroutineScope
 import kotlinx.coroutines.launch
 import mangoslab.nemonicsdk.nemonicWrapper
 
@@ -82,7 +80,7 @@ fun TestResultScreen(
     testResultViewModel: TestResultViewModel = hiltViewModel()
 ) {
     BackHandler(enabled = true) {
-        navController.popBackStack(GlobalConstants.ROUTE_TEST_LIST, false)
+        navController.popBackStack(Constants.ROUTE_TEST_LIST, false)
 //        viewModel.resetScreenSaverTimer()
     }
     LaunchedEffect(true) {
@@ -361,7 +359,7 @@ fun TestResultScreen(
                             shape = RoundedCornerShape(8.dp)
                         )
                         .clickable {
-                            navController.popBackStack(GlobalConstants.ROUTE_TEST_LIST, false)
+                            navController.popBackStack(Constants.ROUTE_TEST_LIST, false)
                         },
                     contentAlignment = Alignment.Center
                 ) {

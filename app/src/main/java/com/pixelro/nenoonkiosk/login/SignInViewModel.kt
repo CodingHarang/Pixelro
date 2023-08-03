@@ -14,6 +14,7 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 import javax.inject.Inject
 
 @HiltViewModel
@@ -47,7 +48,9 @@ class SignInViewModel @Inject constructor(
                 if (result.data["success"] as Boolean) {
                     signInRepository.updateLocationId((result.data["pid"] as Double).toInt())
                     signInRepository.updateScreenSaverVideoURI(result.data["video"] as String)
-                    updateIsSignedIn(true)
+                    withContext(Dispatchers.Main) {
+                        updateIsSignedIn(true)
+                    }
                 } else {
                     Toast.makeText(getApplication(), "아이디와 비밀번호를 확인해주세요", Toast.LENGTH_SHORT).show()
                 }

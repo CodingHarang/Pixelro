@@ -3,6 +3,11 @@ package com.pixelro.nenoonkiosk.ui.screen
 import android.util.Log
 import androidx.activity.compose.BackHandler
 import androidx.compose.animation.*
+import androidx.compose.animation.core.RepeatMode
+import androidx.compose.animation.core.animateFloat
+import androidx.compose.animation.core.infiniteRepeatable
+import androidx.compose.animation.core.keyframes
+import androidx.compose.animation.core.rememberInfiniteTransition
 import androidx.compose.animation.core.tween
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.ExperimentalFoundationApi
@@ -56,7 +61,6 @@ import kotlinx.coroutines.delay
 fun TestListScreen(
     checkIsTestDone: (TestType) -> Boolean,
     toTestScreen: (TestType) -> Unit,
-    toSettingsScreen: () -> Unit,
     toIntroScreen: () -> Unit,
     isPresbyopiaDone: Boolean,
     isShortVisualAcuityDone: Boolean,
@@ -77,6 +81,15 @@ fun TestListScreen(
     }
     var isDialogShowing by remember { mutableStateOf(false) }
     var selectedTest by remember { mutableStateOf(TestType.None) }
+    val transition = rememberInfiniteTransition()
+    val shiftVal by transition.animateFloat(
+        initialValue = 0f, targetValue = 40f, animationSpec = infiniteRepeatable(
+            animation = keyframes {
+                durationMillis = 3000
+            },
+            repeatMode = RepeatMode.Reverse
+        )
+    )
     if(isDialogShowing) {
         SurveyRecommendationDialog(
             onDismissRequest = {
@@ -137,22 +150,6 @@ fun TestListScreen(
                     fontWeight = FontWeight.Medium
                 )
             }
-            Box(
-                modifier = Modifier
-                    .fillMaxSize(),
-                contentAlignment = Alignment.CenterEnd
-            ) {
-                Image(
-                    modifier = Modifier
-                        .width(32.dp)
-                        .height(32.dp)
-                        .clickable {
-                            toSettingsScreen()
-                        },
-                    painter = painterResource(id = R.drawable.icon_settings ),
-                    contentDescription = ""
-                )
-            }
         }
         Spacer(
             modifier = Modifier
@@ -162,14 +159,32 @@ fun TestListScreen(
                     color = Color(0xffebebeb)
                 )
         )
-        HorizontalPager(
-            contentPadding = PaddingValues(start = 40.dp, top = 20.dp, end = 40.dp, bottom = 20.dp),
-            pageSpacing = 40.dp,
-            state = pagerState,
-            pageCount = 100000,
+
+        Box(
+            modifier = Modifier
+                .padding(40.dp)
+                .fillMaxWidth()
+                .height(100.dp),
+            contentAlignment = Alignment.TopCenter
         ) {
-            Advertisement(it)
+            Text(
+                modifier = Modifier
+                    .offset(x = 0.dp, y = shiftVal.dp),
+                text = "아래에서 원하는 검사 항목을 눌러주세요",
+                fontSize = 38.sp,
+                fontWeight = FontWeight.ExtraBold,
+                textAlign = TextAlign.Center
+            )
         }
+
+//        HorizontalPager(
+//            contentPadding = PaddingValues(start = 40.dp, top = 20.dp, end = 40.dp, bottom = 20.dp),
+//            pageSpacing = 40.dp,
+//            state = pagerState,
+//            pageCount = 100000,
+//        ) {
+//            Advertisement(it)
+//        }
         Box() {
             TestListContent(
                 checkIsTestDone = {

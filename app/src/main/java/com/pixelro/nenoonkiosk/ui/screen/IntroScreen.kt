@@ -17,10 +17,14 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.alpha
@@ -36,7 +40,8 @@ import com.pixelro.nenoonkiosk.ui.theme.cafe24Family
 
 @Composable
 fun IntroScreen(
-    toSurveyScreen: () -> Unit
+    toSurveyScreen: () -> Unit,
+    toSettingsScreen: () -> Unit
 ) {
     val transition = rememberInfiniteTransition()
     val alphaVal by transition.animateFloat(
@@ -47,6 +52,7 @@ fun IntroScreen(
             repeatMode = RepeatMode.Reverse
         )
     )
+    val logoClickedCount = remember { mutableStateOf(0) }
     Box(
         modifier = Modifier
             .fillMaxSize(),
@@ -70,6 +76,16 @@ fun IntroScreen(
                     .height(40.dp)
             )
             Image(
+                modifier = Modifier
+                    .clip(
+                        shape = RoundedCornerShape(80f)
+                    )
+                    .clickable {
+                        logoClickedCount.value++
+                        if (logoClickedCount.value > 20) {
+                            toSettingsScreen()
+                        }
+                    },
                 painter = painterResource(R.drawable.nenoon_logo_blue),
                 contentDescription = null
             )

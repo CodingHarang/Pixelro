@@ -6,7 +6,7 @@ import com.google.gson.Gson
 import com.pixelro.nenoonkiosk.NenoonKioskApplication
 
 object SharedPreferencesManager {
-    private val pref: SharedPreferences = NenoonKioskApplication.applicationContext().getSharedPreferences(GlobalConstants.PREFERENCE_NAME, Context.MODE_PRIVATE)
+    private val pref: SharedPreferences = NenoonKioskApplication.applicationContext().getSharedPreferences(Constants.PREFERENCE_NAME, Context.MODE_PRIVATE)
     private val editor = pref.edit()
     private val gson = Gson()
 

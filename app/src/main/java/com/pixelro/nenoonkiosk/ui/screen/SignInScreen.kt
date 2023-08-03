@@ -53,7 +53,6 @@ fun SignInScreen(
             horizontalAlignment = Alignment.CenterHorizontally,
             verticalArrangement = Arrangement.Center
         ) {
-
             Image(
                 modifier = Modifier
                     .width(600.dp)
@@ -61,7 +60,6 @@ fun SignInScreen(
                 painter = painterResource(id = R.drawable.nenoon_login_logo),
                 contentDescription = ""
             )
-
             BasicTextField(
                 modifier = Modifier
                     .width(500.dp),

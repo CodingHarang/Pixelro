@@ -55,7 +55,6 @@ import com.pixelro.nenoonkiosk.ui.ScreenSaverViewModel
 fun ScreenSaverScreen(
     exoPlayer: ExoPlayer,
     initializeTestDoneStatus: () -> Unit,
-    toIntroScreen: () -> Unit,
     screenSaverViewModel: ScreenSaverViewModel = hiltViewModel()
 ) {
     val transition = rememberInfiniteTransition()
@@ -69,7 +68,6 @@ fun ScreenSaverScreen(
     )
     LaunchedEffect(true) {
         screenSaverViewModel.setMediaItem(exoPlayer)
-        toIntroScreen()
         initializeTestDoneStatus()
     }
     val text = buildAnnotatedString {
