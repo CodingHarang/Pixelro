@@ -3,6 +3,7 @@ package com.pixelro.nenoonkiosk.di
 import com.harang.data.api.NenoonKioskApi
 import com.harang.data.datasource.SignInRemoteDataSource
 import com.harang.data.datasource.SurveyRemoteDataSource
+import com.harang.data.datasource.TestResultRemoteDataSource
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -23,5 +24,11 @@ object RemoteDataSourceModule {
     @Singleton
     fun provideSurveyRemoteDataSource(api: NenoonKioskApi): SurveyRemoteDataSource {
         return SurveyRemoteDataSource(api)
+    }
+
+    @Provides
+    @Singleton
+    fun provideTestResultRemoteDataSource(api: NenoonKioskApi): TestResultRemoteDataSource {
+        return TestResultRemoteDataSource(api)
     }
 }
