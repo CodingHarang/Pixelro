@@ -355,6 +355,8 @@ fun TestResultScreen(
                         )
                     }
                 }
+//            Row() {
+
                 Box(
                     modifier = Modifier
                         .padding(
@@ -363,6 +365,7 @@ fun TestResultScreen(
                             bottom = GlobalValue.navigationBarPadding.dp
                         )
                         .fillMaxWidth()
+//                        .height(120.dp)
                         .clip(
                             shape = RoundedCornerShape(8.dp)
                         )
@@ -396,6 +399,38 @@ fun TestResultScreen(
                         )
                     }
                 }
+//                Box(
+//                    modifier = Modifier
+//                        .padding(start = 10.dp, end = 40.dp, bottom = GlobalValue.navigationBarPadding.dp)
+//                        .fillMaxWidth()
+//                        .height(120.dp)
+//                        .clip(
+//                            shape = RoundedCornerShape(8.dp)
+//                        )
+//                        .border(
+//                            border = BorderStroke(1.dp, Color(0xffc3c3c3)),
+//                            shape = RoundedCornerShape(8.dp)
+//                        )
+//                        .clickable {
+//                            coroutineScope.launch {
+//                                bluetoothAdapter.startDiscovery()
+//                                printResult(
+//                                    testType = testType,
+//                                    testResult = testResult
+//                                )
+//                            }
+//                        },
+//                    contentAlignment = Alignment.Center
+//                ) {
+//                    Image(
+//                        modifier = Modifier
+//                            .width(120.dp),
+////                            .width(28.dp),
+//                        painter = painterResource(id = R.drawable.icon_print),
+//                        contentDescription = ""
+//                    )
+//                }
+//                //여기까지
             }
         }
     }
