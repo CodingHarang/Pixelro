@@ -4,11 +4,11 @@ import android.app.Application
 import android.util.Log
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.viewModelScope
-import com.harang.data.api.NenoonKioskApi
 import com.harang.data.model.SendAmslerGridTestResultRequest
 import com.harang.data.model.SendMChartTestResultRequest
 import com.harang.data.model.SendPresbyopiaTestResultRequest
 import com.harang.data.model.SendShortVisualAcuityTestResultRequest
+import com.harang.data.repository.TestResultRepository
 import com.pixelro.nenoonkiosk.data.TestType
 import com.pixelro.nenoonkiosk.test.macular.amslergrid.AmslerGridTestResult
 import com.pixelro.nenoonkiosk.test.macular.mchart.MChartTestResult
@@ -19,14 +19,12 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
-import retrofit2.HttpException
-import java.io.IOException
 import javax.inject.Inject
 
 @HiltViewModel
 class TestResultViewModel @Inject constructor(
     application: Application,
-    private val api: NenoonKioskApi
+    private val testResultRepository: TestResultRepository
 ) : AndroidViewModel(application) {
 
     private val _printerName = MutableStateFlow("")
@@ -53,17 +51,11 @@ class TestResultViewModel @Inject constructor(
                             distance3 = testResult.thirdDistance.toInt(),
                             distanceAvg = testResult.avgDistance.toInt()
                         )
+                        val response = testResultRepository.sendPresbyopiaTestResult(request)
                         Log.e("presbyopiaRequest", "$request")
-                        val response = try {
-                            api.sendPresbyopiaTestResult(request)
-                        } catch (e: IOException) {
-                            e.printStackTrace()
-                            null
-                        } catch(e: HttpException) {
-                            e.printStackTrace()
-                            null
+                        if (response != null) {
+                            Log.e("presbyopiaResponse", "responseId: ${response.responseId}\ncreateAt: ${response.createAt}\ndata: ${response.data}")
                         }
-                        Log.e("presbyopiaResponse", "code: ${response?.code()}\nresponse: ${response?.body()}, ${response?.errorBody()}")
                     }
                 }
                 TestType.ShortDistanceVisualAcuity -> {
@@ -74,17 +66,11 @@ class TestResultViewModel @Inject constructor(
                             leftSight = testResult.leftEye,
                             rightSight = testResult.rightEye
                         )
-                        Log.e("shortVisualAcuityRequest", "$request")
-                        val response = try {
-                            api.sendShortVisualAcuityTestResult(request)
-                        } catch (e: IOException) {
-                            e.printStackTrace()
-                            null
-                        } catch(e: HttpException) {
-                            e.printStackTrace()
-                            null
+                        val response = testResultRepository.sendVisualAcuityTestResult(request)
+                        Log.e("visualAcuityRequest", "$request")
+                        if (response != null) {
+                            Log.e("visualAcuityResponse", "responseId: ${response.responseId}\ncreateAt: ${response.createAt}\ndata: ${response.data}")
                         }
-                        Log.e("shortVisualAcuityResponse", "response: ${response?.body()}, ${response?.errorBody()}")
                     }
                 }
                 TestType.LongDistanceVisualAcuity -> {
@@ -111,17 +97,11 @@ class TestResultViewModel @Inject constructor(
                             leftMacularLoc = leftMacularLoc,
                             rightMacularLoc = rightMacularLoc
                         )
+                        val response = testResultRepository.sendAmslerGridTestResult(request)
                         Log.e("amslerGridRequest", "$request")
-                        val response = try {
-                            api.sendAmslerGridResult(request)
-                        } catch (e: IOException) {
-                            e.printStackTrace()
-                            null
-                        } catch(e: HttpException) {
-                            e.printStackTrace()
-                            null
+                        if (response != null) {
+                            Log.e("amslerGridResponse", "responseId: ${response.responseId}\ncreateAt: ${response.createAt}\ndata: ${response.data}")
                         }
-                        Log.e("amslerGridResponse", "response: ${response?.body()}, ${response?.errorBody()}")
                     }
                 }
                 TestType.MChart -> {
@@ -134,17 +114,11 @@ class TestResultViewModel @Inject constructor(
                             leftEyeHor = testResult.leftEyeHorizontal,
                             rightEyeHor = testResult.rightEyeHorizontal
                         )
-                        Log.e("mchartRequest", "$request")
-                        val response = try {
-                            api.sendMChartTestResult(request)
-                        } catch (e: IOException) {
-                            e.printStackTrace()
-                            null
-                        } catch(e: HttpException) {
-                            e.printStackTrace()
-                            null
+                        val response = testResultRepository.sendMChartTestResult(request)
+                        Log.e("MChartRequest", "$request")
+                        if (response != null) {
+                            Log.e("MChartResponse", "responseId: ${response.responseId}\ncreateAt: ${response.createAt}\ndata: ${response.data}")
                         }
-                        Log.e("mchartResultToServer", "response: ${response?.body()}, ${response?.errorBody()}")
                     }
                 }
             }

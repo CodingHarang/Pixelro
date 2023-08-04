@@ -157,6 +157,7 @@ fun SignInScreen(
                 modifier = Modifier
                     .clickable {
                         updateIsSignedIn(false)
+                        signInViewModel.signOut()
                     },
             )
         }

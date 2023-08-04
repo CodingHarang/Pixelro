@@ -46,16 +46,6 @@ object NetworkModule {
     @Singleton
     fun provideRetrofitInstance(okHttpClient: OkHttpClient): Retrofit {
 
-//        val gson: Gson = GsonBuilder()
-//            .setLenient() // Gson은 JSON에 대해 엄격함. 해당 옵션으로 parser가 허용하는 항목에 대해 자유로움.
-////            .registerTypeAdapter(LocalDate::class.java, DateSerializer()) // 날짜관련된
-////            .registerTypeAdapter(LocalDateTime::class.java, DateSerializer())
-////            .registerTypeAdapter(LocalDate::class.java, DateSerializer())
-//            .registerTypeAdapter(LocalDateTime::class.java, LocalDateSerializer())
-////            .registerTypeAdapter(OffsetDateTime::class.java, DateSerializer())
-//            .setPrettyPrinting()
-//            .create()
-
         return Retrofit.Builder()
             .baseUrl("https://pixelro.nenoons.com:8080/")
             .client(okHttpClient)

@@ -4,6 +4,7 @@ import android.annotation.SuppressLint
 import android.hardware.camera2.CameraCharacteristics
 import android.hardware.camera2.CameraManager
 import android.os.Bundle
+import android.util.Log
 import android.util.SizeF
 import android.view.MotionEvent
 import android.view.WindowManager
@@ -34,6 +35,7 @@ class MainActivity : ComponentActivity() {
 
     override fun onTouchEvent(event: MotionEvent?): Boolean {
         viewModel.resetScreenSaverTimer()
+        Log.e("touch", "screen touched")
         return super.onTouchEvent(event)
     }
 
