@@ -8,12 +8,17 @@ import android.content.Context
 import android.content.IntentSender
 import android.content.pm.PackageManager
 import android.location.LocationManager
+import android.net.Uri
+import android.os.Build
 import android.provider.Settings
+import android.util.Log
 import android.util.SizeF
+import android.widget.Toast
 import androidx.core.content.ContextCompat
 import androidx.core.content.ContextCompat.getSystemService
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.viewModelScope
+import androidx.media3.common.MediaItem
 import androidx.media3.common.Player
 import androidx.media3.exoplayer.ExoPlayer
 import com.google.android.gms.common.api.ResolvableApiException
@@ -24,9 +29,22 @@ import com.google.android.gms.location.LocationSettingsRequest
 import com.google.android.gms.location.LocationSettingsResponse
 import com.google.android.gms.location.SettingsClient
 import com.google.android.gms.tasks.Task
+import com.harang.data.api.NenoonKioskApi
+import com.harang.domain.model.SendPresbyopiaTestResultRequest
+import com.harang.domain.model.SendSurveyDataRequest
 import com.pixelro.nenoonkiosk.data.GlobalValue
 import com.pixelro.nenoonkiosk.data.SharedPreferencesManager
 import com.pixelro.nenoonkiosk.data.TestType
+import com.pixelro.nenoonkiosk.test.dementia.DementiaData
+import com.pixelro.nenoonkiosk.test.dementia.DementiaViewModel
+import com.pixelro.nenoonkiosk.login.LoginData
+import com.pixelro.nenoonkiosk.test.dementia.DementiaTestResult
+import com.pixelro.nenoonkiosk.survey.SurveyAge
+import com.pixelro.nenoonkiosk.survey.SurveyData
+import com.pixelro.nenoonkiosk.survey.SurveyDiabetes
+import com.pixelro.nenoonkiosk.survey.SurveyGlass
+import com.pixelro.nenoonkiosk.survey.SurveySex
+import com.pixelro.nenoonkiosk.survey.SurveySurgery
 import com.pixelro.nenoonkiosk.test.macular.amslergrid.AmslerGridTestResult
 import com.pixelro.nenoonkiosk.test.macular.mchart.MChartTestResult
 import com.pixelro.nenoonkiosk.test.presbyopia.PresbyopiaTestResult
@@ -38,45 +56,72 @@ import kotlinx.coroutines.CoroutineName
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
-import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
+import retrofit2.HttpException
+import java.io.File
+import java.time.LocalDateTime
 import java.util.Locale
 import javax.inject.Inject
 
 @SuppressLint("HardwareIds")
 @HiltViewModel
 class NenoonViewModel @Inject constructor(
-    application: Application
+    application: Application,
+    private val api: NenoonKioskApi
 ) : AndroidViewModel(application) {
 
     private fun checkBackgroundStatus() {
         viewModelScope.launch(CoroutineName("checkBackgroundStatus")) {
             while (true) {
                 if (_isResumed.value) {
+                    // Check screen saver timer
                     _screenSaverTimer.update { _screenSaverTimer.value - 1 }
 
                     if (_screenSaverTimer.value < 0) {
-                        _isScreenSaving.update { true }
+                        _isScreenSaverOn.update { true }
                     }
                     // Check permissions
                     checkPermissions()
+                    checkIsLocationOn()
+                    checkIsBluetoothOn()
                 }
                 delay(1000)
             }
         }
     }
 
-
-    private val _isScreenSaving = MutableStateFlow(false)
-    val isScreenSaving: StateFlow<Boolean> = _isScreenSaving.asStateFlow()
-
     // signIn
-    private val _isSignedIn = MutableStateFlow(false)
-    val isSignedIn: StateFlow<Boolean> = _isSignedIn
+    private val _inputSignInId = MutableStateFlow("")
+    val inputSignInId: StateFlow<String> = _inputSignInId
+    private val _inputSignInPassword = MutableStateFlow("")
+    val inputSignInPassword: StateFlow<String> = _inputSignInPassword
 
-    fun updateIsSignedIn(isSignedIn: Boolean) {
-        _isSignedIn.update { isSignedIn }
+    fun updateInputSignInId(id: String) {
+        _inputSignInId.update { id }
+    }
+    fun updateInputSignInPassword(id: String) {
+        _inputSignInPassword.update { id }
+    }
+
+    fun checkLoginIsDone(): Boolean {
+        if (inputSignInId.value == "") {
+            Toast.makeText(getApplication(), "아이디를 입력해주세요", Toast.LENGTH_SHORT).show()
+            return false
+        }
+        if (inputSignInPassword.value == "") {
+            Toast.makeText(getApplication(), "비밀번호를 입력해주세요", Toast.LENGTH_SHORT).show()
+            return false
+        }
+        return true
+    }
+
+    fun retrieveLoginData(): LoginData {
+        return LoginData(
+            id = inputSignInId.value,
+            password = inputSignInPassword.value,
+
+            )
     }
 
     // Settings
@@ -96,14 +141,17 @@ class NenoonViewModel @Inject constructor(
     // Screen Saver
     private val _isResumed = MutableStateFlow(false)
     private val _isPaused = MutableStateFlow(false)
-    val exoPlayer: ExoPlayer
+    val exoPlayer = ExoPlayer.Builder(getApplication()).build()
     private val _screenSaverTimer = MutableStateFlow(40)
     private val _timeValue = MutableStateFlow(40)
 
+//        val screenSaverTimer: StateFlow<Int> = _screenSaverTimer
+    private val _isScreenSaverOn = MutableStateFlow(false)
+    val isScreenSaverOn: StateFlow<Boolean> = _isScreenSaverOn
 
     fun resetScreenSaverTimer() {
         _screenSaverTimer.update { _timeValue.value }
-        _isScreenSaving.update { false }
+        _isScreenSaverOn.update { false }
     }
 
     fun updateScreenSaverTimerValue(time: Int) {
@@ -187,8 +235,6 @@ class NenoonViewModel @Inject constructor(
             _isWriteSettingsPermissionGranted.update { false }
         }
 
-        checkIsLocationOn()
-        checkIsBluetoothOn()
         if (_isBluetoothPermissionsGranted.value && _isCameraPermissionGranted.value && _isWriteSettingsPermissionGranted.value && _isLocationOn.value && _isBluetoothOn.value) {
             _isAllPermissionsGranted.update { true }
         } else {
@@ -212,7 +258,6 @@ class NenoonViewModel @Inject constructor(
                 client.checkLocationSettings(builder.build())
 
             gpsSettingTask.addOnSuccessListener {
-
             }
             gpsSettingTask.addOnFailureListener { exception ->
                 if (exception is ResolvableApiException) {
@@ -239,8 +284,18 @@ class NenoonViewModel @Inject constructor(
         }
     }
 
+    // Global
+    private val _isShowingSplashScreen = MutableStateFlow(true)
+    val isShowingSplashScreen: StateFlow<Boolean> = _isShowingSplashScreen
     private val _selectedTestType = MutableStateFlow(TestType.None)
     val selectedTestType: StateFlow<TestType> = _selectedTestType
+
+    private fun showSplashScreen() {
+        viewModelScope.launch {
+            delay(3000)
+            _isShowingSplashScreen.update { false }
+        }
+    }
 
     fun updateToResumed() {
         _isResumed.update { true }
@@ -256,13 +311,70 @@ class NenoonViewModel @Inject constructor(
         _selectedTestType.update { testType }
     }
 
+    // Login Data
+    var loginData = LoginData()
+
+//    var dementiaData = DementiaData(scores = mapOf(DementiaScore.One to true, DementiaScore.Two to false))
+    var dementiaData = DementiaData(
+        scores = List(14) { DementiaViewModel.DementiaAnswer.None }
+    )
+
     // Survey Data
 
     private val _surveyId = MutableStateFlow(0L)
     val surveyId: StateFlow<Long> = _surveyId
 
-    fun updateSurveyData(surveyId: Long) {
-        _surveyId.update { surveyId }
+    fun updateSurveyData(surveyData: SurveyData) {
+        viewModelScope.launch {
+            val request = SendSurveyDataRequest(
+                age = when (surveyData.surveyAge) {
+                    SurveyAge.First -> 9
+                    SurveyAge.Second -> 10
+                    SurveyAge.Third -> 20
+                    SurveyAge.Fourth -> 30
+                    SurveyAge.Fifth -> 40
+                    SurveyAge.Sixth -> 50
+                    SurveyAge.Seventh -> 60
+                    else -> 70
+                },
+                gender = when (surveyData.surveySex) {
+                    SurveySex.Man -> "M"
+                    else -> "W"
+                },
+                glasses = when (surveyData.surveyGlass) {
+                    SurveyGlass.Yes -> true
+                    else -> false
+                },
+                surgery = when (surveyData.surveySurgery) {
+                    SurveySurgery.Normal -> "normal"
+                    SurveySurgery.LASIK -> "correction"
+                    SurveySurgery.Cataract -> "cataract"
+                    else -> "etc"
+                },
+                diabetes = when (surveyData.surveyDiabetes) {
+                    SurveyDiabetes.Yes -> true
+                    else -> false
+                }
+            )
+            Log.e("surveyDataRequest", request.toString())
+            val response = try {
+                api.sendSurveyData(request)
+            } catch (e: Exception) {
+                e.printStackTrace()
+                null
+            } catch (e: HttpException) {
+                e.printStackTrace()
+                null
+            }
+            Log.e("surveyDataResponseCode", response?.code().toString())
+            Log.e("surveyDataResponseBody", response?.body().toString())
+            Log.e("surveyDataResponseErrorBody", response?.errorBody().toString())
+            if (response != null) {
+                _surveyId.update { ((response.body()?.data?.get("tid") ?: 0) as Double).toLong() }
+            } else {
+                _surveyId.update { 0L }
+            }
+        }
     }
 
     // Test Result
@@ -328,12 +440,14 @@ class NenoonViewModel @Inject constructor(
     var childrenVisualAcuityTestResult = ChildrenVisualAcuityTestResult()
     var amslerGridTestResult = AmslerGridTestResult()
     var mChartTestResult = MChartTestResult()
+    var dementiaTestResult = DementiaTestResult(scores = List(14) { DementiaViewModel.DementiaAnswer.None })
 
     init {
+        showSplashScreen()
         checkBackgroundStatus()
-        exoPlayer = ExoPlayer.Builder(getApplication()).build()
+        exoPlayer.setMediaItem(MediaItem.fromUri(Uri.fromFile(File("/storage/emulated/0/Download/ad1.mp4"))))
+        exoPlayer.prepare()
         exoPlayer.repeatMode = Player.REPEAT_MODE_ONE
         exoPlayer.volume = 0f
-//            exoPlayer.setMediaItem(MediaItem.fromUri(Uri.fromFile(File("/storage/emulated/0/Download/ad1.mp4"))))
     }
 }

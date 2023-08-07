@@ -1,5 +1,11 @@
 package com.pixelro.nenoonkiosk.ui.screen
 
+import android.widget.Toast
+import androidx.camera.video.VideoRecordEvent.Start
+
+import androidx.compose.animation.core.animateDp
+import androidx.compose.animation.core.tween
+import androidx.compose.animation.core.updateTransition
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
@@ -12,16 +18,26 @@ import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.offset
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.BasicTextField
+import androidx.compose.foundation.text.KeyboardActions
+import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.TextFieldDefaults
 import androidx.compose.material3.Text
+import androidx.compose.material3.TextField
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
+import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
@@ -29,22 +45,31 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.ImeAction
+import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextDecoration
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
+import com.pixelro.nenoonkiosk.NenoonViewModel
 import com.pixelro.nenoonkiosk.R
-import com.pixelro.nenoonkiosk.login.SignInViewModel
+import com.pixelro.nenoonkiosk.login.LoginViewModel
+import com.pixelro.nenoonkiosk.survey.SurveyData
+import com.pixelro.nenoonkiosk.survey.SurveyViewModel
+import dagger.hilt.android.internal.Contexts.getApplication
 
 @Composable
-fun SignInScreen(
-    updateIsSignedIn: (Boolean) -> Unit,
-    signInViewModel: SignInViewModel = hiltViewModel()
+fun LoginScreen(
+    toSurveyScreen: () -> Unit,
+    toSurveyScreen_Guest: () -> Unit,
+    loginViewModel: LoginViewModel = hiltViewModel()
 ) {
-    val id = signInViewModel.id.collectAsState().value
-    val password = signInViewModel.password.collectAsState().value
+    val text = loginViewModel.text.collectAsState().value
+    val password = loginViewModel.password.collectAsState().value
+    val colors = TextFieldDefaults.textFieldColors(
+        backgroundColor = Color.White
+    )
 
     Box() {
         Column(
@@ -53,21 +78,23 @@ fun SignInScreen(
             horizontalAlignment = Alignment.CenterHorizontally,
             verticalArrangement = Arrangement.Center
         ) {
+            //로고
             Image(
                 modifier = Modifier
-                    .width(600.dp)
+                    .width(300.dp)
                     .height(200.dp),
                 painter = painterResource(id = R.drawable.nenoon_login_logo),
                 contentDescription = ""
             )
+
+            //아이디 창
             BasicTextField(
-                modifier = Modifier
-                    .width(500.dp),
-                value = id,
+                value = text,
                 onValueChange = { newText ->
-                    signInViewModel.updateId(newText)
+                    loginViewModel.updateText(newText)
                 },
                 textStyle = TextStyle(
+                    fontWeight = FontWeight.SemiBold,
                     fontSize = 30.sp
                 ),
                 decorationBox = { innerTextField ->
@@ -82,22 +109,20 @@ fun SignInScreen(
                                 ),
                                 shape = RoundedCornerShape(8.dp)
                             )
-                            .padding(start = 20.dp),
-                        contentAlignment = Alignment.CenterStart
+                            .padding(horizontal = 20.dp),
+                        contentAlignment = Alignment.Center
                     ) {
-                        if (id.isEmpty()) {
+                        if (text.isEmpty()) {
                             Text(
                                 text = "아이디를 입력해주세요",
                                 fontSize = 24.sp,
+                                fontWeight = FontWeight.Normal,
                                 color = Color.LightGray,
                             )
                         }
                         innerTextField()
                     }
-                },
-                keyboardOptions = KeyboardOptions(
-                    imeAction = ImeAction.Next
-                )
+                }
             )
 
             Spacer(
@@ -106,13 +131,15 @@ fun SignInScreen(
                     .height(10.dp)
             )
 
+            //비밀번호 창
             BasicTextField(
                 value = password,
                 onValueChange = { newText ->
-                    signInViewModel.updatePassword(newText)
+                    loginViewModel.updatePassword(newText)
                 },
                 visualTransformation = PasswordVisualTransformation(),
                 textStyle = TextStyle(
+                    fontWeight = FontWeight.SemiBold,
                     fontSize = 30.sp
                 ),
                 decorationBox = { innerTextField ->
@@ -127,22 +154,20 @@ fun SignInScreen(
                                 ),
                                 shape = RoundedCornerShape(8.dp)
                             )
-                            .padding(start = 20.dp),
-                        contentAlignment = Alignment.CenterStart
+                            .padding(horizontal = 20.dp),
+                        contentAlignment = Alignment.Center
                     ) {
-                        if (password.isEmpty()) {
+                        if (text.isEmpty()) {
                             Text(
                                 text = "비밀번호를 입력해주세요",
                                 fontSize = 24.sp,
+                                fontWeight = FontWeight.Normal,
                                 color = Color.LightGray,
                             )
                         }
                         innerTextField()
                     }
-                },
-                keyboardOptions = KeyboardOptions(
-                    imeAction = ImeAction.Done
-                )
+                }
             )
 
             Spacer(
@@ -156,8 +181,7 @@ fun SignInScreen(
                 textDecoration = TextDecoration.Underline,
                 modifier = Modifier
                     .clickable {
-                        updateIsSignedIn(false)
-                        signInViewModel.signOut()
+                        toSurveyScreen_Guest()
                     },
             )
         }
@@ -185,10 +209,8 @@ fun SignInScreen(
                         shape = RoundedCornerShape(8.dp),
                     )
                     .clickable {
-                        if (!signInViewModel.checkIsTextFilled()) return@clickable
-                        signInViewModel.signIn(
-                            updateIsSignedIn = updateIsSignedIn
-                        )
+                        if (!loginViewModel.checkLoginIsDone()) return@clickable
+                        toSurveyScreen()
                     },
                 contentAlignment = Alignment.Center
             ) {

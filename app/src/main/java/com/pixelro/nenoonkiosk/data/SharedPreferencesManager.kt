@@ -6,7 +6,7 @@ import com.google.gson.Gson
 import com.pixelro.nenoonkiosk.NenoonKioskApplication
 
 object SharedPreferencesManager {
-    private val pref: SharedPreferences = NenoonKioskApplication.applicationContext().getSharedPreferences(Constants.PREFERENCE_NAME, Context.MODE_PRIVATE)
+    private val pref: SharedPreferences = NenoonKioskApplication.applicationContext().getSharedPreferences(GlobalConstants.PREFERENCE_NAME, Context.MODE_PRIVATE)
     private val editor = pref.edit()
     private val gson = Gson()
 
@@ -15,32 +15,15 @@ object SharedPreferencesManager {
         editor.commit()
     }
 
-    private fun putIntAndCommit(key: String, int: Int) {
-        editor.putInt(key, int)
-        editor.commit()
-    }
-
     private fun getStringAndReturn(key: String): String {
         return pref.getString(key, "") ?: ""
-    }
-
-    private fun getIntAndReturn(key: String): Int {
-        return pref.getInt(key, 0)
     }
 
     fun putString(key: String, value: String) {
         putStringAndCommit(key, value)
     }
 
-    fun putInt(key: String, value: Int) {
-        putIntAndCommit(key, value)
-    }
-
     fun getString(key: String): String {
         return getStringAndReturn(key)
-    }
-
-    fun getInd(key: String): Int {
-        return getIntAndReturn(key)
     }
 }

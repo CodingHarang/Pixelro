@@ -7,6 +7,7 @@ import android.graphics.RectF
 import android.graphics.Typeface
 import android.util.Log
 import com.pixelro.nenoonkiosk.data.TestType
+import com.pixelro.nenoonkiosk.test.dementia.DementiaTestResult
 import com.pixelro.nenoonkiosk.test.macular.amslergrid.AmslerGridTestResult
 import com.pixelro.nenoonkiosk.test.macular.amslergrid.MacularDisorderType
 import com.pixelro.nenoonkiosk.test.macular.mchart.MChartTestResult
@@ -276,6 +277,27 @@ object TestResultUtil {
 //            canvas.drawText("☎0000-0000", 0f, baseline + 360f, paint)
                 return image!!
             }
+                TestType.Dementia -> {
+                    testResult as DementiaTestResult
+                    val image = Bitmap.createBitmap(width, 400, Bitmap.Config.ARGB_8888)
+                    val canvas = Canvas(image)
+                    canvas.drawARGB(255, 255, 255, 255)
+
+                    canvas.drawBitmap(logoImg, 360f, 320f, null)
+
+                    canvas.drawText("치매 자가진단 결과", 300f, baseline, paint)
+
+                    paint.typeface = Typeface.DEFAULT_BOLD
+                    canvas.drawText("검사 결과: " + (testResult.countActiveScore()).toString() + "개", 300f, baseline + 160f, paint)
+                    canvas.drawText("0~5개: 정상 ", 300f, baseline + 200f, paint)
+                    canvas.drawText("6~14개: 경고 ", 300f, baseline + 240f, paint)
+                    paint.typeface = Typeface.DEFAULT
+
+                    paint.textAlign = Paint.Align.LEFT
+//            canvas.drawText(printName, 0f, baseline + 320f, paint)
+//            canvas.drawText("☎0000-0000", 0f, baseline + 360f, paint)
+                    return image!!
+                }
             else -> {
                 val image = Bitmap.createBitmap(width, 400, Bitmap.Config.ARGB_8888)
                 val canvas = Canvas(image)

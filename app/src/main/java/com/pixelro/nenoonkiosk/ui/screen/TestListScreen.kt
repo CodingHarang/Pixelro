@@ -3,11 +3,6 @@ package com.pixelro.nenoonkiosk.ui.screen
 import android.util.Log
 import androidx.activity.compose.BackHandler
 import androidx.compose.animation.*
-import androidx.compose.animation.core.RepeatMode
-import androidx.compose.animation.core.animateFloat
-import androidx.compose.animation.core.infiniteRepeatable
-import androidx.compose.animation.core.keyframes
-import androidx.compose.animation.core.rememberInfiniteTransition
 import androidx.compose.animation.core.tween
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.ExperimentalFoundationApi
@@ -61,7 +56,8 @@ import kotlinx.coroutines.delay
 fun TestListScreen(
     checkIsTestDone: (TestType) -> Boolean,
     toTestScreen: (TestType) -> Unit,
-    toIntroScreen: () -> Unit,
+    toSettingsScreen: () -> Unit,
+    toSurveyScreen: () -> Unit,
     isPresbyopiaDone: Boolean,
     isShortVisualAcuityDone: Boolean,
     isAmslerGridDone: Boolean,
@@ -81,22 +77,13 @@ fun TestListScreen(
     }
     var isDialogShowing by remember { mutableStateOf(false) }
     var selectedTest by remember { mutableStateOf(TestType.None) }
-    val transition = rememberInfiniteTransition()
-    val shiftVal by transition.animateFloat(
-        initialValue = 0f, targetValue = 20f, animationSpec = infiniteRepeatable(
-            animation = keyframes {
-                durationMillis = 2000
-            },
-            repeatMode = RepeatMode.Reverse
-        )
-    )
     if(isDialogShowing) {
         SurveyRecommendationDialog(
             onDismissRequest = {
                 isDialogShowing = false
             },
             toTestScreen = toTestScreen,
-            toIntroScreen = toIntroScreen,
+            toSurveyScreen = toSurveyScreen,
             selectedTest = selectedTest
         )
     }
@@ -122,7 +109,7 @@ fun TestListScreen(
                 modifier = Modifier
                     .fillMaxHeight()
                     .clickable {
-                        toIntroScreen()
+                        toSurveyScreen()
                     },
                 verticalAlignment = Alignment.CenterVertically
             ) {
@@ -134,7 +121,7 @@ fun TestListScreen(
                     contentDescription = ""
                 )
                 Text(
-                    text = "문진하러 가기",
+                    text = StringProvider.getString(R.string.back_to_survey),
                     fontSize = 24.sp,
                     fontWeight = FontWeight.Medium
                 )
@@ -150,6 +137,22 @@ fun TestListScreen(
                     fontWeight = FontWeight.Medium
                 )
             }
+            Box(
+                modifier = Modifier
+                    .fillMaxSize(),
+                contentAlignment = Alignment.CenterEnd
+            ) {
+                Image(
+                    modifier = Modifier
+                        .width(32.dp)
+                        .height(32.dp)
+                        .clickable {
+                            toSettingsScreen()
+                        },
+                    painter = painterResource(id = R.drawable.icon_settings ),
+                    contentDescription = ""
+                )
+            }
         }
         Spacer(
             modifier = Modifier
@@ -159,32 +162,14 @@ fun TestListScreen(
                     color = Color(0xffebebeb)
                 )
         )
-
-        Box(
-            modifier = Modifier
-                .padding(40.dp)
-                .fillMaxWidth()
-                .height(100.dp),
-            contentAlignment = Alignment.TopCenter
+        HorizontalPager(
+            contentPadding = PaddingValues(start = 40.dp, top = 20.dp, end = 40.dp, bottom = 20.dp),
+            pageSpacing = 40.dp,
+            state = pagerState,
+            pageCount = 100000,
         ) {
-            Text(
-                modifier = Modifier
-                    .offset(x = 0.dp, y = shiftVal.dp),
-                text = "아래에서 원하는 검사 항목을 눌러주세요",
-                fontSize = 38.sp,
-                fontWeight = FontWeight.ExtraBold,
-                textAlign = TextAlign.Center
-            )
+            Advertisement(it)
         }
-
-//        HorizontalPager(
-//            contentPadding = PaddingValues(start = 40.dp, top = 20.dp, end = 40.dp, bottom = 20.dp),
-//            pageSpacing = 40.dp,
-//            state = pagerState,
-//            pageCount = 100000,
-//        ) {
-//            Advertisement(it)
-//        }
         Box() {
             TestListContent(
                 checkIsTestDone = {
@@ -298,7 +283,7 @@ fun Advertisement(
 fun SurveyRecommendationDialog(
     onDismissRequest: () -> Unit,
     toTestScreen: (TestType) -> Unit,
-    toIntroScreen: () -> Unit,
+    toSurveyScreen: () -> Unit,
     selectedTest: TestType
 ) {
     Dialog(
@@ -375,7 +360,7 @@ fun SurveyRecommendationDialog(
                                 )
                                 .clickable {
                                     onDismissRequest()
-                                    toIntroScreen()
+                                    toSurveyScreen()
                                 }
                                 .padding(top = 4.dp),
                             text = "문진하러 가기",

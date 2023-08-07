@@ -1,6 +1,5 @@
 package com.pixelro.nenoonkiosk.ui.screen
 
-import android.util.Log
 import androidx.compose.animation.core.RepeatMode
 import androidx.compose.animation.core.animateFloat
 import androidx.compose.animation.core.infiniteRepeatable
@@ -25,7 +24,6 @@ import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.layout.Layout
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.ExperimentalTextApi
 import androidx.compose.ui.text.SpanStyle
@@ -38,26 +36,18 @@ import androidx.compose.ui.text.withStyle
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.compose.ui.viewinterop.AndroidView
-import androidx.hilt.navigation.compose.hiltViewModel
-import androidx.media3.common.MediaItem
-import androidx.media3.common.Player
-import androidx.media3.exoplayer.ExoPlayer
 import androidx.media3.ui.AspectRatioFrameLayout
 import androidx.media3.ui.PlayerView
 import com.google.accompanist.systemuicontroller.rememberSystemUiController
 import com.pixelro.nenoonkiosk.NenoonViewModel
 import com.pixelro.nenoonkiosk.data.GlobalValue
-import com.pixelro.nenoonkiosk.data.SharedPreferencesManager
-import com.pixelro.nenoonkiosk.ui.ScreenSaverViewModel
 
 @OptIn(ExperimentalTextApi::class)
 @androidx.annotation.OptIn(androidx.media3.common.util.UnstableApi::class)
 @Composable
 fun ScreenSaverScreen(
-    exoPlayer: ExoPlayer,
-    isSignedIn: Boolean,
-    initializeTestDoneStatus: () -> Unit,
-    screenSaverViewModel: ScreenSaverViewModel = hiltViewModel()
+    viewModel: NenoonViewModel,
+    toSurveyScreen: () -> Unit
 ) {
     val transition = rememberInfiniteTransition()
     val shiftVal by transition.animateFloat(
@@ -69,11 +59,8 @@ fun ScreenSaverScreen(
         )
     )
     LaunchedEffect(true) {
-        screenSaverViewModel.setMediaItem(
-            isSignedIn = isSignedIn,
-            exoPlayer = exoPlayer
-        )
-        initializeTestDoneStatus()
+        toSurveyScreen()
+        viewModel.initializeTestDoneStatus()
     }
     val text = buildAnnotatedString {
         append("화면을 ")
@@ -91,6 +78,7 @@ fun ScreenSaverScreen(
     }
     val systemUiController = rememberSystemUiController()
     val context = LocalContext.current
+    val exoPlayer = viewModel.exoPlayer
     Column(
         modifier = Modifier
             .fillMaxSize()
@@ -105,7 +93,7 @@ fun ScreenSaverScreen(
             exoPlayer.play()
             onDispose {
                 systemUiController.systemBarsDarkContentEnabled = true
-                exoPlayer.stop()
+                exoPlayer.pause()
             }
         }
         Spacer(

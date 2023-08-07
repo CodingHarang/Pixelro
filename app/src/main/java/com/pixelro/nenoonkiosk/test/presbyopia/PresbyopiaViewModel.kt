@@ -35,6 +35,20 @@ class PresbyopiaViewModel @Inject constructor(
     private var firstDistance = 0f
     private var secondDistance = 0f
     private var thirdDistance = 0f
+    private lateinit var tts: TextToSpeech
+
+    fun speechTTS(string: String) {
+        tts = TextToSpeech(getApplication()) {
+            if (it == TextToSpeech.SUCCESS) {
+                tts.language = Locale.KOREAN
+            }
+            tts.stop()
+            tts.language = Locale.KOREAN
+            tts.setSpeechRate(1.0f)
+            tts.speak(string, TextToSpeech.QUEUE_FLUSH, null, null)
+            tts.shutdown()
+        }
+    }
 
     fun updateIsMovedTo40cm(isMoved: Boolean) {
         _isMovedTo40cm.update { isMoved }
@@ -117,7 +131,7 @@ class PresbyopiaViewModel @Inject constructor(
                 age = entry.y.toInt()
             }
         }
-        Log.e("presbyopiaResult", "firstDistance: ${firstDistance}\nsecondDistance: ${secondDistance}\nthirdDistance: ${thirdDistance}\n${avgDistance}\nage: $age")
+//        Log.e("presbyopiaResult", "firstDistance: ${firstDistance}\nsecondDistance: ${secondDistance}\nthirdDistance: ${thirdDistance}\n${avgDistance}\nage: $age")
         return PresbyopiaTestResult(firstDistance, secondDistance, thirdDistance, avgDistance, age)
     }
 

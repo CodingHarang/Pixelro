@@ -1,21 +1,20 @@
 package com.harang.data.api
 
-import com.harang.data.model.SendAmslerGridTestResultRequest
-import com.harang.data.model.SendAmslerGridTestResultResponse
-import com.harang.data.model.SendMChartTestResultRequest
-import com.harang.data.model.SendMChartTestResultResponse
-import com.harang.data.model.SendPresbyopiaTestResultRequest
-import com.harang.data.model.SendPresbyopiaTestResultResponse
-import com.harang.data.model.SendShortVisualAcuityTestResultRequest
-import com.harang.data.model.SendShortVisualAcuityTestResultResponse
-import com.harang.data.model.SendSignInDataResponse
-import com.harang.data.model.SendSurveyDataRequest
-import com.harang.data.model.SendSurveyDataResponse
+import com.harang.domain.model.SendAmslerGridTestResultRequest
+import com.harang.domain.model.SendAmslerGridTestResultResponse
+import com.harang.domain.model.SendMChartTestResultRequest
+import com.harang.domain.model.SendMChartTestResultResponse
+import com.harang.domain.model.SendPresbyopiaTestResultRequest
+import com.harang.domain.model.SendPresbyopiaTestResultResponse
+import com.harang.domain.model.SendShortVisualAcuityTestResultRequest
+import com.harang.domain.model.SendShortVisualAcuityTestResultResponse
+import com.harang.domain.model.SendSurveyDataRequest
+import com.harang.domain.model.SendSurveyDataResponse
+import com.harang.domain.model.TestData
 import retrofit2.Response
 import retrofit2.http.Body
 import retrofit2.http.GET
 import retrofit2.http.POST
-import retrofit2.http.Query
 
 interface NenoonKioskApi {
 
@@ -43,10 +42,4 @@ interface NenoonKioskApi {
     suspend fun sendSurveyData(
         @Body body: SendSurveyDataRequest
     ): Response<SendSurveyDataResponse>
-
-    @GET("api/v1/location/signin")
-    suspend fun sendSignInData(
-        @Query("id") id: String,
-        @Query("pw") pw: String
-    ): Response<SendSignInDataResponse>
 }

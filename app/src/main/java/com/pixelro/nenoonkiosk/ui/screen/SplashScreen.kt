@@ -59,7 +59,7 @@ fun SplashScreen() {
                 modifier = Modifier
                     .width(200.dp)
                     .height(200.dp),
-                painter = painterResource(id = R.drawable.nenoon_logo_white),
+                painter = painterResource(id = R.drawable.nenoon_logo),
                 contentDescription = ""
             )
             Text(
