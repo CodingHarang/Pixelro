@@ -28,6 +28,7 @@ import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -53,7 +54,9 @@ import com.pixelro.nenoonkiosk.data.StringProvider
 import com.pixelro.nenoonkiosk.data.TestType
 import com.pixelro.nenoonkiosk.facedetection.MeasuringDistanceDialog
 import com.pixelro.nenoonkiosk.ui.testlist.TestListContent
+import kotlinx.coroutines.coroutineScope
 import kotlinx.coroutines.delay
+import kotlinx.coroutines.launch
 
 
 @OptIn(ExperimentalFoundationApi::class, ExperimentalAnimationApi::class)
@@ -70,13 +73,20 @@ fun TestListScreen(
     val pagerState = rememberPagerState(
         initialPage = 50000
     )
+    val isDescriptionShowing = remember { mutableStateOf(true) }
     LaunchedEffect(true) {
         while(true) {
-            delay(8000)
+            delay(5000)
             pagerState.animateScrollToPage(
                 page = (pagerState.currentPage + 1),
                 animationSpec = tween(1000)
             )
+            for (i in 1..3) {
+                isDescriptionShowing.value = false
+                delay(250)
+                isDescriptionShowing.value = true
+                delay(250)
+            }
         }
     }
     var isDialogShowing by remember { mutableStateOf(false) }
@@ -160,31 +170,34 @@ fun TestListScreen(
                 )
         )
 
-        Box(
-            modifier = Modifier
-                .padding(40.dp)
-                .fillMaxWidth()
-                .height(100.dp),
-            contentAlignment = Alignment.TopCenter
+        HorizontalPager(
+            contentPadding = PaddingValues(start = 40.dp, top = 20.dp, end = 40.dp, bottom = 20.dp),
+            pageSpacing = 40.dp,
+            state = pagerState,
+            pageCount = 100000,
         ) {
-            Text(
-                modifier = Modifier
-                    .offset(x = 0.dp, y = shiftVal.dp),
-                text = "아래에서 원하는 검사 항목을 눌러주세요",
-                fontSize = 38.sp,
-                fontWeight = FontWeight.ExtraBold,
-                textAlign = TextAlign.Center
-            )
+            Advertisement(it)
         }
 
-//        HorizontalPager(
-//            contentPadding = PaddingValues(start = 40.dp, top = 20.dp, end = 40.dp, bottom = 20.dp),
-//            pageSpacing = 40.dp,
-//            state = pagerState,
-//            pageCount = 100000,
-//        ) {
-//            Advertisement(it)
-//        }
+        Box(
+            modifier = Modifier
+                .padding(start = 40.dp, end = 40.dp, bottom = 20.dp)
+                .fillMaxWidth()
+                .height(80.dp),
+            contentAlignment = Alignment.TopCenter
+        ) {
+            if (isDescriptionShowing.value) {
+                Text(
+                    modifier = Modifier
+                        .offset(x = 0.dp, y = shiftVal.dp),
+                    text = "아래에서 원하는 검사 항목을 눌러주세요",
+                    fontSize = 38.sp,
+                    fontWeight = FontWeight.ExtraBold,
+                    textAlign = TextAlign.Center
+                )
+            }
+        }
+
         Box() {
             TestListContent(
                 checkIsTestDone = {
