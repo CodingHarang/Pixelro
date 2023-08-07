@@ -60,9 +60,16 @@ fun AmslerGridTestResultContent(
                 fontSize = 16.sp,
                 color = Color(0xff878787)
             )
+            Spacer(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .height(1.dp)
+
+            )
             Text(
                 modifier = Modifier
-                    .padding(start = 40.dp, top = 10.dp),
+                    .padding(start = 40.dp, top = 40.dp)
+                    .fillMaxWidth(),
                 text = StringProvider.getString(R.string.test_result_my_result),
                 fontSize = 44.sp,
                 fontWeight = FontWeight.Bold
@@ -365,7 +372,7 @@ fun AmslerGridTestResultContent(
                 modifier = Modifier
                     .padding(bottom = 12.dp),
                 text = StringProvider.getString(R.string.left),
-                fontSize = 30.sp,
+                fontSize = 34.sp,
                 fontWeight = FontWeight.Bold
             )
             Row(
@@ -422,7 +429,7 @@ fun AmslerGridTestResultContent(
                         .border(
                             width = (0.5).dp,
                             color =
-                            Color(0xffc3c3c3),
+                                Color(0xffc3c3c3),
                             shape = RectangleShape
                         )
                         .drawBehind {
@@ -452,7 +459,7 @@ fun AmslerGridTestResultContent(
                         .border(
                             width = (0.5).dp,
                             color =
-                            Color(0xffc3c3c3),
+                                Color(0xffc3c3c3),
                             shape = RectangleShape
                         )
                         .drawBehind {
@@ -494,7 +501,7 @@ fun AmslerGridTestResultContent(
                         .border(
                             width = (0.5).dp,
                             color =
-                            Color(0xffc3c3c3),
+                                Color(0xffc3c3c3),
                             shape = RectangleShape
                         )
                         .drawBehind {
@@ -524,7 +531,7 @@ fun AmslerGridTestResultContent(
                         .border(
                             width = (0.5).dp,
                             color =
-                            Color(0xffc3c3c3),
+                                Color(0xffc3c3c3),
                             shape = RectangleShape
                         )
                 ) {
@@ -543,7 +550,7 @@ fun AmslerGridTestResultContent(
                         .border(
                             width = (0.5).dp,
                             color =
-                            Color(0xffc3c3c3),
+                                Color(0xffc3c3c3),
                             shape = RectangleShape
                         )
                         .drawBehind {
@@ -579,7 +586,7 @@ fun AmslerGridTestResultContent(
                         .border(
                             width = (0.5).dp,
                             color =
-                            Color(0xffc3c3c3),
+                                Color(0xffc3c3c3),
                             shape = RectangleShape
                         )
                         .drawBehind {
@@ -615,7 +622,7 @@ fun AmslerGridTestResultContent(
                         .border(
                             width = (0.5).dp,
                             color =
-                            Color(0xffc3c3c3),
+                                Color(0xffc3c3c3),
                             shape = RectangleShape
                         )
                         .drawBehind {
@@ -645,7 +652,7 @@ fun AmslerGridTestResultContent(
                         .border(
                             width = (0.5).dp,
                             color =
-                            Color(0xffc3c3c3),
+                                Color(0xffc3c3c3),
                             shape = RectangleShape
                         )
                         .drawBehind {
@@ -687,7 +694,7 @@ fun AmslerGridTestResultContent(
                 modifier = Modifier
                     .padding(bottom = 12.dp),
                 text = StringProvider.getString(R.string.right),
-                fontSize = 30.sp,
+                fontSize = 34.sp,
                 fontWeight = FontWeight.Bold
             )
             Row(
@@ -708,7 +715,7 @@ fun AmslerGridTestResultContent(
                         .border(
                             width = (0.5).dp,
                             color =
-                            Color(0xffc3c3c3),
+                                Color(0xffc3c3c3),
                             shape = RectangleShape
                         )
                         .drawBehind {
@@ -744,7 +751,7 @@ fun AmslerGridTestResultContent(
                         .border(
                             width = (0.5).dp,
                             color =
-                            Color(0xffc3c3c3),
+                                Color(0xffc3c3c3),
                             shape = RectangleShape
                         )
                         .drawBehind {
@@ -774,7 +781,7 @@ fun AmslerGridTestResultContent(
                         .border(
                             width = (0.5).dp,
                             color =
-                            Color(0xffc3c3c3),
+                                Color(0xffc3c3c3),
                             shape = RectangleShape
                         )
                         .drawBehind {
@@ -816,7 +823,7 @@ fun AmslerGridTestResultContent(
                         .border(
                             width = (0.5).dp,
                             color =
-                            Color(0xffc3c3c3),
+                                Color(0xffc3c3c3),
                             shape = RectangleShape
                         )
                         .drawBehind {
@@ -846,7 +853,7 @@ fun AmslerGridTestResultContent(
                         .border(
                             width = (0.5).dp,
                             color =
-                            Color(0xffc3c3c3),
+                                Color(0xffc3c3c3),
                             shape = RectangleShape
                         )
                 ) {
@@ -865,7 +872,7 @@ fun AmslerGridTestResultContent(
                         .border(
                             width = (0.5).dp,
                             color =
-                            Color(0xffc3c3c3),
+                                Color(0xffc3c3c3),
                             shape = RectangleShape
                         )
                         .drawBehind {
@@ -901,7 +908,7 @@ fun AmslerGridTestResultContent(
                         .border(
                             width = (0.5).dp,
                             color =
-                            Color(0xffc3c3c3),
+                                Color(0xffc3c3c3),
                             shape = RectangleShape
                         )
                         .drawBehind {
@@ -937,7 +944,7 @@ fun AmslerGridTestResultContent(
                         .border(
                             width = (0.5).dp,
                             color =
-                            Color(0xffc3c3c3),
+                                Color(0xffc3c3c3),
                             shape = RectangleShape
                         )
                         .drawBehind {
@@ -967,7 +974,7 @@ fun AmslerGridTestResultContent(
                         .border(
                             width = (0.5).dp,
                             color =
-                            Color(0xffc3c3c3),
+                                Color(0xffc3c3c3),
                             shape = RectangleShape
                         )
                         .drawBehind {

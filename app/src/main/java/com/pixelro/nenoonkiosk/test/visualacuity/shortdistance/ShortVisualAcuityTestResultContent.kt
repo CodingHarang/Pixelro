@@ -94,7 +94,7 @@ fun ShortDistanceVisualAcuityTestResultContent(
             modifier = Modifier
                 .padding(start = 40.dp, top = 40.dp),
             text = StringProvider.getString(R.string.test_result_my_result),
-            fontSize = 44.sp,
+            fontSize = 40.sp,
             fontWeight = FontWeight.Bold
         )
         Row(
@@ -114,7 +114,7 @@ fun ShortDistanceVisualAcuityTestResultContent(
             ) {
                 Text(
                     text = StringProvider.getString(R.string.left),
-                    fontSize = 30.sp,
+                    fontSize = 34.sp,
                     fontWeight = FontWeight.Bold
                 )
                 Text(
@@ -215,7 +215,7 @@ fun ShortDistanceVisualAcuityTestResultContent(
             }
             Spacer(
                 modifier = Modifier
-                    .width(20.dp)
+                .width(20.dp)
             )
             Column(
                 modifier = Modifier
@@ -229,7 +229,7 @@ fun ShortDistanceVisualAcuityTestResultContent(
             ) {
                 Text(
                     text = StringProvider.getString(R.string.right),
-                    fontSize = 30.sp,
+                    fontSize = 34.sp,
                     fontWeight = FontWeight.Bold
                 )
                 Text(

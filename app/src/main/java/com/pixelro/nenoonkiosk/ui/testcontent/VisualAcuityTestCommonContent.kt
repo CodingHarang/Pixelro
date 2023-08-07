@@ -30,6 +30,8 @@ import com.pixelro.nenoonkiosk.data.StringProvider
 import com.pixelro.nenoonkiosk.facedetection.FaceDetection
 import com.pixelro.nenoonkiosk.test.visualacuity.VisualAcuityTestResult
 import com.pixelro.nenoonkiosk.test.visualacuity.VisualAcuityViewModel
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.launch
 
 @Composable
 fun VisualAcuityTestCommonContent(
@@ -61,6 +63,8 @@ fun VisualAcuityTestContent(
         targetValue = progress,
         animationSpec = ProgressIndicatorDefaults.ProgressAnimationSpec
     )
+    val coroutineScope = rememberCoroutineScope()
+    val isWarning = remember { mutableStateOf(false) }
     LaunchedEffect(true) {
         TTS.speechTTS("검사를 시작하겠습니다. 아래의 세 시표 중, 위 시표와 동일하게 보이는 것을 선택해주세요. 시표가 잘 보이지 않는다면 아래의 안보임 버튼을 눌러주세요.", TextToSpeech.QUEUE_ADD)
     }
@@ -77,88 +81,111 @@ fun VisualAcuityTestContent(
                 .background(
                     color = Color(0xffffffff),
                     shape = RoundedCornerShape(8.dp)
-                ),
+                )
+                .clickable {
+                    coroutineScope.launch {
+                        for (i in 1..4) {
+                            isWarning.value = true
+                            delay(600)
+                            isWarning.value = false
+                            delay(400)
+                        }
+                        isWarning.value = true
+                        delay(4000)
+                        isWarning.value = false
+                    }
+                },
             contentAlignment = Alignment.Center
         ) {
             Image(
                 imageVector = ImageVector.vectorResource(id =
-                when(ansNum) {
-                    2 -> when(sightLevel) {
-                        1 -> R.drawable._50cm_2_1
-                        2 -> R.drawable._50cm_2_2
-                        3 -> R.drawable._50cm_2_3
-                        4 -> R.drawable._50cm_2_4
-                        5 -> R.drawable._50cm_2_5
-                        6 -> R.drawable._50cm_2_6
-                        7 -> R.drawable._50cm_2_7
-                        8 -> R.drawable._50cm_2_8
-                        9 -> R.drawable._50cm_2_9
-                        else -> R.drawable._50cm_2_10
+                    when(ansNum) {
+                        2 -> when(sightLevel) {
+                            1 -> R.drawable._50cm_2_1
+                            2 -> R.drawable._50cm_2_2
+                            3 -> R.drawable._50cm_2_3
+                            4 -> R.drawable._50cm_2_4
+                            5 -> R.drawable._50cm_2_5
+                            6 -> R.drawable._50cm_2_6
+                            7 -> R.drawable._50cm_2_7
+                            8 -> R.drawable._50cm_2_8
+                            9 -> R.drawable._50cm_2_9
+                            else -> R.drawable._50cm_2_10
+                        }
+                        3 -> when(sightLevel) {
+                            1 -> R.drawable._50cm_3_1
+                            2 -> R.drawable._50cm_3_2
+                            3 -> R.drawable._50cm_3_3
+                            4 -> R.drawable._50cm_3_4
+                            5 -> R.drawable._50cm_3_5
+                            6 -> R.drawable._50cm_3_6
+                            7 -> R.drawable._50cm_3_7
+                            8 -> R.drawable._50cm_3_8
+                            9 -> R.drawable._50cm_3_9
+                            else -> R.drawable._50cm_3_10
+                        }
+                        4 -> when(sightLevel) {
+                            1 -> R.drawable._50cm_4_1
+                            2 -> R.drawable._50cm_4_2
+                            3 -> R.drawable._50cm_4_3
+                            4 -> R.drawable._50cm_4_4
+                            5 -> R.drawable._50cm_4_5
+                            6 -> R.drawable._50cm_4_6
+                            7 -> R.drawable._50cm_4_7
+                            8 -> R.drawable._50cm_4_8
+                            9 -> R.drawable._50cm_4_9
+                            else -> R.drawable._50cm_4_10
+                        }
+                        5 -> when(sightLevel) {
+                            1 -> R.drawable._50cm_5_1
+                            2 -> R.drawable._50cm_5_2
+                            3 -> R.drawable._50cm_5_3
+                            4 -> R.drawable._50cm_5_4
+                            5 -> R.drawable._50cm_5_5
+                            6 -> R.drawable._50cm_5_6
+                            7 -> R.drawable._50cm_5_7
+                            8 -> R.drawable._50cm_5_8
+                            9 -> R.drawable._50cm_5_9
+                            else -> R.drawable._50cm_5_10
+                        }
+                        6 -> when(sightLevel) {
+                            1 -> R.drawable._50cm_6_1
+                            2 -> R.drawable._50cm_6_2
+                            3 -> R.drawable._50cm_6_3
+                            4 -> R.drawable._50cm_6_4
+                            5 -> R.drawable._50cm_6_5
+                            6 -> R.drawable._50cm_6_6
+                            7 -> R.drawable._50cm_6_7
+                            8 -> R.drawable._50cm_6_8
+                            9 -> R.drawable._50cm_6_9
+                            else -> R.drawable._50cm_6_10
+                        }
+                        else -> when(sightLevel) {
+                            1 -> R.drawable._50cm_7_1
+                            2 -> R.drawable._50cm_7_2
+                            3 -> R.drawable._50cm_7_3
+                            4 -> R.drawable._50cm_7_4
+                            5 -> R.drawable._50cm_7_5
+                            6 -> R.drawable._50cm_7_6
+                            7 -> R.drawable._50cm_7_7
+                            8 -> R.drawable._50cm_7_8
+                            9 -> R.drawable._50cm_7_9
+                            else -> R.drawable._50cm_7_10
+                        }
                     }
-                    3 -> when(sightLevel) {
-                        1 -> R.drawable._50cm_3_1
-                        2 -> R.drawable._50cm_3_2
-                        3 -> R.drawable._50cm_3_3
-                        4 -> R.drawable._50cm_3_4
-                        5 -> R.drawable._50cm_3_5
-                        6 -> R.drawable._50cm_3_6
-                        7 -> R.drawable._50cm_3_7
-                        8 -> R.drawable._50cm_3_8
-                        9 -> R.drawable._50cm_3_9
-                        else -> R.drawable._50cm_3_10
-                    }
-                    4 -> when(sightLevel) {
-                        1 -> R.drawable._50cm_4_1
-                        2 -> R.drawable._50cm_4_2
-                        3 -> R.drawable._50cm_4_3
-                        4 -> R.drawable._50cm_4_4
-                        5 -> R.drawable._50cm_4_5
-                        6 -> R.drawable._50cm_4_6
-                        7 -> R.drawable._50cm_4_7
-                        8 -> R.drawable._50cm_4_8
-                        9 -> R.drawable._50cm_4_9
-                        else -> R.drawable._50cm_4_10
-                    }
-                    5 -> when(sightLevel) {
-                        1 -> R.drawable._50cm_5_1
-                        2 -> R.drawable._50cm_5_2
-                        3 -> R.drawable._50cm_5_3
-                        4 -> R.drawable._50cm_5_4
-                        5 -> R.drawable._50cm_5_5
-                        6 -> R.drawable._50cm_5_6
-                        7 -> R.drawable._50cm_5_7
-                        8 -> R.drawable._50cm_5_8
-                        9 -> R.drawable._50cm_5_9
-                        else -> R.drawable._50cm_5_10
-                    }
-                    6 -> when(sightLevel) {
-                        1 -> R.drawable._50cm_6_1
-                        2 -> R.drawable._50cm_6_2
-                        3 -> R.drawable._50cm_6_3
-                        4 -> R.drawable._50cm_6_4
-                        5 -> R.drawable._50cm_6_5
-                        6 -> R.drawable._50cm_6_6
-                        7 -> R.drawable._50cm_6_7
-                        8 -> R.drawable._50cm_6_8
-                        9 -> R.drawable._50cm_6_9
-                        else -> R.drawable._50cm_6_10
-                    }
-                    else -> when(sightLevel) {
-                        1 -> R.drawable._50cm_7_1
-                        2 -> R.drawable._50cm_7_2
-                        3 -> R.drawable._50cm_7_3
-                        4 -> R.drawable._50cm_7_4
-                        5 -> R.drawable._50cm_7_5
-                        6 -> R.drawable._50cm_7_6
-                        7 -> R.drawable._50cm_7_7
-                        8 -> R.drawable._50cm_7_8
-                        9 -> R.drawable._50cm_7_9
-                        else -> R.drawable._50cm_7_10
-                    }
-                }
                 ),
                 contentDescription = ""
             )
+            if (isWarning.value) {
+                Text(
+                    modifier = Modifier
+                        .padding(top = 300.dp),
+                    text = "위 시표와 동일하게 보이는 것을\n아래에서 선택해주세요",
+                    textAlign = TextAlign.Center,
+                    fontSize = 30.sp,
+                    fontWeight = FontWeight.ExtraBold
+                )
+            }
         }
         Text(
             modifier = Modifier
@@ -346,9 +373,8 @@ fun VisualAcuityTestContent(
                 contentAlignment = Alignment.Center
             ) {
                 Text(
-                    text = StringProvider.getString(R.string.short_visual_acuity_test_unreadable),
+                    text = "안보임",
                     fontSize = 60.sp,
-                    fontWeight = FontWeight.Bold
                 )
             }
         }
