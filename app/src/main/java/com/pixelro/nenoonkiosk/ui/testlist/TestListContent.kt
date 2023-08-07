@@ -47,7 +47,7 @@ fun TestListContent(
             .weight(1f)
         EyeTestSelectableBox(
             modifier = modifier,
-            title = "노안 조절력 검사\n(안구 나이 검사)",
+            title = StringProvider.getString(R.string.presbyopia_name1),
             onClickMethod = {
                 if (checkIsTestDone(TestType.Presbyopia)) {
                     showSurveyRecommendationDialog()
@@ -79,7 +79,7 @@ fun TestListContent(
         )
         EyeTestSelectableBox(
             modifier = modifier,
-            title = "암슬러 차트 검사\n(황반 변성 검사)",
+            title = StringProvider.getString(R.string.amsler_grid_name),
             onClickMethod = {
                 if (checkIsTestDone(TestType.AmslerGrid)) {
                     showSurveyRecommendationDialog()
@@ -95,7 +95,7 @@ fun TestListContent(
         )
         EyeTestSelectableBox(
             modifier = modifier,
-            title = "엠식 변형시 검사\n(황반 변성 검사)",
+            title = StringProvider.getString(R.string.mchart_name),
             onClickMethod = {
                 if (checkIsTestDone(TestType.MChart)) {
                     showSurveyRecommendationDialog()

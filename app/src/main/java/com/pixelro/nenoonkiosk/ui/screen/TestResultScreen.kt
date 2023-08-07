@@ -378,7 +378,7 @@ fun TestResultScreen(
                             modifier = Modifier
                                 .padding(20.dp),
                             text = StringProvider.getString(R.string.result_screen_go_back),
-                            fontSize = 24.sp,
+                            fontSize = 44.sp,
                             fontWeight = FontWeight.Medium
                         )
                     }

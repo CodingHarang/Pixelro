@@ -121,7 +121,7 @@ fun TestListScreen(
                     contentDescription = ""
                 )
                 Text(
-                    text = "문진하러 가기",
+                    text = StringProvider.getString(R.string.back_to_survey),
                     fontSize = 24.sp,
                     fontWeight = FontWeight.Medium
                 )

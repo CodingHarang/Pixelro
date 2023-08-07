@@ -30,11 +30,15 @@
          that other apps created. -->
     <uses-permission android:name="android.permission.READ_MEDIA_AUDIO" />
 
+    <!-- Required only if your app needs to access Internet Browser
+         that other apps created. -->
+    <uses-permission android:name="android.permission.INTERNET" />
 
     <queries>
         <intent>
             <action
                 android:name="android.intent.action.TTS_SERVICE" />
+<!--            <data android:scheme="https" android:host="www.nid.or.kr/info/facility_list.aspx?gubun_str=%7C3%7C"/>-->
         </intent>
     </queries>
 

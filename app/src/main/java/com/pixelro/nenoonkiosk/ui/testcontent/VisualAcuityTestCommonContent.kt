@@ -346,8 +346,9 @@ fun VisualAcuityTestContent(
                 contentAlignment = Alignment.Center
             ) {
                 Text(
-                    text = "안보임",
+                    text = StringProvider.getString(R.string.short_visual_acuity_test_unreadable),
                     fontSize = 60.sp,
+                    fontWeight = FontWeight.Bold
                 )
             }
         }

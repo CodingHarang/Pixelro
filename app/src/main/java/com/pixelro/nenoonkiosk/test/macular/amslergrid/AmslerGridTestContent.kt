@@ -142,7 +142,7 @@ fun AmslerGridContent(
                 text = when (!isBlinkingDone) {
                     true -> "아래의 깜빡이는 점을 봐주세요"
                     false -> when (isFaceCenter) {
-                        true -> "이상하게 보이거나 왜곡되어 보이는 부분을 손으로 눌러 선택해주세요. 선택을 완료했거나 이상한 부분이 없다면, 아래의 완료 버튼을 눌러주세요."
+                        true -> StringProvider.getString(R.string.amsler_grid_test_description)
                         false -> "가운데의 검은 점을 봐주세요"
                     }
                 },

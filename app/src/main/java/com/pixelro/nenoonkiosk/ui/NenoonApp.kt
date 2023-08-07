@@ -4,7 +4,6 @@ import androidx.compose.animation.ExperimentalAnimationApi
 import androidx.compose.foundation.layout.*
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
-import androidx.compose.runtime.isTraceInProgress
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.hilt.navigation.compose.hiltViewModel
@@ -42,18 +41,18 @@ fun NenoonApp(
     if (viewModel.isShowingSplashScreen.collectAsState().value) {
         SplashScreen()
     } else {
-        if (viewModel.isScreenSaverOn.collectAsState().value) {
-            /**
-             * Screen Saver
-             * 검사 중이 아닐 때 40초 동안 입력이 없으면 보여지는 화면
-             */
-            ScreenSaverScreen(
-                viewModel,
-                toSurveyScreen = {
-                    mainNavController.popBackStack(GlobalConstants.ROUTE_SURVEY, false)
-                }
-            )
-        } else {
+//        if (viewModel.isScreenSaverOn.collectAsState().value) {
+//            /**
+//             * Screen Saver
+//             * 검사 중이 아닐 때 40초 동안 입력이 없으면 보여지는 화면
+//             */
+//            ScreenSaverScreen(
+//                viewModel,
+//                toSurveyScreen = {
+//                    mainNavController.popBackStack(GlobalConstants.ROUTE_SURVEY, false)
+//                }
+//            )
+//        } else {
             if (!viewModel.isAllPermissionsGranted.collectAsState().value) {
                 /**
                  * Permission Request Screen
@@ -124,6 +123,7 @@ fun NenoonApp(
                             toSurveyScreen = {
                                 mainNavController.popBackStack(GlobalConstants.ROUTE_SURVEY, false)
                             },
+
                             isPresbyopiaDone = viewModel.isPresbyopiaTestDone.collectAsState().value,
                             isShortVisualAcuityDone = viewModel.isShortVisualAcuityTestDone.collectAsState().value,
                             isAmslerGridDone = viewModel.isAmslerGridTestDone.collectAsState().value,
@@ -243,7 +243,10 @@ fun NenoonApp(
                     ) {
                         when (viewModel.selectedTestType.collectAsState().value) {
                             TestType.Presbyopia -> viewModel.updateIsPresbyopiaTestDone(true)
-                            TestType.ShortDistanceVisualAcuity -> viewModel.updateIsShortVisualAcuityTestDone(true)
+                            TestType.ShortDistanceVisualAcuity -> viewModel.updateIsShortVisualAcuityTestDone(
+                                true
+                            )
+
                             TestType.AmslerGrid -> viewModel.updateIsAmslerGridTestDone(true)
                             TestType.MChart -> viewModel.updateIsMChartTestDone(true)
                             else -> {
@@ -271,4 +274,5 @@ fun NenoonApp(
             }
         }
     }
-}
+//}
+
