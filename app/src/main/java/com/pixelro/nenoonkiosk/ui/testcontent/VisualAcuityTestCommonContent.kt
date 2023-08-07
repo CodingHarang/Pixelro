@@ -86,10 +86,13 @@ fun VisualAcuityTestContent(
                     coroutineScope.launch {
                         for (i in 1..4) {
                             isWarning.value = true
-                            delay(1000)
+                            delay(600)
                             isWarning.value = false
-                            delay(1000)
+                            delay(400)
                         }
+                        isWarning.value = true
+                        delay(4000)
+                        isWarning.value = false
                     }
                 },
             contentAlignment = Alignment.Center
