@@ -71,17 +71,26 @@ fun SplashScreen() {
                 fontFamily = cafe24Family
             )
         }
-        Box(
+        Column(
             modifier = Modifier
                 .fillMaxSize(),
-            contentAlignment = Alignment.BottomCenter
+            verticalArrangement = Arrangement.Bottom,
+            horizontalAlignment = Alignment.CenterHorizontally
         ) {
             Image(
                 modifier = Modifier
-                    .padding(bottom = (GlobalValue.navigationBarPadding + 20).dp)
+                    .padding(bottom = 40.dp)
                     .height(50.dp),
                 painter = painterResource(id = R.drawable.pixelro_logo),
-                contentDescription = ""
+                contentDescription = null
+            )
+            Image(
+                modifier = Modifier
+                    .padding(bottom = (GlobalValue.navigationBarPadding + 20).dp)
+                    .width(200.dp)
+                    .height(100.dp),
+                painter = painterResource(id = R.drawable.udi_code),
+                contentDescription = null
             )
         }
     }
