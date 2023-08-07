@@ -2,7 +2,12 @@ package com.pixelro.nenoonkiosk.ui.screen
 
 import androidx.compose.animation.animateColorAsState
 import androidx.compose.animation.core.Animatable
+import androidx.compose.animation.core.RepeatMode
+import androidx.compose.animation.core.animateFloat
 import androidx.compose.animation.core.animateIntAsState
+import androidx.compose.animation.core.infiniteRepeatable
+import androidx.compose.animation.core.keyframes
+import androidx.compose.animation.core.rememberInfiniteTransition
 import androidx.compose.animation.core.tween
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.Indication
@@ -25,6 +30,7 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.ripple.rememberRipple
 import androidx.compose.material3.Text
@@ -39,6 +45,7 @@ import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.BlendMode
 import androidx.compose.ui.graphics.Color
@@ -82,6 +89,23 @@ fun SurveyScreen(
         targetValue = if (isPressed) Color.White else Color(0xFF1D71E1),
         animationSpec = tween(durationMillis = 500)
     )
+    val transition = rememberInfiniteTransition()
+    val alpha by transition.animateFloat(
+        initialValue = 1f, targetValue = 0f, animationSpec = infiniteRepeatable(
+            animation = keyframes {
+                durationMillis = 1000
+            },
+            repeatMode = RepeatMode.Restart
+        )
+    )
+    val size by transition.animateFloat(
+        initialValue = 60f, targetValue = 100f, animationSpec = infiniteRepeatable(
+            animation = keyframes {
+                durationMillis = 1000
+            },
+            repeatMode = RepeatMode.Restart
+        )
+    )
     Column(
         modifier = Modifier
             .fillMaxSize()
@@ -106,13 +130,56 @@ fun SurveyScreen(
         }
         Spacer(
             modifier = Modifier
-                .padding(bottom = 100.dp)
+                .padding(bottom = 20.dp)
                 .fillMaxWidth()
                 .height(1.dp)
                 .background(
                     color = Color(0xffdddddd)
                 )
         )
+        Row(
+            modifier = Modifier
+                .padding(start = 20.dp, end = 20.dp, bottom = 20.dp)
+                .height(120.dp),
+            verticalAlignment = Alignment.CenterVertically
+        ) {
+            for (i in 0..4) {
+                Box(
+                    modifier = Modifier
+                        .weight(1f),
+                    contentAlignment = Alignment.Center
+                ) {
+                    if (i == questionType.ordinal) {
+                        Box(
+                            modifier = Modifier
+                                .width(size.dp)
+                                .height(size.dp)
+                                .alpha(alpha)
+                                .border(
+                                    border = BorderStroke(width = 10.dp, color = Color(0xFF1D71E1)),
+                                    shape = CircleShape
+                                )
+                        )
+                    }
+                    Box(
+                        modifier = Modifier
+                            .width(60.dp)
+                            .height(60.dp)
+                            .background(
+                                color = when (i <= questionType.ordinal) {
+                                    true -> Color(0xFF1D71E1)
+                                    false -> Color(0xFFFFFFFF)
+                                },
+                                shape = CircleShape
+                            )
+                            .border(
+                                border = BorderStroke(width = 2.dp, color = Color(0xFF1D71E1)),
+                                shape = CircleShape
+                            )
+                    )
+                }
+            }
+        }
         Column(
             modifier = Modifier
                 .fillMaxWidth()
@@ -153,6 +220,7 @@ fun SurveyScreen(
                                                     2 to SurveyAge.Third,
                                                     3 to SurveyAge.Fifth,
                                                     4 to SurveyAge.Seventh -> Color(0xff1d71e1)
+
                                                     else -> Color(0xff1d71e1)
                                                 }
                                             ),
@@ -164,6 +232,7 @@ fun SurveyScreen(
                                                 2 to SurveyAge.Third,
                                                 3 to SurveyAge.Fifth,
                                                 4 to SurveyAge.Seventh -> buttonColor
+
                                                 else -> Color(0xFFFFFFFF)
                                             },
                                             shape = RoundedCornerShape(8.dp)
@@ -240,6 +309,7 @@ fun SurveyScreen(
                                                     6 to SurveyAge.Fourth,
                                                     7 to SurveyAge.Sixth,
                                                     8 to SurveyAge.Eighth -> Color(0xff1d71e1)
+
                                                     else -> Color(0xff1d71e1)
                                                 }
                                             ),
@@ -251,6 +321,7 @@ fun SurveyScreen(
                                                 6 to SurveyAge.Fourth,
                                                 7 to SurveyAge.Sixth,
                                                 8 to SurveyAge.Eighth -> buttonColor
+
                                                 else -> Color(0xFFFFFFFF)
                                             },
                                             shape = RoundedCornerShape(8.dp)
@@ -333,6 +404,7 @@ fun SurveyScreen(
                                             color = when (idx to surveyViewModel.surveySex.collectAsState().value) {
                                                 1 to SurveySex.Man,
                                                 2 to SurveySex.Woman -> Color(0xff1d71e1)
+
                                                 else -> Color(0xff1d71e1)
                                             }
                                         ),
@@ -342,6 +414,7 @@ fun SurveyScreen(
                                         color = when (idx to surveyViewModel.surveySex.collectAsState().value) {
                                             1 to SurveySex.Man,
                                             2 to SurveySex.Woman -> buttonColor
+
                                             else -> Color(0xFFFFFFFF)
                                         },
                                         shape = RoundedCornerShape(8.dp)
@@ -363,7 +436,12 @@ fun SurveyScreen(
                                             isPressed = false
                                         }
                                     }
-                                    .padding(start = 20.dp, top = 16.dp, end = 20.dp, bottom = 16.dp),
+                                    .padding(
+                                        start = 20.dp,
+                                        top = 16.dp,
+                                        end = 20.dp,
+                                        bottom = 16.dp
+                                    ),
                                 contentAlignment = Alignment.Center
                             ) {
                                 Text(
@@ -418,6 +496,7 @@ fun SurveyScreen(
                                             color = when (idx to surveyViewModel.surveyGlass.collectAsState().value) {
                                                 1 to SurveyGlass.Yes,
                                                 2 to SurveyGlass.No -> Color(0xFF1D71E1)
+
                                                 else -> Color(0xFF1D71E1)
                                             }
                                         ),
@@ -427,6 +506,7 @@ fun SurveyScreen(
                                         color = when (idx to surveyViewModel.surveyGlass.collectAsState().value) {
                                             1 to SurveyGlass.Yes,
                                             2 to SurveyGlass.No -> buttonColor
+
                                             else -> Color(0xFFFFFFFF)
                                         },
                                         shape = RoundedCornerShape(8.dp)
@@ -448,7 +528,12 @@ fun SurveyScreen(
                                             isPressed = false
                                         }
                                     }
-                                    .padding(start = 20.dp, top = 16.dp, end = 20.dp, bottom = 16.dp),
+                                    .padding(
+                                        start = 20.dp,
+                                        top = 16.dp,
+                                        end = 20.dp,
+                                        bottom = 16.dp
+                                    ),
                                 contentAlignment = Alignment.Center
                             ) {
                                 Text(
@@ -502,7 +587,9 @@ fun SurveyScreen(
                                                 width = 4.dp,
                                                 color = when (idx to surveyViewModel.surveySurgery.collectAsState().value) {
                                                     1 to SurveySurgery.Normal,
-                                                    2 to SurveySurgery.LASIK, -> Color(0xFF1D71E1)
+                                                    2 to SurveySurgery.LASIK,
+                                                    -> Color(0xFF1D71E1)
+
                                                     else -> Color(0xFF1D71E1)
                                                 }
                                             ),
@@ -511,7 +598,9 @@ fun SurveyScreen(
                                         .background(
                                             color = when (idx to surveyViewModel.surveySurgery.collectAsState().value) {
                                                 1 to SurveySurgery.Normal,
-                                                2 to SurveySurgery.LASIK, -> buttonColor
+                                                2 to SurveySurgery.LASIK,
+                                                -> buttonColor
+
                                                 else -> Color(0xFFFFFFFF)
                                             },
                                             shape = RoundedCornerShape(8.dp)
@@ -534,7 +623,12 @@ fun SurveyScreen(
                                                 isPressed = false
                                             }
                                         }
-                                        .padding(start = 20.dp, top = 16.dp, end = 20.dp, bottom = 16.dp),
+                                        .padding(
+                                            start = 20.dp,
+                                            top = 16.dp,
+                                            end = 20.dp,
+                                            bottom = 16.dp
+                                        ),
                                     contentAlignment = Alignment.Center
                                 ) {
                                     Text(
@@ -585,6 +679,7 @@ fun SurveyScreen(
                                                 color = when (idx to surveyViewModel.surveySurgery.collectAsState().value) {
                                                     1 to SurveySurgery.Cataract,
                                                     2 to SurveySurgery.Etc -> Color(0xff1d71e1)
+
                                                     else -> Color(0xFF1D71E1)
                                                 }
                                             ),
@@ -594,6 +689,7 @@ fun SurveyScreen(
                                             color = when (idx to surveyViewModel.surveySurgery.collectAsState().value) {
                                                 1 to SurveySurgery.Cataract,
                                                 2 to SurveySurgery.Etc -> buttonColor
+
                                                 else -> Color(0xFFFFFFFF)
                                             }
                                         )
@@ -615,7 +711,12 @@ fun SurveyScreen(
                                                 isPressed = false
                                             }
                                         }
-                                        .padding(start = 20.dp, top = 16.dp, end = 20.dp, bottom = 16.dp),
+                                        .padding(
+                                            start = 20.dp,
+                                            top = 16.dp,
+                                            end = 20.dp,
+                                            bottom = 16.dp
+                                        ),
                                     contentAlignment = Alignment.Center
                                 ) {
                                     Text(
@@ -671,6 +772,7 @@ fun SurveyScreen(
                                             color = when (idx to surveyViewModel.surveyDiabetes.collectAsState().value) {
                                                 1 to SurveyDiabetes.Yes,
                                                 2 to SurveyDiabetes.No -> Color(0xFF1D71E1)
+
                                                 else -> Color(0xFF1D71E1)
                                             }
                                         ),
@@ -680,6 +782,7 @@ fun SurveyScreen(
                                         color = when (idx to surveyViewModel.surveyDiabetes.collectAsState().value) {
                                             1 to SurveyDiabetes.Yes,
                                             2 to SurveyDiabetes.No -> buttonColor
+
                                             else -> Color(0xFFFFFFFF)
                                         }
                                     )
@@ -700,7 +803,12 @@ fun SurveyScreen(
                                             surveyViewModel.getSurveyId(toTestListScreen)
                                         }
                                     }
-                                    .padding(start = 20.dp, top = 16.dp, end = 20.dp, bottom = 16.dp),
+                                    .padding(
+                                        start = 20.dp,
+                                        top = 16.dp,
+                                        end = 20.dp,
+                                        bottom = 16.dp
+                                    ),
                                 contentAlignment = Alignment.Center
                             ) {
                                 Text(

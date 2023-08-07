@@ -83,9 +83,9 @@ fun TestListScreen(
     var selectedTest by remember { mutableStateOf(TestType.None) }
     val transition = rememberInfiniteTransition()
     val shiftVal by transition.animateFloat(
-        initialValue = 0f, targetValue = 40f, animationSpec = infiniteRepeatable(
+        initialValue = 0f, targetValue = 20f, animationSpec = infiniteRepeatable(
             animation = keyframes {
-                durationMillis = 3000
+                durationMillis = 2000
             },
             repeatMode = RepeatMode.Reverse
         )

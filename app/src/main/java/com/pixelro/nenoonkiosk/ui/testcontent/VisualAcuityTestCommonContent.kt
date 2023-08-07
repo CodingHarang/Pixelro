@@ -30,6 +30,8 @@ import com.pixelro.nenoonkiosk.data.StringProvider
 import com.pixelro.nenoonkiosk.facedetection.FaceDetection
 import com.pixelro.nenoonkiosk.test.visualacuity.VisualAcuityTestResult
 import com.pixelro.nenoonkiosk.test.visualacuity.VisualAcuityViewModel
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.launch
 
 @Composable
 fun VisualAcuityTestCommonContent(
@@ -61,6 +63,8 @@ fun VisualAcuityTestContent(
         targetValue = progress,
         animationSpec = ProgressIndicatorDefaults.ProgressAnimationSpec
     )
+    val coroutineScope = rememberCoroutineScope()
+    val isWarning = remember { mutableStateOf(false) }
     LaunchedEffect(true) {
         TTS.speechTTS("검사를 시작하겠습니다. 아래의 세 시표 중, 위 시표와 동일하게 보이는 것을 선택해주세요. 시표가 잘 보이지 않는다면 아래의 안보임 버튼을 눌러주세요.", TextToSpeech.QUEUE_ADD)
     }
@@ -77,7 +81,17 @@ fun VisualAcuityTestContent(
                 .background(
                     color = Color(0xffffffff),
                     shape = RoundedCornerShape(8.dp)
-                ),
+                )
+                .clickable {
+                    coroutineScope.launch {
+                        for (i in 1..4) {
+                            isWarning.value = true
+                            delay(1000)
+                            isWarning.value = false
+                            delay(1000)
+                        }
+                    }
+                },
             contentAlignment = Alignment.Center
         ) {
             Image(
@@ -159,6 +173,16 @@ fun VisualAcuityTestContent(
                 ),
                 contentDescription = ""
             )
+            if (isWarning.value) {
+                Text(
+                    modifier = Modifier
+                        .padding(top = 300.dp),
+                    text = "위 시표와 동일하게 보이는 것을\n아래에서 선택해주세요",
+                    textAlign = TextAlign.Center,
+                    fontSize = 30.sp,
+                    fontWeight = FontWeight.ExtraBold
+                )
+            }
         }
         Text(
             modifier = Modifier
