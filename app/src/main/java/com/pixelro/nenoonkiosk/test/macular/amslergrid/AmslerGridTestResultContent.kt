@@ -60,6 +60,20 @@ fun AmslerGridTestResultContent(
                 fontSize = 16.sp,
                 color = Color(0xff878787)
             )
+            Spacer(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .height(1.dp)
+
+            )
+            Text(
+                modifier = Modifier
+                    .padding(start = 40.dp, top = 40.dp)
+                    .fillMaxWidth(),
+                text = StringProvider.getString(R.string.test_result_my_result),
+                fontSize = 44.sp,
+                fontWeight = FontWeight.Bold
+            )
         }
         Column(
             modifier = Modifier
@@ -337,14 +351,7 @@ fun AmslerGridTestResultContent(
             }
         }
     }
-    Text(
-        modifier = Modifier
-            .padding(start = 40.dp, top = 40.dp)
-            .fillMaxWidth(),
-        text = StringProvider.getString(R.string.test_result_my_result),
-        fontSize = 28.sp,
-        fontWeight = FontWeight.Medium
-    )
+
     Row(
         modifier = Modifier
             .fillMaxWidth()
@@ -365,8 +372,8 @@ fun AmslerGridTestResultContent(
                 modifier = Modifier
                     .padding(bottom = 12.dp),
                 text = StringProvider.getString(R.string.left),
-                fontSize = 20.sp,
-                fontWeight = FontWeight.Medium
+                fontSize = 34.sp,
+                fontWeight = FontWeight.Bold
             )
             Row(
                 modifier = Modifier
@@ -687,8 +694,8 @@ fun AmslerGridTestResultContent(
                 modifier = Modifier
                     .padding(bottom = 12.dp),
                 text = StringProvider.getString(R.string.right),
-                fontSize = 20.sp,
-                fontWeight = FontWeight.Medium
+                fontSize = 34.sp,
+                fontWeight = FontWeight.Bold
             )
             Row(
                 modifier = Modifier

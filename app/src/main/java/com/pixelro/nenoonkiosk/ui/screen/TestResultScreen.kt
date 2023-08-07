@@ -197,7 +197,7 @@ fun TestResultScreen(
                         "None TestResultScreen"
                     }
                 },
-                fontSize = 24.sp,
+                fontSize = 29.sp,
                 fontWeight = FontWeight.Medium
             )
         }
@@ -330,7 +330,7 @@ fun TestResultScreen(
                     ) {
                         Image(
                             modifier = Modifier
-                                .width(28.dp),
+                                .width(38.dp),
                             painter = painterResource(id = R.drawable.icon_print),
                             contentDescription = ""
                         )
@@ -338,8 +338,8 @@ fun TestResultScreen(
                             modifier = Modifier
                                 .padding(20.dp),
                             text = StringProvider.getString(R.string.result_screen_print),
-                            fontSize = 24.sp,
-                            fontWeight = FontWeight.Medium
+                            fontSize = 34.sp,
+                            fontWeight = FontWeight.Bold
                         )
                     }
                 }
@@ -368,7 +368,7 @@ fun TestResultScreen(
                     ) {
                         Image(
                             modifier = Modifier
-                                .width(28.dp),
+                                .width(38.dp),
                             painter = painterResource(id = R.drawable.icon_back2),
                             contentDescription = ""
                         )
@@ -376,8 +376,8 @@ fun TestResultScreen(
                             modifier = Modifier
                                 .padding(20.dp),
                             text = StringProvider.getString(R.string.result_screen_go_back),
-                            fontSize = 24.sp,
-                            fontWeight = FontWeight.Medium
+                            fontSize = 34.sp,
+                            fontWeight = FontWeight.Bold
                         )
                     }
                 }

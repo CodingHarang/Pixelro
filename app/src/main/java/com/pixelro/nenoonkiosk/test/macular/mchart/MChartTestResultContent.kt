@@ -105,8 +105,8 @@ fun MChartTestResultContent(
                 .padding(start = 40.dp, top = 40.dp)
                 .fillMaxWidth(),
             text = StringProvider.getString(R.string.test_result_my_result),
-            fontSize = 28.sp,
-            fontWeight = FontWeight.Medium
+            fontSize = 40.sp,
+            fontWeight = FontWeight.Bold
         )
         Row(
             modifier = Modifier
@@ -116,7 +116,7 @@ fun MChartTestResultContent(
             Column(
                 modifier = Modifier
                     .weight(1f)
-                    .height(200.dp)
+                    .height(250.dp)
                     .background(
                         color = Color(0xfff7f9f9),
                         shape = RoundedCornerShape(8.dp)
@@ -125,8 +125,8 @@ fun MChartTestResultContent(
             ) {
                 Text(
                     text = StringProvider.getString(R.string.left),
-                    fontSize = 20.sp,
-                    fontWeight = FontWeight.Medium
+                    fontSize = 34.sp,
+                    fontWeight = FontWeight.Bold
                 )
                 Box(
                     modifier = Modifier
@@ -200,7 +200,7 @@ fun MChartTestResultContent(
             Column(
                 modifier = Modifier
                     .weight(1f)
-                    .height(200.dp)
+                    .height(250.dp)
                     .background(
                         color = Color(0xfff7f9f9),
                         shape = RoundedCornerShape(8.dp)
@@ -209,8 +209,8 @@ fun MChartTestResultContent(
             ) {
                 Text(
                     text = StringProvider.getString(R.string.right),
-                    fontSize = 20.sp,
-                    fontWeight = FontWeight.Medium
+                    fontSize = 34.sp,
+                    fontWeight = FontWeight.Bold
                 )
                 Box(
                     modifier = Modifier
