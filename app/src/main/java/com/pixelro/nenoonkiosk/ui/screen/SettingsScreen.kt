@@ -52,7 +52,7 @@ fun SettingsScreen(
     toSignInScreen: () -> Unit,
     signInViewModel: SignInViewModel = hiltViewModel(),
 
-) {
+    ) {
     val isLanguageSelectDialogShowing = viewModel.isLanguageSelectDialogShowing
     val context = LocalContext.current
 

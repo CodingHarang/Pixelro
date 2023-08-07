@@ -72,7 +72,7 @@ fun PermissionRequestScreen(
     }
 
     val permissionRequestLauncher = rememberLauncherForActivityResult(ActivityResultContracts.RequestMultiplePermissions()) {
-        result ->
+            result ->
         if(result.keys.contains(Manifest.permission.BLUETOOTH_SCAN)) {
             if(result.entries.contains(mapOf(Manifest.permission.BLUETOOTH_SCAN to true).entries.first())
                 && result.entries.contains(mapOf(Manifest.permission.BLUETOOTH_CONNECT to true).entries.first())
@@ -97,7 +97,7 @@ fun PermissionRequestScreen(
     val locationServiceRequestLauncher = rememberLauncherForActivityResult(
         ActivityResultContracts.StartIntentSenderForResult()
     ) {
-        activityResult ->
+            activityResult ->
         if (activityResult.resultCode == ComponentActivity.RESULT_OK)
             Log.d("locationServiceRequest", "location service accepted")
         else {
@@ -108,7 +108,7 @@ fun PermissionRequestScreen(
     val bluetoothServiceRequestLauncher = rememberLauncherForActivityResult(
         ActivityResultContracts.StartActivityForResult()
     ) {
-        activityResult ->
+            activityResult ->
         if (activityResult.resultCode == ComponentActivity.RESULT_OK)
             Log.d("bluetoothServiceRequest", "bluetooth service accepted")
         else {
@@ -119,7 +119,7 @@ fun PermissionRequestScreen(
     val manuallySetupLauncher = rememberLauncherForActivityResult(
         ActivityResultContracts.StartActivityForResult()
     ) {
-        result ->
+            result ->
         if (result.resultCode == ComponentActivity.RESULT_OK)
             Log.d("ok", "ok")
         else {

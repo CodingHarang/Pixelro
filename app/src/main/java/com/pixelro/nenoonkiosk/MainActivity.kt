@@ -28,7 +28,7 @@ import java.util.Locale
 @AndroidEntryPoint
 class MainActivity : ComponentActivity() {
 
-//    private val viewModel: NenoonViewModel by viewModels()
+    //    private val viewModel: NenoonViewModel by viewModels()
     val viewModel: NenoonViewModel by lazy {
         ViewModelProvider(this)[NenoonViewModel::class.java]
     }
@@ -125,4 +125,3 @@ class MainActivity : ComponentActivity() {
         super.onDestroy()
     }
 }
-

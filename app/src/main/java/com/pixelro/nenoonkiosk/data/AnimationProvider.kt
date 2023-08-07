@@ -9,8 +9,8 @@ import androidx.compose.ui.unit.IntOffset
 
 object AnimationProvider {
     val enterTransition = slideIn(
-    animationSpec = TweenSpec(durationMillis = 500),
-    initialOffset = { IntOffset(150, 0) }
+        animationSpec = TweenSpec(durationMillis = 500),
+        initialOffset = { IntOffset(150, 0) }
     ) + fadeIn(
         animationSpec = TweenSpec(durationMillis = 500)
     )
@@ -35,6 +35,4 @@ object AnimationProvider {
     ) + fadeOut(
         animationSpec = TweenSpec(durationMillis = 500)
     )
-
-
 }

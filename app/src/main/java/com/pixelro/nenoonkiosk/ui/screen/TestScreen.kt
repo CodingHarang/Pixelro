@@ -47,13 +47,13 @@ fun TestScreen(
     val systemUiController = rememberSystemUiController()
     DisposableEffect(true) {
         viewModel.updateScreenSaverTimerValue(2147483647)
-    systemUiController.systemBarsDarkContentEnabled = false
-    onDispose {
-        viewModel.updateScreenSaverTimerValue(30)
-        viewModel.resetScreenSaverTimer()
-        systemUiController.systemBarsDarkContentEnabled = true
+        systemUiController.systemBarsDarkContentEnabled = false
+        onDispose {
+            viewModel.updateScreenSaverTimerValue(30)
+            viewModel.resetScreenSaverTimer()
+            systemUiController.systemBarsDarkContentEnabled = true
+        }
     }
-}
     val selectedTestType = viewModel.selectedTestType.collectAsState().value
     val context = LocalContext.current
     Box(

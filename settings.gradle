@@ -19,3 +19,4 @@ dependencyResolutionManagement {
 rootProject.name = "Nenoon Kiosk"
 include ':app'
 include ':data'
+include ':domain'

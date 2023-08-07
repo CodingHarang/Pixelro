@@ -882,7 +882,7 @@ object MyIndication: Indication {
 
     val animateWidth = Animatable(
         initialValue = 100f,
-)
+    )
     private class DefaultDebugIndicationInstance(
         private val isPressed: State<Boolean>,
         private val isHovered: State<Boolean>,

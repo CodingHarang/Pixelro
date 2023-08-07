@@ -9,7 +9,7 @@ object StringProvider {
         id: Int
     ): String {
         return NenoonKioskApplication.applicationContext().
-            createConfigurationContext(NenoonKioskApplication.applicationContext()
+        createConfigurationContext(NenoonKioskApplication.applicationContext()
             .resources.configuration).getString(id)
     }
 }

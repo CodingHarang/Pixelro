@@ -215,7 +215,7 @@ fun ShortDistanceVisualAcuityTestResultContent(
             }
             Spacer(
                 modifier = Modifier
-                .width(20.dp)
+                    .width(20.dp)
             )
             Column(
                 modifier = Modifier
