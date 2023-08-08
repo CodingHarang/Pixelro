@@ -70,7 +70,6 @@ fun SplashScreen() {
                 style = MaterialTheme.typography.body1,
                 fontFamily = cafe24Family
             )
-            
         }
         Column(
             modifier = Modifier
