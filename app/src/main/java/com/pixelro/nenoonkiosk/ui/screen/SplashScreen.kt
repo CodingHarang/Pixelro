@@ -77,9 +77,13 @@ fun SplashScreen() {
             verticalArrangement = Arrangement.Bottom,
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
+            Text(
+                text = "ver 1.0",
+                color = Color(0xFFFFFFFF)
+            )
             Image(
                 modifier = Modifier
-                    .padding(bottom = 40.dp)
+                    .padding(top = 20.dp, bottom = 40.dp)
                     .height(50.dp),
                 painter = painterResource(id = R.drawable.pixelro_logo),
                 contentDescription = null
