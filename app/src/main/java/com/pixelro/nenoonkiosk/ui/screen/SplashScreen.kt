@@ -26,6 +26,7 @@ import com.pixelro.nenoonkiosk.ui.theme.notoSansKrFamily
 @Composable
 fun SplashScreen() {
     val systemUiController = rememberSystemUiController()
+    
     DisposableEffect(true) {
         systemUiController.systemBarsDarkContentEnabled = false
         onDispose {
