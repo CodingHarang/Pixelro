@@ -1,4 +1,4 @@
-package com.pixelro.nenoonkiosk.ui.testcontent
+package com.pixelro.nenoonkiosk.test.visualacuity
 
 import android.speech.tts.TextToSpeech
 import androidx.compose.animation.*
@@ -28,8 +28,6 @@ import com.pixelro.nenoonkiosk.TTS
 import com.pixelro.nenoonkiosk.data.AnimationProvider
 import com.pixelro.nenoonkiosk.data.StringProvider
 import com.pixelro.nenoonkiosk.facedetection.FaceDetection
-import com.pixelro.nenoonkiosk.test.visualacuity.VisualAcuityTestResult
-import com.pixelro.nenoonkiosk.test.visualacuity.VisualAcuityViewModel
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 

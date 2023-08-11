@@ -14,8 +14,10 @@ import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
@@ -30,6 +32,7 @@ import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -52,6 +55,8 @@ import com.pixelro.nenoonkiosk.data.AnimationProvider
 import com.pixelro.nenoonkiosk.data.GlobalValue
 import com.pixelro.nenoonkiosk.data.StringProvider
 import com.pixelro.nenoonkiosk.data.TestType
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.launch
 import kotlin.math.roundToInt
 
 @Composable
@@ -401,6 +406,8 @@ fun MeasuringDistanceDialog(
         onDismissRequest = onDismissRequest,
         properties = DialogProperties()
     ) {
+        val coroutineScope = rememberCoroutineScope()
+        val isWarningShowing = remember { mutableStateOf(false) }
         LaunchedEffect(true) {
             TTS.speechTTS("본 검사에서는 아래의 그림과 같은 전용 눈가리개를 사용합니다. 눈가리개를 집어주세요.", TextToSpeech.QUEUE_ADD)
         }
@@ -411,26 +418,42 @@ fun MeasuringDistanceDialog(
                 .background(
                     color = Color(0xffffffff),
                     shape = RoundedCornerShape(8.dp)
-                ),
-            horizontalAlignment = Alignment.CenterHorizontally
+                )
         ) {
-            Text(
+            Column(
                 modifier = Modifier
-                    .padding(start = 20.dp, top = 20.dp, end = 20.dp, bottom = 8.dp)
-                    .fillMaxWidth(),
-                text = "본 검사에서는 아래의 그림과 같은\n전용 눈가리개를 사용합니다.\n눈가리개를 집어주세요.",
-                fontSize = 32.sp,
-                fontWeight = FontWeight.Bold
-            )
-            Image(
-                modifier = Modifier
-                    .width(350.dp)
                     .height(700.dp)
-                    .offset(x = 0.dp, y = 0.dp)
-                    .rotate(-25f),
-                painter = painterResource(id = R.drawable.occluder2),
-                contentDescription = null
-            )
+            ) {
+                Text(
+                    modifier = Modifier
+                        .padding(start = 20.dp, top = 20.dp, end = 20.dp, bottom = 8.dp)
+                        .fillMaxWidth(),
+                    text = "본 검사에서는 아래의 그림과 같은\n전용 눈가리개를 사용합니다.\n눈가리개를 집어주세요.",
+                    fontSize = 32.sp,
+                    fontWeight = FontWeight.Bold
+                )
+                if (isWarningShowing.value) {
+                    Text(
+                        modifier = Modifier
+                            .padding(20.dp)
+                            .fillMaxWidth()
+                            .height(400.dp),
+                        text = "경고",
+                        fontSize = 32.sp,
+                        fontWeight = FontWeight.Bold,
+                        textAlign = TextAlign.Center
+                    )
+                } else {
+                    Image(
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .fillMaxHeight()
+                            .rotate(-25f),
+                        painter = painterResource(id = R.drawable.occluder2),
+                        contentDescription = null
+                    )
+                }
+            }
             Box(
                 modifier = Modifier
                     .fillMaxSize(),
@@ -448,8 +471,22 @@ fun MeasuringDistanceDialog(
                             shape = RoundedCornerShape(8.dp)
                         )
                         .clickable {
-                            faceDetectionViewModel.updateIsOccluderPickedTTSDone(true)
-                            onDismissRequest()
+                            if (TTS.tts.isSpeaking) {
+                                coroutineScope.launch {
+                                    for (i in 1..3) {
+                                        isWarningShowing.value = true
+                                        delay(400)
+                                        isWarningShowing.value = false
+                                        delay(400)
+                                    }
+                                    isWarningShowing.value = true
+                                    delay(2000)
+                                    isWarningShowing.value = false
+                                }
+                            } else {
+                                faceDetectionViewModel.updateIsOccluderPickedTTSDone(true)
+                                onDismissRequest()
+                            }
                         }
                         .padding(20.dp),
                     text = "확인했습니다",

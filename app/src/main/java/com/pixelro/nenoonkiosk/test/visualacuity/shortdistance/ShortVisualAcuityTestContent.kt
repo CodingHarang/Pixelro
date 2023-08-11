@@ -17,7 +17,7 @@ import com.pixelro.nenoonkiosk.data.TestType
 import com.pixelro.nenoonkiosk.facedetection.MeasuringDistanceContent
 import com.pixelro.nenoonkiosk.test.visualacuity.VisualAcuityTestResult
 import com.pixelro.nenoonkiosk.test.visualacuity.VisualAcuityViewModel
-import com.pixelro.nenoonkiosk.ui.testcontent.VisualAcuityTestCommonContent
+import com.pixelro.nenoonkiosk.test.visualacuity.VisualAcuityTestCommonContent
 
 @Composable
 fun ShortDistanceVisualAcuityTestContent(
