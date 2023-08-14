@@ -85,6 +85,7 @@ fun SurveyScreen(
         targetValue = if (isPressed) Color(0xFF1D71E1) else Color.White,
         animationSpec = tween(durationMillis = 500)
     )
+
     val textColor by animateColorAsState(
         targetValue = if (isPressed) Color.White else Color(0xFF1D71E1),
         animationSpec = tween(durationMillis = 500)
@@ -251,9 +252,11 @@ fun SurveyScreen(
                                             )
                                             surveyViewModel.updateQuestionType(SurveyViewModel.QuestionType.Sex)
                                             coroutineScope.launch {
-                                                isPressed = true
-                                                delay(1000)
-                                                isPressed = false
+                                                if (!isPressed) {
+                                                    isPressed = true
+                                                    delay(1000)
+                                                    isPressed = false
+                                                }
                                             }
                                         },
                                     contentAlignment = Alignment.Center
@@ -340,9 +343,11 @@ fun SurveyScreen(
                                             )
                                             surveyViewModel.updateQuestionType(SurveyViewModel.QuestionType.Sex)
                                             coroutineScope.launch {
-                                                isPressed = true
-                                                delay(1000)
-                                                isPressed = false
+                                                if (!isPressed) {
+                                                    isPressed = true
+                                                    delay(1000)
+                                                    isPressed = false
+                                                }
                                             }
                                         },
                                     contentAlignment = Alignment.Center
@@ -431,9 +436,11 @@ fun SurveyScreen(
                                         )
                                         surveyViewModel.updateQuestionType(SurveyViewModel.QuestionType.Glass)
                                         coroutineScope.launch {
-                                            isPressed = true
-                                            delay(1000)
-                                            isPressed = false
+                                            if (!isPressed) {
+                                                isPressed = true
+                                                delay(1000)
+                                                isPressed = false
+                                            }
                                         }
                                     }
                                     .padding(
@@ -523,9 +530,11 @@ fun SurveyScreen(
                                         )
                                         surveyViewModel.updateQuestionType(SurveyViewModel.QuestionType.Surgery)
                                         coroutineScope.launch {
-                                            isPressed = true
-                                            delay(1000)
-                                            isPressed = false
+                                            if (!isPressed) {
+                                                isPressed = true
+                                                delay(1000)
+                                                isPressed = false
+                                            }
                                         }
                                     }
                                     .padding(
@@ -618,9 +627,11 @@ fun SurveyScreen(
                                             )
                                             surveyViewModel.updateQuestionType(SurveyViewModel.QuestionType.Diabetes)
                                             coroutineScope.launch {
-                                                isPressed = true
-                                                delay(1000)
-                                                isPressed = false
+                                                if (!isPressed) {
+                                                    isPressed = true
+                                                    delay(1000)
+                                                    isPressed = false
+                                                }
                                             }
                                         }
                                         .padding(
@@ -706,9 +717,11 @@ fun SurveyScreen(
                                             )
                                             surveyViewModel.updateQuestionType(SurveyViewModel.QuestionType.Diabetes)
                                             coroutineScope.launch {
-                                                isPressed = true
-                                                delay(1000)
-                                                isPressed = false
+                                                if (!isPressed) {
+                                                    isPressed = true
+                                                    delay(1000)
+                                                    isPressed = false
+                                                }
                                             }
                                         }
                                         .padding(
@@ -797,9 +810,11 @@ fun SurveyScreen(
                                             }
                                         )
                                         coroutineScope.launch {
-                                            isPressed = true
-                                            delay(1000)
-                                            isPressed = false
+                                            if (!isPressed) {
+                                                isPressed = true
+                                                delay(1000)
+                                                isPressed = false
+                                            }
                                             surveyViewModel.getSurveyId(toTestListScreen)
                                         }
                                     }

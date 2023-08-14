@@ -422,7 +422,7 @@ fun MeasuringDistanceDialog(
         ) {
             Column(
                 modifier = Modifier
-                    .height(700.dp)
+                    .height(800.dp)
             ) {
                 Text(
                     modifier = Modifier
@@ -432,26 +432,38 @@ fun MeasuringDistanceDialog(
                     fontSize = 32.sp,
                     fontWeight = FontWeight.Bold
                 )
-                if (isWarningShowing.value) {
-                    Text(
-                        modifier = Modifier
-                            .padding(20.dp)
-                            .fillMaxWidth()
-                            .height(400.dp),
-                        text = "음성 안내를\n끝까지 들어주세요",
-                        fontSize = 32.sp,
-                        fontWeight = FontWeight.Bold,
-                        textAlign = TextAlign.Center
-                    )
-                } else {
+                Box(
+                    modifier = Modifier
+                        .fillMaxSize(),
+                    contentAlignment = Alignment.Center
+                ) {
                     Image(
                         modifier = Modifier
-                            .fillMaxWidth()
-                            .fillMaxHeight()
+                            .fillMaxSize()
                             .rotate(-25f),
                         painter = painterResource(id = R.drawable.occluder2),
                         contentDescription = null
                     )
+                    if (isWarningShowing.value) {
+                        Text(
+                            modifier = Modifier
+                                .padding(start = 40.dp, end = 40.dp)
+                                .border(
+                                    border = BorderStroke(2.dp, Color(0xFF000000)),
+                                    shape = RoundedCornerShape(8.dp)
+                                )
+                                .background(
+                                    color = Color(0xFFFFFFFF),
+                                    shape = RoundedCornerShape(8.dp)
+                                )
+                                .padding(20.dp)
+                                .fillMaxWidth(),
+                            text = "음성 안내를\n끝까지 들어주세요",
+                            fontSize = 32.sp,
+                            fontWeight = FontWeight.Bold,
+                            textAlign = TextAlign.Center
+                        )
+                    }
                 }
             }
             Box(

@@ -89,14 +89,6 @@ fun SplashScreen() {
                 painter = painterResource(id = R.drawable.pixelro_logo),
                 contentDescription = null
             )
-            Image(
-                modifier = Modifier
-                    .padding(bottom = (GlobalValue.navigationBarPadding + 20).dp)
-                    .width(200.dp)
-                    .height(100.dp),
-                painter = painterResource(id = R.drawable.udi_code),
-                contentDescription = null
-            )
         }
     }
 }

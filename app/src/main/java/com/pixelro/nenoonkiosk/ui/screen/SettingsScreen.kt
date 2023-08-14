@@ -50,6 +50,7 @@ fun SettingsScreen(
     viewModel: NenoonViewModel,
     isSignedIn: Boolean,
     toSignInScreen: () -> Unit,
+    toSoftwareInfoScreen: () -> Unit,
     signInViewModel: SignInViewModel = hiltViewModel(),
 
 ) {
@@ -184,6 +185,32 @@ fun SettingsScreen(
                     true -> "로그아웃"
                     false -> "로그인"
                 },
+                fontSize = 30.sp,
+                color = when (isSignedIn) {
+                    true -> Color(0xFFFF0000)
+                    false -> Color(0xFF000000)
+                }
+            )
+        }
+        Spacer(
+            modifier = Modifier
+                .fillMaxWidth()
+                .height(1.dp)
+                .background(
+                    color = Color(0xffdddddd)
+                )
+        )
+        Box(
+            modifier = Modifier
+                .clickable {
+                    toSoftwareInfoScreen()
+                }
+        ) {
+            Text(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(start = 40.dp, top = 10.dp, bottom = 10.dp),
+                text = "소프트웨어 정보",
                 fontSize = 30.sp,
                 color = when (isSignedIn) {
                     true -> Color(0xFFFF0000)

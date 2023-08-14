@@ -262,6 +262,9 @@ fun NenoonApp(
                     navController.popBackStack()
                     navController.popBackStack()
                     navController.navigate(Constants.ROUTE_SIGN_IN)
+                },
+                toSoftwareInfoScreen = {
+                    navController.navigate(Constants.ROUTE_SOFTWARE_INFO)
                 }
             )
         }
@@ -402,6 +405,16 @@ fun NenoonApp(
                 },
                 navController = navController,
             )
+        }
+
+        composable(
+            route = Constants.ROUTE_SOFTWARE_INFO,
+            enterTransition = { AnimationProvider.enterTransition },
+            exitTransition = { AnimationProvider.exitTransition },
+            popEnterTransition = { AnimationProvider.popEnterTransition },
+            popExitTransition = { AnimationProvider.popExitTransition }
+        ) {
+            SoftwareInfoScreen()
         }
     }
 }
