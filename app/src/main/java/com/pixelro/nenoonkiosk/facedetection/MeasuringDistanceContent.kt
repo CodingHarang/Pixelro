@@ -438,7 +438,7 @@ fun MeasuringDistanceDialog(
                             .padding(20.dp)
                             .fillMaxWidth()
                             .height(400.dp),
-                        text = "경고",
+                        text = "음성 안내를\n끝까지 들어주세요",
                         fontSize = 32.sp,
                         fontWeight = FontWeight.Bold,
                         textAlign = TextAlign.Center
