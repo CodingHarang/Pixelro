@@ -87,7 +87,7 @@ fun SoftwareInfoScreen() {
             Text(
                 text = "품목명: 암슬러 격자검사 소프트웨어\n" +
                         "모델명: Screening Charts for Macular Degeneration\n" +
-                        "제조업허가번호: \n" +
+                        "제조업허가번호: 제 8237호\n" +
                         "제조업자의 상호 및 주소\n" +
                         "  상호: 주식회사 픽셀로\n" +
                         "  주소: 경기도 성남시 수정구 대왕판교로 815, 판교제2테크노밸리 기업지원허브 838호(시흥동, 판교창조경제밸리)\n" +
