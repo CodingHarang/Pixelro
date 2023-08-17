@@ -97,8 +97,8 @@ class NenoonViewModel @Inject constructor(
     private val _isResumed = MutableStateFlow(false)
     private val _isPaused = MutableStateFlow(false)
     val exoPlayer: ExoPlayer
-    private val _screenSaverTimer = MutableStateFlow(40)
-    private val _timeValue = MutableStateFlow(40)
+    private val _screenSaverTimer = MutableStateFlow(60)
+    private val _timeValue = MutableStateFlow(60)
 
 
     fun resetScreenSaverTimer() {

@@ -78,11 +78,6 @@ fun NenoonApp(
             popEnterTransition = { AnimationProvider.popEnterTransition },
             popExitTransition = { AnimationProvider.popExitTransition }
         ) {
-            Log.e("BackStack", "start")
-            for (entry in navController.currentBackStack.collectAsState().value) {
-                val destination = entry.destination
-                Log.e("BackStack", "Destination id: ${destination.id}, destination name: ${destination.route}")
-            }
             LaunchedEffect(true) {
                 coroutineScope.launch {
                     delay(3000)
@@ -103,11 +98,6 @@ fun NenoonApp(
             popEnterTransition = { AnimationProvider.popEnterTransition },
             popExitTransition = { AnimationProvider.popExitTransition }
         ) {
-            Log.e("BackStack", "start")
-            for (entry in navController.currentBackStack.collectAsState().value) {
-                val destination = entry.destination
-                Log.e("BackStack", "Destination id: ${destination.id}, destination name: ${destination.route}")
-            }
             SignInScreen(
                 updateIsSignedIn = {
                     viewModel.updateIsSignedIn(it)
@@ -127,11 +117,6 @@ fun NenoonApp(
             popEnterTransition = { AnimationProvider.popEnterTransition },
             popExitTransition = { AnimationProvider.popExitTransition }
         ) {
-            Log.e("BackStack", "start")
-            for (entry in navController.currentBackStack.collectAsState().value) {
-                val destination = entry.destination
-                Log.e("BackStack", "Destination id: ${destination.id}, destination name: ${destination.route}")
-            }
             ScreenSaverScreen(
                 exoPlayer = viewModel.exoPlayer,
                 isSignedIn = viewModel.isSignedIn.collectAsState().value,
@@ -151,12 +136,6 @@ fun NenoonApp(
             popEnterTransition = { AnimationProvider.popEnterTransition },
             popExitTransition = { AnimationProvider.popExitTransition }
         ) {
-
-            Log.e("BackStack", "start")
-            for (entry in navController.currentBackStack.collectAsState().value) {
-                val destination = entry.destination
-                Log.e("BackStack", "Destination id: ${destination.id}, destination name: ${destination.route}")
-            }
             PermissionRequestScreen(viewModel)
         }
 
@@ -170,11 +149,6 @@ fun NenoonApp(
             popEnterTransition = { AnimationProvider.popEnterTransition },
             popExitTransition = { AnimationProvider.popExitTransition }
         ) {
-            Log.e("BackStack", "start")
-            for (entry in navController.currentBackStack.collectAsState().value) {
-                val destination = entry.destination
-                Log.e("BackStack", "Destination id: ${destination.id}, destination name: ${destination.route}")
-            }
             IntroScreen(
                 toSurveyScreen = {
                     navController.navigate(Constants.ROUTE_SURVEY)
@@ -195,11 +169,6 @@ fun NenoonApp(
             popEnterTransition = { AnimationProvider.popEnterTransition },
             popExitTransition = { AnimationProvider.popExitTransition }
         ) {
-            Log.e("BackStack", "start")
-            for (entry in navController.currentBackStack.collectAsState().value) {
-                val destination = entry.destination
-                Log.e("BackStack", "Destination id: ${destination.id}, destination name: ${destination.route}")
-            }
             SurveyScreen(
                 toTestListScreen = {
                     navController.navigate(Constants.ROUTE_TEST_LIST)
@@ -219,11 +188,6 @@ fun NenoonApp(
             popEnterTransition = { AnimationProvider.popEnterTransition },
             popExitTransition = { AnimationProvider.popExitTransition }
         ) {
-            Log.e("BackStack", "start")
-            for (entry in navController.currentBackStack.collectAsState().value) {
-                val destination = entry.destination
-                Log.e("BackStack", "Destination id: ${destination.id}, destination name: ${destination.route}")
-            }
             TestListScreen(
                 checkIsTestDone = viewModel::checkIsTestDone,
                 toTestScreen = {
@@ -250,11 +214,6 @@ fun NenoonApp(
             popEnterTransition = { AnimationProvider.popEnterTransition },
             popExitTransition = { AnimationProvider.popExitTransition }
         ) {
-            Log.e("BackStack", "start")
-            for (entry in navController.currentBackStack.collectAsState().value) {
-                val destination = entry.destination
-                Log.e("BackStack", "Destination id: ${destination.id}, destination name: ${destination.route}")
-            }
             SettingsScreen(
                 viewModel = viewModel,
                 isSignedIn = viewModel.isSignedIn.collectAsState().value,
@@ -279,11 +238,6 @@ fun NenoonApp(
             popEnterTransition = { AnimationProvider.popEnterTransition },
             popExitTransition = { AnimationProvider.popExitTransition }
         ) {
-            Log.e("BackStack", "start")
-            for (entry in navController.currentBackStack.collectAsState().value) {
-                val destination = entry.destination
-                Log.e("BackStack", "Destination id: ${destination.id}, destination name: ${destination.route}")
-            }
             TestScreen(
                 viewModel = viewModel,
                 navController = navController,
@@ -375,11 +329,6 @@ fun NenoonApp(
             popEnterTransition = { AnimationProvider.popEnterTransition },
             popExitTransition = { AnimationProvider.popExitTransition }
         ) {
-            Log.e("BackStack", "start")
-            for (entry in navController.currentBackStack.collectAsState().value) {
-                val destination = entry.destination
-                Log.e("BackStack", "Destination id: ${destination.id}, destination name: ${destination.route}")
-            }
             when (viewModel.selectedTestType.collectAsState().value) {
                 TestType.Presbyopia -> viewModel.updateIsPresbyopiaTestDone(true)
                 TestType.ShortDistanceVisualAcuity -> viewModel.updateIsShortVisualAcuityTestDone(true)
