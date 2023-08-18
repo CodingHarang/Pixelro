@@ -2,18 +2,23 @@ package com.pixelro.nenoonkiosk.test.presbyopia
 
 import android.app.Application
 import android.speech.tts.TextToSpeech
+import android.speech.tts.UtteranceProgressListener
 import android.speech.tts.Voice
 import android.util.Log
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.viewModelScope
 import androidx.lifecycle.viewmodel.compose.viewModel
+import androidx.media3.common.Player
+import androidx.media3.exoplayer.ExoPlayer
 import com.pixelro.nenoonkiosk.TTS
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
+import java.lang.Thread.State
 import java.util.Locale
 import javax.inject.Inject
 
@@ -22,26 +27,38 @@ class PresbyopiaViewModel @Inject constructor(
     application: Application
 ) : AndroidViewModel(application) {
 
-    private val _isMovedTo40cm = MutableStateFlow(false)
-    val isMovedTo40cm: StateFlow<Boolean> = _isMovedTo40cm
-    private val _isUnder25cm = MutableStateFlow(false)
-    val isUnder25cm: StateFlow<Boolean> = _isUnder25cm
-    private val _isNumberShowing = MutableStateFlow(true)
-    val isNumberShowing: StateFlow<Boolean> = _isNumberShowing
-    private val _isBlinkingDone = MutableStateFlow(false)
-    val isBlinkingDone: StateFlow<Boolean> = _isBlinkingDone
+    private val _testState = MutableStateFlow(TestState.Started)
+    val testState: StateFlow<TestState> = _testState.asStateFlow()
+
+    fun updateTestState(testState: TestState) {
+        _testState.update { testState }
+    }
+
     private val _tryCount = MutableStateFlow(0)
     val tryCount: StateFlow<Int> = _tryCount
     private var firstDistance = 0f
     private var secondDistance = 0f
     private var thirdDistance = 0f
+    private val _isNumberShowing = MutableStateFlow(true)
+    val isNumberShowing: StateFlow<Boolean> = _isNumberShowing
+    private val _isTTSDescriptionDone = MutableStateFlow(false)
+    val isTTSDescriptionDone: StateFlow<Boolean> = _isTTSDescriptionDone
+    val exoPlayer: ExoPlayer = ExoPlayer.Builder(getApplication()).build()
 
-    fun updateIsMovedTo40cm(isMoved: Boolean) {
-        _isMovedTo40cm.update { isMoved }
+    fun updateIsTTSDescriptionDone(isDone: Boolean) {
+        _isTTSDescriptionDone.update { isDone }
     }
 
-    fun updateIsUnder25cm(isUnder: Boolean) {
-        _isUnder25cm.update { isUnder }
+    fun changeState(testState: TestState) {
+        when (testState) {
+            TestState.Started -> {
+
+            }
+            TestState.AdjustingDistance -> {
+
+            }
+            TestState.
+        }
     }
 
     fun moveToNextStep(dist: Float, handleProgress: (Float) -> Unit, toResultScreen: () -> Unit) {
@@ -90,6 +107,15 @@ class PresbyopiaViewModel @Inject constructor(
 
     fun blinkNumber() {
         viewModelScope.launch {
+            TTS.tts.setOnUtteranceProgressListener(
+                object : UtteranceProgressListener() {
+                    override fun onStart(utteranceId: String?) {}
+                    override fun onError(utteranceId: String?) {}
+                    override fun onDone(utteranceId: String?) {
+                        updateIsTTSDescriptionDone(true)
+                    }
+                }
+            )
             var count = 12
             while (TTS.tts.isSpeaking) {
                 delay(100)
@@ -100,8 +126,7 @@ class PresbyopiaViewModel @Inject constructor(
                 delay(250)
                 count--
             }
-            _isBlinkingDone.update { true }
-            TTS.speechTTS("조금씩 앞으로 오다가 숫자가 흐릿해지는 지점에서 멈추고, 아래의 다음 버튼을 눌러주세요", TextToSpeech.QUEUE_ADD)
+            TTS.speechTTS("조금씩 앞으로 오다가 숫자가 흐릿해보이는 지점에서 멈추고, 아래의 다음 버튼을 눌러주세요", TextToSpeech.QUEUE_ADD)
         }
     }
 
@@ -127,5 +152,14 @@ class PresbyopiaViewModel @Inject constructor(
         _isNumberShowing.update { true }
         _isBlinkingDone.update { false }
         _tryCount.update { 0 }
+    }
+
+    enum class TestState {
+        Started, AdjustingDistance, ComingCloser, Ended
+    }
+
+    init {
+        exoPlayer.repeatMode = Player.REPEAT_MODE_ONE
+        exoPlayer.volume = 0f
     }
 }

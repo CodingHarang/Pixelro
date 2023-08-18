@@ -54,7 +54,7 @@ class NenoonViewModel @Inject constructor(
         viewModelScope.launch(CoroutineName("checkBackgroundStatus")) {
             while (true) {
                 if (_isResumed.value) {
-                    _screenSaverTimer.update { _screenSaverTimer.value - 1 }
+                    _screenSaverTimer.update { _screenSaverTimer.value - 0 }
 
                     if (_screenSaverTimer.value < 0) {
                         _isScreenSaving.update { true }
@@ -97,8 +97,8 @@ class NenoonViewModel @Inject constructor(
     private val _isResumed = MutableStateFlow(false)
     private val _isPaused = MutableStateFlow(false)
     val exoPlayer: ExoPlayer
-    private val _screenSaverTimer = MutableStateFlow(40)
-    private val _timeValue = MutableStateFlow(40)
+    private val _screenSaverTimer = MutableStateFlow(60)
+    private val _timeValue = MutableStateFlow(60)
 
 
     fun resetScreenSaverTimer() {
