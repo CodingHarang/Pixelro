@@ -27,14 +27,10 @@ class PresbyopiaViewModel @Inject constructor(
     application: Application
 ) : AndroidViewModel(application) {
 
-    private val _testState = MutableStateFlow(TestState.Started)
-    val testState: StateFlow<TestState> = _testState.asStateFlow()
-
-    fun updateTestState(testState: TestState) {
-        _testState.update { testState }
-    }
+    private var testState = TestState.Started
 
     private val _tryCount = MutableStateFlow(0)
+
     val tryCount: StateFlow<Int> = _tryCount
     private var firstDistance = 0f
     private var secondDistance = 0f
@@ -49,15 +45,47 @@ class PresbyopiaViewModel @Inject constructor(
         _isTTSDescriptionDone.update { isDone }
     }
 
-    fun changeState(testState: TestState) {
-        when (testState) {
-            TestState.Started -> {
+    fun toNextState(dist: Float) {
+        if (!TTS.tts.isSpeaking) {
+            when (testState) {
+                TestState.Started -> {
+                    testState = TestState.AdjustingDistance
+                    if (_tryCount.value == 0) {
+                        TTS.speechTTS("조절력 검사를 시작하겠습니다. 화면으로부터 40~60cm 사이로 거리를 조정해주세요.", TextToSpeech.QUEUE_ADD)
+                    } else {
+                        TTS.speechTTS("화면으로부터 40~60cm 사이로 거리를 조정해주세요.", TextToSpeech.QUEUE_ADD)
+                    }
+                }
+                TestState.AdjustingDistance -> {
+                    if (dist > 400f) {
+                        testState = TestState.TextBlinking
+                        var count = 12
+                        TTS.speechTTS("아래의 깜빡이는 숫자를 봐주세요.", TextToSpeech.QUEUE_ADD)
+                        while (count > 0) {
+                            _isNumberShowing.update { !it }
+                            delay(250)
+                            count--
+                        }
+//                        TTS.tts.setOnUtteranceProgressListener(
+//                            object : UtteranceProgressListener() {
+//                                override fun onStart(utteranceId: String?) {}
+//                                override fun onError(utteranceId: String?) {}
+//                                override fun onDone(utteranceId: String?) {
+//                                }
+//                            }
+//                        )
+                    }
+                }
+                TestState.TextBlinking -> {
 
-            }
-            TestState.AdjustingDistance -> {
+                }
+                TestState.ComingCloser -> {
 
+                }
+                TestState.Ended -> {
+
+                }
             }
-            TestState.
         }
     }
 
@@ -107,25 +135,7 @@ class PresbyopiaViewModel @Inject constructor(
 
     fun blinkNumber() {
         viewModelScope.launch {
-            TTS.tts.setOnUtteranceProgressListener(
-                object : UtteranceProgressListener() {
-                    override fun onStart(utteranceId: String?) {}
-                    override fun onError(utteranceId: String?) {}
-                    override fun onDone(utteranceId: String?) {
-                        updateIsTTSDescriptionDone(true)
-                    }
-                }
-            )
-            var count = 12
-            while (TTS.tts.isSpeaking) {
-                delay(100)
-            }
-            TTS.speechTTS("아래의 깜빡이는 숫자를 봐주세요.", TextToSpeech.QUEUE_ADD)
-            while (count > 0) {
-                _isNumberShowing.update { !it }
-                delay(250)
-                count--
-            }
+
             TTS.speechTTS("조금씩 앞으로 오다가 숫자가 흐릿해보이는 지점에서 멈추고, 아래의 다음 버튼을 눌러주세요", TextToSpeech.QUEUE_ADD)
         }
     }
@@ -147,18 +157,15 @@ class PresbyopiaViewModel @Inject constructor(
     }
 
     fun init() {
-        _isMovedTo40cm.update { false }
-        _isUnder25cm.update { false }
         _isNumberShowing.update { true }
-        _isBlinkingDone.update { false }
-        _tryCount.update { 0 }
     }
 
     enum class TestState {
-        Started, AdjustingDistance, ComingCloser, Ended
+        Started, AdjustingDistance, TextBlinking, ComingCloser, Ended
     }
 
     init {
+        _tryCount.update { 0 }
         exoPlayer.repeatMode = Player.REPEAT_MODE_ONE
         exoPlayer.volume = 0f
     }

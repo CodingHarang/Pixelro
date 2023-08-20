@@ -50,66 +50,50 @@ fun PresbyopiaTestContent(
     faceDetectionViewModel: FaceDetectionViewModel = hiltViewModel()
 ) {
     val distance = faceDetectionViewModel.screenToFaceDistance.collectAsState().value
-    val testState = presbyopiaViewModel.testState.collectAsState().value
+//    val testState = presbyopiaViewModel.testState.collectAsState().value
     val tryCount = presbyopiaViewModel.tryCount.collectAsState().value
     val isTTSDescriptionDone = presbyopiaViewModel.isTTSDescriptionDone.collectAsState().value
     val isNumberShowing = presbyopiaViewModel.isNumberShowing.collectAsState().value
     FaceDetection()
-    LaunchedEffect(testState) {
-        when (testState) {
-            PresbyopiaViewModel.TestState.Started -> {
-                presbyopiaViewModel.init()
-                TTS.tts.setOnUtteranceProgressListener(
-                    object : UtteranceProgressListener() {
-                        override fun onStart(utteranceId: String?) {}
-                        override fun onError(utteranceId: String?) {}
-                        override fun onDone(utteranceId: String?) {
-                            presbyopiaViewModel.changeState(PresbyopiaViewModel.TestState.AdjustingDistance)
-                            presbyopiaViewModel.updateTestState(PresbyopiaViewModel.TestState.AdjustingDistance)
-                            presbyopiaViewModel.updateIsTTSDescriptionDone(true)
-                        }
-                    }
-                )
-                if (tryCount == 0) {
-                    TTS.speechTTS("조절력 검사를 시작하겠습니다. 화면으로부터 40~60cm 사이로 거리를 조정해주세요.", TextToSpeech.QUEUE_ADD)
-                } else {
-                    TTS.speechTTS("화면으로부터 40~60cm 사이로 거리를 조정해주세요.", TextToSpeech.QUEUE_ADD)
-                }
-            }
+//    LaunchedEffect(testState) {
+//        when (testState) {
+//            PresbyopiaViewModel.TestState.AdjustingDistance -> {
+//                presbyopiaViewModel.init()
+//            }
+//            PresbyopiaViewModel.TestState.ComingCloser -> {
+//
+//            }
+//            PresbyopiaViewModel.TestState.Ended -> {
+//
+//            }
+//        }
+//    }
 
-            PresbyopiaViewModel.TestState.AdjustingDistance -> {
+    presbyopiaViewModel.toNextState(distance)
 
-            }
-            PresbyopiaViewModel.TestState.ComingCloser -> {
 
-            }
-            PresbyopiaViewModel.TestState.Ended -> {
-
-            }
-        }
-    }
-
-    when (testState to isTTSDescriptionDone) {
-        PresbyopiaViewModel.TestState.AdjustingDistance to true -> {
-            if (distance > 400f) {
-                presbyopiaViewModel.updateTestState(PresbyopiaViewModel.TestState.TextBlinking)
-                presbyopiaViewModel.blinkNumber()
-                presbyopiaViewModel.updateIsTTSDescriptionDone(false)
-            }
-        }
-        PresbyopiaViewModel.TestState.ComingCloser to true -> {
-
-        }
-        PresbyopiaViewModel.TestState.Ended to true -> {
-
-        }
-    }
+//    when (testState to isTTSDescriptionDone) {
+//        PresbyopiaViewModel.TestState.AdjustingDistance to true -> {
+//            if (distance > 400f) {
+//                presbyopiaViewModel.updateTestState(PresbyopiaViewModel.TestState.TextBlinking)
+//                presbyopiaViewModel.blinkNumber()
+////                presbyopiaViewModel.updateIsTTSDescriptionDone(false)
+//            }
+//        }
+//        PresbyopiaViewModel.TestState.ComingCloser to true -> {
+//
+//        }
+//        PresbyopiaViewModel.TestState.Ended to true -> {
+//
+//        }
+//    }
     var progress by remember { mutableStateOf(0.1f) }
     val animatedProgress by animateFloatAsState(
         targetValue = progress,
         animationSpec = ProgressIndicatorDefaults.ProgressAnimationSpec
     )
-    if (distance < 250f && !isUnder25cm && isMovedTo40cm) {
+    if (distance < 250f) {
+        presbyopiaViewModel.toNextState()
         when (tryCount) {
             0 -> TTS.speechTTS("첫 번째 측정에서 노안이 발견되지 않았습니다\n아래의 '다음'을 눌러주세요", TextToSpeech.QUEUE_ADD)
             1 -> TTS.speechTTS("두 번째 측정에서 노안이 발견되지 않았습니다\n아래의 '다음'을 눌러주세요", TextToSpeech.QUEUE_ADD)
