@@ -9,6 +9,7 @@ import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.gestures.detectTapGestures
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -99,6 +100,7 @@ fun AmslerGridContent(
     amslerGridViewModel: AmslerGridViewModel = hiltViewModel(),
     faceDetectionViewModel: FaceDetectionViewModel = hiltViewModel()
 ) {
+    val distance = faceDetectionViewModel.screenToFaceDistance.collectAsState().value
     AnimatedVisibility(
         visibleState = amslerGridContentVisibleState,
         enter = AnimationProvider.enterTransition,
@@ -265,10 +267,10 @@ fun AmslerGridContent(
 //                }
 //            }
 
-            Box(
+            Column(
                 modifier = Modifier
                     .fillMaxSize(),
-                contentAlignment = Alignment.BottomCenter
+                verticalArrangement = Arrangement.Bottom
             ) {
                 Box(
                     modifier = Modifier
@@ -285,26 +287,41 @@ fun AmslerGridContent(
                         .background(
                             color = Color(0xff1d71e1),
                             shape = RoundedCornerShape(8.dp)
-                        )
-                        .clickable {
-//                            if (isLeft) {
-//                                amslerGridViewModel.updateIsLeftEye(false)
-//                                amslerGridViewModel.updateLeftSelectedArea()
-//                                amslerGridViewModel.updateIsMeasuringDistanceContentVisible(true)
-//                                amslerGridViewModel.updateIsAmslerGridContentVisible(false)
-//                            } else {
-//                                amslerGridViewModel.updateRightSelectedArea()
-//                                amslerGridViewModel.updateIsAmslerGridContentVisible(false)
-//                                TTS.speechTTS("검사가 완료되었습니다. 결과가 나올 때 까지 잠시 기다려주세요.", TextToSpeech.QUEUE_ADD)
-//                                toResultScreen(amslerGridViewModel.getAmslerGridTestResult())
-//                            }
-                        },
+                        ),
                     contentAlignment = Alignment.Center
                 ) {
                     Text(
                         modifier = Modifier
                             .padding(bottom = 4.dp),
                         text = String.format("%.1f", rotY),
+                        fontSize = 40.sp,
+                        color = Color(0xffffffff),
+                        textAlign = TextAlign.Center,
+                        fontWeight = FontWeight.Medium,
+                    )
+                }
+                Box(
+                    modifier = Modifier
+                        .padding(
+                            start = 40.dp,
+                            end = 40.dp,
+                            bottom = 40.dp
+                        )
+                        .fillMaxWidth()
+                        .height(80.dp)
+                        .clip(
+                            shape = RoundedCornerShape(8.dp)
+                        )
+                        .background(
+                            color = Color(0xff1d71e1),
+                            shape = RoundedCornerShape(8.dp)
+                        ),
+                    contentAlignment = Alignment.Center
+                ) {
+                    Text(
+                        modifier = Modifier
+                            .padding(bottom = 4.dp),
+                        text = String.format("%.0f", distance / 10),
                         fontSize = 40.sp,
                         color = Color(0xffffffff),
                         textAlign = TextAlign.Center,
