@@ -293,7 +293,7 @@ fun AmslerGridContent(
                     Text(
                         modifier = Modifier
                             .padding(bottom = 4.dp),
-                        text = String.format("%.1f", rotY),
+                        text = String.format("%.2f", rotY),
                         fontSize = 40.sp,
                         color = Color(0xffffffff),
                         textAlign = TextAlign.Center,
@@ -321,7 +321,7 @@ fun AmslerGridContent(
                     Text(
                         modifier = Modifier
                             .padding(bottom = 4.dp),
-                        text = String.format("%.0f", distance / 10),
+                        text = String.format("%.2f", distance / 10),
                         fontSize = 40.sp,
                         color = Color(0xffffffff),
                         textAlign = TextAlign.Center,
