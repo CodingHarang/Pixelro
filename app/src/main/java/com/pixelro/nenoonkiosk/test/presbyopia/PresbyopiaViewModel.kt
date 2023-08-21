@@ -27,7 +27,8 @@ class PresbyopiaViewModel @Inject constructor(
     application: Application
 ) : AndroidViewModel(application) {
 
-    private var testState = TestState.Started
+    private val _testState = MutableStateFlow(TestState.Started)
+    var testState: StateFlow<TestState> = _testState
 
     private val _tryCount = MutableStateFlow(0)
 
@@ -35,55 +36,74 @@ class PresbyopiaViewModel @Inject constructor(
     private var firstDistance = 0f
     private var secondDistance = 0f
     private var thirdDistance = 0f
-    private val _isNumberShowing = MutableStateFlow(true)
-    val isNumberShowing: StateFlow<Boolean> = _isNumberShowing
-    private val _isTTSDescriptionDone = MutableStateFlow(false)
-    val isTTSDescriptionDone: StateFlow<Boolean> = _isTTSDescriptionDone
+    private val _isTextShowing = MutableStateFlow(true)
+    val isTextShowing: StateFlow<Boolean> = _isTextShowing
+    private var isTTSDescriptionDone = false
     val exoPlayer: ExoPlayer = ExoPlayer.Builder(getApplication()).build()
 
-    fun updateIsTTSDescriptionDone(isDone: Boolean) {
-        _isTTSDescriptionDone.update { isDone }
-    }
-
-    fun toNextState(dist: Float) {
+    fun checkCondition(dist: Float) {
         if (!TTS.tts.isSpeaking) {
-            when (testState) {
+            when (_testState.value) {
                 TestState.Started -> {
-                    testState = TestState.AdjustingDistance
-                    if (_tryCount.value == 0) {
-                        TTS.speechTTS("조절력 검사를 시작하겠습니다. 화면으로부터 40~60cm 사이로 거리를 조정해주세요.", TextToSpeech.QUEUE_ADD)
-                    } else {
+                    isTTSDescriptionDone = false
+                    TTS.setOnDoneListener { _testState.update { TestState.AdjustingDistance } }
+                    when (_tryCount.value) {
+                        0 -> TTS.speechTTS("조절력 검사를 시작하겠습니다.", TextToSpeech.QUEUE_ADD)
+                        1 -> TTS.speechTTS("두 번째 검사를 시작하겠습니다.", TextToSpeech.QUEUE_ADD)
+                        2 -> TTS.speechTTS("마지막 검사를 시작하겠습니다.", TextToSpeech.QUEUE_ADD)
+                    }
+                }
+
+                TestState.AdjustingDistance -> {
+                    if (!isTTSDescriptionDone) {
+                        TTS.setOnDoneListener { isTTSDescriptionDone = true }
                         TTS.speechTTS("화면으로부터 40~60cm 사이로 거리를 조정해주세요.", TextToSpeech.QUEUE_ADD)
                     }
-                }
-                TestState.AdjustingDistance -> {
-                    if (dist > 400f) {
-                        testState = TestState.TextBlinking
-                        var count = 12
-                        TTS.speechTTS("아래의 깜빡이는 숫자를 봐주세요.", TextToSpeech.QUEUE_ADD)
-                        while (count > 0) {
-                            _isNumberShowing.update { !it }
-                            delay(250)
-                            count--
-                        }
-//                        TTS.tts.setOnUtteranceProgressListener(
-//                            object : UtteranceProgressListener() {
-//                                override fun onStart(utteranceId: String?) {}
-//                                override fun onError(utteranceId: String?) {}
-//                                override fun onDone(utteranceId: String?) {
-//                                }
-//                            }
-//                        )
+                    if (dist > 400f && isTTSDescriptionDone) {
+                        TTS.clearOnDoneListener()
+                        _testState.update { TestState.TextBlinking }
+                        isTTSDescriptionDone = false
                     }
                 }
+
                 TestState.TextBlinking -> {
-
+                    if (!isTTSDescriptionDone) {
+                        isTTSDescriptionDone = true
+                        TTS.speechTTS("아래의 깜빡이는 숫자를 봐주세요.", TextToSpeech.QUEUE_ADD)
+                        viewModelScope.launch {
+                            for (i in 1..12) {
+                                _isTextShowing.update { !it }
+                                delay(250)
+                            }
+                            _testState.update { TestState.ComingCloser }
+                            isTTSDescriptionDone = false
+                        }
+                    }
                 }
+
                 TestState.ComingCloser -> {
-
+                    if (!isTTSDescriptionDone) {
+                        TTS.setOnDoneListener { isTTSDescriptionDone = true }
+                        TTS.speechTTS("조금씩 앞으로 오다가, 숫자가 흐릿해보이는 지점에서 멈추고, 아래의 다음 버튼을 눌러주세요.", TextToSpeech.QUEUE_ADD)
+                    }
+                    if (dist < 250f && isTTSDescriptionDone) {
+                        TTS.clearOnDoneListener()
+                        _testState.update { TestState.NoPresbyopia }
+                        isTTSDescriptionDone = false
+                    }
                 }
-                TestState.Ended -> {
 
+                TestState.NoPresbyopia -> {
+                    if (!isTTSDescriptionDone) {
+                        isTTSDescriptionDone = true
+                        TTS.speechTTS(
+                            when (_tryCount.value) {
+                                0 -> "첫 번째 측정에서 노안이 발견되지 않았습니다\n아래의 '다음'을 눌러주세요."
+                                1 -> "두 번째 측정에서 노안이 발견되지 않았습니다\n아래의 '다음'을 눌러주세요."
+                                else -> "마지막 측정에서 노안이 발견되지 않았습니다\n아래의 '다음'을 눌러주세요."
+                            }, TextToSpeech.QUEUE_ADD
+                        )
+                    }
                 }
             }
         }
@@ -92,36 +112,29 @@ class PresbyopiaViewModel @Inject constructor(
     fun moveToNextStep(dist: Float, handleProgress: (Float) -> Unit, toResultScreen: () -> Unit) {
         when (_tryCount.value) {
             0 -> {
-                firstDistance = if (_isUnder25cm.value) 20f
+                firstDistance = if (_testState.value == TestState.NoPresbyopia) 20f
                 else dist / 10
-
                 _tryCount.update { it + 1 }
                 handleProgress(0.33f)
-                _isMovedTo40cm.update { false }
-                _isUnder25cm.update { false }
-                _isNumberShowing.update { true }
-                _isBlinkingDone.update { false }
+                _isTextShowing.update { true }
                 viewModelScope.launch {
-                    TTS.speechTTS("두번째 측정을 시작하겠습니다. 화면으로부터 40~60cm 사이로 거리를 조정해주세요.", TextToSpeech.QUEUE_ADD)
+//                    TTS.speechTTS("두번째 측정을 시작하겠습니다. 화면으로부터 40~60cm 사이로 거리를 조정해주세요.", TextToSpeech.QUEUE_ADD)
                 }
             }
             1 -> {
-                secondDistance = if (_isUnder25cm.value) 20f
+                secondDistance = if (_testState.value == TestState.NoPresbyopia) 20f
                 else dist / 10
 
                 _tryCount.update { it + 1 }
                 handleProgress(0.66f)
-                _isMovedTo40cm.update { false }
-                _isUnder25cm.update { false }
-                _isNumberShowing.update { true }
-                _isBlinkingDone.update { false }
+                _isTextShowing.update { true }
                 viewModelScope.launch {
-                    TTS.speechTTS("마지막 측정을 시작하겠습니다. 화면으로부터 40~60cm 사이로 거리를 조정해주세요.", TextToSpeech.QUEUE_ADD)
+//                    TTS.speechTTS("마지막 측정을 시작하겠습니다. 화면으로부터 40~60cm 사이로 거리를 조정해주세요.", TextToSpeech.QUEUE_ADD)
                 }
             }
             else -> {
                 viewModelScope.launch {
-                    thirdDistance = if (_isUnder25cm.value) 20f
+                    thirdDistance = if (_testState.value == TestState.NoPresbyopia) 20f
                     else dist / 10
 
                     handleProgress(1.2f)
@@ -131,13 +144,7 @@ class PresbyopiaViewModel @Inject constructor(
                 }
             }
         }
-    }
-
-    fun blinkNumber() {
-        viewModelScope.launch {
-
-            TTS.speechTTS("조금씩 앞으로 오다가 숫자가 흐릿해보이는 지점에서 멈추고, 아래의 다음 버튼을 눌러주세요", TextToSpeech.QUEUE_ADD)
-        }
+        _testState.update { TestState.Started }
     }
 
     fun getPresbyopiaTestResult(): PresbyopiaTestResult {
@@ -157,11 +164,11 @@ class PresbyopiaViewModel @Inject constructor(
     }
 
     fun init() {
-        _isNumberShowing.update { true }
+        _isTextShowing.update { true }
     }
 
     enum class TestState {
-        Started, AdjustingDistance, TextBlinking, ComingCloser, Ended
+        Started, AdjustingDistance, TextBlinking, ComingCloser, NoPresbyopia
     }
 
     init {

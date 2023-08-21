@@ -50,57 +50,18 @@ fun PresbyopiaTestContent(
     faceDetectionViewModel: FaceDetectionViewModel = hiltViewModel()
 ) {
     val distance = faceDetectionViewModel.screenToFaceDistance.collectAsState().value
-//    val testState = presbyopiaViewModel.testState.collectAsState().value
+    val testState = presbyopiaViewModel.testState.collectAsState().value
     val tryCount = presbyopiaViewModel.tryCount.collectAsState().value
-    val isTTSDescriptionDone = presbyopiaViewModel.isTTSDescriptionDone.collectAsState().value
-    val isNumberShowing = presbyopiaViewModel.isNumberShowing.collectAsState().value
+    val isNumberShowing = presbyopiaViewModel.isTextShowing.collectAsState().value
     FaceDetection()
-//    LaunchedEffect(testState) {
-//        when (testState) {
-//            PresbyopiaViewModel.TestState.AdjustingDistance -> {
-//                presbyopiaViewModel.init()
-//            }
-//            PresbyopiaViewModel.TestState.ComingCloser -> {
-//
-//            }
-//            PresbyopiaViewModel.TestState.Ended -> {
-//
-//            }
-//        }
-//    }
 
-    presbyopiaViewModel.toNextState(distance)
+    presbyopiaViewModel.checkCondition(distance)
 
-
-//    when (testState to isTTSDescriptionDone) {
-//        PresbyopiaViewModel.TestState.AdjustingDistance to true -> {
-//            if (distance > 400f) {
-//                presbyopiaViewModel.updateTestState(PresbyopiaViewModel.TestState.TextBlinking)
-//                presbyopiaViewModel.blinkNumber()
-////                presbyopiaViewModel.updateIsTTSDescriptionDone(false)
-//            }
-//        }
-//        PresbyopiaViewModel.TestState.ComingCloser to true -> {
-//
-//        }
-//        PresbyopiaViewModel.TestState.Ended to true -> {
-//
-//        }
-//    }
     var progress by remember { mutableStateOf(0.1f) }
     val animatedProgress by animateFloatAsState(
         targetValue = progress,
         animationSpec = ProgressIndicatorDefaults.ProgressAnimationSpec
     )
-    if (distance < 250f) {
-        presbyopiaViewModel.toNextState()
-        when (tryCount) {
-            0 -> TTS.speechTTS("첫 번째 측정에서 노안이 발견되지 않았습니다\n아래의 '다음'을 눌러주세요", TextToSpeech.QUEUE_ADD)
-            1 -> TTS.speechTTS("두 번째 측정에서 노안이 발견되지 않았습니다\n아래의 '다음'을 눌러주세요", TextToSpeech.QUEUE_ADD)
-            else -> TTS.speechTTS("마지막 측정에서 노안이 발견되지 않았습니다\n아래의 '다음'을 눌러주세요", TextToSpeech.QUEUE_ADD)
-        }
-        presbyopiaViewModel.updateIsUnder25cm(true)
-    }
     Box(
         modifier = Modifier
             .padding(start = 40.dp, top = 20.dp, end = 40.dp)
@@ -109,20 +70,23 @@ fun PresbyopiaTestContent(
         contentAlignment = Alignment.Center
     ) {
         Text(
-            text = when (!isMovedTo40cm) {
-                true -> "화면으로부터 40~60cm 사이로 거리를 조정해주세요"
-                false -> when(isBlinkingDone) {
-                    true -> "조금씩 앞으로 오다가 숫자가 흐릿해보이는\n지점에서 멈추고 아래의 '다음'을 눌러주세요"
-                    false -> "아래의 깜빡이는 숫자를 봐주세요"
+            text = when (testState) {
+                PresbyopiaViewModel.TestState.Started,
+                PresbyopiaViewModel.TestState.AdjustingDistance -> "화면으로부터 40~60cm 사이로 거리를 조정해주세요"
+                PresbyopiaViewModel.TestState.TextBlinking -> "아래의 깜빡이는 숫자를 봐주세요"
+                PresbyopiaViewModel.TestState.ComingCloser -> "조금씩 앞으로 오다가 숫자가 흐릿해보이는\n지점에서 멈추고 아래의 '다음'을 눌러주세요"
+                PresbyopiaViewModel.TestState.NoPresbyopia -> {
+                    when (tryCount) {
+                        0 -> "첫 번째 측정에서 노안이 발견되지 않았습니다\n아래의 '다음'을 눌러주세요."
+                        1 -> "두 번째 측정에서 노안이 발견되지 않았습니다\n아래의 '다음'을 눌러주세요."
+                        else -> "마지막 측정에서 노안이 발견되지 않았습니다\n아래의 '다음'을 눌러주세요."
+                    }
                 }
             },
             color = Color(0xffffffff),
-            fontSize = when (!isMovedTo40cm) {
-                true -> 48.sp
-                false -> when(isBlinkingDone) {
-                    true -> 36.sp
-                    false -> 48.sp
-                }
+            fontSize = when (testState) {
+                PresbyopiaViewModel.TestState.ComingCloser -> 36.sp
+                else -> 48.sp
             },
             fontWeight = FontWeight.Bold,
             textAlign = TextAlign.Center
@@ -154,7 +118,7 @@ fun PresbyopiaTestContent(
             verticalArrangement = Arrangement.Center
         ) {
             if (isNumberShowing) {
-                if (isUnder25cm) {
+                if (testState == PresbyopiaViewModel.TestState.NoPresbyopia) {
                     Text(
                         text = when (tryCount) {
                             0 -> "첫 번째 측정에서\n노안이 발견되지 않았습니다\n아래의 다음을 눌러주세요"
@@ -204,7 +168,7 @@ fun PresbyopiaTestContent(
             modifier = Modifier.fillMaxSize(),
             contentAlignment = Alignment.BottomCenter
         ) {
-            if (isMovedTo40cm && isBlinkingDone) {
+            if (testState == PresbyopiaViewModel.TestState.ComingCloser || testState == PresbyopiaViewModel.TestState.NoPresbyopia) {
                 Box(
                     modifier = Modifier
                         .padding(
