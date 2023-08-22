@@ -36,6 +36,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.pixelro.nenoonkiosk.R
+import com.pixelro.nenoonkiosk.data.StringProvider
 import com.pixelro.nenoonkiosk.login.SignInViewModel
 
 @Composable
@@ -87,7 +88,7 @@ fun SignInScreen(
                     ) {
                         if (id.isEmpty()) {
                             Text(
-                                text = "아이디를 입력해주세요",
+                                text = StringProvider.getString(R.string.id_input),
                                 fontSize = 24.sp,
                                 color = Color.LightGray,
                             )
@@ -132,7 +133,7 @@ fun SignInScreen(
                     ) {
                         if (password.isEmpty()) {
                             Text(
-                                text = "비밀번호를 입력해주세요",
+                                text = StringProvider.getString(R.string.pw_input),
                                 fontSize = 24.sp,
                                 color = Color.LightGray,
                             )
@@ -152,7 +153,7 @@ fun SignInScreen(
             )
 
             Text(
-                text = "로그인없이 시작하기",
+                text = StringProvider.getString(R.string.start_without_signin),
                 textDecoration = TextDecoration.Underline,
                 modifier = Modifier
                     .clickable {
@@ -193,7 +194,7 @@ fun SignInScreen(
                 contentAlignment = Alignment.Center
             ) {
                 Text(
-                    text = "로그인",
+                    text = StringProvider.getString(R.string.signin),
                     fontSize = 40.sp,
                     color = Color(0xffffffff),
                     fontWeight = FontWeight.Medium,

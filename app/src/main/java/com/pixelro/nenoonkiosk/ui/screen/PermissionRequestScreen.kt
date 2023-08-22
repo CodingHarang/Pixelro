@@ -45,6 +45,7 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import com.pixelro.nenoonkiosk.NenoonViewModel
 import com.pixelro.nenoonkiosk.R
 import com.pixelro.nenoonkiosk.data.GlobalValue
+import com.pixelro.nenoonkiosk.data.StringProvider
 import com.pixelro.nenoonkiosk.ui.theme.nanumSquareNeoFamily
 
 @Composable
@@ -136,7 +137,7 @@ fun PermissionRequestScreen(
                 .height((GlobalValue.statusBarPadding + 152).dp)
         )
         Text(
-            text = "앱 사용을 위해\n접근 권한 허용이 필요해요",
+            text = StringProvider.getString(R.string.permission_requirement),
             fontSize = 36.sp,
             fontWeight = FontWeight.Bold,
             fontFamily = nanumSquareNeoFamily
@@ -144,7 +145,7 @@ fun PermissionRequestScreen(
         Text(
             modifier = Modifier
                 .padding(top = 80.dp),
-            text = "권한이 모두 설정되어있어야 다음 화면으로 넘어갑니다\n체크되지 않은 항목을 선택하면 설정 페이지로 이동합니다",
+            text = StringProvider.getString(R.string.permission_nextpage),
             fontSize = 20.sp,
             fontWeight = FontWeight.Medium,
             color = Color(0xff878787)
@@ -233,22 +234,22 @@ fun PermissionRequestScreen(
                 ) {
                     Text(
                         text = when (idx) {
-                            1 -> "시스템 설정 변경"
-                            2 -> "카메라 권한"
-                            3 -> "블루투스 권한"
-                            4 -> "블루투스 서비스"
-                            else -> "위치 서비스"
+                            1 -> StringProvider.getString(R.string.permission_setting_change)
+                            2 -> StringProvider.getString(R.string.permission_camera)
+                            3 -> StringProvider.getString(R.string.permission_bluetooth)
+                            4 -> StringProvider.getString(R.string.permission_bluetooth_service)
+                            else -> StringProvider.getString(R.string.permission_location)
                         },
                         fontWeight = FontWeight.Medium,
                         fontSize = 20.sp
                     )
                     Text(
                         text = when (idx) {
-                            1 -> "화면 보호기 영상 재생에 이용"
-                            2 -> "거리 측정을 위해 이용"
-                            3 -> "프린터 연결을 위한 용도"
-                            4 -> "프린터를 연결하기 위한 블루투스 확인 용도"
-                            else -> "블루투스를 사용하기 위한 용도"
+                            1 -> StringProvider.getString(R.string.permission_setting_change_detail)
+                            2 -> StringProvider.getString(R.string.permission_camera_detail)
+                            3 -> StringProvider.getString(R.string.permission_bluetooth_detail)
+                            4 -> StringProvider.getString(R.string.permission_bluetooth_service_detail)
+                            else -> StringProvider.getString(R.string.permission_location_detail)
                         },
                         color = Color(0xff878787)
                     )

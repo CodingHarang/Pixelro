@@ -178,7 +178,7 @@ fun VisualAcuityTestContent(
                 Text(
                     modifier = Modifier
                         .padding(top = 300.dp),
-                    text = "위 시표와 동일하게 보이는 것을\n아래에서 선택해주세요",
+                    text = StringProvider.getString(R.string.visualacuity_choose),
                     textAlign = TextAlign.Center,
                     fontSize = 30.sp,
                     fontWeight = FontWeight.ExtraBold

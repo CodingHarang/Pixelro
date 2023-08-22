@@ -230,7 +230,7 @@ fun SurveyScreen(
                     Text(
                         modifier = Modifier
                             .padding(bottom = 20.dp),
-                        text = "나이를 알려주세요",
+                        text = StringProvider.getString(R.string.survey_age),
                         fontSize = 60.sp,
                         fontWeight = FontWeight.Medium
                     )
@@ -300,10 +300,10 @@ fun SurveyScreen(
                                 ) {
                                     Text(
                                         text = when (idx) {
-                                            1 -> "9세 이하"
-                                            2 -> "20세~29세"
-                                            3 -> "40세~49세"
-                                            else -> "60세~69세"
+                                            1 -> StringProvider.getString(R.string.survey_under9)
+                                            2 -> StringProvider.getString(R.string.survey_20to29)
+                                            3 -> StringProvider.getString(R.string.survey_40to49)
+                                            else -> StringProvider.getString(R.string.survey_60to69)
                                         },
                                         fontSize = 60.sp,
                                         color = when (idx to surveyViewModel.surveyAge.collectAsState().value) {
@@ -391,10 +391,10 @@ fun SurveyScreen(
                                 ) {
                                     Text(
                                         text = when (idx) {
-                                            5 -> "10세~19세"
-                                            6 -> "30세~39세"
-                                            7 -> "50세~59세"
-                                            else -> "70세 이상"
+                                            5 -> StringProvider.getString(R.string.survey_10to19)
+                                            6 -> StringProvider.getString(R.string.survey_30to39)
+                                            7 -> StringProvider.getString(R.string.survey_50to59)
+                                            else -> StringProvider.getString(R.string.survey_above70)
                                         },
                                         fontSize = 60.sp,
                                         color = when (idx to surveyViewModel.surveyAge.collectAsState().value) {
@@ -423,7 +423,7 @@ fun SurveyScreen(
                     Text(
                         modifier = Modifier
                             .padding(bottom = 20.dp),
-                        text = "성별은 무엇인가요?",
+                        text = StringProvider.getString(R.string.survey_sex),
                         fontSize = 60.sp,
                         fontWeight = FontWeight.Medium
                     )
@@ -490,8 +490,8 @@ fun SurveyScreen(
                             ) {
                                 Text(
                                     text = when (idx) {
-                                        1 -> "남자"
-                                        else -> "여자"
+                                        1 -> StringProvider.getString(R.string.survey_male)
+                                        else -> StringProvider.getString(R.string.survey_female)
                                     },
                                     fontSize = 60.sp,
                                     color = when(idx to surveyViewModel.surveySex.collectAsState().value) {
@@ -517,7 +517,7 @@ fun SurveyScreen(
                     Text(
                         modifier = Modifier
                             .padding(bottom = 20.dp),
-                        text = "안경을 착용하시나요?",
+                        text = StringProvider.getString(R.string.survey_glasses),
                         fontSize = 60.sp,
                         fontWeight = FontWeight.Medium
                     )
@@ -584,8 +584,8 @@ fun SurveyScreen(
                             ) {
                                 Text(
                                     text = when (idx) {
-                                        1 -> "네"
-                                        else -> "아니요"
+                                        1 -> StringProvider.getString(R.string.yes)
+                                        else -> StringProvider.getString(R.string.no)
                                     },
                                     fontSize = 60.sp,
                                     color = when(idx to surveyViewModel.surveyGlass.collectAsState().value) {
@@ -611,7 +611,7 @@ fun SurveyScreen(
                     Text(
                         modifier = Modifier
                             .padding(bottom = 20.dp),
-                        text = "눈을 수술하신 경험이 있나요?",
+                        text = StringProvider.getString(R.string.survey_surgery),
                         fontSize = 56.sp,
                         fontWeight = FontWeight.Medium
                     )
@@ -681,9 +681,9 @@ fun SurveyScreen(
                                 ) {
                                     Text(
                                         text = when (idx) {
-                                            1 -> "없음"
-                                            2 -> "라식/라섹"
-                                            else -> "기타"
+                                            1 -> StringProvider.getString(R.string.survey_none)
+                                            2 -> StringProvider.getString(R.string.survey_lasik_lasek)
+                                            else -> StringProvider.getString(R.string.survey_etc)
                                         },
                                         fontSize = 60.sp,
                                         color = when(idx to surveyViewModel.surveySurgery.collectAsState().value) {
@@ -771,8 +771,8 @@ fun SurveyScreen(
                                 ) {
                                     Text(
                                         text = when (idx) {
-                                            1 -> "백내장"
-                                            else -> "기타"
+                                            1 -> StringProvider.getString(R.string.survey_cataract)
+                                            else -> StringProvider.getString(R.string.survey_etc)
                                         },
                                         fontSize = 60.sp,
                                         color = when(idx to surveyViewModel.surveySurgery.collectAsState().value) {
@@ -799,7 +799,7 @@ fun SurveyScreen(
                     Text(
                         modifier = Modifier
                             .padding(bottom = 20.dp),
-                        text = "당뇨가 있으신가요?",
+                        text = StringProvider.getString(R.string.survey_diabetes),
                         fontSize = 60.sp,
                         fontWeight = FontWeight.Medium
                     )
@@ -865,8 +865,8 @@ fun SurveyScreen(
                             ) {
                                 Text(
                                     text = when(idx) {
-                                        1 -> "네"
-                                        else -> "아니오"
+                                        1 -> StringProvider.getString(R.string.yes)
+                                        else -> StringProvider.getString(R.string.no)
                                     },
                                     fontSize = 60.sp,
                                     color = when(idx to surveyViewModel.surveyDiabetes.collectAsState().value) {

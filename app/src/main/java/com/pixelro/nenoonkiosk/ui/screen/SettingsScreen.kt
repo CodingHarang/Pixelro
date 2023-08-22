@@ -8,9 +8,7 @@ import androidx.compose.foundation.clickable
 import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
-import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
@@ -20,10 +18,7 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
-import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -36,14 +31,11 @@ import androidx.compose.ui.unit.sp
 import androidx.compose.ui.window.Dialog
 import androidx.compose.ui.window.DialogProperties
 import androidx.hilt.navigation.compose.hiltViewModel
-import com.pixelro.nenoonkiosk.NenoonKioskApplication
 import com.pixelro.nenoonkiosk.NenoonViewModel
 import com.pixelro.nenoonkiosk.R
 import com.pixelro.nenoonkiosk.data.GlobalValue
-import com.pixelro.nenoonkiosk.data.SharedPreferencesManager
 import com.pixelro.nenoonkiosk.data.StringProvider
 import com.pixelro.nenoonkiosk.login.SignInViewModel
-import java.util.Locale
 
 @Composable
 fun SettingsScreen(
@@ -156,7 +148,7 @@ fun SettingsScreen(
                 modifier = Modifier
                     .fillMaxWidth()
                     .padding(start = 40.dp, top = 10.dp, bottom = 10.dp),
-                text = "이용 약관",
+                text = StringProvider.getString(R.string.settings_title),
                 fontSize = 30.sp
             )
         }
@@ -182,8 +174,8 @@ fun SettingsScreen(
                     .fillMaxWidth()
                     .padding(start = 40.dp, top = 10.dp, bottom = 10.dp),
                 text = when (isSignedIn) {
-                    true -> "로그아웃"
-                    false -> "로그인"
+                    true -> StringProvider.getString(R.string.signin)
+                    false -> StringProvider.getString(R.string.signout)
                 },
                 fontSize = 30.sp,
                 color = when (isSignedIn) {
@@ -210,7 +202,7 @@ fun SettingsScreen(
                 modifier = Modifier
                     .fillMaxWidth()
                     .padding(start = 40.dp, top = 10.dp, bottom = 10.dp),
-                text = "소프트웨어 정보",
+                text = StringProvider.getString(R.string.setting_software_info),
                 fontSize = 30.sp,
                 color = when (isSignedIn) {
                     true -> Color(0xFFFF0000)
@@ -244,7 +236,7 @@ fun LanguageSelectDialog(
                     .fillMaxWidth()
                     .padding(top = 20.dp, bottom = 20.dp),
                 textAlign = TextAlign.Center,
-                text = "언어",
+                text = StringProvider.getString(R.string.settings_language),
                 fontSize = 30.sp
             )
             Spacer(

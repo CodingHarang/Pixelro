@@ -144,7 +144,7 @@ fun TestListScreen(
                     contentDescription = ""
                 )
                 Text(
-                    text = "문진하러 가기",
+                    text = StringProvider.getString(R.string.to_survey),
                     fontSize = 24.sp,
                     fontWeight = FontWeight.Medium
                 )
@@ -190,7 +190,7 @@ fun TestListScreen(
                 Text(
                     modifier = Modifier
                         .offset(x = 0.dp, y = shiftVal.dp),
-                    text = "아래에서 원하는 검사 항목을 눌러주세요",
+                    text = StringProvider.getString(R.string.choose_test),
                     fontSize = 38.sp,
                     fontWeight = FontWeight.ExtraBold,
                     textAlign = TextAlign.Center
@@ -330,23 +330,23 @@ fun SurveyRecommendationDialog(
                 modifier = Modifier
                     .padding(20.dp),
                 text = buildAnnotatedString {
-                    append("해당 검사를 이미 완료했습니다.\n아직 문진을 하지 않으셨다면 정확한 검사를 위해 아래의 ")
+                    append(StringProvider.getString(R.string.test_done_warning))
                     withStyle(
                         style = SpanStyle(
                             color = Color(0xff1d71e1),
                         )
                     ) {
-                        append("\'문진하러 가기\'")
+                        append("\'"+StringProvider.getString(R.string.to_survey)+"\'")
                     }
-                    append("를 선택해주세요\n\n검사를 다시 진행하고 싶으시면 아래의 ")
+                    append(StringProvider.getString(R.string.choose_and_again))
                     withStyle(
                         style = SpanStyle(
                             color = Color(0xff1d71e1),
                         )
                     ) {
-                        append("\'검사 다시하기\'")
+                        append("\'" + StringProvider.getString(R.string.test_again) + "\'")
                     }
-                    append("를 선택해주세요")
+                    append(StringProvider.getString(R.string.choose))
                 },
                 fontSize = 32.sp,
                 fontWeight = FontWeight.Medium
@@ -391,7 +391,7 @@ fun SurveyRecommendationDialog(
                                     toIntroScreen()
                                 }
                                 .padding(top = 4.dp),
-                            text = "문진하러 가기",
+                            text = StringProvider.getString(R.string.to_survey),
                             textAlign = TextAlign.Center,
                             fontSize = 32.sp,
                             fontWeight = FontWeight.Bold
@@ -424,7 +424,7 @@ fun SurveyRecommendationDialog(
                                     toTestScreen(selectedTest)
                                 }
                                 .padding(top = 4.dp),
-                            text = "검사 다시하기",
+                            text = StringProvider.getString(R.string.test_again),
                             textAlign = TextAlign.Center,
                             fontSize = 32.sp,
                             fontWeight = FontWeight.Bold
@@ -453,7 +453,7 @@ fun SurveyRecommendationDialog(
                                 onDismissRequest()
                             }
                             .padding(top = 4.dp),
-                        text = "취소",
+                        text = StringProvider.getString(R.string.cancel),
                         textAlign = TextAlign.Center,
                         fontSize = 32.sp,
                         fontWeight = FontWeight.Bold

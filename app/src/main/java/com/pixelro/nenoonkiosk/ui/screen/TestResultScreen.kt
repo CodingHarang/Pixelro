@@ -163,7 +163,7 @@ fun TestResultScreen(
             mNemonicWrapper.print(bm, nPrintWidth, nPaperHeight, nCopies)
             mNemonicWrapper.closePrinter()
         } else {
-            Toast.makeText(context, "연결된 프린터가 없습니다.", Toast.LENGTH_SHORT).show()
+            Toast.makeText(context, StringProvider.getString(R.string.no_printer), Toast.LENGTH_SHORT).show()
         }
     }
 

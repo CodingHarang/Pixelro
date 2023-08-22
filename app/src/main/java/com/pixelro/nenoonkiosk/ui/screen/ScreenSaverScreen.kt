@@ -46,8 +46,10 @@ import androidx.media3.ui.AspectRatioFrameLayout
 import androidx.media3.ui.PlayerView
 import com.google.accompanist.systemuicontroller.rememberSystemUiController
 import com.pixelro.nenoonkiosk.NenoonViewModel
+import com.pixelro.nenoonkiosk.R
 import com.pixelro.nenoonkiosk.data.GlobalValue
 import com.pixelro.nenoonkiosk.data.SharedPreferencesManager
+import com.pixelro.nenoonkiosk.data.StringProvider
 import com.pixelro.nenoonkiosk.ui.ScreenSaverViewModel
 
 @OptIn(ExperimentalTextApi::class)
@@ -76,7 +78,7 @@ fun ScreenSaverScreen(
         initializeTestDoneStatus()
     }
     val text = buildAnnotatedString {
-        append("화면을 ")
+        append(StringProvider.getString(R.string.please))
         withAnnotation("squiggles", annotation = "ignored") {
             withStyle(
                 SpanStyle(
@@ -84,10 +86,10 @@ fun ScreenSaverScreen(
                     baselineShift = BaselineShift(shiftVal)
                 )
             ) {
-                append("터치")
+                append(StringProvider.getString(R.string.touch))
             }
         }
-        append("하시면\n시력 검사를 할 수 있습니다")
+        append(StringProvider.getString(R.string.can_test))
     }
     val systemUiController = rememberSystemUiController()
     val context = LocalContext.current

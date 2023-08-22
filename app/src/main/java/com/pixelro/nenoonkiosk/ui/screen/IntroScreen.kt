@@ -39,6 +39,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.pixelro.nenoonkiosk.R
+import com.pixelro.nenoonkiosk.data.StringProvider
 import com.pixelro.nenoonkiosk.login.SignInViewModel
 import com.pixelro.nenoonkiosk.ui.theme.cafe24Family
 
@@ -68,7 +69,7 @@ fun IntroScreen(
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
             Text(
-                text = "내눈\n눈 건강 지킴이",
+                text = StringProvider.getString(R.string.nenoon_eye_protecter),
                 fontSize = 100.sp,
                 fontFamily = cafe24Family,
 
@@ -129,7 +130,7 @@ fun IntroScreen(
                     contentAlignment = Alignment.Center
                 ) {
                     Text(
-                        text = "시작",
+                        text = StringProvider.getString(R.string.to_start),
                         fontSize = 100.sp,
                         color = Color(0xFFFFFFFF),
                         fontWeight = FontWeight.ExtraBold

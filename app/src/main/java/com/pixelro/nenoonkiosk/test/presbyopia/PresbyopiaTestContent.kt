@@ -93,10 +93,10 @@ fun PresbyopiaTestContent(
     ) {
         Text(
             text = when (!isMovedTo40cm) {
-                true -> "화면으로부터 40~60cm 사이로 거리를 조정해주세요"
+                true -> StringProvider.getString(R.string.presbyopia_description_a)
                 false -> when(isBlinkingDone) {
-                    true -> "조금씩 앞으로 오다가 숫자가 흐릿해지는\n지점에서 멈추고 아래의 '다음'을 눌러주세요"
-                    false -> "아래의 깜빡이는 숫자를 봐주세요"
+                    true -> StringProvider.getString(R.string.presbyopia_description_b)
+                    false -> StringProvider.getString(R.string.presbyopia_description_c)
                 }
             },
             color = Color(0xffffffff),
@@ -140,9 +140,9 @@ fun PresbyopiaTestContent(
                 if (isUnder25cm) {
                     Text(
                         text = when (tryCount) {
-                            0 -> "첫 번째 측정에서\n노안이 발견되지 않았습니다\n아래의 다음을 눌러주세요"
-                            1 -> "두 번째 측정에서\n노안이 발견되지 않았습니다\n아래의 다음을 눌러주세요"
-                            else -> "마지막 측정에서\n노안이 발견되지 않았습니다\n아래의 다음을 눌러주세요"
+                            0 -> StringProvider.getString(R.string.presbyopia_description_fine_1)
+                            1 -> StringProvider.getString(R.string.presbyopia_description_fine_2)
+                            else -> StringProvider.getString(R.string.presbyopia_description_fine_3)
                         },
                         fontSize = 44.sp,
                         fontWeight = FontWeight.Bold,
