@@ -43,8 +43,6 @@ fun SplashScreen() {
         contentAlignment = Alignment.Center
     ) {
         Column(
-            modifier = Modifier
-                .padding(bottom = 600.dp),
             horizontalAlignment = Alignment.CenterHorizontally,
             verticalArrangement = Arrangement.Center
         ) {
@@ -80,33 +78,33 @@ fun SplashScreen() {
             verticalArrangement = Arrangement.Bottom,
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
-            Text(
-                modifier = Modifier
-                    .padding(40.dp),
-                text = "품목명: 암슬러 격자검사 소프트웨어\n" +
-                        "모델명: Screening Charts for Macular Degeneration\n" +
-                        "제조업허가번호: 제 8237호\n" +
-                        "제조업자의 상호 및 주소\n" +
-                        "  상호: 주식회사 픽셀로\n" +
-                        "  주소: 경기도 성남시 수정구 대왕판교로 815, 판교제2테크노밸리 기업지원허브 838호(시흥동, 판교창조경제밸리)\n" +
-                        "사용목적: 격자 형태의 표를 제시하여 시야의 중앙 및 중앙부 불규칙성을 검사하기 위해 사용하는 소프트웨어\n" +
-                        "제조번호: PX1-23-1\n" +
-                        "제조연월일: 2023.06.01\n" +
-                        "성능 및 사용방법: 사용설명서 참조\n" +
-                        "사용 시 주의사항: 사용설명서 참조\n" +
-                        "보관 또는 저장방법: 사용설명서 참조\n" +
-                        "소프트웨어 명칭 및 버전: 내눈 황반변성(암슬러차트) 검사, ver. 1.0\n" +
-                        "본 제품은 의료기기임.\n",
-                fontSize = 20.sp
-            )
-            Image(
-                modifier = Modifier
-                    .padding(top = 20.dp)
-                    .width(200.dp)
-                    .height(100.dp),
-                painter = painterResource(id = R.drawable.udi_code),
-                contentDescription = null
-            )
+//            Text(
+//                modifier = Modifier
+//                    .padding(40.dp),
+//                text = "품목명: 암슬러 격자검사 소프트웨어\n" +
+//                        "모델명: Screening Charts for Macular Degeneration\n" +
+//                        "제조업허가번호: 제 8237호\n" +
+//                        "제조업자의 상호 및 주소\n" +
+//                        "  상호: 주식회사 픽셀로\n" +
+//                        "  주소: 경기도 성남시 수정구 대왕판교로 815, 판교제2테크노밸리 기업지원허브 838호(시흥동, 판교창조경제밸리)\n" +
+//                        "사용목적: 격자 형태의 표를 제시하여 시야의 중앙 및 중앙부 불규칙성을 검사하기 위해 사용하는 소프트웨어\n" +
+//                        "제조번호: PX1-23-1\n" +
+//                        "제조연월일: 2023.06.01\n" +
+//                        "성능 및 사용방법: 사용설명서 참조\n" +
+//                        "사용 시 주의사항: 사용설명서 참조\n" +
+//                        "보관 또는 저장방법: 사용설명서 참조\n" +
+//                        "소프트웨어 명칭 및 버전: 내눈 황반변성(암슬러차트) 검사, ver. 1.0\n" +
+//                        "본 제품은 의료기기임.\n",
+//                fontSize = 20.sp
+//            )
+//            Image(
+//                modifier = Modifier
+//                    .padding(top = 20.dp)
+//                    .width(200.dp)
+//                    .height(100.dp),
+//                painter = painterResource(id = R.drawable.udi_code),
+//                contentDescription = null
+//            )
             Image(
                 modifier = Modifier
                     .padding(top = 20.dp, bottom = 40.dp)

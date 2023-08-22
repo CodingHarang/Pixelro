@@ -8,8 +8,11 @@ import android.util.Log
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.viewModelScope
 import androidx.lifecycle.viewmodel.compose.viewModel
+import androidx.media3.common.MediaItem
 import androidx.media3.common.Player
+import androidx.media3.datasource.RawResourceDataSource
 import androidx.media3.exoplayer.ExoPlayer
+import com.pixelro.nenoonkiosk.R
 import com.pixelro.nenoonkiosk.TTS
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.delay
@@ -22,8 +25,9 @@ import java.lang.Thread.State
 import java.util.Locale
 import javax.inject.Inject
 
+@androidx.annotation.OptIn(androidx.media3.common.util.UnstableApi::class)
 @HiltViewModel
-class PresbyopiaViewModel @Inject constructor(
+class  PresbyopiaViewModel @Inject constructor(
     application: Application
 ) : AndroidViewModel(application) {
 

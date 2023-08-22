@@ -12,28 +12,38 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.offset
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.LinearProgressIndicator
 import androidx.compose.material.Text
 import androidx.compose.material3.ProgressIndicatorDefaults
+import androidx.compose.material3.Surface
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.DisposableEffect
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.compose.ui.viewinterop.AndroidView
 import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.media3.common.MediaItem
+import androidx.media3.datasource.RawResourceDataSource
+import androidx.media3.ui.AspectRatioFrameLayout
+import androidx.media3.ui.PlayerView
 import com.pixelro.nenoonkiosk.R
 import com.pixelro.nenoonkiosk.TTS
 import com.pixelro.nenoonkiosk.data.StringProvider
@@ -43,8 +53,9 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import kotlin.math.roundToInt
 
+@androidx.annotation.OptIn(androidx.media3.common.util.UnstableApi::class)
 @Composable
-fun PresbyopiaTestContent(
+fun  PresbyopiaTestContent(
     toResultScreen: (PresbyopiaTestResult) -> Unit,
     presbyopiaViewModel: PresbyopiaViewModel = hiltViewModel(),
     faceDetectionViewModel: FaceDetectionViewModel = hiltViewModel()
@@ -53,8 +64,14 @@ fun PresbyopiaTestContent(
     val testState = presbyopiaViewModel.testState.collectAsState().value
     val tryCount = presbyopiaViewModel.tryCount.collectAsState().value
     val isNumberShowing = presbyopiaViewModel.isTextShowing.collectAsState().value
+    val context = LocalContext.current
+    val exoPlayer = presbyopiaViewModel.exoPlayer
     FaceDetection()
-
+    DisposableEffect(true) {
+        onDispose {
+            exoPlayer.release()
+        }
+    }
     presbyopiaViewModel.checkCondition(distance)
 
     var progress by remember { mutableStateOf(0.1f) }
@@ -113,33 +130,82 @@ fun PresbyopiaTestContent(
                 shape = RoundedCornerShape(8.dp)
             )
     ) {
-        Column(
-            horizontalAlignment = Alignment.CenterHorizontally,
-            verticalArrangement = Arrangement.Center
-        ) {
-            if (isNumberShowing) {
-                if (testState == PresbyopiaViewModel.TestState.NoPresbyopia) {
-                    Text(
-                        text = when (tryCount) {
-                            0 -> "첫 번째 측정에서\n노안이 발견되지 않았습니다\n아래의 다음을 눌러주세요"
-                            1 -> "두 번째 측정에서\n노안이 발견되지 않았습니다\n아래의 다음을 눌러주세요"
-                            else -> "마지막 측정에서\n노안이 발견되지 않았습니다\n아래의 다음을 눌러주세요"
-                        },
-                        fontSize = 44.sp,
-                        fontWeight = FontWeight.Bold,
-                        textAlign = TextAlign.Center
+        when (testState to TTS.tts.isSpeaking) {
+            PresbyopiaViewModel.TestState.Started to true,
+            PresbyopiaViewModel.TestState.Started to false,
+            PresbyopiaViewModel.TestState.AdjustingDistance to true,
+            PresbyopiaViewModel.TestState.AdjustingDistance to false -> {
+                Surface(
+                    modifier = Modifier
+                        .fillMaxSize()
+                ) {
+                    AndroidView(
+                        modifier = Modifier
+                            .fillMaxSize(),
+                        factory = {
+                            PlayerView(context).apply {
+                                resizeMode = AspectRatioFrameLayout.RESIZE_MODE_ZOOM
+                                player = exoPlayer
+                                useController = false
+                                exoPlayer.setMediaItem(MediaItem.fromUri(RawResourceDataSource.buildRawResourceUri(R.raw.measuring_distance_video_2)))
+                                exoPlayer.prepare()
+                                exoPlayer.play()
+                            }
+                        }
                     )
-                } else {
-                    Text(
-                        text = "2  3  4  5",
-                        fontWeight = FontWeight.Bold,
-                        fontSize = 60.sp
+                }
+            }
+            PresbyopiaViewModel.TestState.ComingCloser to true -> {
+                Surface(
+                    modifier = Modifier
+                        .fillMaxSize()
+                ) {
+                    AndroidView(
+                        modifier = Modifier
+                            .fillMaxSize(),
+                        factory = {
+                            PlayerView(context).apply {
+                                resizeMode = AspectRatioFrameLayout.RESIZE_MODE_ZOOM
+                                player = exoPlayer
+                                useController = false
+                                exoPlayer.setMediaItem(MediaItem.fromUri(RawResourceDataSource.buildRawResourceUri(R.raw.presbyopia_video_2)))
+                                exoPlayer.prepare()
+                                exoPlayer.play()
+                            }
+                        }
                     )
-                    Text(
-                        text = "6  7  8  9",
-                        fontWeight = FontWeight.Bold,
-                        fontSize = 40.sp
-                    )
+                }
+            }
+            else -> {
+                Column(
+                    horizontalAlignment = Alignment.CenterHorizontally,
+                    verticalArrangement = Arrangement.Center
+                ) {
+                    if (isNumberShowing) {
+                        if (testState == PresbyopiaViewModel.TestState.NoPresbyopia) {
+                            Text(
+                                text = when (tryCount) {
+                                    0 -> "첫 번째 측정에서\n노안이 발견되지 않았습니다\n아래의 다음을 눌러주세요"
+                                    1 -> "두 번째 측정에서\n노안이 발견되지 않았습니다\n아래의 다음을 눌러주세요"
+                                    else -> "마지막 측정에서\n노안이 발견되지 않았습니다\n아래의 다음을 눌러주세요"
+                                },
+                                fontSize = 44.sp,
+                                fontWeight = FontWeight.Bold,
+                                textAlign = TextAlign.Center
+                            )
+                        } else {
+                            Text(
+                                text = "2  3  4  5",
+                                fontWeight = FontWeight.Bold,
+                                fontSize = 60.sp
+                            )
+                            Text(
+                                text = "6  7  8  9",
+                                fontWeight = FontWeight.Bold,
+                                fontSize = 40.sp
+                            )
+                        }
+                    }
                 }
             }
         }

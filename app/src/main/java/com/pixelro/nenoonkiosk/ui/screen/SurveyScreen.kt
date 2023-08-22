@@ -1,5 +1,7 @@
 package com.pixelro.nenoonkiosk.ui.screen
 
+import android.app.Activity
+import android.view.KeyEvent
 import androidx.compose.animation.animateColorAsState
 import androidx.compose.animation.core.Animatable
 import androidx.compose.animation.core.RepeatMode
@@ -10,6 +12,7 @@ import androidx.compose.animation.core.keyframes
 import androidx.compose.animation.core.rememberInfiniteTransition
 import androidx.compose.animation.core.tween
 import androidx.compose.foundation.BorderStroke
+import androidx.compose.foundation.Image
 import androidx.compose.foundation.Indication
 import androidx.compose.foundation.IndicationInstance
 import androidx.compose.foundation.background
@@ -50,6 +53,8 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.BlendMode
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.drawscope.ContentDrawScope
+import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
@@ -77,6 +82,9 @@ fun SurveyScreen(
     LaunchedEffect(true) {
         surveyViewModel.initSurveyData()
     }
+
+    val context = LocalContext.current
+
     val coroutineScope = rememberCoroutineScope()
     val questionType = surveyViewModel.questionType.collectAsState().value
 
@@ -111,7 +119,6 @@ fun SurveyScreen(
         modifier = Modifier
             .fillMaxSize()
     ) {
-
         Box(
             modifier = Modifier
                 .padding(
@@ -122,6 +129,47 @@ fun SurveyScreen(
                 .height(40.dp),
             contentAlignment = Alignment.Center
         ) {
+            Box(
+                modifier = Modifier
+                    .padding(start = 20.dp)
+                    .fillMaxSize(),
+                contentAlignment = Alignment.CenterStart
+            ) {
+                Row(
+                    modifier = Modifier
+                        .fillMaxHeight()
+                        .clickable(
+                            indication = null,
+                            interactionSource = remember { MutableInteractionSource() }
+                        ) {
+                            (context as Activity).dispatchKeyEvent(
+                                KeyEvent(
+                                    KeyEvent.ACTION_DOWN,
+                                    KeyEvent.KEYCODE_BACK
+                                )
+                            )
+                            context.dispatchKeyEvent(
+                                KeyEvent(
+                                    KeyEvent.ACTION_UP,
+                                    KeyEvent.KEYCODE_BACK
+                                )
+                            )
+                        },
+                    verticalAlignment = Alignment.CenterVertically
+                ) {
+                    Image(
+                        modifier = Modifier
+                            .padding(top = 4.dp)
+                            .width(28.dp),
+                        painter = painterResource(id = R.drawable.icon_back_black),
+                        contentDescription = ""
+                    )
+                    Text(
+                        text = "첫 화면으로",
+                        fontSize = 24.sp
+                    )
+                }
+            }
             Text(
                 textAlign = TextAlign.Center,
                 text = StringProvider.getString(R.string.survey_title),
