@@ -118,8 +118,8 @@ fun MChartContent(
         val coroutineScope = rememberCoroutineScope()
         val isTTSSpeaking = mChartViewModel.isTTSSpeaking.collectAsState().value
         LaunchedEffect(true) {
+            TTS.speechTTS("검사를 시작하겠습니다. 아래의 선이, 고든 선으로 보이는지 휘어진 선으로 보이는지 선택해주세요.", TextToSpeech.QUEUE_ADD)
             TTS.setOnDoneListener { mChartViewModel.updateIsTTSSpeaking(false) }
-            TTS.speechTTS("검사를 시작하겠습니다. 아래의 선이 곧은 선으로 보이는지 휘어진 선으로 보이는지 선택해주세요.", TextToSpeech.QUEUE_ADD)
         }
         DisposableEffect(true) {
             onDispose {

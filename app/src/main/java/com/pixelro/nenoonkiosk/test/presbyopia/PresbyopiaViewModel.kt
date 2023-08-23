@@ -121,9 +121,7 @@ class  PresbyopiaViewModel @Inject constructor(
                 _tryCount.update { it + 1 }
                 handleProgress(0.33f)
                 _isTextShowing.update { true }
-                viewModelScope.launch {
-//                    TTS.speechTTS("두번째 측정을 시작하겠습니다. 화면으로부터 40~60cm 사이로 거리를 조정해주세요.", TextToSpeech.QUEUE_ADD)
-                }
+                _testState.update { TestState.Started }
             }
             1 -> {
                 secondDistance = if (_testState.value == TestState.NoPresbyopia) 20f
@@ -132,9 +130,7 @@ class  PresbyopiaViewModel @Inject constructor(
                 _tryCount.update { it + 1 }
                 handleProgress(0.66f)
                 _isTextShowing.update { true }
-                viewModelScope.launch {
-//                    TTS.speechTTS("마지막 측정을 시작하겠습니다. 화면으로부터 40~60cm 사이로 거리를 조정해주세요.", TextToSpeech.QUEUE_ADD)
-                }
+                _testState.update { TestState.Started }
             }
             else -> {
                 viewModelScope.launch {
@@ -148,7 +144,6 @@ class  PresbyopiaViewModel @Inject constructor(
                 }
             }
         }
-        _testState.update { TestState.Started }
     }
 
     fun getPresbyopiaTestResult(): PresbyopiaTestResult {

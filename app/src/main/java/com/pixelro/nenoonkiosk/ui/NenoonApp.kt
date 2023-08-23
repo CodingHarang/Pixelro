@@ -30,6 +30,7 @@ import com.pixelro.nenoonkiosk.ui.testcontent.ChildrenVisualAcuityTestContent
 import com.pixelro.nenoonkiosk.ui.testcontent.LongDistanceVisualAcuityTestContent
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
+import java.util.Locale
 
 @OptIn(ExperimentalAnimationApi::class)
 @Composable
@@ -68,6 +69,7 @@ fun NenoonApp(
         startDestination = Constants.ROUTE_TEST_LIST,
         contentAlignment = Alignment.TopCenter
     ) {
+        Locale("en")
         /*
          * 스플래시 화면
         */
@@ -84,11 +86,9 @@ fun NenoonApp(
 //                Log.e("BackStack", "Destination id: ${destination.id}, destination name: ${destination.route}")
 //            }
             LaunchedEffect(true) {
-                coroutineScope.launch {
-                    delay(3000)
-                    navController.popBackStack()
-                    navController.navigate(Constants.ROUTE_SIGN_IN)
-                }
+                delay(3000)
+                navController.popBackStack()
+                navController.navigate(Constants.ROUTE_SIGN_IN)
             }
             SplashScreen()
         }

@@ -595,7 +595,7 @@ fun SurveyScreen(
                             ) {
                                 Text(
                                     text = when (idx) {
-                                        1 -> "네"
+                                        1 -> "예"
                                         else -> "아니요"
                                     },
                                     fontSize = 60.sp,
@@ -876,7 +876,7 @@ fun SurveyScreen(
                             ) {
                                 Text(
                                     text = when(idx) {
-                                        1 -> "네"
+                                        1 -> "예"
                                         else -> "아니오"
                                     },
                                     fontSize = 60.sp,

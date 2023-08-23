@@ -149,7 +149,7 @@ fun AmslerGridContent(
                     .padding(start = 20.dp, top = 20.dp, end = 20.dp, bottom = 20.dp)
                     .height(160.dp),
                 text = when (!isBlinkingDone) {
-                    true -> "아래의 깜빡이는 점을 봐주세요"
+                    true -> "다음은 검사 방법 예시입니다"
                     false -> when (isFaceCenter) {
                         true -> "왜곡되어 보이거나 검정색으로 보이는 부분을 손으로 눌러 선택해주세요. 선택을 모두 완료했거나 이상한 부분이 없다면, 아래의 완료 버튼을 눌러주세요."
                         false -> "가운데의 검은 점을 봐주세요"

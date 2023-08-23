@@ -68,8 +68,10 @@ fun  PresbyopiaTestContent(
     val exoPlayer = presbyopiaViewModel.exoPlayer
     FaceDetection()
     DisposableEffect(true) {
+
         onDispose {
             exoPlayer.release()
+            TTS.clearOnDoneListener()
         }
     }
     presbyopiaViewModel.checkCondition(distance)
@@ -181,29 +183,40 @@ fun  PresbyopiaTestContent(
                     horizontalAlignment = Alignment.CenterHorizontally,
                     verticalArrangement = Arrangement.Center
                 ) {
-                    if (isNumberShowing) {
-                        if (testState == PresbyopiaViewModel.TestState.NoPresbyopia) {
-                            Text(
-                                text = when (tryCount) {
-                                    0 -> "첫 번째 측정에서\n노안이 발견되지 않았습니다\n아래의 다음을 눌러주세요"
-                                    1 -> "두 번째 측정에서\n노안이 발견되지 않았습니다\n아래의 다음을 눌러주세요"
-                                    else -> "마지막 측정에서\n노안이 발견되지 않았습니다\n아래의 다음을 눌러주세요"
-                                },
-                                fontSize = 44.sp,
-                                fontWeight = FontWeight.Bold,
-                                textAlign = TextAlign.Center
-                            )
-                        } else {
-                            Text(
-                                text = "2  3  4  5",
-                                fontWeight = FontWeight.Bold,
-                                fontSize = 60.sp
-                            )
-                            Text(
-                                text = "6  7  8  9",
-                                fontWeight = FontWeight.Bold,
-                                fontSize = 40.sp
-                            )
+                    if (true) {
+                        when (testState) {
+                            PresbyopiaViewModel.TestState.NoPresbyopia -> {
+                                Text(
+                                    text = when (tryCount) {
+                                        0 -> "첫 번째 측정에서\n노안이 발견되지 않았습니다\n아래의 다음을 눌러주세요"
+                                        1 -> "두 번째 측정에서\n노안이 발견되지 않았습니다\n아래의 다음을 눌러주세요"
+                                        else -> "마지막 측정에서\n노안이 발견되지 않았습니다\n아래의 다음을 눌러주세요"
+                                    },
+                                    fontSize = 44.sp,
+                                    fontWeight = FontWeight.Bold,
+                                    textAlign = TextAlign.Center
+                                )
+                            }
+                            PresbyopiaViewModel.TestState.TextBlinking -> {
+                                Text(
+                                    text = "다음은 검사 방법\n예시입니다",
+                                    fontWeight = FontWeight.Bold,
+                                    fontSize = 60.sp,
+                                    textAlign = TextAlign.Center
+                                )
+                            }
+                            else -> {
+                                Text(
+                                    text = "2  3  4  5",
+                                    fontWeight = FontWeight.Bold,
+                                    fontSize = 60.sp
+                                )
+                                Text(
+                                    text = "6  7  8  9",
+                                    fontWeight = FontWeight.Bold,
+                                    fontSize = 40.sp
+                                )
+                            }
                         }
                     }
                 }

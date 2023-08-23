@@ -83,6 +83,9 @@ fun MeasuringDistanceContent(
         val isDistanceMeasuredTTSDone = faceDetectionViewModel.isDistanceMeasuredTTSDone.collectAsState().value
         val isPressStartButtonTTSDone = faceDetectionViewModel.isPressStartButtonTTSDone.collectAsState().value
 
+        val coroutineScope = rememberCoroutineScope()
+        val isWarningShowing = remember { mutableStateOf(false) }
+
         LaunchedEffect(isLeftEye) {
             if (isLeftEye) {
                 faceDetectionViewModel.updateIsOccluderPickedTTSDone(false)
@@ -187,6 +190,7 @@ fun MeasuringDistanceContent(
 //                    contentDescription = ""
 //                )
                     FaceDetectionWithPreview(measuringDistanceContentVisibleState.targetState)
+
                     // eye tracking red dot
 //                    CustomShape()
                     Image(
@@ -284,6 +288,32 @@ fun MeasuringDistanceContent(
                         fontWeight = FontWeight.ExtraBold
                     )
                 }
+                Box(
+                    modifier = Modifier
+                        .fillMaxSize(),
+                    contentAlignment = Alignment.Center
+                ) {
+                    if (isWarningShowing.value) {
+                        Text(
+                            modifier = Modifier
+                                .padding(start = 40.dp, end = 40.dp)
+                                .border(
+                                    border = BorderStroke(2.dp, Color(0xFF000000)),
+                                    shape = RoundedCornerShape(8.dp)
+                                )
+                                .background(
+                                    color = Color(0xFFFFFFFF),
+                                    shape = RoundedCornerShape(8.dp)
+                                )
+                                .padding(20.dp)
+                                .fillMaxWidth(),
+                            text = "음성 안내를\n끝까지 들어주세요",
+                            fontSize = 50.sp,
+                            fontWeight = FontWeight.Bold,
+                            textAlign = TextAlign.Center
+                        )
+                    }
+                }
             }
             Box(
                 modifier = Modifier
@@ -377,7 +407,21 @@ fun MeasuringDistanceContent(
                                 shape = RoundedCornerShape(8.dp),
                             )
                             .clickable {
-                                toNextContent()
+                                if (!TTS.tts.isSpeaking) {
+                                    toNextContent()
+                                } else {
+                                    coroutineScope.launch {
+                                        for (i in 1..3) {
+                                            isWarningShowing.value = true
+                                            delay(400)
+                                            isWarningShowing.value = false
+                                            delay(400)
+                                        }
+                                        isWarningShowing.value = true
+                                        delay(2000)
+                                        isWarningShowing.value = false
+                                    }
+                                }
                             },
                         contentAlignment = Alignment.Center
                     ) {
@@ -459,7 +503,7 @@ fun MeasuringDistanceDialog(
                                 .padding(20.dp)
                                 .fillMaxWidth(),
                             text = "음성 안내를\n끝까지 들어주세요",
-                            fontSize = 32.sp,
+                            fontSize = 50.sp,
                             fontWeight = FontWeight.Bold,
                             textAlign = TextAlign.Center
                         )
