@@ -6,6 +6,8 @@ import android.util.Log
 import androidx.compose.ui.geometry.Offset
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.viewModelScope
+import androidx.media3.common.Player
+import androidx.media3.exoplayer.ExoPlayer
 import com.pixelro.nenoonkiosk.TTS
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.delay
@@ -50,6 +52,7 @@ class AmslerGridViewModel @Inject constructor(
     val isDotShowing: StateFlow<Boolean> = _isDotShowing
     private val _isFaceCenter = MutableStateFlow(false)
     val isFaceCenter: StateFlow<Boolean> = _isFaceCenter
+    val exoPlayer: ExoPlayer = ExoPlayer.Builder(getApplication()).build()
 
     //TTS 전용 변수
     private val _isLookAtTheDotTTSDone = MutableStateFlow(true)
@@ -191,5 +194,10 @@ class AmslerGridViewModel @Inject constructor(
                 MacularDisorderType.Normal
             )
         }
+    }
+
+    init {
+//        exoPlayer.repeatMode = Player.REPEAT_MODE_ONE
+        exoPlayer.volume = 0f
     }
 }

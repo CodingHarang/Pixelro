@@ -30,12 +30,18 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.input.pointer.pointerInput
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.compose.ui.viewinterop.AndroidView
 import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.media3.common.MediaItem
+import androidx.media3.datasource.RawResourceDataSource
+import androidx.media3.ui.AspectRatioFrameLayout
+import androidx.media3.ui.PlayerView
 import com.pixelro.nenoonkiosk.R
 import com.pixelro.nenoonkiosk.TTS
 import com.pixelro.nenoonkiosk.data.AnimationProvider
@@ -91,6 +97,7 @@ fun AmslerGridTestContent(
     }
 }
 
+@androidx.annotation.OptIn(androidx.media3.common.util.UnstableApi::class)
 @Composable
 fun AmslerGridContent(
     amslerGridContentVisibleState: MutableTransitionState<Boolean>,
@@ -99,6 +106,8 @@ fun AmslerGridContent(
     amslerGridViewModel: AmslerGridViewModel = hiltViewModel(),
     faceDetectionViewModel: FaceDetectionViewModel = hiltViewModel()
 ) {
+    val exoPlayer = amslerGridViewModel.exoPlayer
+    val context = LocalContext.current
     AnimatedVisibility(
         visibleState = amslerGridContentVisibleState,
         enter = AnimationProvider.enterTransition,
@@ -122,7 +131,7 @@ fun AmslerGridContent(
             && !amslerGridViewModel.isSelectTTSDone.collectAsState().value
         ) {
             amslerGridViewModel.updateIsSelectTTSDone(true)
-            TTS.speechTTS("이상하게 보이거나 왜곡되어 보이는 부분을, 손으로 눌러 선택해주세요. 선택을 완료했거나 이상한 부분이 없다면 아래의 완료 버튼을 눌러주세요.", TextToSpeech.QUEUE_ADD)
+            TTS.speechTTS("왜곡되어 보이거나, 검정색으로 보이는 부분을, 손으로 눌러 선택해주세요. 선택을 모두 완료했거나 이상한 부분이 없다면 아래의 완료 버튼을 눌러주세요.", TextToSpeech.QUEUE_ADD)
         }
         FaceDetection()
         Column(
@@ -142,7 +151,7 @@ fun AmslerGridContent(
                 text = when (!isBlinkingDone) {
                     true -> "아래의 깜빡이는 점을 봐주세요"
                     false -> when (isFaceCenter) {
-                        true -> "이상하게 보이거나 왜곡되어 보이는 부분을 손으로 눌러 선택해주세요. 선택을 완료했거나 이상한 부분이 없다면, 아래의 완료 버튼을 눌러주세요."
+                        true -> "왜곡되어 보이거나 검정색으로 보이는 부분을 손으로 눌러 선택해주세요. 선택을 모두 완료했거나 이상한 부분이 없다면, 아래의 완료 버튼을 눌러주세요."
                         false -> "가운데의 검은 점을 봐주세요"
                     }
                 },
@@ -165,68 +174,87 @@ fun AmslerGridContent(
                     )
                     .width(700.dp)
                     .height(700.dp)
-                    .padding(40.dp),
             ) {
-                Image(
-                    modifier = Modifier
-                        .width(600.dp)
-                        .height(600.dp),
-                    painter = painterResource(id = R.drawable.amsler_grid),
-                    contentDescription = ""
-                )
-                Canvas(
-                    modifier = Modifier
-                        .width(600.dp)
-                        .height(600.dp)
-                ) {
-                    if (isDotShowing) {
-                        drawCircle(
-                            color = Color(0xff000000),
-                            radius = 50f,
-                            center = Offset(450f, 450f)
-                        )
-                    }
-                    if (!isFaceCenter) {
-                        drawCircle(
-                            color = Color(0xff0000ff),
-                            radius = 20f,
-                            center = Offset(450f - (400f * tan(rotY * 0.0174533)).toFloat(), 450f - (400f * tan((rotX + 10) * 0.0174533)).toFloat())
-                        )
-                    }
-                    if (isBlinkingDone && !isFaceCenter && 450f - (400f * tan(rotY * 0.0174533)).toFloat() > 400f && 450f - (400f * tan(rotY * 0.0174533)).toFloat() < 500f
-                            && 450f - (400f * tan((rotX + 10) * 0.0174533)).toFloat() > 400f && 450f - (400f * tan((rotX + 10) * 0.0174533)).toFloat() < 500f) {
-                        amslerGridViewModel.updateIsFaceCenter(true)
-                    }
-                }
-                Column(
-                    modifier = Modifier
-                        .width(600.dp)
-                        .height(600.dp)
-                        .pointerInput(this) {
-                            detectTapGestures(
-                                onPress = {
-                                    amslerGridViewModel.updateCurrentSelectedPosition(it)
-                                }
+                if (isBlinkingDone && isFaceCenter && TTS.tts.isSpeaking) {
+                    AndroidView(
+                        modifier = Modifier
+                            .fillMaxSize(),
+                        factory = {
+                            PlayerView(context).apply {
+                                resizeMode = AspectRatioFrameLayout.RESIZE_MODE_ZOOM
+                                player = exoPlayer
+                                useController = false
+                                exoPlayer.setMediaItem(MediaItem.fromUri(RawResourceDataSource.buildRawResourceUri(R.raw.amsler_video_2)))
+                                exoPlayer.prepare()
+                                exoPlayer.play()
+                            }
+                        }
+                    )
+                } else {
+                    Image(
+                        modifier = Modifier
+                            .padding(40.dp)
+                            .width(600.dp)
+                            .height(600.dp),
+                        painter = painterResource(id = R.drawable.amsler_grid),
+                        contentDescription = ""
+                    )
+                    Canvas(
+                        modifier = Modifier
+                            .padding(40.dp)
+                            .width(600.dp)
+                            .height(600.dp)
+                    ) {
+                        if (isDotShowing) {
+                            drawCircle(
+                                color = Color(0xff000000),
+                                radius = 50f,
+                                center = Offset(450f, 450f)
                             )
                         }
-                ) {
-                    for(i in 0..2) {
-                        Row(
-                            modifier = Modifier
-                                .weight(1f)
-                        ) {
-                            for(j in (i * 3)..(i * 3 + 2)) {
-                                Box(
-                                    modifier = Modifier
-                                        .weight(1f)
-                                        .fillMaxHeight()
-                                        .background(
-                                            color = when (currentSelectedArea[j]) {
-                                                MacularDisorderType.Normal -> Color(0x00000000)
-                                                else -> Color(0x550000ff)
-                                            }
-                                        )
+                        if (!isFaceCenter) {
+                            drawCircle(
+                                color = Color(0xff0000ff),
+                                radius = 20f,
+                                center = Offset(450f - (400f * tan(rotY * 0.0174533)).toFloat(), 450f - (400f * tan((rotX + 10) * 0.0174533)).toFloat())
+                            )
+                        }
+                        if (isBlinkingDone && !isFaceCenter && 450f - (400f * tan(rotY * 0.0174533)).toFloat() > 400f && 450f - (400f * tan(rotY * 0.0174533)).toFloat() < 500f
+                            && 450f - (400f * tan((rotX + 10) * 0.0174533)).toFloat() > 400f && 450f - (400f * tan((rotX + 10) * 0.0174533)).toFloat() < 500f) {
+                            amslerGridViewModel.updateIsFaceCenter(true)
+                        }
+                    }
+                    Column(
+                        modifier = Modifier
+                            .padding(40.dp)
+                            .width(600.dp)
+                            .height(600.dp)
+                            .pointerInput(this) {
+                                detectTapGestures(
+                                    onPress = {
+                                        amslerGridViewModel.updateCurrentSelectedPosition(it)
+                                    }
                                 )
+                            }
+                    ) {
+                        for(i in 0..2) {
+                            Row(
+                                modifier = Modifier
+                                    .weight(1f)
+                            ) {
+                                for(j in (i * 3)..(i * 3 + 2)) {
+                                    Box(
+                                        modifier = Modifier
+                                            .weight(1f)
+                                            .fillMaxHeight()
+                                            .background(
+                                                color = when (currentSelectedArea[j]) {
+                                                    MacularDisorderType.Normal -> Color(0x00000000)
+                                                    else -> Color(0x550000ff)
+                                                }
+                                            )
+                                    )
+                                }
                             }
                         }
                     }

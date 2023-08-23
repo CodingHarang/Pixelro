@@ -17,20 +17,29 @@ import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.DisposableEffect
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.draw.rotate
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.compose.ui.viewinterop.AndroidView
 import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.media3.common.MediaItem
+import androidx.media3.datasource.RawResourceDataSource
+import androidx.media3.ui.AspectRatioFrameLayout
+import androidx.media3.ui.PlayerView
 import com.pixelro.nenoonkiosk.R
 import com.pixelro.nenoonkiosk.TTS
 import com.pixelro.nenoonkiosk.data.AnimationProvider
@@ -38,6 +47,10 @@ import com.pixelro.nenoonkiosk.data.StringProvider
 import com.pixelro.nenoonkiosk.data.TestType
 import com.pixelro.nenoonkiosk.facedetection.FaceDetection
 import com.pixelro.nenoonkiosk.facedetection.MeasuringDistanceContent
+import com.pixelro.nenoonkiosk.test.presbyopia.PresbyopiaViewModel
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.flow.update
+import kotlinx.coroutines.launch
 
 @Composable
 fun MChartTestContent(
@@ -46,6 +59,11 @@ fun MChartTestContent(
 ) {
     LaunchedEffect(true) {
         mChartViewModel.init()
+    }
+    DisposableEffect(true) {
+        onDispose {
+            mChartViewModel.exoPlayer.release()
+        }
     }
     val measuringDistanceContentVisibleState = remember { MutableTransitionState(true) }
     measuringDistanceContentVisibleState.targetState = mChartViewModel.isMeasuringDistanceContentVisible.collectAsState().value
@@ -82,6 +100,7 @@ fun MChartTestContent(
     }
 }
 
+@androidx.annotation.OptIn(androidx.media3.common.util.UnstableApi::class)
 @Composable
 fun MChartContent(
     mChartContentVisibleState: MutableTransitionState<Boolean>,
@@ -93,8 +112,19 @@ fun MChartContent(
         enter = AnimationProvider.enterTransition,
         exit = AnimationProvider.exitTransition
     ) {
+
+        val context = LocalContext.current
+        val exoPlayer = mChartViewModel.exoPlayer
+        val coroutineScope = rememberCoroutineScope()
+        val isTTSSpeaking = mChartViewModel.isTTSSpeaking.collectAsState().value
         LaunchedEffect(true) {
+            TTS.setOnDoneListener { mChartViewModel.updateIsTTSSpeaking(false) }
             TTS.speechTTS("검사를 시작하겠습니다. 아래의 선이 곧은 선으로 보이는지 휘어진 선으로 보이는지 선택해주세요.", TextToSpeech.QUEUE_ADD)
+        }
+        DisposableEffect(true) {
+            onDispose {
+                TTS.clearOnDoneListener()
+            }
         }
         FaceDetection()
         val isLeftEye = mChartViewModel.isLeftEye.collectAsState().value
@@ -130,101 +160,74 @@ fun MChartContent(
                         .fillMaxWidth()
                         .width(700.dp)
                         .height(700.dp)
-                        .padding(40.dp)
                 ) {
-//                Text(
-//                    text = "$currentLevel",
-//                    fontSize = 30.sp
-//                )
-                    Image(
-                        modifier = Modifier
-                            .fillMaxSize()
-                            .rotate(
-                                when (isVertical) {
-                                    true -> 0f
-                                    else -> 90f
-                                }
-                            ),
-                        painter = painterResource(id = imageId),
-                        contentDescription = ""
-                    )
-                }
-            }
-            Box(
-                modifier = Modifier
-                    .fillMaxSize(),
-                contentAlignment = Alignment.BottomCenter
-            ) {
-                Column(
-                    modifier = Modifier
-                        .fillMaxWidth(),
-                    horizontalAlignment = Alignment.CenterHorizontally
-                ) {
-                    Box(
-                        modifier = Modifier
-                            .padding(
-                                start = 40.dp,
-                                end = 40.dp,
-                                bottom = 20.dp
-                            )
-                            .fillMaxWidth()
-                            .height(80.dp)
-                            .clip(
-                                shape = RoundedCornerShape(8.dp)
-                            )
-                            .background(
-                                color = Color(0xff1d71e1),
-                                shape = RoundedCornerShape(8.dp),
-                            )
-                            .clickable {
-                                if (isVertical && isLeftEye) {
-                                    mChartViewModel.updateLeftVerticalValue()
-                                    mChartViewModel.updateCurrentLevel(0)
-                                    mChartViewModel.updateIsVertical(false)
-                                } else if (!isVertical && isLeftEye) {
-                                    mChartViewModel.updateLeftHorizontalValue()
-                                    mChartViewModel.toNextMChartTest()
-                                    mChartViewModel.updateIsMChartContentVisible(false)
-                                    mChartViewModel.updateIsMeasuringDistanceContentVisible(true)
-                                } else if (isVertical) {
-                                    mChartViewModel.updateRightVerticalValue()
-                                    mChartViewModel.updateCurrentLevel(0)
-                                    mChartViewModel.updateIsVertical(false)
-                                } else {
-                                    TTS.speechTTS("검사가 완료되었습니다. 결과가 나올 때 까지 잠시 기다려주세요.", TextToSpeech.QUEUE_ADD)
-                                    mChartViewModel.updateRightHorizontalValue()
-                                    toResultScreen(mChartViewModel.getMChartTestResult())
-                                }
-                            },
-                        contentAlignment = Alignment.Center
-                    ) {
-                        Text(
+                    if (isTTSSpeaking) {
+                        AndroidView(
                             modifier = Modifier
-                                .padding(bottom = 4.dp),
-                            text = StringProvider.getString(R.string.mchart_test_content_straight),
-                            fontSize = 40.sp,
-                            fontWeight = FontWeight.Medium,
-                            color = Color(0xffffffff)
+                                .fillMaxSize(),
+                            factory = {
+                                PlayerView(context).apply {
+                                    resizeMode = AspectRatioFrameLayout.RESIZE_MODE_ZOOM
+                                    player = exoPlayer
+                                    useController = false
+                                    exoPlayer.setMediaItem(MediaItem.fromUri(RawResourceDataSource.buildRawResourceUri(R.raw.mchart_video_2)))
+                                    exoPlayer.prepare()
+                                    exoPlayer.pause()
+                                    coroutineScope.launch {
+                                        Log.e("coroutineScope", "coroutineScope1")
+                                        delay(4000)
+                                        exoPlayer.play()
+                                        Log.e("coroutineScope", "coroutineScope2")
+                                    }
+
+                                }
+                            }
+                        )
+                    } else {
+                        Image(
+                            modifier = Modifier
+                                .padding(40.dp)
+                                .fillMaxSize()
+                                .rotate(
+                                    when (isVertical) {
+                                        true -> 0f
+                                        else -> 90f
+                                    }
+                                ),
+                            painter = painterResource(id = imageId),
+                            contentDescription = ""
                         )
                     }
-                    Box(
+                }
+            }
+            if (!isTTSSpeaking) {
+                Box(
+                    modifier = Modifier
+                        .fillMaxSize(),
+                    contentAlignment = Alignment.BottomCenter
+                ) {
+                    Column(
                         modifier = Modifier
-                            .padding(
-                                start = 40.dp,
-                                end = 40.dp,
-                                bottom = 40.dp
-                            )
-                            .fillMaxWidth()
-                            .height(80.dp)
-                            .clip(
-                                shape = RoundedCornerShape(8.dp)
-                            )
-                            .background(
-                                color = Color(0xff1d71e1),
-                                shape = RoundedCornerShape(8.dp),
-                            )
-                            .clickable {
-                                if (currentLevel >= 19) {
+                            .fillMaxWidth(),
+                        horizontalAlignment = Alignment.CenterHorizontally
+                    ) {
+                        Box(
+                            modifier = Modifier
+                                .padding(
+                                    start = 40.dp,
+                                    end = 40.dp,
+                                    bottom = 20.dp
+                                )
+                                .fillMaxWidth()
+                                .height(80.dp)
+                                .clip(
+                                    shape = RoundedCornerShape(8.dp)
+                                )
+                                .background(
+                                    color = Color(0xff1d71e1),
+                                    shape = RoundedCornerShape(8.dp),
+                                )
+                                .clickable {
                                     if (isVertical && isLeftEye) {
                                         mChartViewModel.updateLeftVerticalValue()
                                         mChartViewModel.updateCurrentLevel(0)
@@ -239,24 +242,81 @@ fun MChartContent(
                                         mChartViewModel.updateCurrentLevel(0)
                                         mChartViewModel.updateIsVertical(false)
                                     } else {
-                                        TTS.speechTTS("검사가 완료되었습니다. 결과가 나올 때 까지 잠시 기다려주세요.", TextToSpeech.QUEUE_ADD)
+                                        TTS.speechTTS(
+                                            "검사가 완료되었습니다. 결과가 나올 때 까지 잠시 기다려주세요.",
+                                            TextToSpeech.QUEUE_ADD
+                                        )
                                         mChartViewModel.updateRightHorizontalValue()
                                         toResultScreen(mChartViewModel.getMChartTestResult())
                                     }
-                                } else {
-                                    mChartViewModel.updateCurrentLevel(currentLevel + 1)
-                                }
-                            },
-                        contentAlignment = Alignment.Center
-                    ) {
-                        Text(
+                                },
+                            contentAlignment = Alignment.Center
+                        ) {
+                            Text(
+                                modifier = Modifier
+                                    .padding(bottom = 4.dp),
+                                text = StringProvider.getString(R.string.mchart_test_content_straight),
+                                fontSize = 40.sp,
+                                fontWeight = FontWeight.Medium,
+                                color = Color(0xffffffff)
+                            )
+                        }
+                        Box(
                             modifier = Modifier
-                                .padding(bottom = 4.dp),
-                            text = StringProvider.getString(R.string.mchart_test_content_bent),
-                            fontSize = 40.sp,
-                            fontWeight = FontWeight.Medium,
-                            color = Color(0xffffffff)
-                        )
+                                .padding(
+                                    start = 40.dp,
+                                    end = 40.dp,
+                                    bottom = 40.dp
+                                )
+                                .fillMaxWidth()
+                                .height(80.dp)
+                                .clip(
+                                    shape = RoundedCornerShape(8.dp)
+                                )
+                                .background(
+                                    color = Color(0xff1d71e1),
+                                    shape = RoundedCornerShape(8.dp),
+                                )
+                                .clickable {
+                                    if (currentLevel >= 19) {
+                                        if (isVertical && isLeftEye) {
+                                            mChartViewModel.updateLeftVerticalValue()
+                                            mChartViewModel.updateCurrentLevel(0)
+                                            mChartViewModel.updateIsVertical(false)
+                                        } else if (!isVertical && isLeftEye) {
+                                            mChartViewModel.updateLeftHorizontalValue()
+                                            mChartViewModel.toNextMChartTest()
+                                            mChartViewModel.updateIsMChartContentVisible(false)
+                                            mChartViewModel.updateIsMeasuringDistanceContentVisible(
+                                                true
+                                            )
+                                        } else if (isVertical) {
+                                            mChartViewModel.updateRightVerticalValue()
+                                            mChartViewModel.updateCurrentLevel(0)
+                                            mChartViewModel.updateIsVertical(false)
+                                        } else {
+                                            TTS.speechTTS(
+                                                "검사가 완료되었습니다. 결과가 나올 때 까지 잠시 기다려주세요.",
+                                                TextToSpeech.QUEUE_ADD
+                                            )
+                                            mChartViewModel.updateRightHorizontalValue()
+                                            toResultScreen(mChartViewModel.getMChartTestResult())
+                                        }
+                                    } else {
+                                        mChartViewModel.updateCurrentLevel(currentLevel + 1)
+                                    }
+                                },
+                            contentAlignment = Alignment.Center
+                        ) {
+                            Text(
+                                modifier = Modifier
+                                    .padding(bottom = 4.dp),
+                                text = StringProvider.getString(R.string.mchart_test_content_bent),
+                                fontSize = 40.sp,
+                                fontWeight = FontWeight.Medium,
+                                color = Color(0xffffffff)
+                            )
+                        }
                     }
                 }
             }

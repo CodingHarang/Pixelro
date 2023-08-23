@@ -234,7 +234,7 @@ fun  PresbyopiaTestContent(
             modifier = Modifier.fillMaxSize(),
             contentAlignment = Alignment.BottomCenter
         ) {
-            if (testState == PresbyopiaViewModel.TestState.ComingCloser || testState == PresbyopiaViewModel.TestState.NoPresbyopia) {
+            if ((testState == PresbyopiaViewModel.TestState.ComingCloser || testState == PresbyopiaViewModel.TestState.NoPresbyopia) && !TTS.tts.isSpeaking) {
                 Box(
                     modifier = Modifier
                         .padding(

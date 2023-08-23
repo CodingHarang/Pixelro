@@ -4,6 +4,7 @@ import android.app.Application
 import androidx.compose.animation.core.MutableTransitionState
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.viewModelScope
+import androidx.media3.exoplayer.ExoPlayer
 import com.pixelro.nenoonkiosk.R
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.delay
@@ -34,6 +35,13 @@ class MChartViewModel @Inject constructor(
     private var _rightHorizontalValue = 0
     private val _mChartImageId = MutableStateFlow(R.drawable.mchart_0_0)
     val mChartImageId: StateFlow<Int> = _mChartImageId
+    val exoPlayer: ExoPlayer = ExoPlayer.Builder(getApplication()).build()
+    private val _isTTSSpeaking = MutableStateFlow(true)
+    val isTTSSpeaking: StateFlow<Boolean> = _isTTSSpeaking
+
+    fun updateIsTTSSpeaking(isSpeaking: Boolean) {
+        _isTTSSpeaking.update { isSpeaking }
+    }
 
     fun updateIsMeasuringDistanceContentVisible(visible: Boolean) {
         _isMeasuringDistanceContentVisible.update { visible }
@@ -55,6 +63,8 @@ class MChartViewModel @Inject constructor(
     fun toNextMChartTest() {
         _isLeftEye.update { false }
         viewModelScope.launch {
+            exoPlayer.stop()
+            _isTTSSpeaking.update { true }
             delay(450)
             updateCurrentLevel(0)
             updateIsVertical(true)
@@ -116,5 +126,9 @@ class MChartViewModel @Inject constructor(
         _isMeasuringDistanceContentVisible.update { true }
         _isMChartContentVisible.update { false }
         _mChartImageId.update { R.drawable.mchart_0_0 }
+    }
+
+    init {
+        exoPlayer.volume = 0f
     }
 }
