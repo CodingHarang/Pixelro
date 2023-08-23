@@ -44,6 +44,12 @@ class  PresbyopiaViewModel @Inject constructor(
     val isTextShowing: StateFlow<Boolean> = _isTextShowing
     private var isTTSDescriptionDone = false
     val exoPlayer: ExoPlayer = ExoPlayer.Builder(getApplication()).build()
+    private val _isComingCloserTTSDone = MutableStateFlow(false)
+    val isComingCloserTTSDone: StateFlow<Boolean> = _isComingCloserTTSDone
+
+    fun updateIsComingCloserTTSDone(isDone: Boolean) {
+        _isComingCloserTTSDone.update { isDone }
+    }
 
     fun checkCondition(dist: Float) {
         if (!TTS.tts.isSpeaking) {
@@ -51,6 +57,7 @@ class  PresbyopiaViewModel @Inject constructor(
                 TestState.Started -> {
                     isTTSDescriptionDone = false
                     TTS.setOnDoneListener { _testState.update { TestState.AdjustingDistance } }
+                    _isComingCloserTTSDone.update { false }
                     when (_tryCount.value) {
                         0 -> TTS.speechTTS("조절력 검사를 시작하겠습니다.", TextToSpeech.QUEUE_ADD)
                         1 -> TTS.speechTTS("두 번째 검사를 시작하겠습니다.", TextToSpeech.QUEUE_ADD)
@@ -73,7 +80,7 @@ class  PresbyopiaViewModel @Inject constructor(
                 TestState.TextBlinking -> {
                     if (!isTTSDescriptionDone) {
                         isTTSDescriptionDone = true
-                        TTS.speechTTS("아래의 깜빡이는 숫자를 봐주세요.", TextToSpeech.QUEUE_ADD)
+                        TTS.speechTTS("다음은 검사 방법 안내 영상입니다.", TextToSpeech.QUEUE_ADD)
                         viewModelScope.launch {
                             for (i in 1..12) {
                                 _isTextShowing.update { !it }
@@ -87,8 +94,13 @@ class  PresbyopiaViewModel @Inject constructor(
 
                 TestState.ComingCloser -> {
                     if (!isTTSDescriptionDone) {
-                        TTS.setOnDoneListener { isTTSDescriptionDone = true }
+                        TTS.setOnDoneListener {
+                            isTTSDescriptionDone = true
+                            _isComingCloserTTSDone.update { true }
+                            TTS.clearOnDoneListener()
+                        }
                         TTS.speechTTS("조금씩 앞으로 오다가, 숫자가 흐릿해보이는 지점에서 멈추고, 아래의 다음 버튼을 눌러주세요.", TextToSpeech.QUEUE_ADD)
+                        TTS.speechTTS("검사를 시작하겠습니다.", TextToSpeech.QUEUE_ADD)
                     }
                     if (dist < 250f && isTTSDescriptionDone) {
                         TTS.clearOnDoneListener()
@@ -172,7 +184,6 @@ class  PresbyopiaViewModel @Inject constructor(
 
     init {
         _tryCount.update { 0 }
-        exoPlayer.repeatMode = Player.REPEAT_MODE_ONE
         exoPlayer.volume = 0f
     }
 }

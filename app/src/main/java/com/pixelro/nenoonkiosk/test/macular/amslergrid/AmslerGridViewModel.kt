@@ -53,6 +53,12 @@ class AmslerGridViewModel @Inject constructor(
     private val _isFaceCenter = MutableStateFlow(false)
     val isFaceCenter: StateFlow<Boolean> = _isFaceCenter
     val exoPlayer: ExoPlayer = ExoPlayer.Builder(getApplication()).build()
+    private val _isTestStarted = MutableStateFlow(false)
+    val isTestStarted: StateFlow<Boolean> = _isTestStarted
+
+    fun updateIsTestStarted(isStarted: Boolean) {
+        _isTestStarted.update { isStarted }
+    }
 
     //TTS 전용 변수
     private val _isLookAtTheDotTTSDone = MutableStateFlow(true)
@@ -97,6 +103,7 @@ class AmslerGridViewModel @Inject constructor(
         TTS.speechTTS("오른쪽 눈 검사를 시작하겠습니다.", TextToSpeech.QUEUE_ADD)
         viewModelScope.launch {
             delay(450)
+            _isTestStarted.update { false }
             _isBlinkingDone.update { false }
             _isDotShowing.update { true }
             _isFaceCenter.update { false }
@@ -162,7 +169,7 @@ class AmslerGridViewModel @Inject constructor(
     }
 
     fun startBlinking() {
-        var count = 16
+        var count = 24
         viewModelScope.launch {
             while(count > 0) {
                 _isDotShowing.update { !it }

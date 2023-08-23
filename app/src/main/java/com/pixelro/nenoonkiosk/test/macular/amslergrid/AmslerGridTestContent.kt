@@ -121,17 +121,25 @@ fun AmslerGridContent(
         val isBlinkingDone = amslerGridViewModel.isBlinkingDone.collectAsState().value
         val isDotShowing = amslerGridViewModel.isDotShowing.collectAsState().value
         val isFaceCenter = amslerGridViewModel.isFaceCenter.collectAsState().value
+        val isSelectTTSDone = amslerGridViewModel.isSelectTTSDone.collectAsState().value
+        val isTestStarted = amslerGridViewModel.isTestStarted.collectAsState().value
+
         if (!amslerGridViewModel.isLookAtTheDotTTSDone.collectAsState().value) {
             amslerGridViewModel.updateIsLookAtTheDotTTSDone(true)
-            TTS.speechTTS("검사를 시작하겠습니다. 격자 가운데의 깜빡이는 점을 봐주세요", TextToSpeech.QUEUE_ADD)
+            TTS.speechTTS("격자 가운데의 깜빡이는 점을 봐주세요", TextToSpeech.QUEUE_ADD)
         }
         if (
             amslerGridViewModel.isLookAtTheDotTTSDone.collectAsState().value
             && isFaceCenter
-            && !amslerGridViewModel.isSelectTTSDone.collectAsState().value
+            && !isSelectTTSDone
         ) {
             amslerGridViewModel.updateIsSelectTTSDone(true)
+            TTS.setOnDoneListener {
+                amslerGridViewModel.updateIsTestStarted(true)
+                TTS.clearOnDoneListener()
+            }
             TTS.speechTTS("왜곡되어 보이거나, 검정색으로 보이는 부분을, 손으로 눌러 선택해주세요. 선택을 모두 완료했거나 이상한 부분이 없다면 아래의 완료 버튼을 눌러주세요.", TextToSpeech.QUEUE_ADD)
+            TTS.speechTTS("검사를 시작하겠습니다.", TextToSpeech.QUEUE_ADD)
         }
         FaceDetection()
         Column(
@@ -149,7 +157,7 @@ fun AmslerGridContent(
                     .padding(start = 20.dp, top = 20.dp, end = 20.dp, bottom = 20.dp)
                     .height(160.dp),
                 text = when (!isBlinkingDone) {
-                    true -> "다음은 검사 방법 예시입니다"
+                    true -> "아래의 깜빡이는 점을 봐주세요"
                     false -> when (isFaceCenter) {
                         true -> "왜곡되어 보이거나 검정색으로 보이는 부분을 손으로 눌러 선택해주세요. 선택을 모두 완료했거나 이상한 부분이 없다면, 아래의 완료 버튼을 눌러주세요."
                         false -> "가운데의 검은 점을 봐주세요"
@@ -175,7 +183,7 @@ fun AmslerGridContent(
                     .width(700.dp)
                     .height(700.dp)
             ) {
-                if (isBlinkingDone && isFaceCenter && TTS.tts.isSpeaking) {
+                if (isBlinkingDone && isFaceCenter && TTS.tts.isSpeaking && !isTestStarted) {
                     AndroidView(
                         modifier = Modifier
                             .fillMaxSize(),
@@ -323,7 +331,10 @@ fun AmslerGridContent(
                             } else {
                                 amslerGridViewModel.updateRightSelectedArea()
                                 amslerGridViewModel.updateIsAmslerGridContentVisible(false)
-                                TTS.speechTTS("검사가 완료되었습니다. 결과가 나올 때 까지 잠시 기다려주세요.", TextToSpeech.QUEUE_ADD)
+                                TTS.speechTTS(
+                                    "검사가 완료되었습니다. 결과가 나올 때 까지 잠시 기다려주세요.",
+                                    TextToSpeech.QUEUE_ADD
+                                )
                                 toResultScreen(amslerGridViewModel.getAmslerGridTestResult())
                             }
                         },

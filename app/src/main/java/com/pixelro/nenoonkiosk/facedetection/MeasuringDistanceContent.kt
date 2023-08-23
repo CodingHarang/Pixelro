@@ -546,7 +546,7 @@ fun MeasuringDistanceDialog(
                         }
                         .padding(20.dp),
                     text = "확인했습니다",
-                    fontSize = 30.sp,
+                    fontSize = 50.sp,
                     color = Color(0xff1d71e1),
                     fontWeight = FontWeight.Medium,
                     textAlign = TextAlign.Center

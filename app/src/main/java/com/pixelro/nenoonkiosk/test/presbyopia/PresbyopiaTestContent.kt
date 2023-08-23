@@ -41,6 +41,7 @@ import androidx.compose.ui.unit.sp
 import androidx.compose.ui.viewinterop.AndroidView
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.media3.common.MediaItem
+import androidx.media3.common.Player
 import androidx.media3.datasource.RawResourceDataSource
 import androidx.media3.ui.AspectRatioFrameLayout
 import androidx.media3.ui.PlayerView
@@ -66,9 +67,10 @@ fun  PresbyopiaTestContent(
     val isNumberShowing = presbyopiaViewModel.isTextShowing.collectAsState().value
     val context = LocalContext.current
     val exoPlayer = presbyopiaViewModel.exoPlayer
+    val isComingCloserTTSDone = presbyopiaViewModel.isComingCloserTTSDone.collectAsState().value
+
     FaceDetection()
     DisposableEffect(true) {
-
         onDispose {
             exoPlayer.release()
             TTS.clearOnDoneListener()
@@ -92,7 +94,7 @@ fun  PresbyopiaTestContent(
             text = when (testState) {
                 PresbyopiaViewModel.TestState.Started,
                 PresbyopiaViewModel.TestState.AdjustingDistance -> "화면으로부터 40~60cm 사이로 거리를 조정해주세요"
-                PresbyopiaViewModel.TestState.TextBlinking -> "아래의 깜빡이는 숫자를 봐주세요"
+                PresbyopiaViewModel.TestState.TextBlinking -> "다음은 검사 방법 안내 영상입니다"
                 PresbyopiaViewModel.TestState.ComingCloser -> "조금씩 앞으로 오다가 숫자가 흐릿해보이는\n지점에서 멈추고 아래의 '다음'을 눌러주세요"
                 PresbyopiaViewModel.TestState.NoPresbyopia -> {
                     when (tryCount) {
@@ -105,6 +107,7 @@ fun  PresbyopiaTestContent(
             color = Color(0xffffffff),
             fontSize = when (testState) {
                 PresbyopiaViewModel.TestState.ComingCloser -> 36.sp
+                PresbyopiaViewModel.TestState.TextBlinking -> 44.sp
                 else -> 48.sp
             },
             fontWeight = FontWeight.Bold,
@@ -146,6 +149,7 @@ fun  PresbyopiaTestContent(
                             .fillMaxSize(),
                         factory = {
                             PlayerView(context).apply {
+                                exoPlayer.repeatMode = Player.REPEAT_MODE_ONE
                                 resizeMode = AspectRatioFrameLayout.RESIZE_MODE_ZOOM
                                 player = exoPlayer
                                 useController = false
@@ -158,24 +162,43 @@ fun  PresbyopiaTestContent(
                 }
             }
             PresbyopiaViewModel.TestState.ComingCloser to true -> {
-                Surface(
-                    modifier = Modifier
-                        .fillMaxSize()
-                ) {
-                    AndroidView(
+                if (isComingCloserTTSDone) {
+                    Column(
+                        horizontalAlignment = Alignment.CenterHorizontally,
+                        verticalArrangement = Arrangement.Center
+                    ) {
+                        Text(
+                            text = "2  3  4  5",
+                            fontWeight = FontWeight.Bold,
+                            fontSize = 60.sp
+                        )
+                        Text(
+                            text = "6  7  8  9",
+                            fontWeight = FontWeight.Bold,
+                            fontSize = 40.sp
+                        )
+                    }
+                } else {
+                    Surface(
                         modifier = Modifier
-                            .fillMaxSize(),
-                        factory = {
-                            PlayerView(context).apply {
-                                resizeMode = AspectRatioFrameLayout.RESIZE_MODE_ZOOM
-                                player = exoPlayer
-                                useController = false
-                                exoPlayer.setMediaItem(MediaItem.fromUri(RawResourceDataSource.buildRawResourceUri(R.raw.presbyopia_video_2)))
-                                exoPlayer.prepare()
-                                exoPlayer.play()
+                            .fillMaxSize()
+                    ) {
+                        AndroidView(
+                            modifier = Modifier
+                                .fillMaxSize(),
+                            factory = {
+                                PlayerView(context).apply {
+                                    exoPlayer.repeatMode = Player.REPEAT_MODE_OFF
+                                    resizeMode = AspectRatioFrameLayout.RESIZE_MODE_ZOOM
+                                    player = exoPlayer
+                                    useController = false
+                                    exoPlayer.setMediaItem(MediaItem.fromUri(RawResourceDataSource.buildRawResourceUri(R.raw.presbyopia_video_2)))
+                                    exoPlayer.prepare()
+                                    exoPlayer.play()
+                                }
                             }
-                        }
-                    )
+                        )
+                    }
                 }
             }
             else -> {
@@ -199,7 +222,7 @@ fun  PresbyopiaTestContent(
                             }
                             PresbyopiaViewModel.TestState.TextBlinking -> {
                                 Text(
-                                    text = "다음은 검사 방법\n예시입니다",
+                                    text = "다음은 검사 방법\n안내 영상입니다",
                                     fontWeight = FontWeight.Bold,
                                     fontSize = 60.sp,
                                     textAlign = TextAlign.Center
