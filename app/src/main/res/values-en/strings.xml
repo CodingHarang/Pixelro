@@ -40,13 +40,13 @@
     <string name="visual_acuity_test_common_content_distance">measure distance</string>
     <string name="short_distance_visual_acuity_test_result_content_result">Visual acuity test result</string>
     <string name="short_distance_visual_acuity_test_result_distance">measured distance</string>
-    <string name="visual_acuity_test_common_content_description">Please choose what you see</string>
+    <string name="visual_acuity_test_common_content_description">Please choose the one below that looks the same as the above chart</string>
     <string name="visual_acuity_test_common_content_green">Green</string>
     <string name="visual_acuity_test_common_content_red">Red</string>
     <string name="visual_acuity_test_common_content_signtedness_description">Which color do you see better?</string>
     <string name="visual_acuity_test_common_content_both_negative">Both negative</string>
     <string name="visual_acuity_test_common_content_both_positive">Both positive</string>
-    <string name="amsler_grid_test_content_done">Done</string>
+    <string name="amsler_grid_test_content_done">Complete</string>
     <string name="mchart_test_content_straight">Straight line</string>
     <string name="mchart_test_content_bent">Bent line</string>
     <string name="test_dialog_result">RESULT</string>
@@ -100,9 +100,9 @@
     <string name="start_without_signin">Start without signin</string>
     <string name="signin">SIGNIN</string>
     <string name="signout">SIGNOUT</string>
-    <string name="please">Please</string>
+    <string name="please">Please </string>
     <string name="touch">Touch Screen</string>
-    <string name="can_test">" To Resume Test"</string>
+    <string name="can_test">\nTo Resume Test</string>
     <string name="permission_requirement">Permission is required to use the app</string>
     <string name="permission_nextpage">All permissions must be set to proceed to the next screen\nIf an unchecked item is selected, it will go to the settings page</string>
     <string name="permission_setting_change">Change system settings</string>
@@ -147,5 +147,31 @@
     <string name="cancel">Cancel</string>
     <string name="setting_terms">Terms of Usage</string>
     <string name="setting_software_info">Software Info</string>
+    <string name="dialog_pickup">In this test, we use an eye cover as shown below.\nPlease pick up the eye cover.</string>
+    <string name="dialog_announcement">Please listen to the voice guidance\nall the way to the end</string>
+    <string name="confirm">Confirmed</string>
+    <string name="visualacuity_choose">Please choose from below</string>
+    <string name="undifined">UNDIFINED</string>
+    <string name="presbyopia_description_a">Please adjust the distance between 40~60cm from the screen</string>
+    <string name="presbyopia_description_b">Slowly come forward until the numbers blur, then stop and press the \'next\' below</string>
+    <string name="presbyopia_description_c">Please look at the flashing numbers below</string>
+    <string name="presbyopia_description_fine_1">No signs of presbyopia were found in the first measurement\nPlease press next below</string>
+    <string name="presbyopia_description_fine_2">No signs of presbyopia were found in the second measurement\nPlease press next below</string>
+    <string name="presbyopia_description_fine_3">No signs of presbyopia were found in the last measurement\nPlease press next below</string>
+    <string name="amsler_description_a">Please look at the flashing dot below</string>
+    <string name="amsler_description_b">Please select part that looks strange or distorted. If you have completed your selectionm press the \'Complete\' button.</string>
+    <string name="amsler_description_c">Please look at the black dot in the center</string>
+    <string name="no_printer">No connected printer</string>
+    <string name="presbyopia_result_normal">No symptoms of presbyopia were found</string>
+    <string name="presbyopia_result_eye_age">Eye age is </string>
+    <string name="presbyopia_result_eye_age_number"> 45 or under</string>
+    <string name="presbyopia_result_sub_description">You can see objects clearly at a distance of 25cm or less</string>
+    <string name="presbyopia_result_abnormal">Symptoms of presbyopia may effect your daily life</string>
+    <string name="presbyopia_result_old"> </string>
+    <string name="presbyopia_result_ending_word"> </string>
+    <string name="presbyopia_result_approximate">Approximately </string>
+    <string name="presbyopia_result_approximate_limit">cm or less of the distance the object appears blurry</string>
+
+
 
 </resources>

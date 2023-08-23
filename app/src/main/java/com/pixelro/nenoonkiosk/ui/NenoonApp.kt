@@ -30,6 +30,7 @@ import com.pixelro.nenoonkiosk.ui.testcontent.ChildrenVisualAcuityTestContent
 import com.pixelro.nenoonkiosk.ui.testcontent.LongDistanceVisualAcuityTestContent
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
+import java.util.Locale
 
 @OptIn(ExperimentalAnimationApi::class)
 @Composable

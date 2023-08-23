@@ -291,6 +291,28 @@ fun LanguageSelectDialog(
                         color = Color(0xffdddddd)
                     )
             )
+            Box(
+                modifier = Modifier
+                    .clickable {
+                        updateLanguage("zh")
+                    }
+            ) {
+                Text(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(start = 20.dp, top = 10.dp, bottom = 10.dp),
+                    text = "汉语",
+                    fontSize = 30.sp
+                )
+            }
+            Spacer(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .height(1.dp)
+                    .background(
+                        color = Color(0xffdddddd)
+                    )
+            )
         }
     }
 }

@@ -371,7 +371,7 @@ fun VisualAcuityTestContent(
                 contentAlignment = Alignment.Center
             ) {
                 Text(
-                    text = "안보임",
+                    text = StringProvider.getString(R.string.undifined),
                     fontSize = 60.sp,
                 )
             }

@@ -35,6 +35,7 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
@@ -101,9 +102,9 @@ fun PresbyopiaTestContent(
             },
             color = Color(0xffffffff),
             fontSize = when (!isMovedTo40cm) {
-                true -> 48.sp
+                true -> 38.sp
                 false -> when(isBlinkingDone) {
-                    true -> 36.sp
+                    true -> 34.sp
                     false -> 48.sp
                 }
             },

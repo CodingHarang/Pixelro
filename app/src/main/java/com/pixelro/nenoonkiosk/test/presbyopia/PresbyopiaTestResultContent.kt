@@ -154,7 +154,7 @@ fun PresbyopiaTestResultContent(
         when (testResult.firstDistance.toInt() == 20 || testResult.secondDistance.toInt() == 20 || testResult.thirdDistance.toInt() == 20) {
             true -> {
                 Text(
-                    text = "노안 증상이 발견되지 않았습니다",
+                    text = StringProvider.getString(R.string.presbyopia_result_normal),
                     fontSize = 36.sp,
                     fontWeight = FontWeight.Bold
                 )
@@ -164,29 +164,29 @@ fun PresbyopiaTestResultContent(
                 )
                 Text(
                     text = buildAnnotatedString {
-                        append("안구 나이는 ")
+                        append(StringProvider.getString(R.string.presbyopia_result_eye_age))
                         withStyle(
                             style = SpanStyle(
                                 color = Color(0xff1d71e1),
                                 fontWeight = FontWeight.Bold
                             )
                         ) {
-                            append("45세 이하")
+                            append(" " + StringProvider.getString(R.string.presbyopia_result_eye_age_number))
                         }
-                        append("입니다")
+                        append(StringProvider.getString(R.string.presbyopia_result_ending_word))
                     },
                     fontSize = 32.sp,
                     fontWeight = FontWeight.Medium,
                 )
                 Text(
-                    text = "25cm 이하의 거리에서도 물체를 선명하게 볼 수 있습니다",
+                    text = StringProvider.getString(R.string.presbyopia_result_sub_description),
                     fontSize = 24.sp,
                     color = Color(0xff878787)
                 )
             }
             false -> {
                 Text(
-                    text = "노안 증상으로 인해\n일상생활에 불편함이 있을 수 있습니다",
+                    text = StringProvider.getString(R.string.presbyopia_result_abnormal),
                     fontSize = 36.sp,
                     fontWeight = FontWeight.Bold
                 )
@@ -196,22 +196,22 @@ fun PresbyopiaTestResultContent(
                 )
                 Text(
                     text = buildAnnotatedString {
-                        append("안구 나이는 ")
+                        append(StringProvider.getString(R.string.presbyopia_result_eye_age))
                         withStyle(
                             style = SpanStyle(
                                 color = Color(0xff1d71e1),
                                 fontWeight = FontWeight.Bold
                             )
                         ) {
-                            append("" + (testResult.age - 2) + " ~ " + (testResult.age + 2) + "세")
+                            append(" " + (testResult.age - 2) + " ~ " + (testResult.age + 2) + StringProvider.getString(R.string.presbyopia_result_old))
                         }
-                        append("입니다")
+                        append(StringProvider.getString(R.string.presbyopia_result_ending_word))
                     },
                     fontSize = 32.sp,
                     fontWeight = FontWeight.Medium,
                 )
                 Text(
-                    text = "약 " + String.format("%.1f", testResult.avgDistance) + "cm 이하의 거리에 있는 물체가 흐리게 보입니다",
+                    text = StringProvider.getString(R.string.presbyopia_result_approximate) + String.format("%.1f", testResult.avgDistance) + StringProvider.getString(R.string.presbyopia_result_approximate_limit),
                     fontSize = 24.sp,
                     color = Color(0xff878787)
                 )
