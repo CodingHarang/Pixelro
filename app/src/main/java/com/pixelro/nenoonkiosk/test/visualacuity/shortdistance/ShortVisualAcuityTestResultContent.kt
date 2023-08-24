@@ -17,6 +17,8 @@ import androidx.navigation.NavHostController
 import com.pixelro.nenoonkiosk.NenoonViewModel
 import com.pixelro.nenoonkiosk.data.StringProvider
 import com.pixelro.nenoonkiosk.R
+import com.pixelro.nenoonkiosk.data.SharedPreferencesManager
+import hilt_aggregated_deps._com_pixelro_nenoonkiosk_di_SharedPreferencesDataSourceModule
 
 @Composable
 fun ShortDistanceVisualAcuityTestResultContent(
@@ -120,7 +122,13 @@ fun ShortDistanceVisualAcuityTestResultContent(
                 Text(
                     modifier = Modifier
                         .fillMaxWidth(),
-                    text = "${testResult.leftEye.toFloat() / 10}",
+                    text = when(SharedPreferencesManager.getString("language")) {
+                        "ko" -> "${testResult.leftEye.toFloat() / 10}"
+                        "en" -> "20/" + "${(200 / testResult.leftEye).toInt()}"
+                        "zh" -> "${4 + (testResult.leftEye.toFloat() / 10)}"
+                        "ja" -> "${testResult.leftEye.toFloat() / 10}"
+                        else -> "${testResult.leftEye.toFloat() / 10}"
+                    },
                     fontSize = 60.sp,
                     fontWeight = FontWeight.Bold,
                     textAlign = TextAlign.Center
@@ -235,7 +243,13 @@ fun ShortDistanceVisualAcuityTestResultContent(
                 Text(
                     modifier = Modifier
                         .fillMaxWidth(),
-                    text = "${testResult.rightEye.toFloat() / 10}",
+                    text = when(SharedPreferencesManager.getString("language")) {
+                        "ko" -> "${testResult.rightEye.toFloat() / 10}"
+                        "en" -> "20/" + "${(200 / testResult.rightEye).toInt()}"
+                        "zh" -> "${4 + (testResult.rightEye.toFloat() / 10)}"
+                        "ja" -> "${testResult.rightEye.toFloat() / 10}"
+                        else -> "${testResult.rightEye.toFloat() / 10}"
+                    },
                     fontSize = 60.sp,
                     fontWeight = FontWeight.Bold,
                     textAlign = TextAlign.Center
