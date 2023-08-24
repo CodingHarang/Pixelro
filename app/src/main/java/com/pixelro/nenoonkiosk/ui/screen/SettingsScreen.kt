@@ -313,6 +313,28 @@ fun LanguageSelectDialog(
                         color = Color(0xffdddddd)
                     )
             )
+            Box(
+                modifier = Modifier
+                    .clickable {
+                        updateLanguage("ja")
+                    }
+            ) {
+                Text(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(start = 20.dp, top = 10.dp, bottom = 10.dp),
+                    text = "日本語",
+                    fontSize = 30.sp
+                )
+            }
+            Spacer(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .height(1.dp)
+                    .background(
+                        color = Color(0xffdddddd)
+                    )
+            )
         }
     }
 }

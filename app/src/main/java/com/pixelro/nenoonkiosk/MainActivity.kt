@@ -64,6 +64,9 @@ class MainActivity : ComponentActivity() {
                 "zh" -> NenoonKioskApplication.applicationContext().resources.configuration.setLocale(
                     Locale("zh")
                 )
+                "ja" -> NenoonKioskApplication.applicationContext().resources.configuration.setLocale(
+                    Locale("ja")
+                )
                 else -> NenoonKioskApplication.applicationContext().resources.configuration.setLocale(
                     Locale("ko")
                 )

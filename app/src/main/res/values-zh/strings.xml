@@ -7,7 +7,7 @@
     <string name="long_visual_acuity_name">远视力检测</string>
     <string name="children_visual_acuity_name">儿童视力检测</string>
     <string name="macular_degeneration_name">黄斑变性检测</string>
-    <string name="amsler_grid_name">Amsler网格检测</string>
+    <string name="amsler_grid_name">阿姆斯勒图测试</string>
     <string name="mchart_name">M型变形视检测</string>
     <string name="test_list_screen_warning1">"我的眼睛应用的所有视力检测都是自检，"</string>
     <string name="test_list_screen_warning2">"并非医学意见，"</string>
@@ -21,7 +21,7 @@
     <string name="short_visual_acuity_result_title">近视力检测结果</string>
     <string name="long_visual_acuity_result_title">远视力检测结果</string>
     <string name="children_visual_acuity_result_title">儿童视力检测结果</string>
-    <string name="amsler_grid_result_title">Amsler网格检测结果</string>
+    <string name="amsler_grid_result_title">阿姆斯勒图测试结果</string>
     <string name="mchart_result_title">M型变形视检测结果</string>
     <string name="settings_title">设置</string>
     <string name="settings_language">语言</string>
@@ -63,7 +63,7 @@
     <string name="test_predescription_short_visual_acuity_title">近视力检测</string>
     <string name="test_predescription_long_visual_acuity_title">远视力检测</string>
     <string name="test_predescription_children_visual_acuity_title">儿童视力检测</string>
-    <string name="test_predescription_amsler_title">Amsler图表测试\n(黄斑变性检测)</string>
+    <string name="test_predescription_amsler_title">阿姆斯勒图测试 (黄斑变性检测)</string>
     <string name="test_predescription_mchart_title">M图形变形视检测\n(黄斑变性检测)</string>
     <string name="test_list">测试列表</string>
     <string name="presbyopia_test_description">从50厘米的地方逐渐靠近，当视图变得模糊时停下来并按下按钮</string>
@@ -77,7 +77,7 @@
     <string name="left">左边</string>
     <string name="right">右边</string>
     <string name="left_and_right">左边 · 右边</string>
-    <string name="left_and_right_0.7_or_higher">左边 · 右边 0.7 以上</string>
+    <string name="left_and_right_0.7_or_higher">左边 · 右边 4.7 以上</string>
     <string name="red">红色</string>
     <string name="green">绿色</string>
     <string name="test_result_my_result">我的结果</string>
