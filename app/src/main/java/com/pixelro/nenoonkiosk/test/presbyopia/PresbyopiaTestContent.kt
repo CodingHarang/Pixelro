@@ -188,10 +188,10 @@ fun  PresbyopiaTestContent(
                                 .fillMaxSize(),
                             factory = {
                                 PlayerView(context).apply {
+                                    useController = false
                                     exoPlayer.repeatMode = Player.REPEAT_MODE_OFF
                                     resizeMode = AspectRatioFrameLayout.RESIZE_MODE_ZOOM
                                     player = exoPlayer
-                                    useController = false
                                     exoPlayer.setMediaItem(MediaItem.fromUri(RawResourceDataSource.buildRawResourceUri(R.raw.presbyopia_video_2)))
                                     exoPlayer.prepare()
                                     exoPlayer.play()
@@ -206,40 +206,38 @@ fun  PresbyopiaTestContent(
                     horizontalAlignment = Alignment.CenterHorizontally,
                     verticalArrangement = Arrangement.Center
                 ) {
-                    if (true) {
-                        when (testState) {
-                            PresbyopiaViewModel.TestState.NoPresbyopia -> {
-                                Text(
-                                    text = when (tryCount) {
-                                        0 -> "첫 번째 측정에서\n노안이 발견되지 않았습니다\n아래의 다음을 눌러주세요"
-                                        1 -> "두 번째 측정에서\n노안이 발견되지 않았습니다\n아래의 다음을 눌러주세요"
-                                        else -> "마지막 측정에서\n노안이 발견되지 않았습니다\n아래의 다음을 눌러주세요"
-                                    },
-                                    fontSize = 44.sp,
-                                    fontWeight = FontWeight.Bold,
-                                    textAlign = TextAlign.Center
-                                )
-                            }
-                            PresbyopiaViewModel.TestState.TextBlinking -> {
-                                Text(
-                                    text = "다음은 검사 방법\n안내 영상입니다",
-                                    fontWeight = FontWeight.Bold,
-                                    fontSize = 60.sp,
-                                    textAlign = TextAlign.Center
-                                )
-                            }
-                            else -> {
-                                Text(
-                                    text = "2  3  4  5",
-                                    fontWeight = FontWeight.Bold,
-                                    fontSize = 60.sp
-                                )
-                                Text(
-                                    text = "6  7  8  9",
-                                    fontWeight = FontWeight.Bold,
-                                    fontSize = 40.sp
-                                )
-                            }
+                    when (testState) {
+                        PresbyopiaViewModel.TestState.NoPresbyopia -> {
+                            Text(
+                                text = when (tryCount) {
+                                    0 -> "첫 번째 측정에서\n노안이 발견되지 않았습니다\n아래의 다음을 눌러주세요"
+                                    1 -> "두 번째 측정에서\n노안이 발견되지 않았습니다\n아래의 다음을 눌러주세요"
+                                    else -> "마지막 측정에서\n노안이 발견되지 않았습니다\n아래의 다음을 눌러주세요"
+                                },
+                                fontSize = 44.sp,
+                                fontWeight = FontWeight.Bold,
+                                textAlign = TextAlign.Center
+                            )
+                        }
+                        PresbyopiaViewModel.TestState.TextBlinking -> {
+                            Text(
+                                text = "다음은 검사 방법\n안내 영상입니다",
+                                fontWeight = FontWeight.Bold,
+                                fontSize = 60.sp,
+                                textAlign = TextAlign.Center
+                            )
+                        }
+                        else -> {
+                            Text(
+                                text = "2  3  4  5",
+                                fontWeight = FontWeight.Bold,
+                                fontSize = 60.sp
+                            )
+                            Text(
+                                text = "6  7  8  9",
+                                fontWeight = FontWeight.Bold,
+                                fontSize = 40.sp
+                            )
                         }
                     }
                 }
@@ -251,22 +249,37 @@ fun  PresbyopiaTestContent(
             .fillMaxSize(),
         contentAlignment = Alignment.BottomCenter
     ) {
-        if (testState == PresbyopiaViewModel.TestState.AdjustingDistance || testState == PresbyopiaViewModel.TestState.Started) {
-            Text(
-                modifier = Modifier
-                    .padding(bottom = 304.dp),
-                text = StringProvider.getString(R.string.test_screen_current_distance),
-                fontSize = 24.sp,
-                color = Color(0xffffffff)
-            )
-            Text(
-                modifier = Modifier
-                    .padding(bottom = 120.dp),
-                text = "${(faceDetectionViewModel.screenToFaceDistance.collectAsState().value / 10).roundToInt()}cm",
-                fontSize = 140.sp,
-                fontWeight = FontWeight.Medium,
-                color = Color(0xffffffff)
-            )
+        when (testState) {
+            PresbyopiaViewModel.TestState.Started,
+            PresbyopiaViewModel.TestState.AdjustingDistance -> {
+                Text(
+                    modifier = Modifier
+                        .padding(bottom = 304.dp),
+                    text = StringProvider.getString(R.string.test_screen_current_distance),
+                    fontSize = 24.sp,
+                    color = Color(0xffffffff)
+                )
+                Text(
+                    modifier = Modifier
+                        .padding(bottom = 120.dp),
+                    text = "${(faceDetectionViewModel.screenToFaceDistance.collectAsState().value / 10).roundToInt()}cm",
+                    fontSize = 140.sp,
+                    fontWeight = FontWeight.Medium,
+                    color = Color(0xffffffff)
+                )
+            }
+            PresbyopiaViewModel.TestState.ComingCloser -> {
+                if (!isComingCloserTTSDone) {
+                    Text(
+                        modifier = Modifier
+                            .padding(bottom = 304.dp),
+                        text = "위 영상은 검사 안내 영상입니다",
+                        color = Color(0xFFFFFFFF),
+                        fontSize = 40.sp
+                    )
+                }
+            }
+            else -> {}
         }
         Box(
             modifier = Modifier.fillMaxSize(),

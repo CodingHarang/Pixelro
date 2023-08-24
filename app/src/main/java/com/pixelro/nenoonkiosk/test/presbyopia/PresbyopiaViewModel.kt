@@ -99,7 +99,7 @@ class  PresbyopiaViewModel @Inject constructor(
                             _isComingCloserTTSDone.update { true }
                             TTS.clearOnDoneListener()
                         }
-                        TTS.speechTTS("조금씩 앞으로 오다가, 숫자가 흐릿해보이는 지점에서 멈추고, 아래의 다음 버튼을 눌러주세요.", TextToSpeech.QUEUE_ADD)
+                        TTS.speechTTS("조금씩 앞으로 오다가, 아래의 영상과 같이 숫자가 점점 흐릿해져 보인다면, 움직임을 멈추고 아래의 다음 버튼을 눌러주세요.", TextToSpeech.QUEUE_ADD)
                         TTS.speechTTS("검사를 시작하겠습니다.", TextToSpeech.QUEUE_ADD)
                     }
                     if (dist < 250f && isTTSDescriptionDone) {
