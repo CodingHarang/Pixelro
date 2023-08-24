@@ -68,8 +68,16 @@ fun IntroScreen(
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
             Text(
-                text = "내눈\n눈 건강 지킴이",
+                text = "내눈",
                 fontSize = 100.sp,
+                fontFamily = cafe24Family,
+
+                textAlign = TextAlign.Center,
+                color = Color(0xFF1D71E1)
+            )
+            Text(
+                text = "안건강 자가진단 키오스크",
+                fontSize = 60.sp,
                 fontFamily = cafe24Family,
 
                 textAlign = TextAlign.Center,

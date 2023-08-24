@@ -17,6 +17,7 @@ import androidx.compose.ui.draw.rotate
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.pixelro.nenoonkiosk.R
@@ -28,7 +29,8 @@ fun EyeTestSelectableBox(
     modifier: Modifier,
     title: String,
     onClickMethod: () -> Unit,
-    isDone: Boolean
+    isDone: Boolean,
+    time: Int
 ) {
     Card(
         elevation = CardDefaults.cardElevation(0.dp),
@@ -56,7 +58,7 @@ fun EyeTestSelectableBox(
                 modifier = Modifier
                     .padding(start = 28.dp),
                 fontSize = 40.sp,
-                fontWeight = FontWeight.Black,
+                fontWeight = FontWeight.ExtraBold,
                 color = when(isDone) {
                     true -> Color(0xff999999)
                     false -> Color(0xff000000)
@@ -71,6 +73,30 @@ fun EyeTestSelectableBox(
                 painter = painterResource(id = R.drawable.icon_back_black),
                 contentDescription = ""
             )
+            Column(
+                modifier = Modifier
+                    .padding(end = 160.dp)
+                    .fillMaxSize(),
+                horizontalAlignment = Alignment.End,
+                verticalArrangement = Arrangement.Center
+            ) {
+                Text(
+                    modifier = Modifier
+                        .width(100.dp),
+                    text = "소요 시간",
+                    fontSize = 20.sp,
+                    textAlign = TextAlign.Center,
+                    fontWeight = FontWeight.Medium
+                )
+                Text(
+                    modifier = Modifier
+                        .width(100.dp),
+                    text = "약 ${time}분",
+                    fontSize = 30.sp,
+                    textAlign = TextAlign.Center,
+                    fontWeight = FontWeight.Bold
+                )
+            }
         }
     }
 }

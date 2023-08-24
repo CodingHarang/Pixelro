@@ -40,6 +40,7 @@ fun TestListContent(
                 }
             },
             isDone = isPresbyopiaDone,
+            time = 3
         )
         Spacer(
             modifier = Modifier
@@ -55,7 +56,8 @@ fun TestListContent(
                     toTestScreen(TestType.ShortDistanceVisualAcuity)
                 }
             },
-            isDone = isShortVisualAcuityDone
+            isDone = isShortVisualAcuityDone,
+            time = 2
         )
         Spacer(
             modifier = Modifier
@@ -71,7 +73,8 @@ fun TestListContent(
                     toTestScreen(TestType.AmslerGrid)
                 }
             },
-            isDone = isAmslerGridDone
+            isDone = isAmslerGridDone,
+            time = 2
         )
         Spacer(
             modifier = Modifier
@@ -87,7 +90,8 @@ fun TestListContent(
                     toTestScreen(TestType.MChart)
                 }
             },
-            isDone = isMChartDone
+            isDone = isMChartDone,
+            time = 2
         )
     }
 }

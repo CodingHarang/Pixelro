@@ -74,6 +74,7 @@ fun  PresbyopiaTestContent(
         onDispose {
             exoPlayer.release()
             TTS.clearOnDoneListener()
+            TTS.tts.stop()
         }
     }
     presbyopiaViewModel.checkCondition(distance)

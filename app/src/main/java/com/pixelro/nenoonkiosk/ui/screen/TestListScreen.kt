@@ -50,6 +50,7 @@ import androidx.navigation.NavHostController
 import com.google.accompanist.navigation.animation.rememberAnimatedNavController
 import com.pixelro.nenoonkiosk.NenoonViewModel
 import com.pixelro.nenoonkiosk.R
+import com.pixelro.nenoonkiosk.TTS
 import com.pixelro.nenoonkiosk.data.GlobalValue
 import com.pixelro.nenoonkiosk.data.StringProvider
 import com.pixelro.nenoonkiosk.data.TestType
@@ -76,6 +77,7 @@ fun TestListScreen(
     )
     val isDescriptionShowing = remember { mutableStateOf(true) }
     LaunchedEffect(true) {
+        TTS.tts.stop()
         while(true) {
             delay(5000)
             pagerState.animateScrollToPage(
