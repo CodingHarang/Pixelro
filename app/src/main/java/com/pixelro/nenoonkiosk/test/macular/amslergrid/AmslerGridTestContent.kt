@@ -306,49 +306,51 @@ fun AmslerGridContent(
                     .fillMaxSize(),
                 contentAlignment = Alignment.BottomCenter
             ) {
-                Box(
-                    modifier = Modifier
-                        .padding(
-                            start = 40.dp,
-                            end = 40.dp,
-                            bottom = 40.dp
-                        )
-                        .fillMaxWidth()
-                        .height(80.dp)
-                        .clip(
-                            shape = RoundedCornerShape(8.dp)
-                        )
-                        .background(
-                            color = Color(0xff1d71e1),
-                            shape = RoundedCornerShape(8.dp)
-                        )
-                        .clickable {
-                            if (isLeft) {
-                                amslerGridViewModel.updateIsLeftEye(false)
-                                amslerGridViewModel.updateLeftSelectedArea()
-                                amslerGridViewModel.updateIsMeasuringDistanceContentVisible(true)
-                                amslerGridViewModel.updateIsAmslerGridContentVisible(false)
-                            } else {
-                                amslerGridViewModel.updateRightSelectedArea()
-                                amslerGridViewModel.updateIsAmslerGridContentVisible(false)
-                                TTS.speechTTS(
-                                    "검사가 완료되었습니다. 결과가 나올 때 까지 잠시 기다려주세요.",
-                                    TextToSpeech.QUEUE_ADD
-                                )
-                                toResultScreen(amslerGridViewModel.getAmslerGridTestResult())
-                            }
-                        },
-                    contentAlignment = Alignment.Center
-                ) {
-                    Text(
+                if (isTestStarted) {
+                    Box(
                         modifier = Modifier
-                            .padding(bottom = 4.dp),
-                        text = StringProvider.getString(R.string.amsler_grid_test_content_done),
-                        fontSize = 40.sp,
-                        color = Color(0xffffffff),
-                        textAlign = TextAlign.Center,
-                        fontWeight = FontWeight.Medium,
-                    )
+                            .padding(
+                                start = 40.dp,
+                                end = 40.dp,
+                                bottom = 40.dp
+                            )
+                            .fillMaxWidth()
+                            .height(80.dp)
+                            .clip(
+                                shape = RoundedCornerShape(8.dp)
+                            )
+                            .background(
+                                color = Color(0xff1d71e1),
+                                shape = RoundedCornerShape(8.dp)
+                            )
+                            .clickable {
+                                if (isLeft) {
+                                    amslerGridViewModel.updateIsLeftEye(false)
+                                    amslerGridViewModel.updateLeftSelectedArea()
+                                    amslerGridViewModel.updateIsMeasuringDistanceContentVisible(true)
+                                    amslerGridViewModel.updateIsAmslerGridContentVisible(false)
+                                } else {
+                                    amslerGridViewModel.updateRightSelectedArea()
+                                    amslerGridViewModel.updateIsAmslerGridContentVisible(false)
+                                    TTS.speechTTS(
+                                        "검사가 완료되었습니다. 결과가 나올 때 까지 잠시 기다려주세요.",
+                                        TextToSpeech.QUEUE_ADD
+                                    )
+                                    toResultScreen(amslerGridViewModel.getAmslerGridTestResult())
+                                }
+                            },
+                        contentAlignment = Alignment.Center
+                    ) {
+                        Text(
+                            modifier = Modifier
+                                .padding(bottom = 4.dp),
+                            text = StringProvider.getString(R.string.amsler_grid_test_content_done),
+                            fontSize = 40.sp,
+                            color = Color(0xffffffff),
+                            textAlign = TextAlign.Center,
+                            fontWeight = FontWeight.Medium,
+                        )
+                    }
                 }
             }
         }

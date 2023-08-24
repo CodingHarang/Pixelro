@@ -117,9 +117,14 @@ fun MChartContent(
         val exoPlayer = mChartViewModel.exoPlayer
         val coroutineScope = rememberCoroutineScope()
         val isTTSSpeaking = mChartViewModel.isTTSSpeaking.collectAsState().value
-        LaunchedEffect(true) {
-            TTS.speechTTS("검사를 시작하겠습니다. 아래의 선이, 고든 선으로 보이는지 휘어진 선으로 보이는지 선택해주세요.", TextToSpeech.QUEUE_ADD)
-            TTS.setOnDoneListener { mChartViewModel.updateIsTTSSpeaking(false) }
+        val isTesting = mChartViewModel.isTesting.collectAsState().value
+
+        LaunchedEffect(true) {TTS.setOnDoneListener {
+            mChartViewModel.updateIsTTSSpeaking(false)
+            mChartViewModel.updateIsTesting(true)
+        }
+            TTS.speechTTS("아래의 직선을 바라보고, 고든 선으로 보이는지 휘어진 선으로 보이는지 선택해주세요.", TextToSpeech.QUEUE_ADD)
+            TTS.speechTTS("검사를 시작하겠습니다.", TextToSpeech.QUEUE_ADD)
         }
         DisposableEffect(true) {
             onDispose {
@@ -161,15 +166,15 @@ fun MChartContent(
                         .width(700.dp)
                         .height(700.dp)
                 ) {
-                    if (isTTSSpeaking) {
+                    if (isTTSSpeaking && !isTesting) {
                         AndroidView(
                             modifier = Modifier
                                 .fillMaxSize(),
                             factory = {
                                 PlayerView(context).apply {
+                                    useController = false
                                     resizeMode = AspectRatioFrameLayout.RESIZE_MODE_ZOOM
                                     player = exoPlayer
-                                    useController = false
                                     exoPlayer.setMediaItem(MediaItem.fromUri(RawResourceDataSource.buildRawResourceUri(R.raw.mchart_video_2)))
                                     exoPlayer.prepare()
                                     exoPlayer.pause()
@@ -179,7 +184,6 @@ fun MChartContent(
                                         exoPlayer.play()
                                         Log.e("coroutineScope", "coroutineScope2")
                                     }
-
                                 }
                             }
                         )
@@ -287,9 +291,7 @@ fun MChartContent(
                                             mChartViewModel.updateLeftHorizontalValue()
                                             mChartViewModel.toNextMChartTest()
                                             mChartViewModel.updateIsMChartContentVisible(false)
-                                            mChartViewModel.updateIsMeasuringDistanceContentVisible(
-                                                true
-                                            )
+                                            mChartViewModel.updateIsMeasuringDistanceContentVisible(true)
                                         } else if (isVertical) {
                                             mChartViewModel.updateRightVerticalValue()
                                             mChartViewModel.updateCurrentLevel(0)

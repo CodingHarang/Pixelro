@@ -66,7 +66,7 @@ fun NenoonApp(
         modifier = Modifier
             .fillMaxSize(),
         navController = navController,
-        startDestination = Constants.ROUTE_TEST_LIST,
+        startDestination = Constants.ROUTE_SPLASH,
         contentAlignment = Alignment.TopCenter
     ) {
         Locale("en")

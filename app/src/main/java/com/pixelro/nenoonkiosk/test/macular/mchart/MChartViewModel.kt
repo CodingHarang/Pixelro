@@ -38,6 +38,12 @@ class MChartViewModel @Inject constructor(
     val exoPlayer: ExoPlayer = ExoPlayer.Builder(getApplication()).build()
     private val _isTTSSpeaking = MutableStateFlow(true)
     val isTTSSpeaking: StateFlow<Boolean> = _isTTSSpeaking
+    private val _isTesting = MutableStateFlow(false)
+    val isTesting: StateFlow<Boolean> = _isTesting
+
+    fun updateIsTesting(isTesting: Boolean) {
+        _isTesting.update { isTesting }
+    }
 
     fun updateIsTTSSpeaking(isSpeaking: Boolean) {
         _isTTSSpeaking.update { isSpeaking }
@@ -63,6 +69,7 @@ class MChartViewModel @Inject constructor(
     fun toNextMChartTest() {
         _isLeftEye.update { false }
         viewModelScope.launch {
+            _isTesting.update { false }
             exoPlayer.stop()
             _isTTSSpeaking.update { true }
             delay(450)
