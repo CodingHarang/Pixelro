@@ -68,9 +68,9 @@ class  PresbyopiaViewModel @Inject constructor(
                 TestState.AdjustingDistance -> {
                     if (!isTTSDescriptionDone) {
                         TTS.setOnDoneListener { isTTSDescriptionDone = true }
-                        TTS.speechTTS("화면으로부터 40~60cm 사이로 거리를 조정해주세요.", TextToSpeech.QUEUE_ADD)
+                        TTS.speechTTS("화면으로부터 40~50cm 사이로 거리를 조정해주세요.", TextToSpeech.QUEUE_ADD)
                     }
-                    if (dist > 400f && isTTSDescriptionDone) {
+                    if (dist > 400f && dist < 500f && isTTSDescriptionDone) {
                         TTS.clearOnDoneListener()
                         _testState.update { TestState.TextBlinking }
                         isTTSDescriptionDone = false

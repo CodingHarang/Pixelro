@@ -93,7 +93,7 @@ fun  PresbyopiaTestContent(
         Text(
             text = when (testState) {
                 PresbyopiaViewModel.TestState.Started,
-                PresbyopiaViewModel.TestState.AdjustingDistance -> "화면으로부터 40~60cm 사이로 거리를 조정해주세요"
+                PresbyopiaViewModel.TestState.AdjustingDistance -> "화면으로부터 40~50cm 사이로 거리를 조정해주세요"
                 PresbyopiaViewModel.TestState.TextBlinking -> "다음은 검사 방법 안내 영상입니다"
                 PresbyopiaViewModel.TestState.ComingCloser -> "조금씩 앞으로 오다가 숫자가 흐릿해보이는\n지점에서 멈추고 아래의 '다음'을 눌러주세요"
                 PresbyopiaViewModel.TestState.NoPresbyopia -> {
@@ -251,21 +251,23 @@ fun  PresbyopiaTestContent(
             .fillMaxSize(),
         contentAlignment = Alignment.BottomCenter
     ) {
-        Text(
-            modifier = Modifier
-                .padding(bottom = 304.dp),
-            text = StringProvider.getString(R.string.test_screen_current_distance),
-            fontSize = 24.sp,
-            color = Color(0xffffffff)
-        )
-        Text(
-            modifier = Modifier
-                .padding(bottom = 120.dp),
-            text = "${(faceDetectionViewModel.screenToFaceDistance.collectAsState().value / 10).roundToInt()}cm",
-            fontSize = 140.sp,
-            fontWeight = FontWeight.Medium,
-            color = Color(0xffffffff)
-        )
+        if (testState == PresbyopiaViewModel.TestState.AdjustingDistance || testState == PresbyopiaViewModel.TestState.Started) {
+            Text(
+                modifier = Modifier
+                    .padding(bottom = 304.dp),
+                text = StringProvider.getString(R.string.test_screen_current_distance),
+                fontSize = 24.sp,
+                color = Color(0xffffffff)
+            )
+            Text(
+                modifier = Modifier
+                    .padding(bottom = 120.dp),
+                text = "${(faceDetectionViewModel.screenToFaceDistance.collectAsState().value / 10).roundToInt()}cm",
+                fontSize = 140.sp,
+                fontWeight = FontWeight.Medium,
+                color = Color(0xffffffff)
+            )
+        }
         Box(
             modifier = Modifier.fillMaxSize(),
             contentAlignment = Alignment.BottomCenter

@@ -54,7 +54,7 @@ class NenoonViewModel @Inject constructor(
         viewModelScope.launch(CoroutineName("checkBackgroundStatus")) {
             while (true) {
                 if (_isResumed.value) {
-                    _screenSaverTimer.update { _screenSaverTimer.value - 1 }
+                    _screenSaverTimer.update { _screenSaverTimer.value - 0 }
 
                     if (_screenSaverTimer.value < 0) {
                         _isScreenSaving.update { true }
