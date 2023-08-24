@@ -115,12 +115,10 @@ class SurveyViewModel @Inject constructor(
                 )
             )
             if (response != null) {
-                Log.e("surveyId", "${((response.data?.get("tid") ?: 0) as Double).toLong()}")
                 withContext(Dispatchers.Main) {
                     toTestListScreen(((response.data?.get("tid") ?: 0) as Double).toLong())
                 }
             } else {
-                Log.e("surveyId", "result is null")
                 withContext(Dispatchers.Main) {
                     toTestListScreen(0L)
                 }

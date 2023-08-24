@@ -75,7 +75,7 @@ fun EyeTestSelectableBox(
             )
             Column(
                 modifier = Modifier
-                    .padding(end = 160.dp)
+                    .padding(end = 170.dp)
                     .fillMaxSize(),
                 horizontalAlignment = Alignment.End,
                 verticalArrangement = Arrangement.Center

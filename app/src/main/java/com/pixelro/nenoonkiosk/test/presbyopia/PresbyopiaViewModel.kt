@@ -47,10 +47,6 @@ class  PresbyopiaViewModel @Inject constructor(
     private val _isComingCloserTTSDone = MutableStateFlow(false)
     val isComingCloserTTSDone: StateFlow<Boolean> = _isComingCloserTTSDone
 
-    fun updateIsComingCloserTTSDone(isDone: Boolean) {
-        _isComingCloserTTSDone.update { isDone }
-    }
-
     fun checkCondition(dist: Float) {
         if (!TTS.tts.isSpeaking) {
             when (_testState.value) {
@@ -170,7 +166,6 @@ class  PresbyopiaViewModel @Inject constructor(
                 age = entry.y.toInt()
             }
         }
-        Log.e("presbyopiaResult", "firstDistance: ${firstDistance}\nsecondDistance: ${secondDistance}\nthirdDistance: ${thirdDistance}\n${avgDistance}\nage: $age")
         return PresbyopiaTestResult(firstDistance, secondDistance, thirdDistance, avgDistance, age)
     }
 

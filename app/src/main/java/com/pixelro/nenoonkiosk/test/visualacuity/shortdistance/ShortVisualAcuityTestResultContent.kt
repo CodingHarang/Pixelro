@@ -58,37 +58,6 @@ fun ShortDistanceVisualAcuityTestResultContent(
                 fontSize = 20.sp,
                 fontWeight = FontWeight.Medium
             )
-//            Text(
-//                modifier = Modifier
-//                    .padding(start = 12.dp)
-//                    .background(
-//                        color = Color(0xffffecec),
-//                        shape = RoundedCornerShape(4.dp)
-//                    )
-//                    .padding(start = 12.dp, top = 4.dp, end = 12.dp, bottom = 4.dp),
-//                text = StringProvider.getString(R.string.red),
-//                color = Color(0xffd23d3d),
-//                fontSize = 20.sp
-//            )
-//            Text(
-//                modifier = Modifier
-//                    .padding(start = 8.dp)
-//                    .background(
-//                        color = Color(0xffdafcda),
-//                        shape = RoundedCornerShape(4.dp)
-//                    )
-//                    .padding(start = 12.dp, top = 4.dp, end = 12.dp, bottom = 4.dp),
-//                text = StringProvider.getString(R.string.green),
-//                color = Color(0xff28bd29),
-//                fontSize = 20.sp
-//            )
-//            Text(
-//                modifier = Modifier
-//                    .padding(start = 12.dp),
-//                text = StringProvider.getString(R.string.test_result_all_seems_clear),
-//                color = Color(0xff878787),
-//                fontSize = 20.sp
-//            )
         }
         Text(
             modifier = Modifier

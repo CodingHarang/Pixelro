@@ -128,7 +128,6 @@ class AmslerGridViewModel @Inject constructor(
 
     fun updateCurrentSelectedPosition(position: Offset) {
         _currentSelectedPosition.update { position }
-//        Log.e("position", "${position.x}, ${position.y}")
         for(i in 0..8) {
             if(position.x in ((i % 3) * 300f)..((i % 3) * 300f + 299f) && position.y in ((i / 3) * 300f)..((i / 3) * 300f + 299f)) {
                 if(_currentSelectedArea.value[i] != MacularDisorderType.Normal) {
@@ -156,16 +155,6 @@ class AmslerGridViewModel @Inject constructor(
             }
             tmpList.toList()
         }
-//        Log.e("selectedArea", "${_currentSelectedArea.value[0]}\n" +
-//                "${_currentSelectedArea.value[1]}\n" +
-//                "${_currentSelectedArea.value[2]}\n" +
-//                "${_currentSelectedArea.value[3]}\n" +
-//                "${_currentSelectedArea.value[4]}\n" +
-//                "${_currentSelectedArea.value[5]}\n" +
-//                "${_currentSelectedArea.value[6]}\n" +
-//                "${_currentSelectedArea.value[7]}\n" +
-//                "${_currentSelectedArea.value[8]}\n"
-//        )
     }
 
     fun startBlinking() {
@@ -186,7 +175,6 @@ class AmslerGridViewModel @Inject constructor(
         _isFaceCenter.update { false }
         _isMeasuringDistanceContentVisible.update { true }
         _isAmslerGridContentVisible.update { false }
-//        _isMacularDegenerationTypeVisible.update { false }
         _isLeftEye.update { true }
         _currentSelectedArea.update {
             listOf(
@@ -204,7 +192,6 @@ class AmslerGridViewModel @Inject constructor(
     }
 
     init {
-//        exoPlayer.repeatMode = Player.REPEAT_MODE_ONE
         exoPlayer.volume = 0f
     }
 }

@@ -49,10 +49,6 @@ class SignInViewModel @Inject constructor(
                 /*
                 * 서버와 연결이 제대로 이루어졌을 때
                 */
-                Log.e("result", "data = ${result.data}\ncreateAt = ${result.createAt}\nresponseId = ${result.responseId}")
-                for (data in result.data) {
-                    Log.e("dataType", "data: ${data.value}\ntype: ${data.value?.javaClass}")
-                }
 
                 if (result.data["success"] as Boolean) {
                     /*

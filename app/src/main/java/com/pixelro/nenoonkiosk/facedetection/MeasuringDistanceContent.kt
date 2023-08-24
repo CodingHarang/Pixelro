@@ -90,18 +90,11 @@ fun MeasuringDistanceContent(
             if (isLeftEye) {
                 faceDetectionViewModel.updateIsOccluderPickedTTSDone(false)
             }
-//            Log.e("launched effect", "isLeftEye: $isLeftEye")
             faceDetectionViewModel.updateIsFaceDetectedTTSDone(false)
             faceDetectionViewModel.updateIsEyeCoveredTTSDone(false)
             faceDetectionViewModel.updateIsDistanceMeasuredTTSDone(false)
             faceDetectionViewModel.updateIsPressStartButtonTTSDone(false)
         }
-//        if (
-//            faceDetectionViewModel.isOccluderPickedTTSDone.collectAsState().value
-//            && !faceDetectionViewModel.isFaceDetectedTTSDone.collectAsState().value
-//            && !TTS.tts.isSpeaking
-//        ) {
-//        }
 
         if (
             isOccluderPickedTTSDone
@@ -144,10 +137,7 @@ fun MeasuringDistanceContent(
             && !isPressStartButtonTTSDone
             && !TTS.tts.isSpeaking
         ) {
-//            Log.e("아래의 검사 시작", "버튼을 눌러주세요, ${faceDetectionViewModel.isPressStartButtonTTSDone.collectAsState().value}")
             faceDetectionViewModel.updateIsPressStartButtonTTSDone(true)
-//            Log.e("아래의 검사 시작", "버튼을 눌러주세요, ${faceDetectionViewModel.isPressStartButtonTTSDone.collectAsState().value}")
-//            Log.e("아래의 검사 시작", "${!faceDetectionViewModel.isPressStartButtonTTSDone.collectAsState().value}")
             TTS.speechTTS("아래의 검사 시작 버튼을 눌러주세요.", TextToSpeech.QUEUE_ADD)
         }
         val transition = rememberInfiniteTransition()
@@ -185,14 +175,9 @@ fun MeasuringDistanceContent(
                         .height(740.dp),
                     contentAlignment = Alignment.BottomCenter
                 ) {
-//                Image(
-//                    bitmap = viewModel.bitmap.collectAsState().value.asImageBitmap(),
-//                    contentDescription = ""
-//                )
                     FaceDetectionWithPreview(measuringDistanceContentVisibleState.targetState)
 
                     // eye tracking red dot
-//                    CustomShape()
                     Image(
                         modifier = Modifier
                             .width(450.dp)

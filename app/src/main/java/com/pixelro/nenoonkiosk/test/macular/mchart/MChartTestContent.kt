@@ -179,10 +179,8 @@ fun MChartContent(
                                     exoPlayer.prepare()
                                     exoPlayer.pause()
                                     coroutineScope.launch {
-                                        Log.e("coroutineScope", "coroutineScope1")
                                         delay(4000)
                                         exoPlayer.play()
-                                        Log.e("coroutineScope", "coroutineScope2")
                                     }
                                 }
                             }

@@ -25,15 +25,6 @@ object TestResultUtil {
         paint.textAlign = Paint.Align.CENTER
         val width = 600
         val baseline = -paint.ascent()
-//        val printName = "포유문 산부인과"
-//    paint.textSize = 40f
-//    paint.color = 0xff000000.toInt()
-//    paint.textAlign = Paint.Align.CENTER
-//    val baseline = -paint.ascent() // ascent() is negative
-//    val width = 600
-//    val image = Bitmap.createBitmap(width, 400, Bitmap.Config.ARGB_8888)
-//    val canvas = Canvas(image)
-//    canvas.drawColor(android.graphics.Color.parseColor("#FFFFFFFF"))
         when(testType) {
             TestType.Presbyopia -> {
                 testResult as PresbyopiaTestResult
@@ -172,7 +163,6 @@ object TestResultUtil {
 
                 paint.style = Paint.Style.FILL
                 paint.typeface = Typeface.DEFAULT_BOLD
-//                Log.e("", testResult.leftEyeDisorderType[0].toString())
                 if(testResult.leftEyeDisorderType[0] != MacularDisorderType.Normal) {
                     canvas.drawText("이상", 70f, baseline + 160f, paint)
                 }

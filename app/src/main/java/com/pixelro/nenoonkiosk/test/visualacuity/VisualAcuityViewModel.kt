@@ -107,7 +107,6 @@ class VisualAcuityViewModel @Inject constructor(
                 sightHistory[_sightLevel.value]!!.second + 1
             )
         }
-        Log.e("wrongCount", "$wrongCount")
         // if 3th trial
         if (sightHistory[_sightLevel.value]!!.first + sightHistory[_sightLevel.value]!!.second >= 3) {
             // if correct >= 2
@@ -140,11 +139,6 @@ class VisualAcuityViewModel @Inject constructor(
             }
         }
         if (!isEnd) updateRandomList()
-//        Log.e("", "end: ${_sightLevel.value}")
-//        Log.e(
-//            "visualAcuityTest",
-//            "${sightHistory[1]}\n${sightHistory[2]}\n${sightHistory[3]}\n${sightHistory[4]}\n${sightHistory[5]}\n${sightHistory[6]}\n${sightHistory[7]}\n${sightHistory[8]}\n${sightHistory[9]}\n${sightHistory[10]}"
-//        )
     }
 
     fun getVisualAcuityTestResult(): VisualAcuityTestResult {

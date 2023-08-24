@@ -81,10 +81,8 @@ fun TestResultScreen(
 ) {
     BackHandler(enabled = true) {
         navController.popBackStack(Constants.ROUTE_TEST_LIST, false)
-//        viewModel.resetScreenSaverTimer()
     }
     LaunchedEffect(true) {
-//        Log.e("threadName", Thread.currentThread().name)
         testResultViewModel.sendResultToServer(
             surveyId = surveyId,
             testType = testType,
@@ -100,8 +98,6 @@ fun TestResultScreen(
         override fun onReceive(context: Context, intent: Intent?) {
             when (intent?.action) {
                 BluetoothDevice.ACTION_FOUND -> {
-                    // Discovery has found a device. Get the BluetoothDevice
-                    // object and its info from the Intent.
                     val device: BluetoothDevice? =
                         intent.getParcelableExtra(BluetoothDevice.EXTRA_DEVICE)
 

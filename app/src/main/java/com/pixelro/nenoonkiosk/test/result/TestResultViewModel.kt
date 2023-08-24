@@ -52,10 +52,6 @@ class TestResultViewModel @Inject constructor(
                             distanceAvg = testResult.avgDistance.toInt()
                         )
                         val response = testResultRepository.sendPresbyopiaTestResult(request)
-                        Log.e("presbyopiaRequest", "$request")
-                        if (response != null) {
-                            Log.e("presbyopiaResponse", "responseId: ${response.responseId}\ncreateAt: ${response.createAt}\ndata: ${response.data}")
-                        }
                     }
                 }
                 TestType.ShortDistanceVisualAcuity -> {
@@ -67,10 +63,6 @@ class TestResultViewModel @Inject constructor(
                             rightSight = testResult.rightEye
                         )
                         val response = testResultRepository.sendVisualAcuityTestResult(request)
-                        Log.e("visualAcuityRequest", "$request")
-                        if (response != null) {
-                            Log.e("visualAcuityResponse", "responseId: ${response.responseId}\ncreateAt: ${response.createAt}\ndata: ${response.data}")
-                        }
                     }
                 }
                 TestType.LongDistanceVisualAcuity -> {
@@ -98,10 +90,6 @@ class TestResultViewModel @Inject constructor(
                             rightMacularLoc = rightMacularLoc
                         )
                         val response = testResultRepository.sendAmslerGridTestResult(request)
-                        Log.e("amslerGridRequest", "$request")
-                        if (response != null) {
-                            Log.e("amslerGridResponse", "responseId: ${response.responseId}\ncreateAt: ${response.createAt}\ndata: ${response.data}")
-                        }
                     }
                 }
                 TestType.MChart -> {
@@ -115,10 +103,6 @@ class TestResultViewModel @Inject constructor(
                             rightEyeHor = testResult.rightEyeHorizontal
                         )
                         val response = testResultRepository.sendMChartTestResult(request)
-                        Log.e("MChartRequest", "$request")
-                        if (response != null) {
-                            Log.e("MChartResponse", "responseId: ${response.responseId}\ncreateAt: ${response.createAt}\ndata: ${response.data}")
-                        }
                     }
                 }
             }

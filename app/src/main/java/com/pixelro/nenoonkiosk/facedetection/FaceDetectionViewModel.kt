@@ -97,9 +97,6 @@ class FaceDetectionViewModel @Inject constructor(
         _isPressStartButtonTTSDone.update { isDone }
     }
 
-//    private val _bitmap = MutableStateFlow(Bitmap.createBitmap(100, 100, Bitmap.Config.ARGB_8888))
-//    val bitmap: StateFlow<Bitmap> = _bitmap
-
     fun updateFaceDetectionData(
         boundingBox: Rect,
         leftEyePosition: PointF?,
@@ -181,7 +178,6 @@ class FaceDetectionViewModel @Inject constructor(
         viewModelScope.launch {
             while(true) {
                 delay(100)
-//                Log.e("count", "$count")
                 count--
                 if (count < 0) {
                     _isNenoonTextDetected.update { false }

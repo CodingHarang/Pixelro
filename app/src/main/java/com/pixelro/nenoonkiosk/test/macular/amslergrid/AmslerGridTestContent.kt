@@ -83,14 +83,12 @@ fun AmslerGridTestContent(
                 toNextContent = {
                     amslerGridViewModel.updateIsMeasuringDistanceContentVisible(false)
                     amslerGridViewModel.updateIsAmslerGridContentVisible(true)
-//                    amslerGridViewModel.updateIsMacularDegenerationTypeVisible(false)
                 },
                 selectedTestType = TestType.AmslerGrid,
                 isLeftEye = amslerGridViewModel.isLeftEye.collectAsState().value
             )
             AmslerGridContent(
                 amslerGridContentVisibleState = amslerGridContentVisibleState,
-//                macularDegenerationTypeVisibleState = macularDegenerationTypeVisibleState,
                 toResultScreen = toResultScreen
             )
         }
@@ -101,7 +99,6 @@ fun AmslerGridTestContent(
 @Composable
 fun AmslerGridContent(
     amslerGridContentVisibleState: MutableTransitionState<Boolean>,
-//    macularDegenerationTypeVisibleState: MutableTransitionState<Boolean>,
     toResultScreen: (AmslerGridTestResult) -> Unit,
     amslerGridViewModel: AmslerGridViewModel = hiltViewModel(),
     faceDetectionViewModel: FaceDetectionViewModel = hiltViewModel()
@@ -268,38 +265,6 @@ fun AmslerGridContent(
                     }
                 }
             }
-//            AnimatedVisibility(
-//                visibleState = macularDegenerationTypeVisibleState,
-//                enter = AnimationProvider.enterTransitionUp,
-//                exit = AnimationProvider.exitTransitionDown
-//            ) {
-//                Row(
-//                    modifier = Modifier
-//                        .padding(top = 20.dp)
-//                        .fillMaxWidth(),
-//                    horizontalArrangement = Arrangement.Center
-//                ) {
-//                    for(i in 0..2) {
-//                        Image(
-//                            modifier = Modifier
-//                                .padding(end = (if (i == 2) 0.dp else 40.dp))
-//                                .width(200.dp)
-//                                .height(200.dp)
-//                                .clickable {
-//                                    amslerGridViewModel.updateIsMacularDegenerationTypeVisible(false)
-//                                    amslerGridViewModel.updateCurrentSelectedArea(i)
-//                                },
-//                            painter = painterResource(id = when(i) {
-//                                    0 -> R.drawable.macular_distorted
-//                                    1 -> R.drawable.macular_blacked
-//                                    else -> R.drawable.macular_whited
-//                                }
-//                            ),
-//                            contentDescription = ""
-//                        )
-//                    }
-//                }
-//            }
 
             Box(
                 modifier = Modifier

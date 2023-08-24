@@ -28,14 +28,12 @@ import java.util.Locale
 @AndroidEntryPoint
 class MainActivity : ComponentActivity() {
 
-//    private val viewModel: NenoonViewModel by viewModels()
     val viewModel: NenoonViewModel by lazy {
         ViewModelProvider(this)[NenoonViewModel::class.java]
     }
 
     override fun onTouchEvent(event: MotionEvent?): Boolean {
         viewModel.resetScreenSaverTimer()
-        Log.e("touch", "screen touched")
         return super.onTouchEvent(event)
     }
 
@@ -48,7 +46,7 @@ class MainActivity : ComponentActivity() {
     @SuppressLint("InternalInsetResource", "DiscouragedApi")
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-//        this.defaultViewModelProviderFactory
+
         TTS.initTTS()
         if (SharedPreferencesManager.getString("language") == "") {
             SharedPreferencesManager.putString("language", "en")
