@@ -70,7 +70,7 @@ fun IntroScreen(
         ) {
             Text(
                 text = StringProvider.getString(R.string.nenoon_eye_protecter),
-                fontSize = 100.sp,
+                fontSize = 90.sp,
                 fontFamily = cafe24Family,
 
                 textAlign = TextAlign.Center,

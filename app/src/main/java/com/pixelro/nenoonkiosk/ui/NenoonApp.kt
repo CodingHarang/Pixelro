@@ -52,14 +52,14 @@ fun NenoonApp(
             }
         }
 
-        if (isScreenSaving) {
-            if (navController.currentBackStackEntry?.destination?.route != Constants.ROUTE_SIGN_IN) {
-                navController.popBackStack(Constants.ROUTE_INTRO, false)
-                navController.navigate(Constants.ROUTE_SCREEN_SAVER)
-            }
-        } else {
-            navController.popBackStack(Constants.ROUTE_SCREEN_SAVER, true)
-        }
+//        if (isScreenSaving) {
+//            if (navController.currentBackStackEntry?.destination?.route != Constants.ROUTE_SIGN_IN) {
+//                navController.popBackStack(Constants.ROUTE_INTRO, false)
+//                navController.navigate(Constants.ROUTE_SCREEN_SAVER)
+//            }
+//        } else {
+//            navController.popBackStack(Constants.ROUTE_SCREEN_SAVER, true)
+//        }
     }
 
     AnimatedNavHost(
@@ -69,7 +69,7 @@ fun NenoonApp(
         startDestination = Constants.ROUTE_SPLASH,
         contentAlignment = Alignment.TopCenter
     ) {
-        /*
+        /**
          * 스플래시 화면
         */
         composable(
@@ -89,7 +89,7 @@ fun NenoonApp(
             SplashScreen()
         }
 
-        /*
+        /**
         * 로그인 화면
         */
         composable(
@@ -108,7 +108,7 @@ fun NenoonApp(
             )
         }
 
-        /*
+        /**
         * 화면 보호기 화면
         */
         composable(
@@ -127,7 +127,7 @@ fun NenoonApp(
             )
         }
 
-        /*
+        /**
         * 권한 확인 화면
         */
         composable(
@@ -140,7 +140,7 @@ fun NenoonApp(
             PermissionRequestScreen(viewModel)
         }
 
-        /*
+        /**
          * 첫 시작 화면
          */
         composable(

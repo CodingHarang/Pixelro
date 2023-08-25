@@ -25,13 +25,13 @@ fun TestListContent(
 ) {
     Column(
         modifier = Modifier
-            .padding(bottom = 120.dp)
+            .padding(bottom = 135.dp)
     ) {
         val modifier = Modifier
             .weight(1f)
         EyeTestSelectableBox(
             modifier = modifier,
-            title = StringProvider.getString(R.string.presbyopia_name2),
+            title = StringProvider.getString(R.string.test_predescription_presbyopia_title),
             onClickMethod = {
                 if (checkIsTestDone(TestType.Presbyopia)) {
                     showSurveyRecommendationDialog()
