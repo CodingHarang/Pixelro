@@ -57,7 +57,7 @@
     <string name="amsler_grid_test_order_result">左、右の目に異常があるか確認することができます。</string>
     <string name="mchart_test_order_result">左、右の目に異常があるか確認することができます。</string>
     <string name="splash_description">視力検査・目の健康ソリューション</string>
-    <string name="splash_app_name">내눈</string>
+    <string name="splash_app_name">ネヌン</string>
     <string name="test_predescription_screen_test_method">検査方法を見る</string>
     <string name="test_predescription_presbyopia_title">老眼調整力検査</string>
     <string name="test_predescription_short_visual_acuity_title">近距離視力検査</string>
@@ -115,7 +115,7 @@
     <string name="permission_bluetooth_detail">プリンター接続のための用途</string>
     <string name="permission_bluetooth_service_detail">プリンターを接続するためのブルートゥース確認用途</string>
     <string name="permission_location_detail">ブルートゥースの使用のための用途</string>
-    <string name="nenoon_eye_protecter">내눈\n目の健康守り</string>
+    <string name="nenoon_eye_protecter">目の健康自己診断\nキオスク</string>
     <string name="to_start">開始</string>
     <string name="survey_age">年齢を教えてください</string>
     <string name="survey_under9">9歳以下</string>

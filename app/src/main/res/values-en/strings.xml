@@ -115,7 +115,7 @@
     <string name="permission_bluetooth_detail">Used for printer connection</string>
     <string name="permission_bluetooth_service_detail">Used to check Bluetooth for printer connection</string>
     <string name="permission_location_detail">Used for Bluetooth</string>
-    <string name="nenoon_eye_protecter">NENOON\nEYE CARE</string>
+    <string name="nenoon_eye_protecter">Kiosk For\nEye Health Self-Test</string>
     <string name="to_start">START</string>
     <string name="survey_age">How old are you?</string>
     <string name="survey_under9">Under 9</string>

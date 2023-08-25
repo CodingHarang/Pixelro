@@ -114,7 +114,7 @@
     <string name="permission_bluetooth_detail">프린터 연결을 위한 용도</string>
     <string name="permission_bluetooth_service_detail">프린터를 연결하기 위한 블루투스 확인 용도</string>
     <string name="permission_location_detail">블루투스를 사용하기 위한 용도</string>
-    <string name="nenoon_eye_protecter">내눈\n눈 건강 지킴이</string>
+    <string name="nenoon_eye_protecter">안건강자가진단\n키오스크</string>
     <string name="to_start">시작</string>
     <string name="survey_age">나이를 알려주세요</string>
     <string name="survey_under9">9세 이하</string>
