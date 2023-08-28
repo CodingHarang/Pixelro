@@ -90,6 +90,7 @@ fun TestScreen(
                         modifier = Modifier
                             .width(32.dp)
                             .clickable {
+                                TTS.tts.stop()
                                 (context as Activity).dispatchKeyEvent(
                                     KeyEvent(
                                         KeyEvent.ACTION_DOWN,
