@@ -1,7 +1,6 @@
 package com.pixelro.nenoonkiosk.test.macular.amslergrid
 
 import android.speech.tts.TextToSpeech
-import android.util.Log
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.core.MutableTransitionState
 import androidx.compose.foundation.Canvas
@@ -140,10 +139,10 @@ fun AmslerGridContent(
                     .padding(start = 20.dp, top = 20.dp, end = 20.dp, bottom = 20.dp)
                     .height(160.dp),
                 text = when (!isBlinkingDone) {
-                    true -> StringProvider.getString(R.string.amsler_description_a)
+                    true -> StringProvider.getString(R.string.amsler_description1_blink)
                     false -> when (isFaceCenter) {
-                        true -> StringProvider.getString(R.string.amsler_description_b)
-                        false -> StringProvider.getString(R.string.amsler_description_c)
+                        true -> StringProvider.getString(R.string.amsler_description2_distortion)
+                        false -> StringProvider.getString(R.string.amsler_description3_center)
                     }
                 },
                 fontSize = when (!isBlinkingDone) {
@@ -304,7 +303,7 @@ fun AmslerGridContent(
                     Text(
                         modifier = Modifier
                             .padding(bottom = 4.dp),
-                        text = StringProvider.getString(R.string.amsler_grid_test_content_done),
+                        text = StringProvider.getString(R.string.amsler_complete_button),
                         fontSize = 40.sp,
                         color = Color(0xffffffff),
                         textAlign = TextAlign.Center,

@@ -6,7 +6,6 @@ import androidx.compose.animation.animateColorAsState
 import androidx.compose.animation.core.Animatable
 import androidx.compose.animation.core.RepeatMode
 import androidx.compose.animation.core.animateFloat
-import androidx.compose.animation.core.animateIntAsState
 import androidx.compose.animation.core.infiniteRepeatable
 import androidx.compose.animation.core.keyframes
 import androidx.compose.animation.core.rememberInfiniteTransition
@@ -35,7 +34,6 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material.ripple.rememberRipple
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
@@ -50,7 +48,6 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.draw.clip
-import androidx.compose.ui.graphics.BlendMode
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.drawscope.ContentDrawScope
 import androidx.compose.ui.platform.LocalContext
@@ -64,7 +61,6 @@ import com.pixelro.nenoonkiosk.R
 import com.pixelro.nenoonkiosk.data.GlobalValue
 import com.pixelro.nenoonkiosk.data.StringProvider
 import com.pixelro.nenoonkiosk.survey.datatype.SurveyAge
-import com.pixelro.nenoonkiosk.survey.datatype.SurveyData
 import com.pixelro.nenoonkiosk.survey.datatype.SurveyDiabetes
 import com.pixelro.nenoonkiosk.survey.datatype.SurveyGlass
 import com.pixelro.nenoonkiosk.survey.datatype.SurveySex
@@ -72,7 +68,6 @@ import com.pixelro.nenoonkiosk.survey.datatype.SurveySurgery
 import com.pixelro.nenoonkiosk.survey.SurveyViewModel
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
-import kotlinx.coroutines.coroutineScope
 
 @Composable
 fun SurveyScreen(
@@ -301,9 +296,9 @@ fun SurveyScreen(
                                     Text(
                                         text = when (idx) {
                                             1 -> StringProvider.getString(R.string.survey_under9)
-                                            2 -> StringProvider.getString(R.string.survey_20to29)
-                                            3 -> StringProvider.getString(R.string.survey_40to49)
-                                            else -> StringProvider.getString(R.string.survey_60to69)
+                                            2 -> StringProvider.getString(R.string.survey_20s)
+                                            3 -> StringProvider.getString(R.string.survey_40s)
+                                            else -> StringProvider.getString(R.string.survey_60s)
                                         },
                                         fontSize = 60.sp,
                                         color = when (idx to surveyViewModel.surveyAge.collectAsState().value) {
@@ -391,9 +386,9 @@ fun SurveyScreen(
                                 ) {
                                     Text(
                                         text = when (idx) {
-                                            5 -> StringProvider.getString(R.string.survey_10to19)
-                                            6 -> StringProvider.getString(R.string.survey_30to39)
-                                            7 -> StringProvider.getString(R.string.survey_50to59)
+                                            5 -> StringProvider.getString(R.string.survey_10s)
+                                            6 -> StringProvider.getString(R.string.survey_30s)
+                                            7 -> StringProvider.getString(R.string.survey_50s)
                                             else -> StringProvider.getString(R.string.survey_above70)
                                         },
                                         fontSize = 60.sp,

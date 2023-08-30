@@ -12,7 +12,6 @@ import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -20,7 +19,6 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavHostController
-import com.pixelro.nenoonkiosk.NenoonViewModel
 import com.pixelro.nenoonkiosk.R
 import com.pixelro.nenoonkiosk.data.StringProvider
 
@@ -64,7 +62,7 @@ fun MChartTestResultContent(
             verticalAlignment = Alignment.CenterVertically
         ) {
             Text(
-                text = StringProvider.getString(R.string.left_and_right),
+                text = StringProvider.getString(R.string.mchart_result_left_right),
                 fontSize = 20.sp,
                 fontWeight = FontWeight.Medium
             )
@@ -76,7 +74,7 @@ fun MChartTestResultContent(
                         shape = RoundedCornerShape(4.dp)
                     )
                     .padding(start = 12.dp, top = 4.dp, end = 12.dp, bottom = 4.dp),
-                text = StringProvider.getString(R.string.vertical),
+                text = StringProvider.getString(R.string.mchart_result_vertical),
                 color = Color(0xff1d71e1),
                 fontSize = 20.sp
             )
@@ -88,7 +86,7 @@ fun MChartTestResultContent(
                         shape = RoundedCornerShape(4.dp)
                     )
                     .padding(start = 12.dp, top = 4.dp, end = 12.dp, bottom = 4.dp),
-                text = StringProvider.getString(R.string.horizontal),
+                text = StringProvider.getString(R.string.mchart_result_horizontal),
                 color = Color(0xffffb800),
                 fontSize = 20.sp
             )
@@ -124,7 +122,7 @@ fun MChartTestResultContent(
                     .padding(20.dp)
             ) {
                 Text(
-                    text = StringProvider.getString(R.string.left),
+                    text = StringProvider.getString(R.string.test_result_left),
                     fontSize = 30.sp,
                     fontWeight = FontWeight.Medium
                 )
@@ -141,7 +139,7 @@ fun MChartTestResultContent(
                                 shape = RoundedCornerShape(4.dp)
                             )
                             .padding(start = 12.dp, top = 4.dp, end = 12.dp, bottom = 4.dp),
-                        text = StringProvider.getString(R.string.vertical),
+                        text = StringProvider.getString(R.string.mchart_result_vertical),
                         color = Color(0xff1d71e1),
                         fontSize = 20.sp
                     )
@@ -173,7 +171,7 @@ fun MChartTestResultContent(
                                 shape = RoundedCornerShape(4.dp)
                             )
                             .padding(start = 12.dp, top = 4.dp, end = 12.dp, bottom = 4.dp),
-                        text = StringProvider.getString(R.string.horizontal),
+                        text = StringProvider.getString(R.string.mchart_result_horizontal),
                         color = Color(0xffffb800),
                         fontSize = 20.sp
                     )
@@ -208,7 +206,7 @@ fun MChartTestResultContent(
                     .padding(20.dp)
             ) {
                 Text(
-                    text = StringProvider.getString(R.string.right),
+                    text = StringProvider.getString(R.string.test_result_right),
                     fontSize = 30.sp,
                     fontWeight = FontWeight.Medium
                 )
@@ -225,7 +223,7 @@ fun MChartTestResultContent(
                                 shape = RoundedCornerShape(4.dp)
                             )
                             .padding(start = 12.dp, top = 4.dp, end = 12.dp, bottom = 4.dp),
-                        text = StringProvider.getString(R.string.vertical),
+                        text = StringProvider.getString(R.string.mchart_result_vertical),
                         color = Color(0xff1d71e1),
                         fontSize = 20.sp
                     )
@@ -257,7 +255,7 @@ fun MChartTestResultContent(
                                 shape = RoundedCornerShape(4.dp)
                             )
                             .padding(start = 12.dp, top = 4.dp, end = 12.dp, bottom = 4.dp),
-                        text = StringProvider.getString(R.string.horizontal),
+                        text = StringProvider.getString(R.string.mchart_result_horizontal),
                         color = Color(0xffffb800),
                         fontSize = 20.sp
                     )

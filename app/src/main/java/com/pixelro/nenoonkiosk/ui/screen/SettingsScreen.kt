@@ -175,7 +175,7 @@ fun SettingsScreen(
                     .padding(start = 40.dp, top = 10.dp, bottom = 10.dp),
                 text = when (isSignedIn) {
                     true -> StringProvider.getString(R.string.signin)
-                    false -> StringProvider.getString(R.string.signout)
+                    false -> StringProvider.getString(R.string.settings_signout)
                 },
                 fontSize = 30.sp,
                 color = when (isSignedIn) {

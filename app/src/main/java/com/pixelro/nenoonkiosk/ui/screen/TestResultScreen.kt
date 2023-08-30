@@ -163,7 +163,7 @@ fun TestResultScreen(
             mNemonicWrapper.print(bm, nPrintWidth, nPaperHeight, nCopies)
             mNemonicWrapper.closePrinter()
         } else {
-            Toast.makeText(context, StringProvider.getString(R.string.no_printer), Toast.LENGTH_SHORT).show()
+            Toast.makeText(context, StringProvider.getString(R.string.result_toast_no_printer), Toast.LENGTH_SHORT).show()
         }
     }
 
@@ -337,7 +337,7 @@ fun TestResultScreen(
                         Text(
                             modifier = Modifier
                                 .padding(20.dp),
-                            text = StringProvider.getString(R.string.result_screen_print),
+                            text = StringProvider.getString(R.string.result_button1_print),
                             fontSize = 40.sp,
                             fontWeight = FontWeight.Bold
                         )
@@ -375,7 +375,7 @@ fun TestResultScreen(
                         Text(
                             modifier = Modifier
                                 .padding(20.dp),
-                            text = StringProvider.getString(R.string.result_screen_go_back),
+                            text = StringProvider.getString(R.string.result_button2_back),
                             fontSize = 40.sp,
                             fontWeight = FontWeight.Bold
                         )

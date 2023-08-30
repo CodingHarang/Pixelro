@@ -5,7 +5,6 @@ import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -14,11 +13,9 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavHostController
-import com.pixelro.nenoonkiosk.NenoonViewModel
 import com.pixelro.nenoonkiosk.data.StringProvider
 import com.pixelro.nenoonkiosk.R
 import com.pixelro.nenoonkiosk.data.SharedPreferencesManager
-import hilt_aggregated_deps._com_pixelro_nenoonkiosk_di_SharedPreferencesDataSourceModule
 
 @Composable
 fun ShortDistanceVisualAcuityTestResultContent(
@@ -56,7 +53,7 @@ fun ShortDistanceVisualAcuityTestResultContent(
             verticalAlignment = Alignment.CenterVertically
         ) {
             Text(
-                text = StringProvider.getString(R.string.left_and_right_0_7_or_higher),
+                text = StringProvider.getString(R.string.visual_acuity_result_description_higher),
                 fontSize = 30.sp,
                 fontWeight = FontWeight.Medium
             )
@@ -115,7 +112,7 @@ fun ShortDistanceVisualAcuityTestResultContent(
                     .padding(20.dp)
             ) {
                 Text(
-                    text = StringProvider.getString(R.string.left),
+                    text = StringProvider.getString(R.string.test_result_left),
                     fontSize = 25.sp,
                     fontWeight = FontWeight.Medium
                 )
@@ -236,7 +233,7 @@ fun ShortDistanceVisualAcuityTestResultContent(
                     .padding(20.dp)
             ) {
                 Text(
-                    text = StringProvider.getString(R.string.right),
+                    text = StringProvider.getString(R.string.test_result_right),
                     fontSize = 25.sp,
                     fontWeight = FontWeight.Medium
                 )

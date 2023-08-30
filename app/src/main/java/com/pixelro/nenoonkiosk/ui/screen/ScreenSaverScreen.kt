@@ -1,6 +1,5 @@
 package com.pixelro.nenoonkiosk.ui.screen
 
-import android.util.Log
 import androidx.compose.animation.core.RepeatMode
 import androidx.compose.animation.core.animateFloat
 import androidx.compose.animation.core.infiniteRepeatable
@@ -20,12 +19,10 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.DisposableEffect
 import androidx.compose.runtime.LaunchedEffect
-import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.layout.Layout
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.ExperimentalTextApi
 import androidx.compose.ui.text.SpanStyle
@@ -39,16 +36,12 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.compose.ui.viewinterop.AndroidView
 import androidx.hilt.navigation.compose.hiltViewModel
-import androidx.media3.common.MediaItem
-import androidx.media3.common.Player
 import androidx.media3.exoplayer.ExoPlayer
 import androidx.media3.ui.AspectRatioFrameLayout
 import androidx.media3.ui.PlayerView
 import com.google.accompanist.systemuicontroller.rememberSystemUiController
-import com.pixelro.nenoonkiosk.NenoonViewModel
 import com.pixelro.nenoonkiosk.R
 import com.pixelro.nenoonkiosk.data.GlobalValue
-import com.pixelro.nenoonkiosk.data.SharedPreferencesManager
 import com.pixelro.nenoonkiosk.data.StringProvider
 import com.pixelro.nenoonkiosk.ui.ScreenSaverViewModel
 
@@ -78,7 +71,7 @@ fun ScreenSaverScreen(
         initializeTestDoneStatus()
     }
     val text = buildAnnotatedString {
-        append(StringProvider.getString(R.string.please))
+        append(StringProvider.getString(R.string.screensaver_description1))
         withAnnotation("squiggles", annotation = "ignored") {
             withStyle(
                 SpanStyle(
@@ -86,10 +79,10 @@ fun ScreenSaverScreen(
                     baselineShift = BaselineShift(shiftVal)
                 )
             ) {
-                append(StringProvider.getString(R.string.touch))
+                append(StringProvider.getString(R.string.screensaver_description2))
             }
         }
-        append(StringProvider.getString(R.string.can_test))
+        append(StringProvider.getString(R.string.screensaver_description3))
     }
     val systemUiController = rememberSystemUiController()
     val context = LocalContext.current

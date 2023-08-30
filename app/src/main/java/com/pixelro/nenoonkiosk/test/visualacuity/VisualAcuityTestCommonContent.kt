@@ -178,7 +178,7 @@ fun VisualAcuityTestContent(
                 Text(
                     modifier = Modifier
                         .padding(top = 300.dp),
-                    text = StringProvider.getString(R.string.visualacuity_choose),
+                    text = StringProvider.getString(R.string.visual_acuity_description),
                     textAlign = TextAlign.Center,
                     fontSize = 30.sp,
                     fontWeight = FontWeight.ExtraBold
@@ -188,7 +188,7 @@ fun VisualAcuityTestContent(
         Text(
             modifier = Modifier
                 .padding(top = 40.dp),
-            text = StringProvider.getString(R.string.visual_acuity_test_common_content_description),
+            text = StringProvider.getString(R.string.visual_acuity_warning),
             fontSize = 40.sp,
             color = Color(0xffffffff),
             fontWeight = FontWeight.Medium,
@@ -371,7 +371,7 @@ fun VisualAcuityTestContent(
                 contentAlignment = Alignment.Center
             ) {
                 Text(
-                    text = StringProvider.getString(R.string.undifined),
+                    text = StringProvider.getString(R.string.visual_acuity_undefinable),
                     fontSize = 60.sp,
                 )
             }

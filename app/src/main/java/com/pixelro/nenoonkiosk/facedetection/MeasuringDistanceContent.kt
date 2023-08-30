@@ -1,7 +1,6 @@
 package com.pixelro.nenoonkiosk.facedetection
 
 import android.speech.tts.TextToSpeech
-import android.util.Log
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.core.MutableTransitionState
 import androidx.compose.animation.core.RepeatMode
@@ -14,10 +13,8 @@ import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
-import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
@@ -261,23 +258,23 @@ fun MeasuringDistanceContent(
                                 true -> when(faceDetectionViewModel.isLeftEyeCovered.collectAsState().value && faceDetectionViewModel.isNenoonTextDetected.collectAsState().value) {
                                     true -> {
                                         when(faceDetectionViewModel.isDistanceOK.collectAsState().value) {
-                                            true -> StringProvider.getString(R.string.measuring_distance_content_press_start_button)
-                                            false -> StringProvider.getString(R.string.measuring_distance_content_measure_distance)
+                                            true -> StringProvider.getString(R.string.measuring_distance_description1)
+                                            false -> StringProvider.getString(R.string.measuring_distance_description2)
                                         }
                                     }
-                                    false -> StringProvider.getString(R.string.measuring_distance_content_description2)
+                                    false -> StringProvider.getString(R.string.measuring_distance_description3_cover_left)
                                 }
                                 false -> when(faceDetectionViewModel.isRightEyeCovered.collectAsState().value && faceDetectionViewModel.isNenoonTextDetected.collectAsState().value) {
                                     true -> {
                                         when (faceDetectionViewModel.isDistanceOK.collectAsState().value) {
-                                            true -> StringProvider.getString(R.string.measuring_distance_content_press_start_button)
-                                            false -> StringProvider.getString(R.string.measuring_distance_content_measure_distance)
+                                            true -> StringProvider.getString(R.string.measuring_distance_description1)
+                                            false -> StringProvider.getString(R.string.measuring_distance_description2)
                                         }
                                     }
-                                    false -> StringProvider.getString(R.string.measuring_distance_content_cover_right_eye)
+                                    false -> StringProvider.getString(R.string.measuring_distance_description4_cover_right)
                                 }
                             }
-                            false -> StringProvider.getString(R.string.measuring_distance_content_description1)
+                            false -> StringProvider.getString(R.string.measuring_distance_description5_face_center)
                         },
                         color = Color(0xffffffff),
                         fontSize = 40.sp,
@@ -341,8 +338,8 @@ fun MeasuringDistanceContent(
                     ) {
                         Text(
                             text = when (selectedTestType) {
-                                TestType.ShortDistanceVisualAcuity -> StringProvider.getString(R.string.adjust_distance_40cm)
-                                else -> StringProvider.getString(R.string.adjust_distance_30cm)
+                                TestType.ShortDistanceVisualAcuity -> StringProvider.getString(R.string.measuring_distance_description6_40cm)
+                                else -> StringProvider.getString(R.string.measuring_distance_description7_30cm)
                             },
                             fontSize = 32.sp,
                             color = Color(0xffffffff),
@@ -382,7 +379,7 @@ fun MeasuringDistanceContent(
                         contentAlignment = Alignment.Center
                     ) {
                         Text(
-                            text = StringProvider.getString(R.string.test_predescription_screen_start),
+                            text = StringProvider.getString(R.string.measuring_distance_start_button),
                             fontSize = 40.sp,
                             color = Color(0xffffffff),
                             textAlign = TextAlign.Center,
@@ -428,7 +425,7 @@ fun MeasuringDistanceDialog(
                     modifier = Modifier
                         .padding(start = 20.dp, top = 20.dp, end = 20.dp, bottom = 8.dp)
                         .fillMaxWidth(),
-                    text = StringProvider.getString(R.string.dialog_pickup),
+                    text = StringProvider.getString(R.string.dialog_description1_pickup),
                     fontSize = 32.sp,
                     fontWeight = FontWeight.Bold
                 )
@@ -458,7 +455,7 @@ fun MeasuringDistanceDialog(
                                 )
                                 .padding(20.dp)
                                 .fillMaxWidth(),
-                            text = StringProvider.getString(R.string.dialog_announcement),
+                            text = StringProvider.getString(R.string.dialog_description2_announcement),
                             fontSize = 32.sp,
                             fontWeight = FontWeight.Bold,
                             textAlign = TextAlign.Center

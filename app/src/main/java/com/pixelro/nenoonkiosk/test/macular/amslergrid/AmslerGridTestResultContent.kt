@@ -14,7 +14,6 @@ import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.drawBehind
@@ -24,11 +23,8 @@ import androidx.compose.ui.graphics.RectangleShape
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavHostController
-import com.pixelro.nenoonkiosk.NenoonViewModel
 import com.pixelro.nenoonkiosk.R
-import com.pixelro.nenoonkiosk.test.macular.amslergrid.MacularDisorderType
 import com.pixelro.nenoonkiosk.data.StringProvider
 
 @Composable
@@ -364,7 +360,7 @@ fun AmslerGridTestResultContent(
             Text(
                 modifier = Modifier
                     .padding(bottom = 12.dp),
-                text = StringProvider.getString(R.string.left),
+                text = StringProvider.getString(R.string.test_result_left),
                 fontSize = 40.sp,
                 fontWeight = FontWeight.Medium
             )
@@ -686,7 +682,7 @@ fun AmslerGridTestResultContent(
             Text(
                 modifier = Modifier
                     .padding(bottom = 12.dp),
-                text = StringProvider.getString(R.string.right),
+                text = StringProvider.getString(R.string.test_result_right),
                 fontSize = 40.sp,
                 fontWeight = FontWeight.Medium
             )

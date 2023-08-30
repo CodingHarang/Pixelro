@@ -1,130 +1,51 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+    <!-- 아이콘 -->
     <string name="app_name">Nenoon Kiosk</string>
-    <string name="presbyopia_name1">Presbyopia Test</string>
-    <string name="visual_acuity_name">Visual Acuity Test</string>
-    <string name="short_visual_acuity_name">Short Distance\nVisual Acuity Test</string>
-    <string name="long_visual_acuity_name">Long Distance Visual Acuity Test</string>
-    <string name="children_visual_acuity_name">Children Visual Acuity Test</string>
-    <string name="macular_degeneration_name">Macular Degeneration Test</string>
-    <string name="amsler_grid_name">Amsler Grid Test</string>
-    <string name="mchart_name">M-Chart Test</string>
-    <string name="test_list_screen_warning1">"Eye examinations in the this application are self-examination and "</string>
-    <string name="test_list_screen_warning2">not medical findings,</string>
-    <string name="test_list_screen_warning3">" so please visit a hospital and consult a doctor for an accurate diagnosis. Test results may vary depending on the condition of your eyes, surrounding environment, or device."</string>
-    <string name="presbyopia_name2">Presbyopia Test\n(Eye Age Test)</string>
-    <string name="test_list_go_back">back</string>
-    <string name="test_predescription_screen_start">Start</string>
-    <string name="screen_saver_description">Touch the screen to start eye test</string>
-    <string name="test_screen_current_distance">"current distance: "</string>
-    <string name="presbyopia_result_title">Presbyopia test result</string>
-    <string name="short_visual_acuity_result_title">Short visual acuity test result</string>
-    <string name="long_visual_acuity_result_title">Long visual acuity test result</string>
-    <string name="children_visual_acuity_result_title">Children visual acuity test result</string>
-    <string name="amsler_grid_result_title">Amsler grid test result</string>
-    <string name="mchart_result_title">M-Chart test result</string>
-    <string name="settings_title">Settings</string>
-    <string name="settings_language">Languages</string>
-    <string name="test_predescription_speech_buttle_text1">Touch here to check</string>
-    <string name="test_predescription_speech_buttle_text2">"\ntest order "</string>
-    <string name="test_predescription_speech_buttle_text3">befor start eye test.</string>
-    <string name="result_screen_print">Print result</string>
-    <string name="result_screen_go_back">Go back</string>
-    <string name="covered_eye_checking_right_description">Cover your left eye\nand test your right eye</string>
-    <string name="covered_eye_checking_left_description">Cover your right eye\nand test your left eye</string>
-    <string name="result_screen_distance">distance</string>
-    <string name="result_screen_age">age</string>
-    <string name="presbyopia_result_hoffstetter1">"Age of your eyes are"</string>
-    <string name="measuring_distance_content_description1">Please put your head in the center</string>
-    <string name="measuring_distance_content_description2">Please cover your left eye</string>
-    <string name="visual_acuity_test_common_content_distance">measure distance</string>
-    <string name="short_distance_visual_acuity_test_result_content_result">Visual acuity test result</string>
-    <string name="short_distance_visual_acuity_test_result_distance">measured distance</string>
-    <string name="visual_acuity_test_common_content_description">Please choose the one below that looks the same as the above chart</string>
-    <string name="visual_acuity_test_common_content_green">Green</string>
-    <string name="visual_acuity_test_common_content_red">Red</string>
-    <string name="visual_acuity_test_common_content_signtedness_description">Which color do you see better?</string>
-    <string name="visual_acuity_test_common_content_both_negative">Both negative</string>
-    <string name="visual_acuity_test_common_content_both_positive">Both positive</string>
-    <string name="amsler_grid_test_content_done">Complete</string>
-    <string name="mchart_test_content_straight">Straight line</string>
-    <string name="mchart_test_content_bent">Bent line</string>
-    <string name="test_dialog_result">RESULT</string>
-    <string name="presbyopia_test_order_result">str</string>
-    <string name="short_visual_acuity_test_order_result">str</string>
-    <string name="long_visual_acuity_test_order_result">str</string>
-    <string name="children_visual_acuity_test_order_result">str</string>
-    <string name="amsler_grid_test_order_result">str</string>
-    <string name="mchart_test_order_result">str</string>
+
+    <!-- 스플래시 화면 -->
     <string name="splash_description">Vision Test · Eye Care Solution</string>
     <string name="splash_app_name">NENOON</string>
-    <string name="test_predescription_screen_test_method">Test Steps</string>
-    <string name="test_predescription_presbyopia_title">Presbyopia Test</string>
-    <string name="test_predescription_short_visual_acuity_title">Short Distance\nVisual Acuity Test</string>
-    <string name="test_predescription_long_visual_acuity_title">Long Distance\nVisual Acuity Test</string>
-    <string name="test_predescription_children_visual_acuity_title">Children Visual Acuity Test</string>
-    <string name="test_predescription_amsler_title">Amsler Grid Test</string>
-    <string name="test_predescription_mchart_title">M-Chart Test</string>
-    <string name="test_list">List of Tests</string>
-    <string name="presbyopia_test_description">Come closer little by little from the 50cm point,\nstop at the point where the time table becomes blurry, and press the button</string>
-    <string name="next">Next</string>
-    <string name="presbyopia_result_near_point_accommodation">Near Point Accommodation</string>
-    <string name="presbyopia_result_hoffstetter2">years old</string>
-    <string name="covered_eye_checking_description">Test will be soon started</string>
-    <string name="test_result_normal_case">Normal Case</string>
-    <string name="test_result_normal_right">If there\'s nothing wrong with your eyes,\nyou\'ll get the same result as on the right</string>
-    <string name="test_result_normal_bottom">If there\'s nothing wrong with your eyes, you\'ll get the same result as on the bottom</string>
-    <string name="left">Left</string>
-    <string name="right">Right</string>
-    <string name="left_and_right">Left · Right</string>
-    <string name="left_and_right_0.7_or_higher">Left · Right 20/30 or higher</string>
-    <string name="red">Red</string>
-    <string name="green">Green</string>
-    <string name="test_result_my_result">My Result</string>
-    <string name="test_result_all_seems_clear">background words all seems clear</string>
-    <string name="test_result_seems_more_clear">background word seems more clear</string>
-    <string name="test_result_seems_no_clear">Not all of the writings are clearly visible</string>
-    <string name="vertical">Vertical</string>
-    <string name="horizontal">Horizontal</string>
-    <string name="presbyopia_result_years_old">years old</string>
-    <string name="adjust_distance_40cm">Please adjust it to 40cm</string>
-    <string name="adjust_distance_30cm">Please adjust it to 30cm</string>
-    <string name="amsler_grid_test_description">Look at the black dot in the middle and choose the part that looks abnormal or distorted</string>
-    <string name="mchart_test_description">Please choose from the bottom whether\nthe line below is straight or bent</string>
-    <string name="survey_title">SURVEY</string>
-    <string name="measuring_distance_content_cover_right_eye">Please cover your right eye</string>
-    <string name="measuring_distance_content_measure_distance">Please adjust the distance</string>
-    <string name="measuring_distance_content_press_start_button">Click \'start test\' button</string>
-    <string name="id_input">Please ENTER your ID</string>
-    <string name="pw_input">Please ENTER your Password</string>
+
+    <!-- 로그인 화면 -->
+    <string name="id_input">Enter your ID</string>
+    <string name="pw_input">Enter your password</string>
     <string name="start_without_signin">Start without signin</string>
     <string name="signin">SIGNIN</string>
-    <string name="signout">SIGNOUT</string>
-    <string name="please">Please </string>
-    <string name="touch">Touch Screen</string>
-    <string name="can_test">\nTo Resume Test</string>
-    <string name="permission_requirement">Permission is required to use the app</string>
+
+    <!-- 화면 보호기 화면 -->
+    <string name="screensaver_description1">"  "</string>
+    <string name="screensaver_description2">Touch the screen</string>
+    <string name="screensaver_description3">\n to start the test"</string>
+
+    <!-- 권한 확인 화면 -->
+    <string name="permission_requirement">Access permission is required to use the application.</string>
     <string name="permission_nextpage">All permissions must be set to proceed to the next screen\nIf an unchecked item is selected, it will go to the settings page</string>
     <string name="permission_setting_change">Change system settings</string>
     <string name="permission_camera">Camera permission</string>
     <string name="permission_bluetooth">Bluetooth permission</string>
     <string name="permission_bluetooth_service">Bluetooth service</string>
     <string name="permission_location">Location service</string>
-    <string name="permission_setting_change_detail">Used for playing screensaver videos</string>
-    <string name="permission_camera_detail">Used for distance measurement</string>
-    <string name="permission_bluetooth_detail">Used for printer connection</string>
-    <string name="permission_bluetooth_service_detail">Used to check Bluetooth for printer connection</string>
+    <string name="permission_setting_change_detail">Used to play the screen saver video</string>
+    <string name="permission_camera_detail">Used to measure distance</string>
+    <string name="permission_bluetooth_detail">Used to connect a printer</string>
+    <string name="permission_bluetooth_service_detail">Used to verify Bluetooth for connecting a printer</string>
     <string name="permission_location_detail">Used for Bluetooth</string>
-    <string name="nenoon_eye_protecter">Kiosk For\nEye Health Self-Test</string>
-    <string name="to_start">START</string>
-    <string name="survey_age">How old are you?</string>
+
+    <!-- 첫 시작 화면 -->
+    <string name="intropage_title">Kiosk For\nEye Health Self-Test</string>
+    <string name="intropage_start_button">START</string>
+
+    <!-- 문진표 작성 화면 -->
+    <string name="survey_title">SURVEY</string>
+    <string name="survey_age">Please select your age</string>
     <string name="survey_under9">Under 9</string>
-    <string name="survey_10to19">10 to 19</string>
-    <string name="survey_20to29">20 to 29</string>
-    <string name="survey_30to39">30 to 39</string>
-    <string name="survey_40to49">40 to 49</string>
-    <string name="survey_50to59">50 to 59</string>
-    <string name="survey_60to69">60 to 69</string>
+    <string name="survey_10s">10 to 19</string>
+    <string name="survey_20s">20 to 29</string>
+    <string name="survey_30s">30 to 39</string>
+    <string name="survey_40s">40 to 49</string>
+    <string name="survey_50s">50 to 59</string>
+    <string name="survey_60s">60 to 69</string>
     <string name="survey_above70">Above 70</string>
     <string name="survey_sex">What is your gender?</string>
     <string name="survey_male">Male</string>
@@ -132,46 +53,165 @@
     <string name="survey_glasses">Do you wear glasses?</string>
     <string name="yes">Yes</string>
     <string name="no">No</string>
-    <string name="survey_surgery">Have you had eye surgery?</string>
-    <string name="survey_none">None</string>
+    <string name="survey_surgery">Have you ever had eye surgery?</string>
+    <string name="survey_none">Never</string>
     <string name="survey_lasik_lasek">Lasik/\nLasek</string>
     <string name="survey_cataract">Cataract</string>
-    <string name="survey_etc">Others</string>
-    <string name="survey_diabetes">Do you have diabetes?</string>
-    <string name="to_survey">Back to Survey</string>
-    <string name="choose_test">Please choose test from below</string>
-    <string name="test_done_warning">You have already completed this test.\nIf you have not been screened yet, please choose the following for an accurate test: </string>
-    <string name="choose_and_again">Please choose the following\n\nIf you want to take the test again, please choose the following: </string>
-    <string name="choose">Please choose</string>
-    <string name="test_again">Take the test again</string>
-    <string name="cancel">Cancel</string>
-    <string name="setting_terms">Terms of Usage</string>
+    <string name="survey_etc">Miscellaneous</string>
+    <string name="survey_diabetes">Are you diabetic?</string>
+
+    <!-- 검사 목록 화면 -->
+    <string name="navigation_tosurvey_button">Back to Survey</string>
+    <string name="test_list_tittle">Test List</string>
+    <string name="test_list_description">Touch the test you want below.</string>
+    <string name="test_list_dialog_warning1">The test has already been completed.\nIf you have not completed the questionnaire yet, please select</string>
+    <string name="test_list_dialog_warning2">below for an accurate test.\n\nIf you want to retest, please select </string>
+    <string name="test_list_dialog_warning3">below</string>
+    <string name="test_list_dialog_re_button">Retest</string>
+    <string name="test_list_dialog_cancel_button">Cancel</string>
+    <string name="test_predescription_presbyopia_title">Presbyopia Test</string>
+    <string name="test_predescription_short_visual_acuity_title">Short Distance\nVisual Acuity Test</string>
+    <string name="test_predescription_amsler_title">Amsler Grid Test</string>
+    <string name="test_predescription_mchart_title">M-CHART Test</string>
+    <string name="test_list_screen_warning1">"Eye examinations in the this application are self-examination and "</string>
+    <string name="test_list_screen_warning2">not medical findings,</string>
+    <string name="test_list_screen_warning3">" so please visit a hospital and consult a doctor for an accurate diagnosis. Test results may vary depending on the condition of your eyes, surrounding environment, or device."</string>
+
+    <!-- 설정 화면 -->
+    <string name="settings_title">Settings</string>
+    <string name="settings_language">Language</string>
+    <string name="settings_signout">SIGNOUT</string>
     <string name="setting_software_info">Software Info</string>
-    <string name="dialog_pickup">In this test, we use an eye cover as shown below.\nPlease pick up the eye cover.</string>
-    <string name="dialog_announcement">Please listen to the voice guidance\nall the way to the end</string>
+
+    <!-- 검사 화면 -->
+    <string name="presbyopia_name">Presbyopia Test</string>
+    <string name="visual_acuity_name">Visual Acuity Test</string>
+    <string name="short_visual_acuity_name">Short Distance\nVisual Acuity Test</string>
+    <string name="long_visual_acuity_name">Long Distance Visual Acuity Test</string>
+    <string name="children_visual_acuity_name">Children Visual Acuity Test</string>
+    <string name="macular_degeneration_name">Macular Degeneration Test</string>
+    <string name="amsler_grid_name">Amsler Grid Test</string>
+    <string name="mchart_name">M-Chart Test</string>
+
+    <!-- 노안 조절력 검사 -->
+    <string name="presbyopia_description1">Adjust the distance to 40 to 50cm from the screen.</string>
+    <string name="presbyopia_description2">Move forward slowly, and stop where the number becomes blurry,\nand then press “Next” below.</string>
+    <string name="presbyopia_description3">Please look at the blinking number below.</string>
+    <string name="presbyopia_under_25cm_description1">Presbyopia was not found in the first measurement.\nPlease press next below</string>
+    <string name="presbyopia_under_25cm_description2">Presbyopia was not found in the second measurement.\nPlease press next below</string>
+    <string name="presbyopia_under_25cm_description3">Presbyopia was not found in the last measurement.\nPlease press next below</string>
+    <string name="test_screen_current_distance">"current distance: "</string>
+    <string name="next">Next</string>
+
+    <!-- 거리 조절 화면 -->
+    <string name="measuring_distance_description1">Touch the “Start” button below.</string>
+    <string name="measuring_distance_description2">Check the distance with your eyes covered</string>
+    <string name="measuring_distance_description3_cover_left">Please cover your left eye</string>
+    <string name="measuring_distance_description4_cover_right">Please cover your right eye</string>
+    <string name="measuring_distance_description5_face_center">Please align your face in the center</string>
+    <string name="measuring_distance_description6_40cm">Adjust the distance to 35 – 45 cm</string>
+    <string name="measuring_distance_description7_30cm">Adjust the distance to 25 – 35 cm</string>
+    <string name="measuring_distance_start_button">Start</string>
+
+    <!-- Dialog -->
+    <string name="dialog_description1_pickup">A dedicated eye cover in the figure below is used for this test.\nPick up the eye cover</string>
+    <string name="dialog_description2_announcement">Please listen to the voice guidance\nall the way to the end</string>
     <string name="confirm">Confirmed</string>
-    <string name="visualacuity_choose">Please choose from below</string>
-    <string name="undifined">UNDIFINED</string>
-    <string name="presbyopia_description_a">Please adjust the distance between 40~60cm from the screen</string>
-    <string name="presbyopia_description_b">Slowly come forward until the numbers blur, then stop and press the \'next\' below</string>
-    <string name="presbyopia_description_c">Please look at the flashing numbers below</string>
-    <string name="presbyopia_description_fine_1">No signs of presbyopia were found in the first measurement\nPlease press next below</string>
-    <string name="presbyopia_description_fine_2">No signs of presbyopia were found in the second measurement\nPlease press next below</string>
-    <string name="presbyopia_description_fine_3">No signs of presbyopia were found in the last measurement\nPlease press next below</string>
-    <string name="amsler_description_a">Please look at the flashing dot below</string>
-    <string name="amsler_description_b">Please select part that looks strange or distorted. If you have completed your selectionm press the \'Complete\' button.</string>
-    <string name="amsler_description_c">Please look at the black dot in the center</string>
-    <string name="no_printer">No connected printer</string>
-    <string name="presbyopia_result_normal">No symptoms of presbyopia were found</string>
-    <string name="presbyopia_result_eye_age">Eye age is </string>
-    <string name="presbyopia_result_eye_age_number"> 45 or under</string>
+
+    <!-- 근거리 시력 검사 -->
+    <string name="visual_acuity_description">Please choose from below</string>
+    <string name="visual_acuity_warning">Please choose the one below that looks the same as the above chart</string>
+    <string name="visual_acuity_undefinable">UNDIFINED</string>
+
+    <!-- 암슬러 차트 검사 -->
+    <string name="amsler_description1_blink">Please look at the flashing dot below</string>
+    <string name="amsler_description2_distortion">Please select part that looks strange or distorted. If you have completed your selectionm press the \'Complete\' button.</string>
+    <string name="amsler_description3_center">Please look at the black dot in the center</string>
+    <string name="amsler_complete_button">Complete</string>
+
+    <!-- M-chart 검사 -->
+    <string name="mchart_test_description">Please choose from the bottom whether\nthe line below is straight or bent</string>
+    <string name="mchart_test_content_straight">Straight line</string>
+    <string name="mchart_test_content_bent">Bent line</string>
+
+    <!-- 검사 결과 화면 -->
+    <string name="result_toast_no_printer">No connected printer</string>
+    <string name="presbyopia_result_title">Presbyopia test result</string>
+    <string name="short_visual_acuity_result_title">Short visual acuity test result</string>
+    <string name="long_visual_acuity_result_title">Long visual acuity test result</string>
+    <string name="children_visual_acuity_result_title">Children visual acuity test result</string>
+    <string name="amsler_grid_result_title">Amsler grid test result</string>
+    <string name="mchart_result_title">M-Chart test result</string>
+    <string name="result_button1_print">Print result</string>
+    <string name="result_button2_back">Go back</string>
+
+    <!-- 노안 조절력 검사 결과 -->
+    <string name="presbyopia_result_description1_normal">No symptoms of presbyopia were found</string>
+    <string name="presbyopia_result_description2_eye_age">Eye age is </string>
+    <string name="presbyopia_result_description3_under45"> 45 or under</string>
     <string name="presbyopia_result_sub_description">You can see objects clearly at a distance of 25cm or less</string>
-    <string name="presbyopia_result_abnormal">Symptoms of presbyopia may effect your daily life</string>
-    <string name="presbyopia_result_old"> </string>
-    <string name="presbyopia_result_ending_word"> </string>
-    <string name="presbyopia_result_approximate">Approximately </string>
-    <string name="presbyopia_result_approximate_limit">cm or less of the distance the object appears blurry</string>
+    <string name="presbyopia_result_description1_abnormal">Symptoms of presbyopia may effect your daily life</string>
+    <string name="presbyopia_result_description2_abnormal"> </string>
+    <string name="presbyopia_result_description3_abnormal"> </string>
+    <string name="presbyopia_result_sub_description1_approximate">Approximately </string>
+    <string name="presbyopia_result_sub_description2_blur">cm or less of the distance the object appears blurry</string>
 
+    <!-- 근거리 시력 검사 결과 -->
+    <string name="test_result_normal_case">Normal Case</string>
+    <string name="test_result_normal_bottom">If there\'s nothing wrong with your eyes, you\'ll get the same result as on the bottom</string>
+    <string name="visual_acuity_result_description_higher">Left · Right 20/30 or higher</string>
+    <string name="test_result_my_result">My Result</string>
+    <string name="test_result_left">Left</string>
+    <string name="test_result_right">Right</string>
 
+    <!-- 암슬러 차트 검사 결과 -->
+    <string name="test_result_normal_right">If there\'s nothing wrong with your eyes,\nyou\'ll get the same result as on the right</string>
+
+    <!-- M-chart 검사 결과 -->
+    <string name="mchart_result_left_right">Left · Right</string>
+    <string name="mchart_result_vertical">Vertical</string>
+    <string name="mchart_result_horizontal">Horizontal</string>
+
+    <!-- 과거의 잔해 -->
+
+    <string name="test_list_go_back">back</string>
+    <string name="screen_saver_description">Touch the screen to start eye test</string>
+    <string name="test_predescription_speech_buttle_text1">Touch here to check</string>
+    <string name="test_predescription_speech_buttle_text2">"\ntest order "</string>
+    <string name="test_predescription_speech_buttle_text3">befor start eye test.</string>
+    <string name="covered_eye_checking_right_description">Cover your left eye\nand test your right eye</string>
+    <string name="covered_eye_checking_left_description">Cover your right eye\nand test your left eye</string>
+    <string name="result_screen_distance">distance</string>
+    <string name="result_screen_age">age</string>
+    <string name="presbyopia_result_hoffstetter1">"Age of your eyes are"</string>
+    <string name="visual_acuity_test_common_content_distance">measure distance</string>
+    <string name="short_distance_visual_acuity_test_result_content_result">Visual acuity test result</string>
+    <string name="short_distance_visual_acuity_test_result_distance">measured distance</string>
+    <string name="visual_acuity_test_common_content_green">Green</string>
+    <string name="visual_acuity_test_common_content_red">Red</string>
+    <string name="visual_acuity_test_common_content_signtedness_description">Which color do you see better?</string>
+    <string name="visual_acuity_test_common_content_both_negative">Both negative</string>
+    <string name="visual_acuity_test_common_content_both_positive">Both positive</string>
+    <string name="test_dialog_result">RESULT</string>
+    <string name="presbyopia_test_order_result">str</string>
+    <string name="short_visual_acuity_test_order_result">str</string>
+    <string name="long_visual_acuity_test_order_result">str</string>
+    <string name="children_visual_acuity_test_order_result">str</string>
+    <string name="amsler_grid_test_order_result">str</string>
+    <string name="mchart_test_order_result">str</string>
+    <string name="test_predescription_screen_test_method">Test Steps</string>
+    <string name="test_predescription_long_visual_acuity_title">Long Distance\nVisual Acuity Test</string>
+    <string name="test_predescription_children_visual_acuity_title">Children Visual Acuity Test</string>
+    <string name="presbyopia_test_description">Come closer little by little from the 50cm point,\nstop at the point where the time table becomes blurry, and press the button</string>
+    <string name="presbyopia_result_near_point_accommodation">Near Point Accommodation</string>
+    <string name="presbyopia_result_hoffstetter2">years old</string>
+    <string name="covered_eye_checking_description">Test will be soon started</string>
+    <string name="red">Red</string>
+    <string name="green">Green</string>
+    <string name="test_result_all_seems_clear">background words all seems clear</string>
+    <string name="test_result_seems_more_clear">background word seems more clear</string>
+    <string name="test_result_seems_no_clear">Not all of the writings are clearly visible</string>
+    <string name="presbyopia_result_years_old">years old</string>
+    <string name="amsler_grid_test_description">Look at the black dot in the middle and choose the part that looks abnormal or distorted</string>
 
 </resources>

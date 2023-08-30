@@ -8,7 +8,6 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
@@ -21,11 +20,9 @@ import androidx.compose.ui.text.withStyle
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import androidx.navigation.NavHostController
 import com.pixelro.nenoonkiosk.R
 import com.pixelro.nenoonkiosk.data.StringProvider
 import com.pixelro.nenoonkiosk.ui.theme.NenoonKioskTheme
-import kotlin.math.roundToInt
 
 @Composable
 fun PresbyopiaTestResultContent(
@@ -154,7 +151,7 @@ fun PresbyopiaTestResultContent(
         when (testResult.firstDistance.toInt() == 20 || testResult.secondDistance.toInt() == 20 || testResult.thirdDistance.toInt() == 20) {
             true -> {
                 Text(
-                    text = StringProvider.getString(R.string.presbyopia_result_normal),
+                    text = StringProvider.getString(R.string.presbyopia_result_description1_normal),
                     fontSize = 36.sp,
                     fontWeight = FontWeight.Bold
                 )
@@ -164,16 +161,16 @@ fun PresbyopiaTestResultContent(
                 )
                 Text(
                     text = buildAnnotatedString {
-                        append(StringProvider.getString(R.string.presbyopia_result_eye_age))
+                        append(StringProvider.getString(R.string.presbyopia_result_description2_eye_age))
                         withStyle(
                             style = SpanStyle(
                                 color = Color(0xff1d71e1),
                                 fontWeight = FontWeight.Bold
                             )
                         ) {
-                            append(" " + StringProvider.getString(R.string.presbyopia_result_eye_age_number))
+                            append(" " + StringProvider.getString(R.string.presbyopia_result_description3_under45))
                         }
-                        append(StringProvider.getString(R.string.presbyopia_result_ending_word))
+                        append(StringProvider.getString(R.string.presbyopia_result_description3_abnormal))
                     },
                     fontSize = 32.sp,
                     fontWeight = FontWeight.Medium,
@@ -186,7 +183,7 @@ fun PresbyopiaTestResultContent(
             }
             false -> {
                 Text(
-                    text = StringProvider.getString(R.string.presbyopia_result_abnormal),
+                    text = StringProvider.getString(R.string.presbyopia_result_description1_abnormal),
                     fontSize = 36.sp,
                     fontWeight = FontWeight.Bold
                 )
@@ -196,22 +193,22 @@ fun PresbyopiaTestResultContent(
                 )
                 Text(
                     text = buildAnnotatedString {
-                        append(StringProvider.getString(R.string.presbyopia_result_eye_age))
+                        append(StringProvider.getString(R.string.presbyopia_result_description2_eye_age))
                         withStyle(
                             style = SpanStyle(
                                 color = Color(0xff1d71e1),
                                 fontWeight = FontWeight.Bold
                             )
                         ) {
-                            append(" " + (testResult.age - 2) + " ~ " + (testResult.age + 2) + StringProvider.getString(R.string.presbyopia_result_old))
+                            append(" " + (testResult.age - 2) + " ~ " + (testResult.age + 2) + StringProvider.getString(R.string.presbyopia_result_description2_abnormal))
                         }
-                        append(StringProvider.getString(R.string.presbyopia_result_ending_word))
+                        append(StringProvider.getString(R.string.presbyopia_result_description3_abnormal))
                     },
                     fontSize = 32.sp,
                     fontWeight = FontWeight.Medium,
                 )
                 Text(
-                    text = StringProvider.getString(R.string.presbyopia_result_approximate) + String.format("%.1f", testResult.avgDistance) + StringProvider.getString(R.string.presbyopia_result_approximate_limit),
+                    text = StringProvider.getString(R.string.presbyopia_result_sub_description1_approximate) + String.format("%.1f", testResult.avgDistance) + StringProvider.getString(R.string.presbyopia_result_sub_description2_blur),
                     fontSize = 24.sp,
                     color = Color(0xff878787)
                 )

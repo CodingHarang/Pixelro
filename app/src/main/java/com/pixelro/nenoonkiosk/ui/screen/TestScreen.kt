@@ -112,7 +112,7 @@ fun TestScreen(
                 ) {
                     Text(
                         text = when(selectedTestType) {
-                            TestType.Presbyopia -> StringProvider.getString(R.string.presbyopia_name1)
+                            TestType.Presbyopia -> StringProvider.getString(R.string.presbyopia_name)
                             TestType.ShortDistanceVisualAcuity -> StringProvider.getString(R.string.short_visual_acuity_name)
                             TestType.LongDistanceVisualAcuity -> StringProvider.getString(R.string.long_visual_acuity_name)
                             TestType.ChildrenVisualAcuity -> StringProvider.getString(R.string.children_visual_acuity_name)

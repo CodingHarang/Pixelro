@@ -1,16 +1,12 @@
 package com.pixelro.nenoonkiosk.test.presbyopia
 
 import android.speech.tts.TextToSpeech
-import androidx.compose.animation.AnimatedVisibility
-import androidx.compose.animation.core.MutableTransitionState
 import androidx.compose.animation.core.animateFloatAsState
-import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
@@ -21,21 +17,16 @@ import androidx.compose.material.LinearProgressIndicator
 import androidx.compose.material.Text
 import androidx.compose.material3.ProgressIndicatorDefaults
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.DisposableEffect
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
-import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.platform.LocalContext
-import androidx.compose.ui.res.painterResource
-import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
@@ -43,13 +34,9 @@ import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.pixelro.nenoonkiosk.R
 import com.pixelro.nenoonkiosk.TTS
-import com.pixelro.nenoonkiosk.data.AnimationProvider
 import com.pixelro.nenoonkiosk.data.StringProvider
 import com.pixelro.nenoonkiosk.facedetection.FaceDetection
 import com.pixelro.nenoonkiosk.facedetection.FaceDetectionViewModel
-import kotlinx.coroutines.coroutineScope
-import kotlinx.coroutines.launch
-import java.util.Locale
 import kotlin.math.roundToInt
 
 @Composable
@@ -94,10 +81,10 @@ fun PresbyopiaTestContent(
     ) {
         Text(
             text = when (!isMovedTo40cm) {
-                true -> StringProvider.getString(R.string.presbyopia_description_a)
+                true -> StringProvider.getString(R.string.presbyopia_description1)
                 false -> when(isBlinkingDone) {
-                    true -> StringProvider.getString(R.string.presbyopia_description_b)
-                    false -> StringProvider.getString(R.string.presbyopia_description_c)
+                    true -> StringProvider.getString(R.string.presbyopia_description2)
+                    false -> StringProvider.getString(R.string.presbyopia_description3)
                 }
             },
             color = Color(0xffffffff),
@@ -141,9 +128,9 @@ fun PresbyopiaTestContent(
                 if (isUnder25cm) {
                     Text(
                         text = when (tryCount) {
-                            0 -> StringProvider.getString(R.string.presbyopia_description_fine_1)
-                            1 -> StringProvider.getString(R.string.presbyopia_description_fine_2)
-                            else -> StringProvider.getString(R.string.presbyopia_description_fine_3)
+                            0 -> StringProvider.getString(R.string.presbyopia_under_25cm_description1)
+                            1 -> StringProvider.getString(R.string.presbyopia_under_25cm_description2)
+                            else -> StringProvider.getString(R.string.presbyopia_under_25cm_description3)
                         },
                         fontSize = 44.sp,
                         fontWeight = FontWeight.Bold,

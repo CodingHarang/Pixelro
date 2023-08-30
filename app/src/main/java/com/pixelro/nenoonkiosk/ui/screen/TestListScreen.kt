@@ -1,7 +1,5 @@
 package com.pixelro.nenoonkiosk.ui.screen
 
-import android.util.Log
-import androidx.activity.compose.BackHandler
 import androidx.compose.animation.*
 import androidx.compose.animation.core.RepeatMode
 import androidx.compose.animation.core.animateFloat
@@ -24,11 +22,9 @@ import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
-import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
-import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -45,18 +41,12 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.compose.ui.window.Dialog
 import androidx.compose.ui.window.DialogProperties
-import androidx.navigation.NavHostController
-import com.google.accompanist.navigation.animation.rememberAnimatedNavController
-import com.pixelro.nenoonkiosk.NenoonViewModel
 import com.pixelro.nenoonkiosk.R
 import com.pixelro.nenoonkiosk.data.GlobalValue
 import com.pixelro.nenoonkiosk.data.StringProvider
 import com.pixelro.nenoonkiosk.data.TestType
-import com.pixelro.nenoonkiosk.facedetection.MeasuringDistanceDialog
 import com.pixelro.nenoonkiosk.ui.testlist.TestListContent
-import kotlinx.coroutines.coroutineScope
 import kotlinx.coroutines.delay
-import kotlinx.coroutines.launch
 
 
 @OptIn(ExperimentalFoundationApi::class, ExperimentalAnimationApi::class)
@@ -144,7 +134,7 @@ fun TestListScreen(
                     contentDescription = ""
                 )
                 Text(
-                    text = StringProvider.getString(R.string.to_survey),
+                    text = StringProvider.getString(R.string.navigation_tosurvey_button),
                     fontSize = 24.sp,
                     fontWeight = FontWeight.Medium
                 )
@@ -155,7 +145,7 @@ fun TestListScreen(
                 contentAlignment = Alignment.Center
             ) {
                 Text(
-                    text = StringProvider.getString(R.string.test_list),
+                    text = StringProvider.getString(R.string.test_list_tittle),
                     fontSize = 24.sp,
                     fontWeight = FontWeight.Medium
                 )
@@ -190,7 +180,7 @@ fun TestListScreen(
                 Text(
                     modifier = Modifier
                         .offset(x = 0.dp, y = shiftVal.dp),
-                    text = StringProvider.getString(R.string.choose_test),
+                    text = StringProvider.getString(R.string.test_list_description),
                     fontSize = 38.sp,
                     fontWeight = FontWeight.ExtraBold,
                     textAlign = TextAlign.Center
@@ -330,23 +320,23 @@ fun SurveyRecommendationDialog(
                 modifier = Modifier
                     .padding(20.dp),
                 text = buildAnnotatedString {
-                    append(StringProvider.getString(R.string.test_done_warning))
+                    append(StringProvider.getString(R.string.test_list_dialog_warning1))
                     withStyle(
                         style = SpanStyle(
                             color = Color(0xff1d71e1),
                         )
                     ) {
-                        append("\'"+StringProvider.getString(R.string.to_survey)+"\'")
+                        append("\'"+StringProvider.getString(R.string.navigation_tosurvey_button)+"\'")
                     }
-                    append(StringProvider.getString(R.string.choose_and_again))
+                    append(StringProvider.getString(R.string.test_list_dialog_warning2))
                     withStyle(
                         style = SpanStyle(
                             color = Color(0xff1d71e1),
                         )
                     ) {
-                        append("\'" + StringProvider.getString(R.string.test_again) + "\'")
+                        append("\'" + StringProvider.getString(R.string.test_list_dialog_re_button) + "\'")
                     }
-                    append(StringProvider.getString(R.string.choose))
+                    append(StringProvider.getString(R.string.test_list_dialog_warning3))
                 },
                 fontSize = 32.sp,
                 fontWeight = FontWeight.Medium
@@ -391,7 +381,7 @@ fun SurveyRecommendationDialog(
                                     toIntroScreen()
                                 }
                                 .padding(top = 4.dp),
-                            text = StringProvider.getString(R.string.to_survey),
+                            text = StringProvider.getString(R.string.navigation_tosurvey_button),
                             textAlign = TextAlign.Center,
                             fontSize = 32.sp,
                             fontWeight = FontWeight.Bold
@@ -424,7 +414,7 @@ fun SurveyRecommendationDialog(
                                     toTestScreen(selectedTest)
                                 }
                                 .padding(top = 4.dp),
-                            text = StringProvider.getString(R.string.test_again),
+                            text = StringProvider.getString(R.string.test_list_dialog_re_button),
                             textAlign = TextAlign.Center,
                             fontSize = 32.sp,
                             fontWeight = FontWeight.Bold
@@ -453,7 +443,7 @@ fun SurveyRecommendationDialog(
                                 onDismissRequest()
                             }
                             .padding(top = 4.dp),
-                        text = StringProvider.getString(R.string.cancel),
+                        text = StringProvider.getString(R.string.test_list_dialog_cancel_button),
                         textAlign = TextAlign.Center,
                         fontSize = 32.sp,
                         fontWeight = FontWeight.Bold
