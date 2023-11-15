@@ -51,7 +51,7 @@ class SharedPreferencesDataSource constructor(
         return getStringAndReturn(key)
     }
 
-    fun getInd(key: String): Int {
+    fun getInt(key: String): Int {
         return getIntAndReturn(key)
     }
 }
